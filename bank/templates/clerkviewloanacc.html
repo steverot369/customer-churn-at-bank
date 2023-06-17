@@ -35,7 +35,7 @@
                         <th style="font-size: 16px;">IfscCode</th>
                         <th style="font-size: 16px;">loan type</th> 
                         <th style="font-size: 16px;">Loan amount</th>
-                        <th style="font-size: 16px;">Interest amount</th>
+                        <th style="font-size: 16px;">Interest(%)</th>
                         <th style="font-size: 16px;">Interest rate</th>
                         <th style="font-size: 16px;">remaining Balance</th>
                         <th style="font-size: 16px;">Emiduedate</th>
@@ -102,7 +102,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="employeeDetailsModalLabel">Employee Details</h5>
+        <h3 class="modal-title" id="employeeDetailsModalLabel">Employee Details</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -130,8 +130,8 @@
             <td id="modalLoanAmount"></td>
           </tr>
           <tr>
-            <td>Interest Amount:</td>
-            <td id="modalInterestAmount"></td>
+            <td>Interest(%):</td>
+            <td style="color: rgb(230, 55, 55);" id="modalInterestAmount"></td>
           </tr>
           <tr>
             <td>Interest Rate:</td>
@@ -142,12 +142,12 @@
             <td id="modalRemainingBalance"></td>
           </tr>
           <tr>
-            <td>Emiduedate:</td>
+            <td>EMI due date:</td>
             <td id="modalEmiduedate"></td>
           </tr>
           <tr>
             <td>Status:</td>
-            <td id="modalStatus"></td>
+            <td style="color: green;" id="modalStatus"></td>
           </tr>
         </table>
       </div>
