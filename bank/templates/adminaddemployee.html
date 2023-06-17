@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale">
+<title>Responsive Dashboard using HTML CSS and JavaScript </title>
+<!-- MATERIAL CDN  -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+rel="stylesheet">
+<!-- google font -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;1,700&display=swap" rel="stylesheet">
+<!-- STYLESHEET -->
+<script src="https://kit.fontawesome.com/c7705f70af.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="/static/css/customer.css">
+</head>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  <ul class=flashes>
+  {% for message in messages %}
+    <script type="text/javascript">alert("{{message}}")</script>
+  {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
+<style>
+    .password-container i:hover {
+      color: #666;
+    }
+    
+    .password-message {
+      font-size: 14px;
+      margin-top: 5px;
+      color:red;
+    }
+    .valid-password {
+      color: white;
+    }
+    
+    #usernameMessage {
+      font-size: 15px;
+      margin-top: 2px;
+    }
+    
+    .valid {
+      color: rgb(128, 0, 94);
+    }
+    
+    .invalid {
+      color: red;
+    }
+    .submenu {
+    display: none;
+    padding-left: 80px;
+   
+}
+
+.show {
+    display: block;
+}
+    </style>
+<body>
+    <nav>
+        <div class="container" style="right:14%">
+            <img src="/static/images/logo3.png" class="logo">
+            <div class="search-bar">
+                <span class="material-icons-sharp">search</span>
+                <input type="search" placeholder="search">
+            </div>
+            <div class="profile-area" style="padding-left: 117%;">
+                <div class="theme-btn">
+                    <span class="material-icons-sharp active">light_mode</span>
+                    <span class="material-icons-sharp">dark_mode</span>
+
+                </div>
+                <div class="profile">
+                    <div class="profile-photo">
+                        <img src="/static/images/profile-2.jpg" style="width: 100%;">
+                    </div>
+                
+                <h5>Steve Rodrigues</h5>
+                <span class="material-icons-sharp">expand_more</span>
+            </div>
+            <button id="menu-btn">
+                <span class="material-icons-sharp">menu</span>
+            </button>
+                </div>
+        </div>
+    </nav>
+  
+    <!-- end of navbar     -->
+            <main>
+                <aside >
+                   <button id="close-btn">
+                        <span class="material-icons-sharp">close</span>
+                   </button>
+                   <div class="sidebar" class="active">
+                    <a href="adminhome" style="text-decoration: none;">
+                      <span class="material-icons-sharp">dashboard</span>
+                      <h4>Dashboard</h4>
+                  </a>
+                  <a href="#" class="menu-link" style="text-decoration: none;">
+                    <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
+                    <h4>employee</h4>
+                  
+                </a>
+                <div class="submenu">
+                    <a href="adminaddemployee" style="text-decoration: none;">add employee</a>
+                    
+                    <a href="adminmanagemployee" style="text-decoration: none;">Manage employee</a>
+                    
+                </div>
+                
+                <a href="#" class="menu-link" style="text-decoration: none;">
+                    <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
+                    <h4>Branch</h4>
+                    
+                </a>
+                <div class="submenu">
+                    <a href="adminaddbranch" style="text-decoration: none;">add branch</a>
+                    <a href="#" style="text-decoration: none;">view branch</a>
+                
+                </div>
+                
+                <!-- Add more menu-link and submenu sections as needed -->
+                <a href="#" class="menu-link" style="text-decoration: none;">
+                  <span class="material-icons-sharp submenu-icon">group</span>
+                  <h4>customers</h4>
+                  
+              </a>
+              
+                 
+                  
+                  <a href="/adminviewtranasction" style="text-decoration: none;">
+                    
+                    <span class="material-icons-sharp">stacked_bar_chart</span>
+                    <h4>transactions</h4>
+                </a>
+          
+              <a href="/adminviewtranasction" style="text-decoration: none;">
+                    
+                <span class="material-icons-sharp">mark_email_unread</span>
+                <h4>feedback</h4>
+            </a>
+            <a href="/adminviewtranasction" style="text-decoration: none;">
+                    
+              <span class="material-icons-sharp">speaker_notes</span>
+              <h4>complaint</h4>
+          </a>
+                  <a href="#" style="text-decoration: none;">
+                      <span class="material-icons-sharp">settings</span>
+                      <h4>Settings</h4>
+                  </a>
+                 </div>
+                   </div>
+                   <!---------end of side bar--- -->
+                   <div class="updates">
+                    <span class="material-icons-sharp">keyboard_return</span>
+                        <h4>Go back</h4>
+                        <p>Click here to</p>
+                        <p>go back to previous page</p>
+
+                        <a href="adminmanagehome" style="text-decoration: none;">Previous page</a>
+                </div>
+                </aside>
+                 <!-- end of aside----- -->
+
+                    <section class="middle">
+                        <div class="header">
+                            <h1>Dashboard</h1>
+                            <input type="date">
+                        </div>
+                        <form method="post" enctype="multipart/form-data">
+                            <section class="h-100 h-custom gradient-custom-2" style="width: 125%;">
+                                <div class="container py-5 h-100">
+                                  <div class="row d-flex justify-content-center align-items-center h-100">
+                                    <div class="col-12">
+                                      <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                                        <div class="card-body p-0">
+                                          <div class="row g-0">
+                                            <div class="col-lg-6">
+                                              <div class="p-5">
+                                                <h3 class="fw-normal mb-5" style="color: #4835d4;">General Infomation</h3>
+                              
+                                                
+                              
+                                                <div class="row">
+                                                  <div class="col-md-6 mb-4 pb-2">
+                              
+                                                    <div class="form-outline">
+                                                      <input type="text" id="form3Examplev2" name="fname" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplev2">First name</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                  <div class="col-md-6 mb-4 pb-2">
+                              
+                                                    <div class="form-outline">
+                                                      <input type="text" id="form3Examplev3" name="lname" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplev3">Last name</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                </div>
+                              
+                                            
+                              
+                                                <div class="mb-4 pb-2">
+                                                  <div class="form-outline">
+                                                    <input type="number" id="form3Examplev4" name="age" class="form-control form-control-lg" />
+                                                    <label class="form-label" for="form3Examplev4">Age</label>
+                                                  </div>
+                                                </div>
+                                               
+                                                  <div class="mb-4 pb-2">
+                                                    
+                                                    <div class="form-outline">
+                                                      <input type="file" name="image" class="form-control form-control-lg" id="inputGroupFile01" onchange="previewImage(event)">
+                                                      <label for="inputGroupFile01" class="form-label">Choose photo</label>
+                                                    </div>
+                                                  </div>
+                                                  <div class="mb-4">
+                                                    <img id="image-preview" class="img-fluid" alt="Uploaded Image will shown below">
+                                                  </div>
+                                                  
+                                                      <div class="mb-4 pb-3">
+                                                        <select name="status" class="form-control form-control-lg p-2">
+                                                          <option disabled selected value>Select martial status</option>
+                                                          <option value="single">single</option>
+                                                          <option value="married">married</option>
+                                                        </select>
+                                                        <label class="form-label" for="form3Examplev4">Status</label>
+                                                      </div>
+                        
+                                                      <div class="mb-4 pb-3">
+                                                        <select name="gender" class="form-control form-control-lg p-2">
+                                                          <option disabled selected value>Select gender</option>
+                                                          <option value="male">male</option>
+                                                          <option value="female">female</option>
+                                                        </select>
+                                                        <label class="form-label" for="form3Examplev4">Gender</label>
+                                                      </div>
+                                                    <div class="mb-4 pb-3">
+                                                      <select name="branch" id="branch" class="form-control form-control-lg p-2" required>
+                                                        <option value="">Select Branch</option>
+                                                        {% for branch in branch_names %}
+                                                        <option value="{{ branch }}">{{ branch }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                        <label class="form-label" for="form3Examplev4">Branch</label>
+                                                      </div>
+                                                      <div class="mb-4 pb-3">
+                                                        <select name="employee_type" class="form-control form-control-lg p-2" required>
+                                                          <option disabled selected value>Select employee</option>
+                                                          <option value="manager">Manager</option>
+                                                          <option value="clerk">Clerk</option>
+                                                        </select>
+                                                        <label class="form-label" for="form3Examplev4">Employee</label>
+                                                      </div>
+                                                      
+                                              </div>
+                                            </div>
+                                            <div class="col-lg-6 bg-indigo text-white">
+                                              <div class="p-5">
+                                                <h3 class="fw-normal mb-5">Contact Details</h3>
+                              
+                                                <div class="mb-4 pb-2">
+                                                  <div class="form-outline form-white">
+                                                    <input type="text" name="address" id="form3Examplea2" class="form-control form-control-lg" />
+                                                    <label class="form-label" for="form3Examplea2">Address</label>
+                                                  </div>
+                                                </div>
+                            
+                              
+                                                <div class="row">
+                                                  <div class="col-md-5 mb-4 pb-2">
+                              
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="form3Examplea4" name="zipcode" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplea4">Zip Code</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                  <div class="col-md-7 mb-4 pb-2">
+                              
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="form3Examplea5" name="place" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplea5">Place</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                </div>
+                                                <div class="mb-4 pb-3">
+                                                    <select name="district" class="form-control form-control-lg p-2">
+                                                        <option disabled selected value="">Select a district</option>
+                                                            <option value="Alappuzha">Alappuzha</option>
+                                                            <option value="Ernakulam">Ernakulam</option>
+                                                            <option value="Idukki">Idukki</option>
+                                                            <option value="Kannur">Kannur</option>
+                                                            <option value="Kasaragod">Kasaragod</option>
+                                                            <option value="Kollam">Kollam</option>
+                                                            <option value="Kottayam">Kottayam</option>
+                                                            <option value="Kozhikode">Kozhikode</option>
+                                                            <option value="Malappuram">Malappuram</option>
+                                                            <option value="Palakkad">Palakkad</option>
+                                                            <option value="Pathanamthitta">Pathanamthitta</option>
+                                                            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                                                            <option value="Thrissur">Thrissur</option>
+                                                            <option value="Wayanad">Wayanad</option>
+                                                    </select>
+                                                    <label class="form-label" for="form3Examplev4">District</label>
+                                                  </div>
+                              
+                                                <div class="row">
+                                                  <div class="col-md-5 mb-4 pb-2">
+                              
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="form3Examplea7" class="form-control form-control-lg" value="91" readonly/>
+                                                      <label class="form-label" for="form3Examplea7">Code +</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                  <div class="col-md-7 mb-4 pb-2">
+                              
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="form3Examplea8" name="phone" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplea8">Phone Number</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                </div>
+                              
+                                                <div class="mb-4">
+                                                  <div class="form-outline form-white">
+                                                    <input type="email" id="form3Examplea9" name="email" class="form-control form-control-lg" />
+                                                    <label class="form-label" for="form3Examplea9">Your Email</label>
+                                                  </div>
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="usernameInput" name="username" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplea2">username</label>
+                                                      <div id="usernameMessage"></div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="mb-4 pb-2">
+                                                 
+                                              
+                        
+                                                      <div class="input-group">  
+                                                        <input type="password" id="passwordInput" name="password" class="form-control form-control-lg" />
+                                                        <div class="input-group-append">
+                                                          <span class="input-group-text">
+                                                            <i id="togglePassword" class="fa fa-eye"></i>
+                                                          </span>
+                                                        </div>
+                                                      </div>
+                                                      
+                                                      <div id="passwordMessage" class="password-message"></div>
+                                                    
+                                                  </div>
+                                                
+                              
+                                                
+                                                  <input type="submit"  name="add" value="Register" class="btn btn-primary btn-lg">
+                              
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </section>
+                              </form>
+                 </section>
+                 
+                
+            </main>  
+    <!-- ====================end of aside==========================   -->
+    
+    <script>
+       // Get all the submenu icons
+var submenuIcons = document.querySelectorAll('.submenu-icon');
+// Loop through each submenu icon
+submenuIcons.forEach(function(icon) {
+   // Add a click event listener to each submenu icon
+   icon.addEventListener('click', function() {
+       // Get the corresponding submenu for this icon
+       var submenu = icon.parentElement.nextElementSibling; 
+       // Toggle the visibility of the submenu
+       submenu.classList.toggle('show');
+   });
+});
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+          var output = document.getElementById('image-preview');
+          output.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+       }
+      
+      
+      // validate password===============
+      const togglePassword = document.querySelector('#togglePassword');
+      const passwordInput1 = document.querySelector('#passwordInput1');
+      
+      togglePassword.addEventListener('click', function (e) {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+        this.classList.toggle('fa-eye');
+      });
+      
+      
+      
+      
+      //end
+      
+      const passwordInput = document.getElementById('passwordInput');
+      const passwordMessage = document.getElementById('passwordMessage');
+      
+      const passwordCriteria = {
+        minLength: 8,
+        hasNumber: /\d/,
+        hasUppercase: /[A-Z]/,
+        hasLowercase: /[a-z]/,
+        hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
+      };
+      
+      passwordInput.addEventListener('input', () => {
+        const password = passwordInput.value;
+        let valid = true;
+        let message = '';
+      
+        if (password.length < passwordCriteria.minLength) {
+          message += `Password must be at least ${passwordCriteria.minLength} characters long. `;
+          valid = false;
+        } else {
+          valid = true; // Update valid to true if the length criteria is met
+        }
+      
+        if (!passwordCriteria.hasNumber.test(password)) {
+          message += 'Password must contain at least one number. ';
+          valid = false;
+        }
+      
+        if (!passwordCriteria.hasUppercase.test(password)) {
+          message += 'Password must contain at least one uppercase letter. ';
+          valid = false;
+        }
+      
+        if (!passwordCriteria.hasLowercase.test(password)) {
+          message += 'Password must contain at least one lowercase letter. ';
+          valid = false;
+        }
+      
+        if (!passwordCriteria.hasSpecialChar.test(password)) {
+          message += 'Password must contain at least one special character. ';
+          valid = false;
+        }
+      
+        if (valid) {
+          message = 'Password is valid';
+          passwordMessage.classList.add('valid-password');
+        } else {
+          passwordMessage.classList.remove('valid-password');
+        }
+      
+        passwordMessage.textContent = message;
+      });
+      
+      
+      const usernameInput = document.getElementById('usernameInput');
+      const usernameMessage = document.getElementById('usernameMessage');
+      
+      usernameInput.addEventListener('input', validateUsername);
+      
+      function validateUsername() {
+        const username = usernameInput.value.trim();
+      
+        if (username.length >= 5 && /^[a-zA-Z0-9_]+$/.test(username)) {
+          showValidationMessage('Valid username', 'valid');
+        
+        } else if (/[^a-zA-Z0-9_]/.test(username)) {
+          showValidationMessage('Username must not contain special characters', 'invalid');}
+        else {
+          showValidationMessage('Username must contain at least 5 characters', 'invalid');
+        }
+      }
+      
+      function showValidationMessage(message, className) {
+        usernameMessage.textContent = message;
+        usernameMessage.className = className;
+      }
+      
+      let arrow = document.querySelectorAll(".arrow");
+      for (var i = 0; i < arrow.length; i++) {
+        arrow[i].addEventListener("click", (e)=>{
+       let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
+       arrowParent.classList.toggle("showMenu");
+        });
+      }
+      
+      let sidebar = document.querySelector(".sidebar");
+      let sidebarBtn = document.querySelector(".bx-menu");
+      console.log(sidebarBtn);
+      sidebarBtn.addEventListener("click", ()=>{
+        sidebar.classList.toggle("close");
+      });
+
+      
+      </script>
+</body>
+</html>

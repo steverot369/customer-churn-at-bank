@@ -1,0 +1,601 @@
+{% include 'clerksidebar.html' %}
+
+<section class="middle">
+  <div class="header">
+    <input type="date">
+</div>
+                              <section style="width: 120%; height: 100%;;">
+                                
+                                    
+                                      
+                                <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+                                  <div class="container h-100">
+                                    <div class="row d-flex justify-content-center align-items-center h-100">
+                                      <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                                        <div class="card" style="border-radius: 15px; width:600px; background:rgb(213, 230, 236);">
+                                          <div class="card-body p-5">
+                                            <b><h2 class="text-uppercase text-center mb-5">Tranasaction Forum</h2></b>
+                              
+                                            <form method="post">
+                                            
+                                              <div class="mb-4 pb-3">
+                                                <div class="dropdown dropdown-custom">
+                                                  <input type="text" name="accno" id="new-dropdown-input" class="form-control form-control-lg" placeholder="Search by accno or customer name....">
+                                                  <span class="dropdown-custom-icon">&#9662;</span>
+                                                  <ul class="dropdown-custom-list" style="display: block;">
+                                                    {% for row in accno %}
+                                                    <li>{{ row[0] }} {{ row[1] }} {{ row[2] }}</li>
+                                                    {% endfor %}
+                                                  </ul>
+                                                </div>
+                                                
+        
+                                              </div>
+                                              
+                                              {% if accountDetails %}
+                                                {% for account in accountDetails %}
+                                                <div class="mb-4 pb-2">
+                                                    <div class="form-outline">
+                                                      <input type="text" id="form3Examplev4" name="msalary" value="{{ account[3]}} {{ account[4]}}" class="form-control form-control-lg" readonly/>
+                                                      <label class="form-label" for="form3Examplev4">Account holder name</label>
+                                                    </div>
+                                                  </div>
+                                                <div class="mb-4 pb-2">
+                                                    <div class="form-outline">
+                                                      <input type="text" id="form3Examplev4" name="accno1" value="{{ account[0]}}" class="form-control form-control-lg" readonly/>
+                                                      <label class="form-label" for="form3Examplev4">Account number</label>
+                                                    </div>
+                                                  </div>
+                                                    <div class="mb-4 pb-2">
+                                                        <div class="form-outline">
+                                                          <input type="text" id="form3Examplev4" name="msalary" value="{{ account[1]}}" class="form-control form-control-lg" readonly/>
+                                                          <label class="form-label" for="form3Examplev4">IfscCode</label>
+                                                        </div>
+                                                      </div>
+                                                      <div class="mb-4 pb-2">
+                                                        <div class="form-outline">
+                                                          <input type="number" id="current" name="balance" value="{{ account[2]}}" class="form-control form-control-lg" readonly />
+                                                          <label class="form-label" for="form3Examplev4">current balance</label>
+                                                        </div>
+                                                      </div>
+                                                      
+                                                      <div class="mb-4">
+                                                        <h1>Select Transaction Method:</h1>
+                                                        <div class="form-check">
+                                                          <input class="form-check-input" type="radio" name="paymentMethod" id="cashRadio" value="cash" checked>
+                                                          <label class="form-check-label" for="cashRadio">Cash</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                          <input class="form-check-input" type="radio" name="paymentMethod" id="chequeRadio" value="cheque">
+                                                          <label class="form-check-label" for="chequeRadio">Cheque</label>
+                                                        </div>
+                                                      </div>
+                                                    
+                                                     
+
+                                                      <div class="mb-4 pb-2" id="depositcon" style="display: none;">
+                                                        <div class="input-group">
+                                                          <input type="text" id="depositAmount" name="amt" class="form-control form-control-lg"  readonly/>
+                                                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                                            <i class="fas fa-cog"></i>
+                                                          </button>
+                                                        </div>
+                                                        <label class="form-label" for="depositAmount">Deposit Amount</label><br>
+                                                        <div id="container-4" style="display: none;">
+                                                          <div class="mb-4 pb-2">
+                                                            <div class="form-outline">
+                                                              <input type="text" id="5" name="5" class="form-control form-control-lg" readonly/>
+                                                              <label id="5-label" class="form-label" for="5">Rs 5</label>
+                                                            </div>
+                                                          </div>
+                                                          <div class="mb-4">
+                                                            <div class="form-outline">
+                                                              <input type="text" id="10" name="10" class="form-control form-control-lg" readonly/>
+                                                              <label id="10-label" class="form-label" for="10">Rs 10</label>
+                                                            </div>
+                                                          </div>
+                                                          <div class="mb-4">
+                                                            <div class="form-outline">
+                                                              <input type="text" id="20" name="20" class="form-control form-control-lg" readonly/>
+                                                              <label id="20-label" class="form-label" for="20">Rs 20</label>
+                                                            </div>
+                                                          </div>
+                                                          <div class="mb-4">
+                                                            <div class="form-outline">
+                                                              <input type="text" id="50" name="50" class="form-control form-control-lg" readonly/>
+                                                              <label id="50-label" class="form-label" for="50">Rs 50</label>
+                                                            </div>
+                                                          </div>
+                                                          <div class="mb-4">
+                                                            <div class="form-outline">
+                                                              <input type="text" id="100" name="100" class="form-control form-control-lg" readonly/>
+                                                              <label id="100-label" class="form-label" for="100">Rs 100</label>
+                                                            </div>
+                                                          </div>
+                                                          <div class="mb-4">
+                                                            <div class="form-outline">
+                                                              <input type="text" id="200" name="200" class="form-control form-control-lg" readonly />
+                                                              <label id="200-label" class="form-label" for="200">Rs 200</label>
+                                                            </div>
+                                                          </div>
+                                                          <div class="mb-4">
+                                                            <div class="form-outline">
+                                                              <input type="text" id="500" name="500" class="form-control form-control-lg" readonly/>
+                                                              <label id="500-label" class="form-label" for="500">Rs 500</label>
+                                                            </div>
+                                                          </div>
+                                                          <div class="mb-4">
+                                                            <div class="form-outline">
+                                                              <input type="text" id="1000" name="1000" class="form-control form-control-lg" readonly/>
+                                                              <label id="1000-label" class="form-label" for="1000">Rs 1000</label>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                        <div class="d-flex justify-content-center">
+                                                        <input type="submit" name="add1" value="Deposit" class="btn btn-primary btn-lg gradient-custom-4 text-body">
+                                                        </div>
+                                                      </div>
+
+                                                    
+                                                      <div class="mb-4 pb-2" id="chequeForm" style="display: none;">
+                                                      
+                                                          <div class="form-outline">
+                                                            <input type="text" id="chequeNumber" name="chequeNumber" value="{{ account[5]}}" class="form-control form-control-lg" readonly/>
+                                                            <label for="chequeNumber">Cheque Number:</label>
+                                                          </div>
+                                                          <div class="form-outline">
+                                                            <input type="number" id="words" name="amounts" class="form-control form-control-lg" />
+                                                            <label for="words">Withdraw Amount</label>
+                                                          </div>
+                                                        
+                                                          <div class="form-outline mt-3">
+                                                            <input type="text" id="wordsInText" name="amountsInText" class="form-control form-control-lg" readonly />
+                                                            <label for="wordsInText">Withdraw Amount in Words</label>
+                                                          </div>
+                                                          <!-- <span id="words"></span>
+                                                          <input id="number" type="text" /> -->
+                                                          
+                                                          <div class="d-flex justify-content-center">
+                                               
+                                                            <input type="submit"  name="add2" value="withdrawal" class="btn btn-danger btn-lg gradient-custom-4 text-body">
+                                                          </div>
+                                                      </div>
+                                                      
+                                                     
+                                                      
+                                                    
+
+                                                   
+                                                        <!-- <div class="form-outline mb-4">
+                               
+
+!-- The modal -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Select Money Count</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <span class="money-label"><i class="fa fa-rupee"></i> 5</span>
+            <div class="money-count-container">
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(5)">
+                <i class="fas fa-minus"></i>
+              </button>
+              <span id="count5" class="money-count">0</span>
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(5)">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <span class="money-label"><i class="fa fa-rupee"></i> 10</span>
+            <div class="money-count-container">
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(10)">
+                <i class="fas fa-minus"></i>
+              </button>
+              <span id="count10" class="money-count">0</span>
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(10)">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <span class="money-label"><i class="fa fa-rupee"></i> 20</span>
+            <div class="money-count-container">
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(20)">
+                <i class="fas fa-minus"></i>
+              </button>
+              <span id="count20" class="money-count">0</span>
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(20)">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-4">
+            <span class="money-label"><i class="fa fa-rupee"></i> 50</span>
+            <div class="money-count-container">
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(50)">
+                <i class="fas fa-minus"></i>
+              </button>
+              <span id="count50" class="money-count">0</span>
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(50)">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <span class="money-label"><i class="fa fa-rupee"></i> 100</span>
+            <div class="money-count-container">
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(100)">
+                <i class="fas fa-minus"></i>
+              </button>
+              <span id="count100" class="money-count">0</span>
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(100)">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <span class="money-label"><i class="fa fa-rupee"></i> 200</span>
+            <div class="money-count-container">
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(200)">
+                <i class="fas fa-minus"></i>
+              </button>
+              <span id="count200" class="money-count">0</span>
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(200)">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <span class="money-label"><i class="fa fa-rupee"></i> 500</span>
+            <div class="money-count-container">
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(500)">
+                <i class="fas fa-minus"></i>
+              </button>
+              <span id="count500" class="money-count">0</span>
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(500)">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-4">
+            <span class="money-label"><i class="fa fa-rupee"></i> 1000</span>
+            <div class="money-count-container">
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(1000)">
+                <i class="fas fa-minus"></i>
+              </button>
+              <span id="count1000" class="money-count">0</span>
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(1000)">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="col-md-8">
+            <div class="total-amount-container">
+              <h5>Total Amount:</h5>
+              <span class="amount-label"></span>
+              <span id="totalAmount" class="amount-value">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="saveCounts()">Save</button>
+        <button type="button" class="btn btn-danger" onclick="clearCounts()">Clear</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+                                                     
+                                                      
+       {% endfor %}
+                                               
+                                                
+
+    {% endif %}
+                                             
+    <div class="d-flex justify-content-center">
+      <input type="submit" name="add" value="Search" id="btn" class="btn btn-success btn-lg gradient-custom-4 text-body">
+    </div>
+    
+                              
+                                             
+                              
+                                            </form>
+                              
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </section>
+                              </form>
+                 </section>
+                 
+                
+            </main>  
+    <!-- ====================end of aside==========================   -->
+   
+     <!-- <script>
+      
+  function validateWithdrawal() {
+    var withdrawAmount = parseInt(document.getElementById("words").value);
+    var currentBalance = parseInt(document.getElementById("current").value);
+
+    if (withdrawAmount > (currentBalance - 1000)) {
+  alert("The withdrawal amount is greater than the current balance minus 1000.");
+  document.getElementById("words").value = ""; // Clear the withdrawal amount input field
+}
+  }
+
+  document.getElementById("words").addEventListener("input", validateWithdrawal);
+
+    </script> -->
+    <script>
+      var a = [
+        '', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ',
+        'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '
+      ];
+      var b = ['', '', 'twenty ', 'thirty ', 'forty ', 'fifty ', 'sixty ', 'seventy ', 'eighty ', 'ninety '];
+  
+      function inWords(num) {
+        if ((num = num.toString()).length > 9) return 'overflow';
+        n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+        if (!n) return '';
+        var str = '';
+        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+        str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+        str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+        str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+        str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
+        return str;
+      }
+  
+      document.getElementById('words').onkeyup = function () {
+        document.getElementById('wordsInText').value = inWords(document.getElementById('words').value);
+      };
+    </script>
+
+
+<script>
+ const cashRadio = document.getElementById('cashRadio');
+    const chequeRadio = document.getElementById('chequeRadio');
+    const depositForm = document.getElementById('depositcon');
+    const chequeForm = document.getElementById('chequeForm');
+
+    cashRadio.addEventListener('change', function() {
+      depositForm.style.display = 'block';
+      chequeForm.style.display = 'none';
+    });
+
+    chequeRadio.addEventListener('change', function() {
+      depositForm.style.display = 'none';
+      chequeForm.style.display = 'block';
+    });
+
+</script>
+    <script>
+       
+      function decreaseCount(money) {
+        const countElement = document.getElementById('count' + money);
+        let count = parseInt(countElement.innerText);
+        if (count > 0) {
+          count--;
+          countElement.innerText = count;
+          updateAmount(money, count);
+          updateTotalAmount();
+        }
+      }
+    
+      function increaseCount(money) {
+        const countElement = document.getElementById('count' + money);
+        let count = parseInt(countElement.innerText);
+        count++;
+        countElement.innerText = count;
+        updateAmount(money, count);
+        updateTotalAmount();
+      }
+    
+      function updateAmount(money, count) {
+        const amountElement = document.getElementById('depositAmount' + money);
+        const amount = money * count;
+        amountElement.innerText = 'Rs ' + amount;
+      }
+    
+      function updateTotalAmount() {
+        const count5 = parseInt(document.getElementById('count5').innerText);
+        const count10 = parseInt(document.getElementById('count10').innerText);
+        const count20 = parseInt(document.getElementById('count20').innerText);
+        const count50 = parseInt(document.getElementById('count50').innerText);
+        const count100 = parseInt(document.getElementById('count100').innerText);
+        const count200 = parseInt(document.getElementById('count200').innerText);
+        const count500 = parseInt(document.getElementById('count500').innerText);
+        const count1000 = parseInt(document.getElementById('count1000').innerText);
+    
+        const totalAmount =
+          count5 * 5 +
+          count10 * 10 +
+          count20 * 20 +
+          count50 * 50 +
+          count100 * 100 +
+          count200 * 200 +
+          count500 * 500 +
+          count1000 * 1000;
+        document.getElementById('totalAmount').innerText = 'Rs ' + totalAmount;
+      }
+    
+      function saveCounts() {
+        const count5 = parseInt(document.getElementById('count5').innerText);
+        const count10 = parseInt(document.getElementById('count10').innerText);
+        const count20 = parseInt(document.getElementById('count20').innerText);
+        const count50 = parseInt(document.getElementById('count50').innerText);
+        const count100 = parseInt(document.getElementById('count100').innerText);
+        const count200 = parseInt(document.getElementById('count200').innerText);
+        const count500 = parseInt(document.getElementById('count500').innerText);
+        const count1000 = parseInt(document.getElementById('count1000').innerText);
+    
+        const totalAmount =
+          count5 * 5 +
+          count10 * 10 +
+          count20 * 20 +
+          count50 * 50 +
+          count100 * 100 +
+          count200 * 200 +
+          count500 * 500 +
+          count1000 * 1000;
+        document.getElementById('totalAmount').innerText = 'Rs ' + totalAmount;
+    
+        document.getElementById('depositAmount').value = totalAmount;
+    
+        // Show container-4 and fill the counts
+        document.getElementById('container-4').style.display = 'block';
+    
+        // Show or hide form fields based on count
+        toggleFormField('5', count5);
+        toggleFormField('10', count10);
+        toggleFormField('20', count20);
+        toggleFormField('50', count50);
+        toggleFormField('100', count100);
+        toggleFormField('200', count200);
+        toggleFormField('500', count500);
+        toggleFormField('1000', count1000);
+    
+    
+        document.getElementById('5').value = count5;
+      document.getElementById('10').value = count10;
+      document.getElementById('20').value = count20;
+      document.getElementById('50').value = count50;
+      document.getElementById('100').value = count100;
+      document.getElementById('200').value = count200;
+      document.getElementById('500').value = count500;
+      document.getElementById('1000').value = count1000;
+      }
+    
+      function toggleFormField(id, count) {
+        const formField = document.getElementById(id);
+        const label = document.getElementById(id + '-label');
+        if (count > 0) {
+          formField.style.display = 'block';
+          label.style.display = 'block';
+        } else {
+          formField.style.display = 'none';
+          label.style.display = 'none';
+        }
+      }
+    
+      function clearCounts() {
+        const countElements = document.getElementsByClassName('money-count');
+        Array.from(countElements).forEach((element) => {
+          element.innerText = '0';
+        });
+    
+        const amountElements = document.getElementsByClassName('money-amount');
+        Array.from(amountElements).forEach((element) => {
+          element.innerText = 'Rs 0';
+        });
+    
+        // Hide container-4 and form fields
+        document.getElementById('container-4').style.display = 'none';
+        document.getElementById('5').style.display = 'none';
+        document.getElementById('10').style.display = 'none';
+        document.getElementById('20').style.display = 'none';
+        document.getElementById('50').style.display = 'none';
+        document.getElementById('100').style.display = 'none';
+        document.getElementById('200').style.display = 'none';
+        document.getElementById('500').style.display = 'none';
+        document.getElementById('1000').style.display = 'none';
+    
+        updateTotalAmount();
+      }
+      </script>
+    
+
+
+
+<script>
+  const newInput = document.querySelector('#new-dropdown-input');
+  const newDropdownList = document.querySelector('.dropdown-custom-list');
+  const newOptions = Array.from(newDropdownList.getElementsByTagName('li'));
+  const newDropdownIcon = document.querySelector('.dropdown-custom-icon');
+  
+  newInput.addEventListener('input', function() {
+    const searchText = newInput.value.toLowerCase();
+  
+    newOptions.forEach(option => {
+      const text = option.textContent.toLowerCase();
+      if (text.includes(searchText)) {
+        option.style.display = 'block';
+      } else {
+        option.style.display = 'none';
+      }
+    });
+  
+    newDropdownList.style.display = 'block';
+  });
+  
+  newDropdownIcon.addEventListener('click', function() {
+    newDropdownList.style.display = newDropdownList.style.display === 'block' ? 'none' : 'block';
+  });
+  
+  newDropdownList.addEventListener('click', function(event) {
+    const selectedOption = event.target;
+    if (selectedOption.tagName === 'LI') {
+      const optionValues = selectedOption.textContent.trim().split(' ');
+      newInput.value = optionValues[optionValues.length - 1];
+      newDropdownList.style.display = 'none';
+    }
+  });
+  
+  newInput.addEventListener('click', function() {
+    newDropdownList.style.display = 'none';
+  });
+  
+  newDropdownList.style.display = 'none';
+</script>
+<script>
+  
+  window.addEventListener('DOMContentLoaded', function() {
+  refreshAccountNumber();
+});
+
+function refreshAccountNumber() {
+  // Generate a random 8-digit account number
+  var accountNumber = Math.floor(10000000000 + Math.random() * 90000000000);
+
+  // Set the generated account number to the input field
+  document.getElementById('accountNumber').value = accountNumber;
+}
+
+
+     
+      </script>
+</body>
+</html>

@@ -1,0 +1,518 @@
+{% include 'clerksidebar.html' %}
+<section style="width: 120%; height: 100%; background-color: #f2f2f2;">
+  <div class="header">
+      <!-- Header contents -->
+  </div>
+  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+      <div class="container h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+              <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                  <div class="card" style="border-radius: 15px; width:650px; background:rgb(213, 230, 236);">
+                      <div class="card-body p-5">
+                          <b><h2 class="text-uppercase text-center mb-5">Loan Account Forum</h2></b>
+                              
+                                <form method="post">
+                              
+                                              <div class="mb-4 pb-3">
+                                                <div class="dropdown dropdown-l">
+                                                  <input type="text" name="name" id="dropdown-input" class="form-control form-control-lg" placeholder="Search...">
+                                                  <span class="dropdown-icon">&#9662;</span> <!-- Add a dropdown icon here -->
+                                              
+                                                  <ul class="dropdown-list" style="display: block;">
+                                                    {% for row in fname %}
+                                                    <li>{{ row[0] }} {{ row[1] }}</li>
+                                                    {% endfor %}
+                                                  </ul>
+                                                </div>
+                                              </div>
+
+
+                                              <div class="mb-4 pb-2">
+                                                <div class="input-group">
+                                                  <input type="number" id="accountNumber" name="accno" class="form-control form-control-lg" readonly>
+                                                  <button type="button" onclick="refreshAccountNumber()" class="btn btn-secondary input-group-text" style="cursor: pointer;">
+                                                    <span class="material-symbols-outlined">refresh </span>
+                                                  </button>
+                                                </div>
+                                                <label class="form-label" for="accountNumber">Account number</label>
+                                              </div>
+                              
+                                              <div class="form-outline mb-4 pb-2">
+                                                
+                                                <input type="text" name="ifsccode" value="{{ branch_id }}" id="form3Example3cg" class="form-control form-control-lg" readonly/>
+                                                <label class="form-label" for="form3Example3cg">IfscCode</label>
+                                                
+                                              </div>
+                                              <div class="mb-4 pb-3">
+                                                <div class="dropdown dropdown-custom">
+                                                  <input type="text" name="addaccno" id="new-dropdown-input" class="form-control form-control-lg" placeholder="Search by accno or customer name....">
+                                                  <span class="dropdown-custom-icon">&#9662;</span>
+                                                  <ul class="dropdown-custom-list" style="display: block;">
+                                                    {% for row in accno %}
+                                                    <li>{{ row[0] }} {{ row[1] }} {{ row[2] }}</li>
+                                                    {% endfor %}
+                                                  </ul>
+                                                </div>
+                                                <label for="interestRate">Add accountNumber</label>
+        
+                                              </div> 
+                                            <!-- <button type="button" id="show-btn" class="btn btn-primary">show </button> -->
+                                            <h1 class="loan-heading">Loan Calculate</h1>
+                                    <div id="show-btn" class="icon-container">
+                                      <i class="fas fa-plus"></i>
+                                    </div>
+                                    <div id="show-container" style="display: none;">
+                                              <div class="form-group">
+                                                <label for="loanType">Loan Type:</label>
+                                                <select id="loanType" class="form-control form-control-lg" name="loanType">
+                                                    <option value="personal">Personal Loan</option>
+                                                    <option value="home">Home Loan</option>
+                                                    <option value="car">Car Loan</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="loanAmount">Loan Amount:</label>
+                                                <input type="number" id="loanAmount" name="loanAmount" class="form-control form-control-lg" required>
+                                            </div>
+                                            <div class="form-group">
+                                              <label for="wordsInText">Withdraw Amount in Words</label>
+                                              <input type="text" id="wordsInText" name="amountsInText" class="form-control form-control-lg" readonly />
+                                              
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="tenure">Tenure (in months):</label>
+                                                <select id="tenure" class="form-control form-control-lg"name="tenure" required>
+                                                    <option value="12">12 months</option>
+                                                    <option value="24">24 months</option>
+                                                    <option value="36">36 months</option>
+                                                    <option value="48">48 months</option>
+                                                    <option value="60">60 months</option>
+                                                    <option value="120">120 months</option>
+                                                    <option value="180">180 months</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="interestRate">Interest Rate (%):</label>
+                                                <input type="number" id="interestRate" name="interestRate" class="form-control form-control-lg">
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="totalAmount">Total Amount:</label>
+                                                <input type="text" id="totalAmount" class="form-control form-control-lg">
+                                            </div>
+                                            <div class="form-group">
+                                              <label for="emiPayment">Emi payment/month:</label>
+                                              <input type="number" id="emiPayment" name="emiPayment" class="form-control form-control-lg">
+                                          </div>
+                                            <div class="form-group">
+                                                <label for="maturityDate">Maturity Date:</label>
+                                                <input type="text" id="maturityDate" name="maturityDate" class="form-control form-control-lg">
+                                            </div>
+                                            <div class="form-group">
+                                              <label for="interestPayableDate">First interest Payable Date:</label>
+                                              <input type="text" id="interestPayableDate" name="interestPayableDate" class="form-control form-control-lg">
+                                            </div>
+                                            <button type="button" id="calculateBtn" class="btn btn-primary">Calculate</button>
+                                    </div>
+                                            <!-- Loan Details Modal -->
+                                            <!-- <div class="modal fade" id="loanModal" tabindex="-1" role="dialog" aria-labelledby="loanModalLabel" aria-hidden="true">
+                                              <div class="modal-dialog" role="document">
+                                                  <div class="modal-content">
+                                                      <div class="modal-header">
+                                                          <h5 class="modal-title" id="loanModalLabel">Loan Details</h5>
+                                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                              <span aria-hidden="true">&times;</span>
+                                                          </button>
+                                                      </div>
+                                                      <div class="modal-body">
+                                                          <div class="form-group">
+                                                              <label for="loanTypeModal">Loan Type:</label>
+                                                              <p id="loanTypeModal" class="form-control-static"></p>
+                                                          </div>
+                                                          <div class="form-group">
+                                                              <label for="loanAmountModal">Loan Amount:</label>
+                                                              <p id="loanAmountModal" class="form-control-static"></p>
+                                                          </div>
+                                                          <div class="form-group">
+                                                              <label for="tenureModal">Tenure (in months):</label>
+                                                              <p id="tenureModal" class="form-control-static" style="color: red;"></p>
+                                                          </div>
+                                                          <div class="form-group">
+                                                              <label for="interestRateModal">Interest Rate (%):</label>
+                                                              <p id="interestRateModal" class="form-control-static"></p>
+                                                          </div>
+                                                          <div class="form-group">
+                                                              <label for="totalAmountModal">Total Amount:</label>
+                                                              <p id="totalAmountModal" class="form-control-static"></p>
+                                                          </div>
+                                                          <div class="form-group">
+                                                              <label for="maturityDateModal">Maturity Date:</label>
+                                                              <p id="maturityDateModal" class="form-control-static"></p>
+                                                          </div>
+                                                          <div class="form-group">
+                                                              <label for="emiPaymentModal">EMI Payment:</label>
+                                                              <p id="emiPaymentModal" class="form-control-static"></p>
+                                                          </div>
+                                                          <div class="form-group">
+                                                              <label for="totalInterestModal">Total Interest Amount:</label>
+                                                              <p id="totalInterestModal" class="form-control-static"></p>
+                                                          </div>
+                                                          <div class="chart-container">
+                                                            <canvas id="pieChart"></canvas>
+                                                        </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div> -->
+                                          
+                                          <div class="d-flex justify-content-center">
+                                            <input type="submit" name="add" value="create account" id="btn" class="btn btn-success btn-lg gradient-custom-4 text-body">
+                                          </div>
+                              
+                                           
+                              
+                              </section>
+                            </form> 
+                 </section>
+                 
+                
+            </main>  
+    
+    
+            <!-- ====================end of aside==========================   -->
+            <script>
+              var a = [
+                '', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ',
+                'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '
+              ];
+              var b = ['', '', 'twenty ', 'thirty ', 'forty ', 'fifty ', 'sixty ', 'seventy ', 'eighty ', 'ninety '];
+          
+              function inWords(num) {
+                if ((num = num.toString()).length > 9) return 'overflow';
+                n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+                if (!n) return '';
+                var str = '';
+                str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+                str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+                str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+                str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+                str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
+                return str;
+              }
+          
+              document.getElementById('loanAmount').onkeyup = function () {
+                document.getElementById('wordsInText').value = inWords(document.getElementById('loanAmount').value);
+              };
+            </script>
+            <script>
+             var showContainer = document.getElementById('show-container');
+var showBtn = document.getElementById('show-btn');
+
+showBtn.addEventListener('click', function() {
+  if (showContainer.style.display === 'none') {
+    showContainer.style.display = 'block';
+    showBtn.innerHTML = '<i class="fas fa-minus"></i>';
+  } else {
+    showContainer.style.display = 'none';
+    showBtn.innerHTML = '<i class="fas fa-plus"></i>';
+  }
+});
+
+            </script>
+           <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.1"></script>
+
+           <script>
+            document.getElementById('calculateBtn').addEventListener('click', function() {
+              // Remove previous modal instance if present
+              $('#loanModal').remove();
+        
+              // Get the form inputs
+              var loanType = document.getElementById('loanType').value;
+              var loanAmount = parseFloat(document.getElementById('loanAmount').value);
+              var tenure = parseInt(document.getElementById('tenure').value);
+        
+              // Calculate the interest rate based on loan type
+              var interestRate = 0;
+              if (loanType === "personal") {
+                interestRate = 10;
+              } else if (loanType === "home") {
+                interestRate = 8;
+              } else if (loanType === "car") {
+                interestRate = 12;
+              }
+        
+              // Calculate the monthly interest rate
+              var monthlyInterestRate = interestRate / 12 / 100;
+        
+              // Calculate the EMI payment
+              var emiPayment = calculateEMI(loanAmount, monthlyInterestRate, tenure);
+        
+              // Calculate the total interest amount
+              var totalInterest = (emiPayment * tenure) - loanAmount;
+        
+              // Calculate the maturity date
+              var maturityDate = calculateMaturityDate(tenure);
+              var interestPayableDate = calculateInterestPayableDate(loanType);
+        
+              // Display the calculated values in the form
+              document.getElementById('interestRate').value = interestRate;
+              document.getElementById('totalAmount').value = (loanAmount + totalInterest).toFixed(0);
+              document.getElementById('maturityDate').value = maturityDate;
+              document.getElementById('emiPayment').value = emiPayment.toFixed(0);
+              document.getElementById('interestPayableDate').value = interestPayableDate
+        
+              // Create the modal dynamically
+              var modalHtml = `
+              <div class="modal fade" id="loanModal" tabindex="-1" role="dialog" aria-labelledby="loanModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="loanModalLabel">Loan Details</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body" id="body">
+                      <div class="form-group">
+                        <label for="loanTypeModal">Loan Type:</label>
+                        <p id="loanTypeModal" class="modal-value"></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="loanAmountModal">Loan Amount:</label>
+                        <p id="loanAmountModal" class="modal-value"></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="tenureModal">Tenure:</label>
+                        <p id="tenureModal" class="modal-value"></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="interestRateModal">Interest Rate(%):</label>
+                        <p id="interestRateModal" class="modal-value"></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="totalAmountModal">Total Amount:</label>
+                        <p id="totalAmountModal" class="modal-value"></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="maturityDateModal">Maturity Date:</label>
+                        <p id="maturityDateModal" class="modal-value"></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="emiPaymentModal">EMI Payment:</label>
+                        <p id="emiPaymentModal" class="modal-value"></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="totalInterestModal">Total Interest:</label>
+                        <p id="totalInterestModal" class="modal-value"></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="formattedDateModal">first EMI date:</label>
+                        <p id="formattedDateModal" class="modal-value"></p>
+                      </div>
+                    </div>
+                    <div class="chart-container">
+                      <canvas id="pieChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              `;
+        
+              // Append the modal to the document body
+              document.body.insertAdjacentHTML('beforeend', modalHtml);
+        
+              // Display the calculated values in the modal
+              document.getElementById('loanTypeModal').textContent = loanType;
+              document.getElementById('loanAmountModal').textContent = loanAmount;
+              document.getElementById('tenureModal').textContent = tenure;
+              document.getElementById('interestRateModal').textContent = interestRate + "%";
+              document.getElementById('totalAmountModal').textContent = (loanAmount + totalInterest).toFixed(2);
+              document.getElementById('maturityDateModal').textContent = maturityDate;
+              document.getElementById('emiPaymentModal').textContent = emiPayment.toFixed(2);
+              document.getElementById('totalInterestModal').textContent = totalInterest.toFixed(2);
+              document.getElementById('formattedDateModal').textContent = interestPayableDate;
+        
+              // Create the pie chart
+              let xValues = ["Loan Amount", "Total Interest Amount", "EMI Payment"];
+              let yValues = [loanAmount, totalInterest, emiPayment];
+              let barColors = ["#961251", "#000000", "#14213d"];
+        
+              new Chart("pieChart", {
+                type: "pie",
+                data: {
+                  labels: xValues,
+                  datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                  }]
+                },
+                options: {
+                  title: {
+                    display: false
+                  }
+                }
+              });
+        
+              // Show the loan details modal
+              $('#loanModal').modal('show');
+            });
+        
+            // Function to calculate the EMI payment
+            function calculateEMI(loanAmount, monthlyInterestRate, tenure) {
+              var power = Math.pow(1 + monthlyInterestRate, tenure);
+              return loanAmount * monthlyInterestRate * power / (power - 1);
+            }
+        
+            // Function to calculate the maturity date
+            function calculateMaturityDate(tenure) {
+              var currentDate = new Date();
+              var maturityDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + tenure, currentDate.getDate());
+              return formatDate(maturityDate);
+            }
+        
+            // Function to calculate the interest payable date based on loan type
+            function calculateInterestPayableDate(loanType) {
+              var currentDate = new Date();
+              var interestPayableDate = currentDate;
+        
+              if (loanType === 'home') {
+                // Add 1 year for home loan
+                interestPayableDate.setFullYear(currentDate.getFullYear() + 1);
+              } else if (loanType === 'personal') {
+                // Add 3 months for personal loan
+                interestPayableDate.setMonth(currentDate.getMonth() + 3);
+              } else if (loanType === 'car') {
+                // Add 4 months for car loan
+                interestPayableDate.setMonth(currentDate.getMonth() + 4);
+              }
+        
+              return formatDate(interestPayableDate);
+            }
+        
+            // Function to format the date as "dd-mm-yy"
+            function formatDate(date) {
+              var day = date.getDate();
+              var month = date.getMonth() + 1;
+              var year = date.getFullYear().toString().slice(-2);
+        
+              return (day < 10 ? '0' + day : day) + '-' + (month < 10 ? '0' + month : month) + '-' + year;
+            }
+          </script>
+            
+        
+        
+            <script>
+              const dropdownInput = document.querySelector('#dropdown-input');
+              const dropdownList = document.querySelector('.dropdown-list');
+              const options = Array.from(dropdownList.getElementsByTagName('li'));
+              const dropdownIcon = document.querySelector('.dropdown-icon');
+            
+              const newDropdownInput = document.querySelector('#new-dropdown-input');
+              const newDropdownList = document.querySelector('.dropdown-custom-list');
+              const newOptions = Array.from(newDropdownList.getElementsByTagName('li'));
+              const newDropdownIcon = document.querySelector('.dropdown-custom-icon');
+            
+              dropdownInput.addEventListener('input', function() {
+                const searchText = dropdownInput.value.toLowerCase();
+            
+                options.forEach(option => {
+                  const text = option.textContent.toLowerCase();
+                  if (text.includes(searchText)) {
+                    option.style.display = 'block';
+                  } else {
+                    option.style.display = 'none';
+                  }
+                });
+            
+                dropdownList.style.display = 'block';
+                filterFormTwoValues(); // Call the function to filter form 2 values
+              });
+            
+              dropdownIcon.addEventListener('click', function() {
+                dropdownList.style.display = dropdownList.style.display === 'block' ? 'none' : 'block';
+              });
+            
+              dropdownList.addEventListener('click', function(event) {
+                const selectedOption = event.target;
+                if (selectedOption.tagName === 'LI') {
+                  const optionValues = selectedOption.textContent.trim().split(' ');
+                  dropdownInput.value = optionValues.slice(0, 2).join(' ');
+                  dropdownList.style.display = 'none';
+                  filterFormTwoValues(); // Call the function to filter form 2 values
+                }
+              });
+            
+              dropdownInput.addEventListener('click', function() {
+                dropdownList.style.display = 'none';
+              });
+            
+              dropdownList.style.display = 'none';
+            
+              newDropdownInput.addEventListener('input', function() {
+                const searchText = newDropdownInput.value.toLowerCase();
+            
+                newOptions.forEach(option => {
+                  const text = option.textContent.toLowerCase();
+                  if (text.includes(searchText)) {
+                    option.style.display = 'block';
+                  } else {
+                    option.style.display = 'none';
+                  }
+                });
+            
+                newDropdownList.style.display = 'block';
+              });
+            
+              newDropdownIcon.addEventListener('click', function() {
+                newDropdownList.style.display = newDropdownList.style.display === 'block' ? 'none' : 'block';
+              });
+            
+              newDropdownList.addEventListener('click', function(event) {
+                const selectedOption = event.target;
+                if (selectedOption.tagName === 'LI') {
+                  const optionValues = selectedOption.textContent.trim().split(' ');
+                  newDropdownInput.value = optionValues.slice(2, 4).join(' ');
+                  newDropdownList.style.display = 'none';
+                }
+              });
+            
+              newDropdownInput.addEventListener('click', function() {
+                newDropdownList.style.display = 'none';
+              });
+            
+              newDropdownList.style.display = 'none';
+            
+              function filterFormTwoValues() {
+                const searchText = dropdownInput.value.toLowerCase();
+            
+                newOptions.forEach(option => {
+                  const text = option.textContent.toLowerCase();
+                  if (text.includes(searchText)) {
+                    option.style.display = 'block';
+                  } else {
+                    option.style.display = 'none';
+                  }
+                });
+              }
+            </script>
+<script>
+  
+  window.addEventListener('DOMContentLoaded', function() {
+  refreshAccountNumber();
+});
+
+function refreshAccountNumber() {
+  // Generate a random 8-digit account number
+  var accountNumber = Math.floor(10000000000 + Math.random() * 90000000000);
+
+  // Set the generated account number to the input field
+  document.getElementById('accountNumber').value = accountNumber;
+}
+
+
+     
+      </script>
+</body>
+</html>

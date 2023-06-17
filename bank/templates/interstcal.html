@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="mb-4 pb-3">
+        <div class="dropdown dropdown-l">
+          <input type="text" name="name" id="dropdown-input" class="form-control form-control-lg" placeholder="Search...">
+          <span class="dropdown-icon">&#9662;</span> <!-- Add a dropdown icon here -->
+      
+          <ul class="dropdown-list" style="display: block;">
+            {% for account in deposit_accounts %}
+            <li>{{ account[0] }} </li>
+            <li>{{ account[1] }} </li>
+            <li>{{ account[2] }} </li>
+
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+</body>
+</html>

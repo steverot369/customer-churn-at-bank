@@ -1,0 +1,300 @@
+{% include 'clerksidebar.html' %}
+
+<section class="middle">
+    <div class="header">
+        <h1>Dashboard</h1>
+        <input type="date">
+    </div>
+        <div class="container1">
+        <section>
+            <h1>customer Details</h1>
+            <div class="search-filter">
+                <input type="search" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search by name">
+               
+                
+                <label for="rowCount">Select number of rows:</label>
+                <select id="rowCount" onchange="changeRowCount()">
+                  <option disabled selected value="">Select no of rows</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+                
+            </div>
+          <form method="post">  
+            <table id="employeeTable" class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>dob</th>
+                        <th>Marital Status</th>
+                        
+                        <th id="genderHeader">Gender</th>
+                        <th>phone</th>
+                        
+                        <th>Email</th>
+                        <th>branch</th>
+                        <th>Address</th>
+                        <th>Education</th>
+                        <th>Monthly salary</th>
+                        <th>ID proof</th>
+                        <th>ID no</th>
+                        <th>Date of join</th>
+
+                       
+
+                        
+                        <th colspan="2">Manage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Employee details data -->
+                    {% for employee in employees %}
+                    <tr data-usertype="{{ employee[9] }}">
+                        <td><img src="{{url_for('static', filename=employee[6])}}" style="width: 60px;height: 60px;border-radius: 50%;">{{ employee[3] }} {{ employee[4] }}</td>
+                        <td>{{ employee[5] }}</td>
+                        
+                        <td>{{ employee[7] }}</td>
+                        <td>{{ employee[8] }}</td>
+                        <td>{{ employee[9] }}</td>
+                        <td>{{ employee[10] }}</td>
+                        <td>{{ employee[11] }}</td>
+                        <td>{{ employee[12] }} {{ employee[13] }} {{ employee[14] }} {{ employee[15] }} {{ employee[16] }}</td>
+                        <td>{{ employee[17] }}</td>
+                        <td>{{ employee[18] }}</td>
+                        <td>{{ employee[19] }}</td>
+                        <td>{{ employee[20] }}</td>
+                        <td>{{ employee[22] }}</td>
+
+                        
+                        
+                        <td>
+                          <!-- <td> -->
+                            <a href="{{ url_for('admin.viewdetails', name1=employee[3],name2=employee[4], age=employee[5], image=employee[6], maritalStatus=employee[7], gender=employee[8], branch=employee[9], employeeType=employee[10], address=employee[11], place=employee[13], district=employee[14], phone=employee[15], email=employee[16]) }}" class="btn btn-info">View Details</a>
+                            <!-- <a href="#" class="btn btn-info view-details-btn" data-toggle="modal" data-target="#detailsModal" data-employee="{{ employee }}">View Details</a> -->
+
+
+
+                          <!-- </td> -->
+                          
+                         
+  
+                      </tr>
+                     
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+          </form>
+          <!-- Modal -->
+
+
+
+            <div class="pagination">
+                <button onclick="previousPage()">Previous</button>
+                <button onclick="nextPage()">Next</button>
+            </div>
+            <div id="noUserFoundMessage" style="display: none;">
+              <p>No user found</p>
+            </div>
+        </section>
+    </div>
+</section>
+     </main>  
+    <!-- ====================end of aside==========================   -->
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+    <script>
+        var submenuIcons = document.querySelectorAll('.submenu-icon');
+      // Loop through each submenu icon
+      submenuIcons.forEach(function(icon) {
+         // Add a click event listener to each submenu icon
+         icon.addEventListener('click', function() {
+             // Get the corresponding submenu for this icon
+             var submenu = icon.parentElement.nextElementSibling; 
+             // Toggle the visibility of the submenu
+             submenu.classList.toggle('show');
+         });
+      });
+      </script>
+    <script>
+    
+ // Get all the submenu icons
+ var submenuIcons = document.querySelectorAll('.submenu-icon');
+// Loop through each submenu icon
+submenuIcons.forEach(function(icon) {
+   // Add a click event listener to each submenu icon
+   icon.addEventListener('click', function() {
+       // Get the corresponding submenu for this icon
+       var submenu = icon.parentElement.nextElementSibling; 
+       // Toggle the visibility of the submenu
+       submenu.classList.toggle('show');
+   });
+});
+
+
+    function showDetails(event) {
+    event.preventDefault();
+    var row = event.target.closest("tr");
+    var detailsRow = row.nextElementSibling;
+    if (detailsRow.style.display === "none") {
+      detailsRow.style.display = "table-row";
+    } else {
+      detailsRow.style.display = "none";
+    }
+  }
+
+//ffffff
+
+
+
+
+
+//efefff
+
+
+//gender
+var employeeTable = document.getElementById("employeeTable");
+    var genderSelect = document.getElementById("genderOption");
+
+    genderSelect.addEventListener("change", function() {
+        var selectedGender = genderSelect.value.toLowerCase();
+        var rows = employeeTable.getElementsByTagName("tr");
+
+        for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the table header row
+            var row = rows[i];
+            var genderCell = row.getElementsByTagName("td")[5];
+            var gender = genderCell.textContent.toLowerCase();
+
+            if (selectedGender === "" || gender === selectedGender) {
+                row.style.display = ""; // Show the row
+            } else {
+                row.style.display = "none"; // Hide the row
+            }
+        }
+    });
+
+
+// Add event listener to the "Employee Type" header
+ // Function to sort the table based on gender
+
+//end
+        // Function to filter the table based on user type
+        document.getElementById('userTypeFilter').addEventListener('change', function() {
+  var searchKeyword = document.getElementById('searchInput').value.toLowerCase();
+  var userType = this.value;
+  var rows = document.querySelectorAll('#employeeTable tbody tr');
+  
+  rows.forEach(function(row) {
+    var employeeName = row.children[1].textContent.toLowerCase() + ' ' + row.children[2].textContent.toLowerCase();
+    var userRole = row.getAttribute('data-usertype');
+    if ((searchKeyword === '' || employeeName.includes(searchKeyword)) && (userType === 'all' || userRole === userType)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+});
+
+        // Function to search the table based on name
+        function searchTable() {
+  var input = document.getElementById("searchInput");
+  var filter = input.value.toUpperCase();
+  var table = document.getElementById("employeeTable");
+  var rows = table.getElementsByTagName("tr");
+  var noUserFoundMessage = document.getElementById("noUserFoundMessage");
+
+  var foundMatch = false;
+
+  for (var i = 1; i < rows.length; i++) {
+    var nameColumn = rows[i].getElementsByTagName("td")[0];
+    if (nameColumn.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      rows[i].style.display = "";
+      foundMatch = true;
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+
+  if (!foundMatch) {
+    noUserFoundMessage.style.display = "block";
+  } else {
+    noUserFoundMessage.style.display = "none";
+  }
+}
+
+
+
+
+
+
+
+        // ------------------------
+        function changeRowCount() {
+    const rowCountSelect = document.getElementById('rowCount');
+    const selectedRowCount = rowCountSelect.value;
+    const rows = employeeTable.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        if (i <= selectedRowCount) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
+    }
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const rowCountSelect = document.getElementById('rowCount');
+    const selectedRowCount = rowCountSelect.value;
+    const rows = employeeTable.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        if (i > selectedRowCount) {
+            rows[i].style.display = 'none';
+        }
+    }
+});
+const rowsPerPage = 5; // Number of rows to display per page
+let currentPage = 1;
+
+function showRows() {
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const rows = employeeTable.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        if (i >= startIndex && i < endIndex) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
+    }
+}
+
+function previousPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        showRows();
+    }
+}
+
+function nextPage() {
+    const rows = employeeTable.getElementsByTagName('tr');
+    const totalRows = rows.length - 1;
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+    if (currentPage < totalPages) {
+        currentPage++;
+        showRows();
+    }
+}
+
+// Add this code after the existing JavaScript code within the <script> tags
+document.addEventListener('DOMContentLoaded', () => {
+    showRows();
+});
+
+    </script>
+</body>
+</html>

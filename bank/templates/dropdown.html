@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!-- Latest compiled and minified CSS -->
+
+
+
+<style>
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-select {
+  padding: 8px;
+  width: 200px;
+}
+
+</style>
+<body>
+    <div class="dropdown">
+        <select class="dropdown-select">
+          <option value="">Select an option</option>
+          <option value="Option 1">Option 1</option>
+          <option value="Option 2">Option 2</option>
+          <option value="Option 3">Option 3</option>
+          <option value="Option 4">Option 4</option>
+          <option value="Option 5">Option 5</option>
+          <option value="Option 6">Option 6</option>
+        </select>
+      </div>
+      
+    
+      
+</body>
+<script>
+const select = document.querySelector('.dropdown-select');
+
+select.addEventListener('change', function() {
+  const selectedOption = select.value;
+  if (selectedOption !== '') {
+    console.log('Selected option:', selectedOption);
+  }
+});
+
+
+</script>
+</html>

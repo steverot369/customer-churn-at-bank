@@ -1,0 +1,136 @@
+{% include 'clerksidebar.html' %}
+                              <section style="width: 120%; height: 100%;;">
+                                <div class="header">
+                                    
+                                    
+                                      </div>
+                                <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+                                  <div class="container h-100">
+                                    <div class="row d-flex justify-content-center align-items-center h-100">
+                                      <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                                        <div class="card" style="border-radius: 15px; background:rgb(213, 230, 236);">
+                                          <div class="card-body p-5">
+                                            <b><h2 class="text-uppercase text-center mb-5">Savings Account Forum</h2></b>
+                              
+                                            <form method="post">
+                              
+                                              <div class="mb-4 pb-3">
+                                                <div class="dropdown dropdown-l">
+                                                  <input type="text" name="name" id="dropdown-input" class="form-control form-control-lg" placeholder="Search...">
+                                                  <span class="dropdown-icon">&#9662;</span> <!-- Add a dropdown icon here -->
+                                              
+                                                  <ul class="dropdown-list" style="display: block;">
+                                                    {% for row in fname %}
+                                                    <li>{{ row[0] }} {{ row[1] }}</li>
+                                                    {% endfor %}
+                                                  </ul>
+                                                </div>
+                                              </div>
+
+
+                                              <div class="mb-4 pb-2">
+                                                <div class="input-group">
+                                                  <input type="number" id="accountNumber" name="accno" class="form-control form-control-lg" readonly>
+                                                  <button type="button" onclick="refreshAccountNumber()" class="btn btn-secondary input-group-text" style="cursor: pointer;">
+                                                    <span class="material-symbols-outlined">refresh </span>
+                                                  </button>
+                                                </div>
+                                                <label class="form-label" for="accountNumber">Account number</label>
+                                              </div>
+                              
+                                              <div class="form-outline mb-4 pb-2">
+                                                
+                                                <input type="text" name="ifsccode" value="{{ branch_id }}" id="form3Example3cg" class="form-control form-control-lg" readonly/>
+                                                <label class="form-label" for="form3Example3cg">IfscCode</label>
+                                                
+                                              </div>
+                              
+                                              
+                              
+                                              
+                                              
+                                              
+              
+                                              <div class="d-flex justify-content-center">
+                                                <!-- <button type="button"
+                                                  class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body">Add Branch</button> -->
+                                                  <input type="submit"  name="add" value="Register" class="btn btn-primary btn-lg gradient-custom-4 text-body">
+                                                </div>
+                              
+                                             
+                              
+                                            </form>
+                              
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </section>
+                              </form>
+                 </section>
+                 
+                
+            </main>  
+    <!-- ====================end of aside==========================   -->
+    <script>
+const input = document.querySelector('#dropdown-input');
+const dropdownList = document.querySelector('.dropdown-list');
+const options = Array.from(dropdownList.getElementsByTagName('li'));
+const dropdownIcon = document.querySelector('.dropdown-icon'); // Get the dropdown icon element
+
+input.addEventListener('input', function() {
+  const searchText = input.value.toLowerCase();
+
+  options.forEach(option => {
+    const text = option.textContent.toLowerCase();
+    if (text.includes(searchText)) {
+      option.style.display = 'block';
+    } else {
+      option.style.display = 'none';
+    }
+  });
+
+  dropdownList.style.display = 'block'; // Show the list while searching
+});
+
+dropdownIcon.addEventListener('click', function() {
+  dropdownList.style.display = dropdownList.style.display === 'block' ? 'none' : 'block';
+});
+
+dropdownList.addEventListener('click', function(event) {
+  const selectedOption = event.target;
+  if (selectedOption.tagName === 'LI') {
+    input.value = selectedOption.textContent;
+    dropdownList.style.display = 'none';
+  }
+});
+
+input.addEventListener('click', function() {
+  dropdownList.style.display = 'none';
+});
+
+// Hide the list initially when the page loads
+dropdownList.style.display = 'none';
+
+</script>
+<script>
+  
+  window.addEventListener('DOMContentLoaded', function() {
+  refreshAccountNumber();
+});
+
+function refreshAccountNumber() {
+  // Generate a random 8-digit account number
+  var accountNumber = Math.floor(10000000000 + Math.random() * 90000000000);
+
+  // Set the generated account number to the input field
+  document.getElementById('accountNumber').value = accountNumber;
+}
+
+
+     
+      </script>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale">
+<title>Responsive Dashboard using HTML CSS and JavaScript </title>
+<!-- MATERIAL CDN  -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+rel="stylesheet">
+<!-- google font -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;1,700&display=swap" rel="stylesheet">
+<!-- STYLESHEET -->
+
+<link rel="stylesheet" href="/static/css/customer.css">
+
+<script>
+    function removeCount() {
+        document.getElementById("message-count").textContent = "";
+    }
+</script> 
+<!-- <script>
+    function removeCount() {
+        document.getElementById("message-count").textContent = "0";
+        sessionStorage.setItem('count_removed', 'true');
+    }
+
+    window.onload = function() {
+        if (sessionStorage.getItem('count_removed')) {
+            document.getElementById("message-count").textContent = "0";
+        }
+    };
+</script> -->
+</head>
+<style>
+    
+</style>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  <ul class=flashes>
+  {% for message in messages %}
+    <script type="text/javascript">alert("{{message}}")</script>
+  {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
+<body>
+    <nav>
+        <div class="container">
+            <img src="/static//images/logo3.png" class="logo">
+            <div class="search-bar">
+                <span class="material-icons-sharp">search</span>
+                <input type="search" placeholder="search">
+            </div>
+            <div class="profile-area">
+                <div class="theme-btn">
+                    <span class="material-icons-sharp active">light_mode</span>
+                    <span class="material-icons-sharp">dark_mode</span>
+
+                </div>
+                <div class="profile">
+                    <div class="profile-photo">
+                        <img src="/static/images/profile-1.jpg">
+                    </div>
+                    {% for row in name %}
+                <h5>{{ row[0] }} {{ row[1]}}</h5>
+                {% endfor %}
+                <span class="material-icons-sharp">expand_more</span>
+            </div>
+            <button id="menu-btn">
+                <span class="material-icons-sharp">menu</span>
+            </button>
+                </div>
+        </div>
+    </nav>
+  
+    <!-- end of navbar     -->
+            <main>
+                <aside>
+                   <button id="close-btn">
+                        <span class="material-icons-sharp">close</span>
+                   </button>
+                   <div class="sidebar" class="active">
+                    <a href="#">
+                        <span class="material-icons-sharp">dashboard</span>
+                        <h4>Dashboard</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-icons-sharp">currency_exchange</span>
+                        <h4>income</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-icons-sharp">account_balance_wallet</span>
+                        <h4>Wallet</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-icons-sharp">payment</span>
+                        <h4>Transaction</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-icons-sharp">pie_chart</span>
+                        <h4>Analytics</h4>
+                    </a>
+                    
+                    
+                       
+                    <a href="#">
+                        <span class="material-icons-sharp">help_center</span>
+                        <h4>Help center</h4>
+                    </a>
+                    <a href="publichome">
+                        <span class="material-icons-sharp">logout</span>
+                        <h4>logout</h4>
+                    </a>
+                   </div>
+                   <!---------end of side bar--- -->
+                   <div class="updates">
+                        <span class="material-icons-sharp">manage_accounts</span>
+                            <h4>Administartive task</h4>
+                            <p>Here you can</p>
+                            <p>Manage Users & other tasks</p>
+                            <a href="adminmanagehome">Manage</a>
+                    </div>
+                </aside>
+                 <!-- end of aside----- -->
+
+                    <section class="middle">
+                        <div class="header">
+                            <h1>Dashboard</h1>
+                            <input type="date" id="todayDateInput">
+                        </div>
+
+                        <div class="insights">
+                          <div class="sales">
+                              <span class="material-icons-sharp">account_balance_wallet</span>
+                              <div class="middle">
+                                  <div class="left">
+                                      <h3>Total bank balance</h3>
+                                      <h1>Rs {{ total_amount }}</h1>
+                                  </div>
+                                  <div class="progress">
+                                      <svg>
+                                          <circle cx='38' cy='38' r='36'></circle>
+                                      </svg>
+                                      <div class="number">
+                                          <p>81%</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <small class="text-muted">Last 24 hours</small>
+                          </div>
+                          <!------------ END OF SALES -------------->
+                          <div class="expenses">
+                              <span class="material-icons-sharp">bar_chart</span>
+                              <div class="middle">
+                                  <div class="left">
+                                      <h3>Total Expenses</h3>
+                                      <h1>$85,758</h1>
+                                  </div>
+                                  <div class="progress">
+                                      <svg>
+                                          <circle cx='38' cy='38' r='36'></circle>
+                                      </svg>
+                                      <div class="number">
+                                          <p>41%</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <small class="text-muted">Last 24 hours</small>
+                          </div>
+                          <!------------ END OF expense -------------->
+                          <div class="income">
+                              <span class="material-icons-sharp">stacked_line_chart</span>
+                              <div class="middle">
+                                  <div class="left">
+                                      <h3>Total income</h3>
+                                
+                                        
+                                     
+                                      <h1>$85,7557</h1>
+                                  </div>
+                                  <div class="progress">
+                                      <svg>
+                                          <circle cx='38' cy='38' r='36'></circle>
+                                      </svg>
+                                      <div class="number">
+                                          <p>44%</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <small class="text-muted">Last 24 hours</small>
+                          </div>
+                          <!------------ END OF INCOME -------------->
+                      </div>
+                        <!-- ----end of cards------ -->
+                        <div class="monthly-report">
+                            <div class="report">
+                                <h3>income</h3>
+                                <div>
+                                    <details>
+                                        <h1>$7465665</h1>
+                                        <h6 class="success">+4.5%</h6>
+                                    </details>
+                                    <p class="text-muted">Co,pared to $26,433
+                                        last months
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- end of income report -->
+                            <div class="report">
+                                <h3>expenses</h3>
+                                <div>
+                                    <details>
+                                        <h1>$74,655</h1>
+                                        <h6 class="danger">-4.5%</h6>
+                                    </details>
+                                    <p class="text-muted">Co,pared to $6,433
+                                        last months
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- end of expenses report -->
+                            <div class="report">
+                                <h3>cashback</h3>
+                                <div>
+                                    <details>
+                                        <h1>$72,65665</h1>
+                                        <h6 class="success">+7.5%</h6>
+                                    </details>
+                                    <p class="text-muted">Co,pared to $26,433
+                                        last months
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- end of cashback report -->
+                            <div class="report">
+                                <h3>income</h3>
+                                <div>
+                                    <details>
+                                        <h1>$7465665</h1>
+                                        <h6 class="success">+4.5%</h6>
+                                    </details>
+                                    <p class="text-muted">Co,pared to $26,433
+                                        last months
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- end of turnover report -->
+                        </div>
+                        <!-- ---end of monthly reports----- -->
+                        <div class="fast-payment">
+                            <h2>fast payment</h2>
+                            <div class="badges">
+                                <div class="badge">
+                                    <span class="material-icons-sharp">add</span>
+                                </div>
+                                <div class="badge">
+                                    <span class="bg-primary"></span>
+                                    <div>
+                                        <h5>Training</h5>
+                                        <h4>$50</h4>
+                                    </div> 
+                                </div>
+                                <div class="badge">
+                                    <span class="bg-danger"></span>
+                                    <div>
+                                        <h5>internet</h5>
+                                        <h4>$50</h4>
+                                    </div> 
+                                </div>
+                                <div class="badge">
+                                    <span class="bg-primary"></span>
+                                    <div>
+                                        <h5>gas</h5>
+                                        <h4>$30</h4>
+                                    </div> 
+                                </div>
+                                <div class="badge">
+                                    <span class="bg-warning"></span>
+                                    <div>
+                                        <h5>movies</h5>
+                                        <h4>$50</h4>
+                                    </div> 
+                                </div>
+                                <div class="badge">
+                                    <span class="bg-primary"></span>
+                                    <div>
+                                        <h5>education</h5>
+                                        <h4>$50</h4>
+                                    </div> 
+                                </div>
+                                <div class="badge">
+                                    <span class="bg-danger"></span>
+                                    <div>
+                                        <h5>electircity</h5>
+                                        <h4>$50</h4>
+                                    </div> 
+                                </div>
+                                <div class="badge">
+                                    <span class="bg-success"></span>
+                                    <div>
+                                        <h5>food</h5>
+                                        <h4>$50</h4>
+                                    </div> 
+                            </div>
+                        </div>
+                        </div>
+                        <!----------- end of payment----- -->
+                        <canvas id="chart"></canvas>
+                 </section>
+                 <!-- --------end of middle------ -->
+                 <div class="right">
+                    
+                    <!-- -------------end top---------------->
+                    <!-- <div class="recent-updates">
+                        <h2>Recent updates</h2>
+                        <div class="updates">
+                            <div class="update">
+                                <div class="profile-photo">
+                                    <img src="/static/images/profile-1.jpg">
+                                </div>
+                                <div class="message">
+                                    <p><b>mike tyson</b>
+                                    recyeyy is hehe of yegfegge.</p>
+                                    <small class="text-muted">2minutes ago</small>
+                                </div>
+                            </div>
+                           
+                            
+                        </div>
+                    </div> -->
+
+                    <div class="recent-updates">
+                        <h2>Recent Updates</h2>
+                        <div class="updates">
+                            {% for feedback in feedback_messages %}
+                            <div class="update">
+                                <div class="profile-photo">
+                                    <img src="/static/images/profile-1.jpg">
+                                </div>
+                                <div class="message">
+                                    <p><b>Steve rodrigues</b> {{ feedback[0] }}</p>
+                                    <small class="text-muted">{{ feedback[1] }}</small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="sales-analytics">
+                        <h2>Recent Transactions</h2>
+                        <div class="item online">
+                            <div class="icon">
+                                <span class="material-icons-sharp">shopping_cart</span>
+                            </div>
+                            <div class="right">
+                                <div class="info">
+                                    <h4>Online orders</h4>
+                                    <small class="text-muted">Last 24 hours</small>
+                                </div>
+                                <h5 class="success">+39%</h5>
+                                <h4>432</h4>
+                            </div>
+                        </div>
+                        <div class="item offline">
+                            <div class="icon">
+                                <span class="material-icons-sharp">local_mall</span>
+                            </div>
+                            <div class="right">
+                                <div class="info">
+                                    <h4>Online orders</h4>
+                                    <small class="text-muted">Last 24 hours</small>
+                                </div>
+                                <h5 class="success">+39%</h5>
+                                <h4>4332</h4>
+                            </div>
+                        </div>
+                        <div class="item customers">
+                            <div class="icon">
+                                <span class="material-icons-sharp">person</span>
+                            </div>
+                            <div class="right">
+                                <div class="info">
+                                    <h4>customers</h4>
+                                    <small class="text-muted">Last 24 hours</small>
+                                </div>
+                                <h5 class="success">+22%</h5>
+                                <h4>132</h4>
+                            </div>
+                        </div>
+                            <div class="item add-product">
+                                <div>
+                                <span class="material-icons-sharp">send</span>
+                                <a href="adminsendmessage"><h3>message</h3></a>
+                        
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                 <!-- end of right -->
+                 
+                 
+            </main>  
+    <!-- ====================end of aside==========================   -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" 
+    integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/static/js/customer.js"></script>
+    
+  <script>
+    // Get today's date
+  var today = new Date();
+
+// Format the date as "YYYY-MM-DD" for setting the input value
+var formattedDate = today.toISOString().split("T")[0];
+
+// Set the input value to today's date
+document.getElementById("todayDateInput").value = formattedDate;
+  </script>
+  <script>
+    function showMessages() {
+  // Perform actions to show the messages
+  // For example, open a modal or navigate to a new page
+
+  // After showing the messages, remove the message count
+  var messageCountElement = document.getElementById('messageCount');
+  messageCountElement.style.display = 'none';
+}
+  </script>
+ <script>
+    var ctx = document.getElementById('chart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ labels|tojson|safe }},
+            datasets: [{
+                label: 'Customer Transactions',
+                data: {{ values|tojson|safe }},
+                backgroundColor: 'red',
+                borderColor: 'blue',
+                borderWidth: 2,
+                pointRadius: 4,
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Customer Transactions',
+                    font: {
+                        size: 16
+                    }
+                },
+                legend: {
+                    display: true,
+                    labels: {
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    titleFontSize: 16,
+                    bodyFontSize: 12
+                }
+            }
+        }
+    });
+</script>
+
+
+
+  </script>
+
+</body>
+</html>

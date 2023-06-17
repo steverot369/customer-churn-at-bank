@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale">
+<title>Responsive Dashboard using HTML CSS and JavaScript </title>
+<!-- MATERIAL CDN  -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+rel="stylesheet">
+<!-- google font -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;1,700&display=swap" rel="stylesheet">
+<!-- STYLESHEET -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<link rel="stylesheet" href="/static/css/customer.css">
+<script src="https://kit.fontawesome.com/c7705f70af.js" crossorigin="anonymous"></script>
+<script>
+    function removeCount() {
+        document.getElementById("message-count").textContent = "";
+    }
+</script> 
+<!-- <script>
+    function removeCount() {
+        document.getElementById("message-count").textContent = "0";
+        sessionStorage.setItem('count_removed', 'true');
+    }
+
+    window.onload = function() {
+        if (sessionStorage.getItem('count_removed')) {
+            document.getElementById("message-count").textContent = "0";
+        }
+    };
+</script> -->
+<script>
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   var expandIcon = document.querySelector('.expand-icon');
+//   var profileContainer = document.querySelector('.profile-container');
+
+//   expandIcon.addEventListener('click', function() {
+//     profileContainer.classList.toggle('show');
+//   });
+// });
+
+
+function toggleProfilePhoto() {
+  var profilePhoto = document.querySelector('.profile-photo');
+  var profileContainer = document.querySelector('.profile-container');
+  
+  profilePhoto.classList.toggle('show');
+  
+  if (profileContainer.classList.contains('show')) {
+    profileContainer.classList.remove('show');
+  }
+}
+
+function toggleProfileContainer() {
+  var profileContainer = document.querySelector('.profile-container');
+  
+  profileContainer.classList.toggle('show');
+}
+
+
+
+
+</script>
+
+</head>
+<style>
+  
+
+/* .profile-container {
+    display: none; 
+    width: 300px;
+    padding: 20px;
+    background-color: #e3d4d4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 60px;
+    right: 0;
+    z-index: 999;
+    transition: transform 0.3s ease-in-out;
+    transform-origin: top right;
+    border-radius: 10px;
+} */
+
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+.profile-photo1 {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.profile-photo1 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-details .profile-photo1 {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.profile-details .profile-photo1 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.expand-icon {
+  cursor: pointer;
+}
+
+.profile-container {
+    display: none; 
+    width: 300px;
+    padding: 20px;
+    background-color: #e3d4d4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 60px;
+    right: 0;
+    z-index: 999;
+    transition: transform 0.3s ease-in-out;
+    transform-origin: top right;
+    border-radius: 10px;;
+}
+
+.profile-container.show {
+  display: block;
+  max-height: 500px; /* Adjust the maximum height as needed */
+}
+
+.profile-content {
+  animation: slideDown 0.5s ease;
+}
+
+.profile-details ul {
+  list-style-type: none;
+   margin: 0;
+  padding: 0; 
+    display: flex; 
+  flex-direction: column;
+   align-items: flex-start;
+   margin-right: 15px
+   
+}
+
+.profile-details ul li {
+  padding: 10px 0;
+  /* border-bottom: 1px solid #ccc; */
+  
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+.profile-details ul li::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250%; /* Adjust the padding as needed */
+  
+  border-bottom: 1px solid #ccc; /* Adjust the color as desired */
+}
+.profile-details ul li:last-child {
+  border-bottom: none;
+}
+
+.profile-details ul li i {
+  margin-right: 10px;
+  /* justify-content: space-between; */
+}
+
+.profile-details ul li a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.profile-details ul li a:hover {
+  color: #000;
+  font-weight: bold;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+}
+
+.social-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 10px;
+  font-size: 20px;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+  color: #000;
+}
+
+.social-icon::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px;
+  background-color: #333;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.social-icon:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+</style>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  <ul class=flashes>
+  {% for message in messages %}
+    <script type="text/javascript">alert("{{message}}")</script>
+  {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
+<body>
+    <nav>
+        <div class="container">
+            <img src="/static//images/logo3.png" class="logo">
+            <div class="search-bar">
+                <span class="material-icons-sharp">search</span>
+                <input type="search" placeholder="search">
+            </div>
+            <div class="profile-area">
+                <div class="theme-btn">
+                    <span class="material-icons-sharp active">light_mode</span>
+                    <span class="material-icons-sharp">dark_mode</span>
+
+                </div>
+          
+          
+               <div class="profile">
+                <div class="profile-photo" onclick="toggleProfilePhoto()">
+                  <img src="/static/images/profile-1.jpg">
+                </div>
+                {% for row in name %}
+                <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
+                {% endfor %}
+                <span class="material-icons-sharp expand-icon" onclick="toggleProfileContainer()">expand_more</span>
+              </div>
+              
+              <div class="profile-container">
+                <div class="profile-content">
+                  <div class="profile-details">
+                    <div class="profile-photo1">
+                      <img src="/static/images/profile-1.jpg">
+                    </div>
+                <!--  <b><h5>Steve Rodrigues</h5></b> -->
+                
+                {% for row in name %}
+                <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
+                
+                <p><h5>{{row[2]}}</h5></p>
+                {% endfor %}
+                <div class="social-icons">
+                    <a href="#" class="social-icon" data-tooltip="Key">
+                      <i class="fa-solid fa-key"></i>
+                    </a>
+                    <a href="#" class="social-icon" data-tooltip="Twitter">
+                      <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon" data-tooltip="Instagram">
+                      <i class="fab fa-instagram"></i>
+                    </a>
+                  </div>
+                  
+                    <ul>
+                      <li><i class="material-icons">person</i><a href="#">profile</a></li>
+                      <li><i class="material-icons">settings</i><a href="#">Settings</a></li>
+                      <li><i class="material-icons">exit_to_app</i><a href="/">Logout</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              
+              
+              
+              
+            <button id="menu-btn">
+                <span class="material-icons-sharp">menu</span>
+            </button>
+                </div>
+        </div>
+    </nav>
+  
+    <!-- end of navbar     -->
+            <main>
+                <aside>
+                   <button id="close-btn">
+                        <span class="material-icons-sharp">close</span>
+                   </button>
+                   <div class="sidebar" class="active">
+                    <a href="#">
+                        <span class="material-icons-sharp">dashboard</span>
+                        <h4>Dashboard</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-icons-sharp">currency_exchange</span>
+                        <h4>income</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-icons-sharp">account_balance_wallet</span>
+                        <h4>Wallet</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-icons-sharp">payment</span>
+                        <h4>Transaction</h4>
+                    </a>
+                    <a href="#">
+                        <span class="material-icons-sharp">pie_chart</span>
+                        <h4>Analytics</h4>
+                    </a>
+                    <a href="adminviewfeedback" onclick="removeCount()">
+                        <span class="material-icons-sharp">message</span>
+                        <h4>Messages</h4>
+                        <span id="message-count" class="message-count">23</span>
+                    </a>
+                    
+                       
+                    <a href="#">
+                        <span class="material-icons-sharp">help_center</span>
+                        <h4>Help center</h4>
+                    </a>
+                    <a href="publichome">
+                        <span class="material-icons-sharp">logout</span>
+                        <h4>logout</h4>
+                    </a>
+                   </div>
+                   <!---------end of side bar--- -->
+                   <div class="updates">
+                        <span class="material-icons-sharp">manage_accounts</span>
+                            <h4>Manage task</h4>
+                            <p>Here you can</p>
+                            <p>Manage Users & other tasks</p>
+                            <a href="clerkmanagehome">Manage</a>
+                    </div>
+                </aside>
+                 <!-- end of aside----- -->
+
+                    <section class="middle">
+                        <div class="header">
+                            <h1>Dashboard</h1>
+                            <input type="date" id="todayDateInput">
+                        </div>
+
+                        <div class="insights">
+                          <div class="sales">
+                              <span class="material-icons-sharp">account_balance_wallet</span>
+                              <div class="middle">
+                                  <div class="left">
+                                      <h3>Total bank balance</h3>
+                                      <h1>Rs {{ total_amount }}</h1>
+                                  </div>
+                                  <div class="progress">
+                                      <svg>
+                                          <circle cx='38' cy='38' r='36'></circle>
+                                      </svg>
+                                      <div class="number">
+                                          <p>81%</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <small class="text-muted">Last 24 hours</small>
+                          </div>
+                          <!------------ END OF SALES -------------->
+                          <div class="expenses">
+                              <span class="material-icons-sharp">bar_chart</span>
+                              <div class="middle">
+                                  <div class="left">
+                                      <h3>Total Expenses</h3>
+                                      <h1>$85,758</h1>
+                                  </div>
+                                  <div class="progress">
+                                      <svg>
+                                          <circle cx='38' cy='38' r='36'></circle>
+                                      </svg>
+                                      <div class="number">
+                                          <p>41%</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <small class="text-muted">Last 24 hours</small>
+                          </div>
+                          <!------------ END OF expense -------------->
+                          <div class="income">
+                              <span class="material-icons-sharp">stacked_line_chart</span>
+                              <div class="middle">
+                                  <div class="left">
+                                      <h3>Total income</h3>
+                                
+                                        
+                                     
+                                      <h1>$85,7557</h1>
+                                  </div>
+                                  <div class="progress">
+                                      <svg>
+                                          <circle cx='38' cy='38' r='36'></circle>
+                                      </svg>
+                                      <div class="number">
+                                          <p>44%</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <small class="text-muted">Last 24 hours</small>
+                          </div>
+                          <!------------ END OF INCOME -------------->
+                      </div>
+                        
+                        <!-- <canvas id="chart"></canvas> -->
+                        <div class="recent-orders">
+                            <h2>Recent order</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Prodct name</th>
+                                        <th>Prodct number</th>
+                                        <th>Prodct payment</th>
+                                        <th>Prodct status</th>
+                
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td class="warning">Pending</td>
+                                    <td class="primary">Details</td>
+                                </tr>
+                                <tr>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td class="warning">Pending</td>
+                                    <td class="primary">Details</td>
+                                </tr>
+                                <tr>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td class="warning">Pending</td>
+                                    <td class="primary">Details</td>
+                                </tr>
+                                <tr>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td class="warning">Pending</td>
+                                    <td class="primary">Details</td>
+                                </tr>
+                                <tr>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td class="warning">Pending</td>
+                                    <td class="primary">Details</td>
+                                </tr>
+                                <tr>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td class="warning">Pending</td>
+                                    <td class="primary">Details</td>
+                                </tr>
+                                <tr>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td>Floadabs dhsdh</td>
+                                    <td class="warning">Pending</td>
+                                    <td class="primary">Details</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <a href="#">show all</a>
+                        </div>
+                 </section>
+                 <!-- --------end of middle------ -->
+                 <div class="right">
+                    
+                   
+
+                    <div class="recent-updates">
+                        <h2>Recent updates</h2>
+                        <div class="updates">
+                            <div class="update">
+                                <div class="profile-photo">
+                                    <img src="/static/images/profile-2.jpg">
+                                </div>
+                                <div class="message">
+                                    <p><b>mike tyson</b>
+                                    recyeyy is hehe of yegfegge.</p>
+                                    <small class="text-muted">2minutes ago</small>
+                                </div>
+                            </div>
+                            <div class="update">
+                                <div class="profile-photo">
+                                    <img src="/static//images/profile-2.jpg">
+                                </div>
+                                <div class="message">
+                                    <p><b>mike tyson</b>
+                                    recyeyy is hehe of yegfegge.</p>
+                                    <small class="text-muted">2minutes ago</small>
+                                </div>
+                            </div>
+                            <div class="update">
+                                <div class="profile-photo">
+                                    <img src="/static//images/profile-4.jpg">
+                                </div>
+                                <div class="message">
+                                    <p><b>mike tyson</b>
+                                    recyeyy is hehe of yegfegge.</p>
+                                    <small class="text-muted">2minutes ago</small>
+                                </div>
+                            </div>
+                            <div class="update">
+                                <div class="profile-photo">
+                                    <img src="/static//images/profile-4.jpg">
+                                </div>
+                                <div class="message">
+                                    <p><b>mike tyson</b>
+                                    recyeyy is hehe of yegfegge.</p>
+                                    <small class="text-muted">2minutes ago</small>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="sales-analytics">
+                        <h2>Recent Transactions</h2>
+                        <div class="item online">
+                            <div class="icon">
+                                <span class="material-icons-sharp">shopping_cart</span>
+                            </div>
+                            <div class="right">
+                                <div class="info">
+                                    <h4>Online orders</h4>
+                                    <small class="text-muted">Last 24 hours</small>
+                                </div>
+                                <h5 class="success">+39%</h5>
+                                <h4>432</h4>
+                            </div>
+                        </div>
+                        <div class="item offline">
+                            <div class="icon">
+                                <span class="material-icons-sharp">local_mall</span>
+                            </div>
+                            <div class="right">
+                                <div class="info">
+                                    <h4>Online orders</h4>
+                                    <small class="text-muted">Last 24 hours</small>
+                                </div>
+                                <h5 class="success">+39%</h5>
+                                <h4>4332</h4>
+                            </div>
+                        </div>
+                        <div class="item customers">
+                            <div class="icon">
+                                <span class="material-icons-sharp">person</span>
+                            </div>
+                            <div class="right">
+                                <div class="info">
+                                    <h4>customers</h4>
+                                    <small class="text-muted">Last 24 hours</small>
+                                </div>
+                                <h5 class="success">+22%</h5>
+                                <h4>132</h4>
+                            </div>
+                        </div>
+                            <div class="item add-product">
+                                <div>
+                                <span class="material-icons-sharp">send</span>
+                                <a href="adminsendmessage"><h3>message</h3></a>
+                        
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                 <!-- end of right -->
+                 
+                 
+            </main>  
+    <!-- ====================end of aside==========================   -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" 
+    integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/static/js/customer.js"></script>
+    <script>
+   
+  
+    // Get today's date
+  var today = new Date();
+
+// Format the date as "YYYY-MM-DD" for setting the input value
+var formattedDate = today.toISOString().split("T")[0];
+
+// Set the input value to today's date
+document.getElementById("todayDateInput").value = formattedDate;
+  </script>
+  <script>
+    function showMessages() {
+  // Perform actions to show the messages
+  // For example, open a modal or navigate to a new page
+
+  // After showing the messages, remove the message count
+  var messageCountElement = document.getElementById('messageCount');
+  messageCountElement.style.display = 'none';
+}
+  </script>
+ 
+
+</body>
+</html>

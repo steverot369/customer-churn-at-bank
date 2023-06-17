@@ -1,0 +1,297 @@
+{% include 'clerksidebar.html' %}
+
+                    <section class="middle">
+                        <div class="header">
+                            <h1>Dashboard</h1>
+                            <input type="date">
+                        </div>
+                        <form method="post" enctype="multipart/form-data">
+                            <section class="h-100 h-custom gradient-custom-2" style="width: 125%;">
+                                <div class="container py-5 h-100">
+                                  <div class="row d-flex justify-content-center align-items-center h-100">
+                                    <div class="col-12">
+                                      <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                                        <div class="card-body p-0">
+                                          <div class="row g-0">
+                                            <div class="col-lg-6">
+                                              <div class="p-5">
+                                                <h3 class="fw-normal mb-5" style="color: #4835d4;">General Infomation</h3>
+                              
+                                                
+                              
+                                                <div class="row">
+                                                  <div class="col-md-6 mb-4 pb-2">
+                              
+                                                    <div class="form-outline">
+                                                      <input type="text" id="form3Examplev2" name="fname" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplev2">First name</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                  <div class="col-md-6 mb-4 pb-2">
+                              
+                                                    <div class="form-outline">
+                                                      <input type="text" id="form3Examplev3" name="lname" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplev3">Last name</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                </div>
+                              
+                                            
+                              
+                                                <div class="mb-4 pb-2">
+                                                  <div class="form-outline">
+                                                    <input type="date" id="form3Examplev4" name="dob" class="form-control form-control-lg" />
+                                                    <label class="form-label" for="form3Examplev4">Date of Birth</label>
+                                                  </div>
+                                                </div>
+                                               
+                                                  <div class="mb-4 pb-2">
+                                                    
+                                                    <div class="form-outline">
+                                                      <input type="file" name="image" class="form-control form-control-lg" id="inputGroupFile01" onchange="previewImage(event)">
+                                                      <label for="inputGroupFile01" class="form-label">Choose photo</label>
+                                                      
+                                                    </div>
+                                                  </div>
+                                                  <div class="mb-4">
+                                                    <img id="image-preview" class="img-fluid" alt="Uploaded Image will shown below" style="width: 70%;">
+                                                  </div>
+                                                  
+                                                      <div class="mb-4 pb-3">
+                                                        <select name="status" class="form-control form-control-lg p-2">
+                                                          <option disabled selected value>Select martial status</option>
+                                                          <option value="single">single</option>
+                                                          <option value="married">married</option>
+                                                        </select>
+                                                        <label class="form-label" for="form3Examplev4">Status</label>
+                                                      </div>
+                        
+                                                      <div class="mb-4 pb-3">
+                                                        <select name="gender" class="form-control form-control-lg p-2">
+                                                          <option disabled selected value>Select gender</option>
+                                                          <option value="male">male</option>
+                                                          <option value="female">female</option>
+                                                        </select>
+                                                        <label class="form-label" for="form3Examplev4">Gender</label>
+                                                      </div>
+                                                      <div class="row">
+                                                        <div class="col-md-5 mb-4 pb-2">
+                                    
+                                                          <div class="form-outline form-white">
+                                                            <input type="text" id="form3Examplea7" class="form-control form-control-lg" value="91" readonly/>
+                                                            <label class="form-label" for="form3Examplea7">Code +</label>
+                                                          </div>
+                                    
+                                                        </div>
+                                                        
+                                                        <div class="col-md-7 mb-4 pb-2">
+                                    
+                                                          <div class="form-outline form-white">
+                                                            <input type="text" id="form3Examplea8" name="phone" class="form-control form-control-lg" />
+                                                            <label class="form-label" for="form3Examplea8">Phone Number</label>
+                                                          </div>
+                                    
+                                                        </div>
+                                                      </div>
+                                                     
+                                                      <div class="mb-4 pb-2">
+                                                        <div class="form-outline">
+                                                          <input type="email" id="form3Examplev4" name="email" class="form-control form-control-lg" />
+                                                          <label class="form-label" for="form3Examplev4">Email</label>
+                                                        </div>
+                                                      </div>
+                                                        
+                                                      
+                                              </div>
+                                            </div>
+                                            <div class="col-lg-6 bg-indigo text-white">
+                                              <div class="p-5">
+                                                <h3 class="fw-normal mb-5">Details</h3>
+                                                
+                                                <div class="mb-4 pb-2">
+                                                  <div class="form-outline">
+                                                    {% for branch in branch_names %}
+                                                    <input type="text" id="form3Examplev4" name="branch" value="{{ branch }}" class="form-control form-control-lg" readonly/>
+                                                    <label class="form-label" for="form3Examplev4">branch</label>
+                                                    {% endfor %}
+                                                  </div>
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                    <div class="form-outline form-white">
+                                                      <textarea name="address" id="form3Examplea2" class="form-control form-control-lg"></textarea>
+                                                      <label class="form-label" for="form3Examplea2">Address</label>
+                                                    </div>
+                                                  </div>
+                            
+                              
+                                                <div class="row">
+                                                  <div class="col-md-5 mb-4 pb-2">
+                              
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="form3Examplea4" name="city" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplea4">city</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                  <div class="col-md-7 mb-4 pb-2">
+                              
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="form3Examplea5" name="state" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplea5">state</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                </div>
+                                                
+                                                <div class="row">
+                                                  <div class="col-md-5 mb-4 pb-2">
+                              
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="form3Examplea4" name="zipcode" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplea4">zipcode</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                  <div class="col-md-7 mb-4 pb-2">
+                              
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="form3Examplea5" name="country" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplea5">country</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                </div>
+                              
+                                                
+                                                <div class="mb-4 pb-3">
+                                                  <select name="education" class="form-control form-control-lg p-2">
+                                                    <option disabled selected value>Select your education</option>
+                                                    <option value="high school">high school</option>
+                                                    <option value="under graduate">under graduate</option>
+                                                    <option value="Master degree">Master degree</option>
+                                                    <option value="phd">phd</option>
+
+                                                  </select>
+                                                  <label class="form-label" for="form3Examplev4">education</label>
+                                                </div>
+                                                
+                                                
+                                                
+                                                <div class="mb-4 pb-3">
+                                                  <select name="idproof" class="form-control form-control-lg p-2">
+                                                    <option disabled selected value>Select your id</option>
+                                                    <option value="adhar card">adhar card</option>
+                                                    <option value="voter id">voter id</option>
+                                                    <option value="driving lisence">driving lisence</option>
+                                                    <option value="passport">passport</option>
+                                                    <option value="student id">student id</option>
+
+                                                  </select>
+                                                  <label class="form-label" for="form3Examplev4">form of identification</label>
+                                                </div>
+                                              
+                                                <div class="mb-4 pb-2">
+                                                  <div class="form-outline">
+                                                    <input type="number" id="form3Examplev4" name="idnumber" class="form-control form-control-lg" />
+                                                    <label class="form-label" for="form3Examplev4">ID NUMBER</label>
+                                                  </div>
+                                                </div>
+                                                
+                                                <!-- <div class="mb-4 pb-2">
+                                                  <div class="form-file">
+                                                    <input type="file" name="file1" class="form-file-input">
+                                                    <label class="form-file-label" for="inputGroupFile01" >
+                                                      <i class="fas fa-cloud-upload-alt"></i>
+                                                      <span class="form-file-text"><b>Browse files</b><br>Drag and drop files here</span>
+                                                    </label>
+                                                  </div>
+                                                </div> -->
+                                                <div class="mb-1 pb-2">
+                                                
+                                                 <label for="images" class="drop-container">
+                                                  <i class="fas fa-cloud-upload-alt"></i>
+                                                  <span class="drop-title">Drop files here</span>
+                                                  or
+                                                  <input type="file" name="image1" id="images" class="file1" required>
+                                                   
+                                                </label>
+                                                <label class="form-label" for="form3Examplev4">CHOOSE ID CARD TO UPLOAD</label>
+                                              </div>
+
+                                              <!-- <div class="mb-4 pb-2">
+                                                    
+                                                <div class="form-outline">
+                                                  <input type="file" name="image1" class="form-control form-control-lg" id="inputGroupFile01" onchange="previewImage(event)">
+                                                  <label for="inputGroupFile01" class="form-label">Choose photo</label>
+                                                  
+                                                </div>
+                                              </div>  -->
+                                                
+                                                    
+                                                 
+                                                
+                                                
+                                                
+                                                
+                                                  <input type="submit"  name="add" value="Add customer" class="btn btn-primary btn-lg">
+                              
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </section>
+                              </form>
+                 </section>
+                 
+                
+            </main>  
+    <!-- ====================end of aside==========================   -->
+    
+    <script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+          var output = document.getElementById('image-preview');
+          output.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+       }
+      
+      
+      // validate password===============
+     
+      
+      
+      
+      
+      //end
+     
+      
+      let sidebar = document.querySelector(".sidebar");
+      let sidebarBtn = document.querySelector(".bx-menu");
+      console.log(sidebarBtn);
+      sidebarBtn.addEventListener("click", ()=>{
+        sidebar.classList.toggle("close");
+      });
+      </script>
+       <script>
+        var submenuIcons = document.querySelectorAll('.submenu-icon');
+      // Loop through each submenu icon
+      submenuIcons.forEach(function(icon) {
+         // Add a click event listener to each submenu icon
+         icon.addEventListener('click', function() {
+             // Get the corresponding submenu for this icon
+             var submenu = icon.parentElement.nextElementSibling; 
+             // Toggle the visibility of the submenu
+             submenu.classList.toggle('show');
+         });
+      });
+      </script>
+</body>
+</html>

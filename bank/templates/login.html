@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/c7705f70af.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="/static/css/login.css">
+  <!-- <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css' /> -->
+  <title>Login form</title>
+</head>
+<br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  <ul class=flashes>
+  {% for message in messages %}
+    <script type="text/javascript">alert("{{message}}")</script>
+  {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
+<div class="container" id="container">
+	
+	<div class="form-container sign-in-container">
+    <form  method="post">
+			<h1>Sign in</h1>
+			<div class="social-container">
+				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+				<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+			</div>
+			<span>or use your account</span>
+      <input type="username" name="username" placeholder="username" />
+			<input type="password" name="password" placeholder="Password" id="password"/>
+			<a href="#">Forgot your password?</a>
+      <input type="submit" name="submit" name="submit" value="Login" class="button "/>
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<h1>Welcome Back!</h1>
+				<p>To keep connected with us please login with your personal info</p>
+				<button class="ghost" id="signIn">Sign In</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+        <h1>Welcome Back!</h1>
+				<p>To keep connected with us please login with your personal info</p>
+				<button class="ghost" id="signUp">Read more</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+ <!-- <footer>
+	<p>
+		Created with <i class="fa fa-heart"></i> by
+		<a target="_blank" href="https://florin-pop.com">Florin Pop</a>
+		- Read how I created this and how you can join the challenge
+		<a target="_blank" href="https://www.florin-pop.com/blog/2019/03/double-slider-sign-in-up-form/">here</a>.
+	</p>
+</footer>  -->
+
+<br><br>
+<footer>
+	<div class="footer-container">
+	  <div class="footer-section">
+		<h3>About Us</h3>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tristique bibendum neque vel viverra. Nam malesuada nisl at turpis ultrices, ut suscipit sapien hendrerit.</p>
+	  </div>
+	  <div class="footer-section">
+		<h3>Links</h3>
+		<ul>
+		  <li><a href="#">Home</a></li>
+		  <li><a href="#">About Us</a></li>
+		  <li><a href="#">Contact Us</a></li>
+		</ul>
+	  </div>
+	  <div class="footer-section">
+		<h3>Contact Us</h3>
+		<p>123 Main St<br>City, State 12345<br>Phone: 555-555-5555<br>Email: info@example.com</p>
+		<div class="social-media-icons">
+		  <a href="#"><i class="fab fa-facebook-f"></i></a>
+		  <a href="#"><i class="fab fa-twitter"></i></a>
+		  <a href="#"><i class="fab fa-instagram"></i></a>
+		</div>
+	  </div>
+	</div>
+	<div class="footer-bottom">
+	  <p>&copy; 2023 MyCompany. All Rights Reserved.</p>
+	</div>
+  </footer>
+  
+  
+
+
+
+
+
+
+<!-- <script src="/static/js/login.js"></script> -->
+</body>
+</html>
+  

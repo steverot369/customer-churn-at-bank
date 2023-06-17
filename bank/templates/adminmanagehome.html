@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale">
+<title>Responsive Dashboard using HTML CSS and JavaScript </title>
+<!-- MATERIAL CDN  -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+rel="stylesheet">
+<!-- google font -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;1,700&display=swap" rel="stylesheet">
+<!-- STYLESHEET -->
+<script src="https://kit.fontawesome.com/c7705f70af.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="/static/css/customer.css">
+</head>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  <ul class=flashes>
+  {% for message in messages %}
+    <script type="text/javascript">alert("{{message}}")</script>
+  {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
+<style>
+   
+
+    .welcome-container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-left: 25%;
+    }
+
+    .welcome-text {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #498ed8ea;
+      /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); */
+    }
+
+    .subtitle-text {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+
+
+    .read-more-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .read-more-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .social-icons {
+      margin-top: 40px;
+    }
+
+    .social-icons a {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      background-color: #007bff;
+      color: #fff;
+      text-align: center;
+      line-height: 40px;
+      border-radius: 50%;
+      transition: background-color 0.3s ease;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-icons a:hover {
+      background-color: #0056b3;
+    }
+    
+    .submenu {
+    display: none;
+    padding-left: 80px;
+   
+}
+
+.show {
+    display: block;
+}
+
+
+
+  </style>
+<body>
+    <nav>
+        <div class="container" style="right:14%">
+            <img src="/static/images/logo3.png" class="logo">
+            <div class="search-bar">
+                <span class="material-icons-sharp">search</span>
+                <input type="search" placeholder="search">
+            </div>
+            <div class="profile-area" style="padding-left: 117%;">
+                <div class="theme-btn">
+                    <span class="material-icons-sharp active">light_mode</span>
+                    <span class="material-icons-sharp">dark_mode</span>
+
+                </div>
+                <div class="profile">
+                    <div class="profile-photo">
+                        <img src="/static/images/profile-2.jpg" style="width: 100%;">
+                    </div>
+                
+                <h5>Steve Rodrigues</h5>
+                <span class="material-icons-sharp">expand_more</span>
+            </div>
+            <button id="menu-btn">
+                <span class="material-icons-sharp">menu</span>
+            </button>
+                </div>
+        </div>
+    </nav>
+  
+    <!-- end of navbar     -->
+            <main>
+                <aside >
+                   <button id="close-btn">
+                        <span class="material-icons-sharp">close</span>
+                   </button>
+                   <div class="sidebar" class="active">
+                    <a href="adminhome" style="text-decoration: none;">
+                        <span class="material-icons-sharp">dashboard</span>
+                        <h4>Dashboard</h4>
+                    </a>
+                    <a href="#" class="menu-link" style="text-decoration: none;">
+                      <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
+                      <h4>employee</h4>
+                    
+                  </a>
+                  <div class="submenu">
+                      <a href="adminaddemployee" style="text-decoration: none;">add employee</a>
+                      
+                      <a href="adminmanagemployee" style="text-decoration: none;">Manage employee</a>
+                      
+                  </div>
+                  
+                  <a href="#" class="menu-link" style="text-decoration: none;">
+                      <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
+                      <h4>Branch</h4>
+                      
+                  </a>
+                  <div class="submenu">
+                      <a href="adminaddbranch" style="text-decoration: none;">add branch</a>
+                      <a href="#" style="text-decoration: none;">view branch</a>
+                  
+                  </div>
+                  
+                  <!-- Add more menu-link and submenu sections as needed -->
+                  <a href="#" class="menu-link" style="text-decoration: none;">
+                    <span class="material-icons-sharp submenu-icon">group</span>
+                    <h4>customers</h4>
+                    
+                </a>
+                
+                   
+                    
+                    <a href="/adminviewtranasction" style="text-decoration: none;">
+                      
+                      <span class="material-icons-sharp">stacked_bar_chart</span>
+                      <h4>transactions</h4>
+                  </a>
+            
+                <a href="/adminviewtranasction" style="text-decoration: none;">
+                      
+                  <span class="material-icons-sharp">mark_email_unread</span>
+                  <h4>feedback</h4>
+              </a>
+              <a href="/adminviewtranasction" style="text-decoration: none;">
+                      
+                <span class="material-icons-sharp">speaker_notes</span>
+                <h4>complaint</h4>
+            </a>
+                    <a href="#" style="text-decoration: none;">
+                        <span class="material-icons-sharp">settings</span>
+                        <h4>Settings</h4>
+                    </a>
+                   </div>
+                   <!---------end of side bar--- -->
+                   <div class="updates">
+                        <span class="material-icons-sharp">keyboard_return</span>
+                            <h4>Go back</h4>
+                            <p>to home page</p>
+                          
+                            <a href="adminhome" style="text-decoration: none;">Go Back</a>
+                    </div>
+                </aside>
+                 <!-- end of aside----- -->
+
+                 <section class="middle">
+                    <div class="header">
+                        <h1>Dashboard</h1>
+                        <input type="date">
+                    </div>
+                    <div class="welcome-container">
+                        <h1 class="welcome-text">Welcome to Bank Admin Portal</h1>
+                    
+                        <div class="subtitle-text">Manage and oversee all banking operations</div>
+                    
+                        
+                    
+                        
+                    
+                        <a href="#" class="read-more-btn">Read More</a>
+                    
+                        <div class="social-icons">
+                          <a href="#"><i class="fab fa-facebook-f"></i></a>
+                          <a href="#"><i class="fab fa-twitter"></i></a>
+                          <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                      </div>
+             </section>
+                
+            </main>  
+    <!-- ====================end of aside==========================   -->
+</body>
+<script>
+  // Get all the submenu icons
+var submenuIcons = document.querySelectorAll('.submenu-icon');
+// Loop through each submenu icon
+submenuIcons.forEach(function(icon) {
+   // Add a click event listener to each submenu icon
+   icon.addEventListener('click', function() {
+       // Get the corresponding submenu for this icon
+       var submenu = icon.parentElement.nextElementSibling; 
+       // Toggle the visibility of the submenu
+       submenu.classList.toggle('show');
+   });
+});
+</script>
+</html>
