@@ -52,3 +52,8 @@ def publichome():
     session.clear()
     flash("Successfully logout...")
     return redirect(url_for('public.publichome'))
+
+
+@manager.route('/managermanagehome')
+def managermanagehome():
+    return render_template('managermanagehome.html')
