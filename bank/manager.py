@@ -3,9 +3,9 @@ from database import *
 from datetime import datetime
 import joblib
 import pandas as pd
+import random
 
-
-model = joblib.load('churn_predict_model')
+# model = joblib.load('churn_predict_model')
 app.secret_key = 'your_secret_key' 
 admin=Blueprint('admin',__name__)
 db = mysql.connector.connect(
@@ -94,8 +94,11 @@ def managercustomerchurn(customer_id):
     customer_details = cursor.fetchone()
     cursor.execute("SELECT count FROM bankproducts WHERE customer_id='%s'" % customer_id)
     customer_details1 = cursor.fetchone()
-    cursor.execute("SELECT balance FROM savingsacc WHERE customer_id='%s'" % customer_id)
-    customer_details2 = cursor.fetchone()
+    cursor.execute("SELECT customer_id, SUM(balance) FROM savingsacc WHERE customer_id='%s' GROUP BY customer_id" % customer_id)
+    customer_balances = cursor.fetchone()
+    
+    cursor.execute("SELECT COUNT(customer_id) FROM transaction WHERE customer_id='%s'" % customer_id)
+    customer_details3 = cursor.fetchone()
     # Calculate date and tenure
     dob = customer_details[0]
     msalary = customer_details[1]
@@ -105,7 +108,7 @@ def managercustomerchurn(customer_id):
 
     joindate = customer_details[3]
     gender = customer_details[4]
-    gender_value = 1 if gender == "Male" else 0
+    gender_value = 1 if gender == "male" else 0
 
     current_date = datetime.today().date()
     dob_date = datetime.strptime(dob, "%Y-%m-%d").date()
@@ -114,11 +117,35 @@ def managercustomerchurn(customer_id):
     date_date = datetime.strptime(joindate, "%Y-%m-%d").date()
     tenure = today.year - date_date.year - ((today.month, today.day) < (date_date.month, date_date.day))
     NumOfProducts = customer_details1[0]
-    balance = customer_details2[0]
+    balances = customer_balances[1]
+    # balances = [balance[1] for balance in customer_balances]
+    IsActiveMember = customer_details3[0]
+    IsActiveMembervalue = 1 if IsActiveMember >= 1 else 0
+    if IsActiveMember >=3 and IsActiveMember <=10:
+        credit_score = random.randint(300, 350)
+    elif IsActiveMember >=11 and IsActiveMember <=20:
+        credit_score = random.randint(351, 450)
+    elif IsActiveMember >=21 and IsActiveMember <=30:
+        credit_score = random.randint(451, 550)
+    elif IsActiveMember >=31 and IsActiveMember <=40:
+        credit_score = random.randint(551, 650)
+    elif IsActiveMember >=41 and IsActiveMember <=50:
+        credit_score = random.randint(651, 700)
+    elif IsActiveMember >=51 and IsActiveMember <=60:
+        credit_score = random.randint(701, 750)
+    elif IsActiveMember >=61 and IsActiveMember <=70:
+        credit_score = random.randint(751, 800)
+    elif IsActiveMember >=71 and IsActiveMember <=80:
+        credit_score = random.randint(801, 850)
+    elif IsActiveMember >=81 and IsActiveMember <=90:
+        credit_score = random.randint(851, 900)
+    else:
+        credit_score = random.randint(901, 950)
+
 
 
     # Pass date and tenure to the template
-    return render_template('managercustomerchurn.html', customer_id=customer_id, customer_details=customer_details, age=age,state=state,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balance=balance,gender_value=gender_value)
+    return render_template('managercustomerchurn.html', customer_id=customer_id, customer_details=customer_details, age=age,state=state,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score)
 
         
         
