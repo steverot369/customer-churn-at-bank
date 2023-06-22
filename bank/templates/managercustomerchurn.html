@@ -7,22 +7,36 @@
                     </div><br>
                     <br>
                     <br>
-
-                    <h2>Customer Churn</h2>
-                        <p>Customer ID: {{ customer_id }}</p>
-                        <p>CreditScore: {{ credit_score }}</p>
-
-                        <p>age: {{ age }}</p>
-                        <p>Tenure: <span>{{ tenure }}</span></p>
-                        <p>Balance: <span>{{ balances }}</span></p>
-                        <p>NumOfProducts: <span>{{ NumOfProducts }}</span></p>
-                        <!-- <p>HasCrCard: <span>{{ HasCrCard }}</span></p> -->
-                        <p>IsActiveMember:(1:active 0:not active): <span>{{ IsActiveMembervalue }}</span></p>
-                        <p>EstimatedSalary: <span>{{ msalary }}</span></p>
-                        <p>Geography_Germany: <span>{{ state }}</span></p>
-                        <!-- <p>Geography_Spain: <span>{{ Geography_Spain }}</span></p> -->
-                        <p>Gender_Male: (1:male,0:female) : <span>{{ gender_value }}</span></p>
-
+                    <div class="container-5">
+                        <h2 class="churn-heading">Customer Churn</h2>
+                        <p class="customer-id">Customer ID: {{ customer_id }}</p>
+                        <p class="credit-score">CreditScore: {{ credit_score }}</p>
+                      
+                        <p class="age">Age: {{ age }}</p>
+                        <p class="tenure">Tenure: <span>{{ tenure }}</span></p>
+                        <p class="balance">Balance: <span>{{ balances }}</span></p>
+                        <p class="num-of-products">NumOfProducts: <span>{{ NumOfProducts }}</span></p>
+                        <p class="has-cr-card">HasCrCard: <span>{{ 1 }}</span></p>
+                        <p class="is-active-member">IsActiveMember: (1: active, 0: not active): <span>{{ IsActiveMembervalue }}</span></p>
+                        <p class="estimated-salary">EstimatedSalary: <span>{{ msalary }}</span></p>
+                        <p class="geography-germany">Geography_Germany: <span>{{ Geography_Germany }}</span></p>
+                        <p class="gender">Gender_Male: (1: male, 0: female): <span>{{ gender_value }}</span></p>
+                      
+                      <form method="POST">
+                        <input type="hidden" name="age" value="{{ age }}">
+                        <input type="hidden" name="tenure" value="{{ tenure }}">
+                        <input type="hidden" name="balance" value="{{ balances }}">
+                        <input type="hidden" name="num_of_products" value="{{ NumOfProducts }}">
+                        <input type="hidden" name="has_cr_card" value="{{ 1 }}">
+                        <input type="hidden" name="is_active_member" value="{{ IsActiveMembervalue }}">
+                        <input type="hidden" name="estimated_salary" value="{{ msalary }}">
+                        <input type="hidden" name="geography_germany" value="{{ Geography_Germany }}">
+                        <input type="hidden" name="gender" value="{{ gender_value }}">
+                        <!-- <button class="churn-analysis-btn" type="submit">Churn Analysis</button> -->
+                        <a href="customerchurnprediction" class="btn btn-info">Customer Churn</a>
+                      </form>
+                    </div>
+                    
              </section>
                 
             </main>  

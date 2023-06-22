@@ -4,8 +4,11 @@ from datetime import datetime
 import joblib
 import pandas as pd
 import random
-
-# model = joblib.load('churn_predict_model')
+import os
+# model_path = os.path.join('C:', 'mca project 2023', 'BankManagement', 'bank', 'churn_predict_model')
+model = joblib.load('C:/mca project 2023/BankManagement/bank/churn_predict_model')
+# # model = joblib.load('churn_predict_model')
+# C:\mca project 2023\BankManagement\bank\churn_predict_model
 app.secret_key = 'your_secret_key' 
 admin=Blueprint('admin',__name__)
 db = mysql.connector.connect(
@@ -103,8 +106,22 @@ def managercustomerchurn(customer_id):
     dob = customer_details[0]
     msalary = customer_details[1]
 
-    state = customer_details[2]
-    
+    Geography_Germany = customer_details[2]
+    if(Geography_Germany == 'kerala'):
+        Geography_Germany = 1
+        Geography_Spain= 0
+        Geography_France = 0
+                
+    elif(Geography_Germany == 'karnadaka'):
+        Geography_Germany = 0
+        Geography_Spain= 1
+        Geography_France = 0
+        
+    else:
+        Geography_Germany = 0
+        Geography_Spain= 0
+        Geography_France = 1
+        
 
     joindate = customer_details[3]
     gender = customer_details[4]
@@ -120,7 +137,7 @@ def managercustomerchurn(customer_id):
     balances = customer_balances[1]
     # balances = [balance[1] for balance in customer_balances]
     IsActiveMember = customer_details3[0]
-    IsActiveMembervalue = 1 if IsActiveMember >= 1 else 0
+    IsActiveMembervalue = 1 if IsActiveMember >= 5 else 0
     if IsActiveMember >=3 and IsActiveMember <=10:
         credit_score = random.randint(300, 350)
     elif IsActiveMember >=11 and IsActiveMember <=20:
@@ -145,7 +162,43 @@ def managercustomerchurn(customer_id):
 
 
     # Pass date and tenure to the template
-    return render_template('managercustomerchurn.html', customer_id=customer_id, customer_details=customer_details, age=age,state=state,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score)
+    return render_template('managercustomerchurn.html', customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score)
 
-        
+# @manager.route('/customerchurnprediction', methods=['POST'])
+# def customerchurnprediction():
+#     age = request.form['age']
+#     tenure = request.form['tenure']
+#     balance = request.form['balance']
+#     num_of_products = request.form['num_of_products']
+#     has_cr_card = request.form['has_cr_card']
+#     is_active_member = request.form['is_active_member']
+#     estimated_salary = request.form['estimated_salary']
+#     geography_germany = request.form['geography_germany']
+#     gender = request.form['gender']
+
+    
+#     prediction_data = pd.DataFrame({
+#             'CreditScore': [CreditScore],
+#             'Age': [Age],
+#             'Tenure': [Tenure],
+#             'Balance': [Balance],
+#             'NumOfProducts': [NumOfProducts],
+#             'HasCrCard': [HasCrCard],
+#             'IsActiveMember': [IsActiveMember],
+#             'EstimatedSalary': [EstimatedSalary],
+#             'Geography_Germany': [Geography_Germany],
+#             'Geography_Spain': [Geography_Spain],
+#             'Gender_Male': [Gender_Male]
+#         })
+
+#     prediction = model.predict(prediction_data)
+#     probability = model.predict_proba(prediction_data)[0][1] * 100
+#     stay_probability = 100 - probability
+#     if prediction == 1:
+#         return render_template('index.html', prediction_text="The Customer will leave the bank",
+#                                    probability=probability, stay_probability=stay_probability)
+#     else:
+#         return render_template('index.html', prediction_text="The Customer will not leave the bank",
+#                                    probability=stay_probability, stay_probability=probability)
+          
         
