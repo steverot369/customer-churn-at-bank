@@ -647,7 +647,21 @@ label{
   color: blue;
   font-weight: bold;
 }
+@keyframes blink {
+        0% {
+            opacity: 0.2;
+        }
+        50% {
+            opacity: 0.5;
+        }
+        100% {
+            opacity: 0.2;
+        }
+    }
 
+    #workingText {
+        animation: blink 1s linear infinite;
+    }
   </style>
 <body>
     <nav>

@@ -171,6 +171,71 @@ def managercustomerchurn(customer_id):
         Geography_Germany = int(request.form['geography_germany'])
         Geography_Spain = int(request.form['geography_spain'])
         Gender = int(request.form['gender'])
+        cursor.execute("SELECT dob, msalary, state, date,gender active FROM customers WHERE cid='%s'" % customer_id)
+        customer_details = cursor.fetchone()
+        cursor.execute("SELECT count FROM bankproducts WHERE customer_id='%s'" % customer_id)
+        customer_details1 = cursor.fetchone()
+        cursor.execute("SELECT customer_id, SUM(balance) FROM savingsacc WHERE customer_id='%s' GROUP BY customer_id" % customer_id)
+        customer_balances = cursor.fetchone()
+        
+        cursor.execute("SELECT COUNT(customer_id) FROM transaction WHERE customer_id='%s'" % customer_id)
+        customer_details3 = cursor.fetchone()
+        # Calculate date and tenure
+        dob = customer_details[0]
+        msalary = customer_details[1]
+
+        Geography_Germany = customer_details[2]
+        if(Geography_Germany == 'kerala'):
+            Geography_Germany = 1
+            Geography_Spain= 0
+            Geography_France = 0
+                    
+        elif(Geography_Germany == 'karnadaka'):
+            Geography_Germany = 0
+            Geography_Spain= 1
+            Geography_France = 0
+            
+        else:
+            Geography_Germany = 0
+            Geography_Spain= 0
+            Geography_France = 1
+            
+
+        joindate = customer_details[3]
+        gender = customer_details[4]
+        gender_value = 1 if gender == "male" else 0
+
+        current_date = datetime.today().date()
+        dob_date = datetime.strptime(dob, "%Y-%m-%d").date()
+        age = (current_date - dob_date).days // 365
+        today = datetime.today().date()
+        date_date = datetime.strptime(joindate, "%Y-%m-%d").date()
+        tenure = today.year - date_date.year - ((today.month, today.day) < (date_date.month, date_date.day))
+        NumOfProducts = customer_details1[0]
+        balances = customer_balances[1]
+        # balances = [balance[1] for balance in customer_balances]
+        IsActiveMember = customer_details3[0]
+        IsActiveMembervalue = 1 if IsActiveMember >= 5 else 0
+        if IsActiveMember >=3 and IsActiveMember <=10:
+            credit_score = random.randint(300, 350)
+        elif IsActiveMember >=11 and IsActiveMember <=20:
+            credit_score = random.randint(351, 450)
+        elif IsActiveMember >=21 and IsActiveMember <=30:
+            credit_score = random.randint(451, 550)
+        elif IsActiveMember >=31 and IsActiveMember <=40:
+            credit_score = random.randint(551, 650)
+        elif IsActiveMember >=41 and IsActiveMember <=50:
+            credit_score = random.randint(651, 700)
+        elif IsActiveMember >=51 and IsActiveMember <=60:
+            credit_score = random.randint(701, 750)
+        elif IsActiveMember >=61 and IsActiveMember <=70:
+            credit_score = random.randint(751, 800)
+        elif IsActiveMember >=71 and IsActiveMember <=80:
+            credit_score = random.randint(801, 850)
+        elif IsActiveMember >=81 and IsActiveMember <=90:
+            credit_score = random.randint(851, 900)
+        else:
+            credit_score = random.randint(901, 950)
         prediction_data = pd.DataFrame({
                 'CreditScore': [CreditScore],
                 'Age': [Age],
@@ -189,10 +254,11 @@ def managercustomerchurn(customer_id):
         probability = model.predict_proba(prediction_data)[0][1] * 100
         stay_probability = 100 - probability
         if prediction == 1:
-            print("The Customer will leave the bank", probability)
-        
+            return render_template('predictionresult.html', prediction_text="The Customer will leave the bank",
+                                   probability=probability, stay_probability=stay_probability,customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score)
         else:
-            print("The Customer will not leave the bank",stay_probability)
+            return render_template('predictionresult.html', prediction_text="The Customer will not leave the bank",
+                                   probability=stay_probability, stay_probability=probability,customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score)
 
     # Pass date and tenure to the template
     return render_template('managercustomerchurn.html', customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score)
@@ -229,10 +295,11 @@ def customerchurnprediction():
         probability = model.predict_proba(prediction_data)[0][1] * 100
         stay_probability = 100 - probability
         if prediction == 1:
-            print("The Customer will leave the bank", probability)
-        
+            return render_template('predictionresult.html', prediction_text="The Customer will leave the bank",
+                                   probability=probability, stay_probability=stay_probability)
         else:
-            print("The Customer will not leave the bank",stay_probability)
+            return render_template('predictionresult.html', prediction_text="The Customer will not leave the bank",
+                                   probability=stay_probability, stay_probability=probability)
     return render_template('customerchurnprediction.html')
     
 
