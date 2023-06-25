@@ -159,46 +159,83 @@ def managercustomerchurn(customer_id):
     else:
         credit_score = random.randint(901, 950)
 
+    if 'add' in request.form:
+        CreditScore=int(request.form['credit_score'])
+        Age = int(request.form['age'])
+        Tenure = int(request.form['tenure'])
+        Balance = float(request.form['balance'])
+        NumOfProducts = int(request.form['num_of_products'])
+        HasCrCard = int(request.form['has_cr_card'])
+        IsActiveMember = int(request.form['is_active_member'])
+        EstimatedSalary = float(request.form['estimated_salary'])
+        Geography_Germany = int(request.form['geography_germany'])
+        Geography_Spain = int(request.form['geography_spain'])
+        Gender = int(request.form['gender'])
+        prediction_data = pd.DataFrame({
+                'CreditScore': [CreditScore],
+                'Age': [Age],
+                'Tenure': [Tenure],
+                'Balance': [Balance],
+                'NumOfProducts': [NumOfProducts],
+                'HasCrCard': [HasCrCard],
+                'IsActiveMember': [IsActiveMember],
+                'EstimatedSalary': [EstimatedSalary],
+                'Geography_Germany': [Geography_Germany],
+                'Geography_Spain': [Geography_Spain],
+                'Gender_Male': [Gender]
+            })
 
+        prediction = model.predict(prediction_data)
+        probability = model.predict_proba(prediction_data)[0][1] * 100
+        stay_probability = 100 - probability
+        if prediction == 1:
+            print("The Customer will leave the bank", probability)
+        
+        else:
+            print("The Customer will not leave the bank",stay_probability)
 
     # Pass date and tenure to the template
-    return render_template('managercustomerchurn.html', customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score)
+    return render_template('managercustomerchurn.html', customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score)
 
-# @manager.route('/customerchurnprediction', methods=['POST'])
-# def customerchurnprediction():
-#     age = request.form['age']
-#     tenure = request.form['tenure']
-#     balance = request.form['balance']
-#     num_of_products = request.form['num_of_products']
-#     has_cr_card = request.form['has_cr_card']
-#     is_active_member = request.form['is_active_member']
-#     estimated_salary = request.form['estimated_salary']
-#     geography_germany = request.form['geography_germany']
-#     gender = request.form['gender']
+@manager.route('/customerchurnprediction', methods=['POST'])
+def customerchurnprediction():
+    if 'add' in request.form:
+        creditscore=request.form['credit_score']
+        age = request.form['age']
+        tenure = request.form['tenure']
+        balance = request.form['balance']
+        num_of_products = request.form['num_of_products']
+        has_cr_card = request.form['has_cr_card']
+        is_active_member = request.form['is_active_member']
+        estimated_salary = request.form['estimated_salary']
+        geography_germany = request.form['geography_germany']
+        geography_spain = request.form['geography_spain']
+        gender = request.form['gender']
+        prediction_data = pd.DataFrame({
+                'CreditScore': [creditscore],
+                'Age': [age],
+                'Tenure': [tenure],
+                'Balance': [balance],
+                'NumOfProducts': [num_of_products],
+                'HasCrCard': [has_cr_card],
+                'IsActiveMember': [is_active_member],
+                'EstimatedSalary': [estimated_salary],
+                'Geography_Germany': [geography_germany],
+                'Geography_Spain': [geography_spain],
+                'Gender_Male': [gender]
+            })
 
+        prediction = model.predict(prediction_data)
+        probability = model.predict_proba(prediction_data)[0][1] * 100
+        stay_probability = 100 - probability
+        if prediction == 1:
+            print("The Customer will leave the bank", probability)
+        
+        else:
+            print("The Customer will not leave the bank",stay_probability)
+    return render_template('customerchurnprediction.html')
     
-#     prediction_data = pd.DataFrame({
-#             'CreditScore': [CreditScore],
-#             'Age': [Age],
-#             'Tenure': [Tenure],
-#             'Balance': [Balance],
-#             'NumOfProducts': [NumOfProducts],
-#             'HasCrCard': [HasCrCard],
-#             'IsActiveMember': [IsActiveMember],
-#             'EstimatedSalary': [EstimatedSalary],
-#             'Geography_Germany': [Geography_Germany],
-#             'Geography_Spain': [Geography_Spain],
-#             'Gender_Male': [Gender_Male]
-#         })
 
-#     prediction = model.predict(prediction_data)
-#     probability = model.predict_proba(prediction_data)[0][1] * 100
-#     stay_probability = 100 - probability
-#     if prediction == 1:
-#         return render_template('index.html', prediction_text="The Customer will leave the bank",
-#                                    probability=probability, stay_probability=stay_probability)
-#     else:
-#         return render_template('index.html', prediction_text="The Customer will not leave the bank",
-#                                    probability=stay_probability, stay_probability=probability)
+        
           
         
