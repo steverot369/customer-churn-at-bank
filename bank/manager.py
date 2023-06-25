@@ -93,7 +93,7 @@ def managermanagecustomers():
 @manager.route('/managercustomerchurn/<customer_id>', methods=['GET', 'POST'])
 def managercustomerchurn(customer_id):
     cursor = db.cursor()
-    cursor.execute("SELECT dob, msalary, state, date,gender active FROM customers WHERE cid='%s'" % customer_id)
+    cursor.execute("SELECT dob, msalary, state, date,gender,active,f_name,l_name FROM customers WHERE cid='%s'" % customer_id)
     customer_details = cursor.fetchone()
     cursor.execute("SELECT count FROM bankproducts WHERE customer_id='%s'" % customer_id)
     customer_details1 = cursor.fetchone()
@@ -105,6 +105,9 @@ def managercustomerchurn(customer_id):
     # Calculate date and tenure
     dob = customer_details[0]
     msalary = customer_details[1]
+    f_name = customer_details[6]
+    l_name = customer_details[7]
+
 
     Geography_Germany = customer_details[2]
     if(Geography_Germany == 'kerala'):
@@ -183,6 +186,8 @@ def managercustomerchurn(customer_id):
         # Calculate date and tenure
         dob = customer_details[0]
         msalary = customer_details[1]
+        state = customer_details[2]
+
 
         Geography_Germany = customer_details[2]
         if(Geography_Germany == 'kerala'):
@@ -255,13 +260,13 @@ def managercustomerchurn(customer_id):
         stay_probability = 100 - probability
         if prediction == 1:
             return render_template('predictionresult.html', prediction_text="The Customer will leave the bank",
-                                   probability=probability, stay_probability=stay_probability,customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score)
+                                   probability=probability, stay_probability=stay_probability,customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score,f_name=f_name,l_name=l_name,state=state)
         else:
             return render_template('predictionresult.html', prediction_text="The Customer will not leave the bank",
-                                   probability=stay_probability, stay_probability=probability,customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score)
+                                   probability=stay_probability, stay_probability=probability,customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score,f_name=f_name,l_name=l_name,state=state)
 
     # Pass date and tenure to the template
-    return render_template('managercustomerchurn.html', customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score)
+    return render_template('managercustomerchurn.html', customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score,f_name=f_name,l_name=l_name,state=state)
 
 @manager.route('/customerchurnprediction', methods=['POST'])
 def customerchurnprediction():
