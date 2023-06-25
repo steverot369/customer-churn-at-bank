@@ -93,7 +93,7 @@ def managermanagecustomers():
 @manager.route('/managercustomerchurn/<customer_id>', methods=['GET', 'POST'])
 def managercustomerchurn(customer_id):
     cursor = db.cursor()
-    cursor.execute("SELECT dob, msalary, state, date,gender,active,f_name,l_name FROM customers WHERE cid='%s'" % customer_id)
+    cursor.execute("SELECT dob, msalary, state, date,gender,active,fname,lname FROM customers WHERE cid='%s'" % customer_id)
     customer_details = cursor.fetchone()
     cursor.execute("SELECT count FROM bankproducts WHERE customer_id='%s'" % customer_id)
     customer_details1 = cursor.fetchone()
@@ -107,6 +107,7 @@ def managercustomerchurn(customer_id):
     msalary = customer_details[1]
     f_name = customer_details[6]
     l_name = customer_details[7]
+    state = customer_details[2]
 
 
     Geography_Germany = customer_details[2]
@@ -174,7 +175,7 @@ def managercustomerchurn(customer_id):
         Geography_Germany = int(request.form['geography_germany'])
         Geography_Spain = int(request.form['geography_spain'])
         Gender = int(request.form['gender'])
-        cursor.execute("SELECT dob, msalary, state, date,gender active FROM customers WHERE cid='%s'" % customer_id)
+        cursor.execute("SELECT dob, msalary, state, date,gender,active,fname,lname FROM customers WHERE cid='%s'" % customer_id)
         customer_details = cursor.fetchone()
         cursor.execute("SELECT count FROM bankproducts WHERE customer_id='%s'" % customer_id)
         customer_details1 = cursor.fetchone()
