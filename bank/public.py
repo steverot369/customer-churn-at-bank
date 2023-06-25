@@ -37,7 +37,12 @@ def login():
 				flash('Welcome')
 				return redirect(url_for("clerk.clerkhome"))
 			elif res[0]['login_type']=="customer":
-			
+				q="select * from customers where loginid='%s'"%(session['logid'])
+				res=select(q)
+				session['cust_id']=res[0]['cid']
+				# print(session['cid'])
+				flash('Welcome')
+				
 				return redirect(url_for("customer.customerhome"))
 		else:
 			flash('Invalid username or password !!!')

@@ -307,8 +307,35 @@ def customerchurnprediction():
             return render_template('predictionresult.html', prediction_text="The Customer will not leave the bank",
                                    probability=stay_probability, stay_probability=probability)
     return render_template('customerchurnprediction.html')
+
+
+
+
+
+@manager.route('/managerviewloanacc',methods=['post','get'])
+def clerkviewloanacc():
+
+    cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email from employee where loginid='%s'"%(session['logid']))
+    name = cursor.fetchall()
+    cursor.execute("SELECT c.fname,c.lname,l.acc_no,l.ifsccode,l.interst_amt,l.interest_rate,l.issued_amount,l.remaing_amount,l.acc_status,l.date_interest,l.loan_type FROM customers c,loanacc l where c.cid=l.customer_id and l.branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
+    employees = cursor.fetchall()
+    date = datetime.now().date()
+    formatted_date = date.strftime("%d-%m-%y")
+    return render_template('managerviewloanacc.html',employees=employees,name=name,formatted_date=formatted_date)
     
 
+@manager.route('/managerviewtransaction',methods=['post','get'])
+def managerviewtransaction():
+
+    cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email from employee where loginid='%s'"%(session['logid']))
+    name = cursor.fetchall()
+    cursor.execute("SELECT t.t_no,t.t_type,t.amount,t.date_time,c.fname,c.lname,s.acc_no from transaction t,customers c,savingsacc s where t.customer_id=c.cid AND t.customer_id=s.customer_id AND t.branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
+    employees = cursor.fetchall()
+    date = datetime.now().date()
+    formatted_date = date.strftime("%d-%m-%y")
+    return render_template('managerviewtransaction.html',employees=employees,name=name,formatted_date=formatted_date)
         
           
         

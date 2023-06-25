@@ -602,66 +602,7 @@ label{
 .modal-body td:last-child {
   color: #007bff; /* Customize the color as needed */
 }
-.container-5 {
-  background-color: #f2f2f2;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
 
-.churn-heading {
-  color: #333;
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.customer-id,
-.credit-score {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.age,
-.tenure,
-.balance,
-.num-of-products,
-.has-cr-card,
-.is-active-member,
-.estimated-salary,
-.geography-germany,
-.gender {
-  font-size: 16px;
-  margin-bottom: 5px;
-}
-
-.age span,
-.tenure span,
-.balance span,
-.num-of-products span,
-.has-cr-card span,
-.is-active-member span,
-.estimated-salary span,
-.geography-germany span,
-.gender span {
-  color: blue;
-  font-weight: bold;
-}
-@keyframes blink {
-        0% {
-            opacity: 0.2;
-        }
-        50% {
-            opacity: 0.5;
-        }
-        100% {
-            opacity: 0.2;
-        }
-    }
-
-    #workingText {
-        animation: blink 1s linear infinite;
-    }
   </style>
 <body>
     <nav>
@@ -708,12 +649,10 @@ label{
                       <h4>customers</h4>
                   </a>
                   <div class="submenu">
-                    <a href="managermanagecustomers" style="text-decoration: none;">view customer</a>
+                    <a href="clerkadduser" style="text-decoration: none;">add customer</a>
                     
-                    <a href="managerviewloanacc" style="text-decoration: none;">view loan holders</a>
-
-                    <a href="managerviewtransaction" style="text-decoration: none;">view transactions</a>
-
+                    <a href="clerkmanagecustomers" style="text-decoration: none;">Manage customer</a>
+                    <a href="clerkviewaccdetails" style="text-decoration: none;">view accounts</a>
 
                     
 
@@ -721,21 +660,58 @@ label{
                 </div>
                     <a href="#" class="menu-link" style="text-decoration: none;">
                       <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
-                      <h4>Churn Customers</h4>
+                      <h4>Open new Account</h4>
             
                   </a>
                   <div class="submenu">
-                      <a href="clerksavingsaccount" style="text-decoration: none;">view churn customers</a>
-                  </div>
+                      <a href="clerksavingsaccount" style="text-decoration: none;">savings</a>
+                      
+                      <a href="clerkdepositaccount" style="text-decoration: none;">Fixed Deposit</a>
+                      <a href="clerkloanaccount" style="text-decoration: none;">loan Account</a>
+                     
 
+
+                      
+                  </div>
+                  <a href="#" class="menu-link" style="text-decoration: none;">
+                    <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
+                    <h4>transactions</h4>
+                  
+                </a>
+                <div class="submenu">
+                    <a href="clerkdepositcash" style="text-decoration: none;">deposit/withdrawal</a>
+                   
+
+                    
+                    
+                   
+                    
+
+                    
+                </div>
+                    
+                      
+                  
+                   
+                    
+                    <a href="#" style="text-decoration: none;">
+                      
+                      <span class="material-icons-sharp  submenu-icon">expand_circle_down</span>
+                      <h4>loan</h4>
+                  </a>
+                  <div class="submenu">
+                    <a href="clerkloancash" style="text-decoration: none;">loan form</a>
+                    <a href="clerkviewloanacc" style="text-decoration: none;">view loan card holders</a>
+                    
+                </div>
                   <a href="#" style="text-decoration: none;">
                       
                     <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
                     <h4>credit card</h4>
                 </a>
                 <div class="submenu">
-                  <a href="managerviewcreditcard" style="text-decoration: none;">view credit card requests</a>
-                  <a href="managerviewcreditcardholders" style="text-decoration: none;">view credit card holders</a>
+                  <a href="clerkdepositcash" style="text-decoration: none;">credit card form</a>
+                  <a href="clerkviewloanacc" style="text-decoration: none;">view credit card holders</a>
                   
               </div>
                  </div>
@@ -747,7 +723,7 @@ label{
                             <h4>Go back</h4>
                             <p>to home page</p>
                           
-                            <a href="javascript:history.back()" style="text-decoration: none;">Go Back</a>
+                            <a href="clerkhome" style="text-decoration: none;">Go Back</a>
                     </div>
                 </aside>
                  <!-- end of aside----- -->

@@ -14,8 +14,255 @@ rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;1,700&display=swap" rel="stylesheet">
 <!-- STYLESHEET -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 <link rel="stylesheet" href="/static/css/customer.css">
+<script src="https://kit.fontawesome.com/c7705f70af.js" crossorigin="anonymous"></script>
+<script>
+    function removeCount() {
+        document.getElementById("message-count").textContent = "";
+    }
+</script> 
+<!-- <script>
+    function removeCount() {
+        document.getElementById("message-count").textContent = "0";
+        sessionStorage.setItem('count_removed', 'true');
+    }
+
+    window.onload = function() {
+        if (sessionStorage.getItem('count_removed')) {
+            document.getElementById("message-count").textContent = "0";
+        }
+    };
+</script> -->
+<script>
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   var expandIcon = document.querySelector('.expand-icon');
+//   var profileContainer = document.querySelector('.profile-container');
+
+//   expandIcon.addEventListener('click', function() {
+//     profileContainer.classList.toggle('show');
+//   });
+// });
+
+
+function toggleProfilePhoto() {
+  var profilePhoto = document.querySelector('.profile-photo');
+  var profileContainer = document.querySelector('.profile-container');
+  
+  profilePhoto.classList.toggle('show');
+  
+  if (profileContainer.classList.contains('show')) {
+    profileContainer.classList.remove('show');
+  }
+}
+
+function toggleProfileContainer() {
+  var profileContainer = document.querySelector('.profile-container');
+  
+  profileContainer.classList.toggle('show');
+}
+
+
+
+
+</script>
+
 </head>
+<style>
+  
+
+/* .profile-container {
+    display: none; 
+    width: 300px;
+    padding: 20px;
+    background-color: #e3d4d4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 60px;
+    right: 0;
+    z-index: 999;
+    transition: transform 0.3s ease-in-out;
+    transform-origin: top right;
+    border-radius: 10px;
+} */
+
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+.profile-photo1 {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.profile-photo1 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-details .profile-photo1 {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.profile-details .profile-photo1 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.expand-icon {
+  cursor: pointer;
+}
+
+.profile-container {
+    display: none; 
+    width: 300px;
+    padding: 20px;
+    background-color: #e3d4d4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 60px;
+    right: 0;
+    z-index: 999;
+    transition: transform 0.3s ease-in-out;
+    transform-origin: top right;
+    border-radius: 10px;;
+}
+
+.profile-container.show {
+  display: block;
+  max-height: 500px; /* Adjust the maximum height as needed */
+}
+
+.profile-content {
+  animation: slideDown 0.5s ease;
+}
+
+.profile-details ul {
+  list-style-type: none;
+   margin: 0;
+  padding: 0; 
+    display: flex; 
+  flex-direction: column;
+   align-items: flex-start;
+   margin-right: 15px
+   
+}
+
+.profile-details ul li {
+  padding: 10px 0;
+  /* border-bottom: 1px solid #ccc; */
+  
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+.profile-details ul li::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250%; /* Adjust the padding as needed */
+  
+  border-bottom: 1px solid #ccc; /* Adjust the color as desired */
+}
+.profile-details ul li:last-child {
+  border-bottom: none;
+}
+
+.profile-details ul li i {
+  margin-right: 10px;
+  /* justify-content: space-between; */
+}
+
+.profile-details ul li a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.profile-details ul li a:hover {
+  color: #000;
+  font-weight: bold;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+}
+
+.social-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 10px;
+  font-size: 20px;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+  color: #000;
+}
+
+.social-icon::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px;
+  background-color: #333;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.social-icon:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+</style>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  <ul class=flashes>
+  {% for message in messages %}
+    <script type="text/javascript">alert("{{message}}")</script>
+  {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
 <body>
     <nav>
         <div class="container">
@@ -30,14 +277,56 @@ rel="stylesheet">
                     <span class="material-icons-sharp">dark_mode</span>
 
                 </div>
-                <div class="profile">
-                    <div class="profile-photo">
-                        <img src="/static/images/profile-1.jpg">
+          
+          
+               <div class="profile">
+                <div class="profile-photo" onclick="toggleProfilePhoto()">
+                  <img src="/static/images/profile-1.jpg">
+                </div>
+                {% for row in name %}
+                <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
+                {% endfor %}
+                <span class="material-icons-sharp expand-icon" onclick="toggleProfileContainer()">expand_more</span>
+              </div>
+              
+              <div class="profile-container">
+                <div class="profile-content">
+                  <div class="profile-details">
+                    <div class="profile-photo1">
+                      <img src="/static/images/profile-1.jpg">
                     </div>
+                <!--  <b><h5>Steve Rodrigues</h5></b> -->
                 
-                <h5>Chu aha</h5>
-                <span class="material-icons-sharp">expand_more</span>
-            </div>
+                {% for row in name %}
+                <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
+                
+                <p><h5>{{row[2]}}</h5></p>
+                {% endfor %}
+                <div class="social-icons">
+                    <a href="#" class="social-icon" data-tooltip="Key">
+                      <i class="fa-solid fa-key"></i>
+                    </a>
+                    <a href="#" class="social-icon" data-tooltip="Twitter">
+                      <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon" data-tooltip="Instagram">
+                      <i class="fab fa-instagram"></i>
+                    </a>
+                  </div>
+                  
+                    <ul>
+                      <li><i class="material-icons">person</i><a href="#">profile</a></li>
+                      <li><i class="material-icons">settings</i><a href="#">Settings</a></li>
+                      <li><i class="material-icons">exit_to_app</i><a href="/">Logout</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              
+              
+              
+              
             <button id="menu-btn">
                 <span class="material-icons-sharp">menu</span>
             </button>
@@ -58,7 +347,7 @@ rel="stylesheet">
                     </a>
                     <a href="#">
                         <span class="material-icons-sharp">currency_exchange</span>
-                        <h4>Exchange</h4>
+                        <h4>income</h4>
                     </a>
                     <a href="#">
                         <span class="material-icons-sharp">account_balance_wallet</span>
@@ -72,497 +361,267 @@ rel="stylesheet">
                         <span class="material-icons-sharp">pie_chart</span>
                         <h4>Analytics</h4>
                     </a>
-                    <a href="#">
+                    <a href="adminviewfeedback" onclick="removeCount()">
                         <span class="material-icons-sharp">message</span>
                         <h4>Messages</h4>
+                        <span id="message-count" class="message-count">23</span>
                     </a>
+                    
+                       
                     <a href="#">
                         <span class="material-icons-sharp">help_center</span>
                         <h4>Help center</h4>
                     </a>
-                    <a href="#">
-                        <span class="material-icons-sharp">settings</span>
-                        <h4>Settings</h4>
+                    <a href="publichome">
+                        <span class="material-icons-sharp">logout</span>
+                        <h4>logout</h4>
                     </a>
                    </div>
                    <!---------end of side bar--- -->
                    <div class="updates">
-                        <span class="material-icons-sharp">update</span>
-                            <h4>Updates available</h4>
-                            <p>Security updates</p>
-                            <p>General updates updates</p>
-                            <a href="#">Update now</a>
+                        <span class="material-icons-sharp">manage_accounts</span>
+                            <h4>Manage task</h4>
+                            <p>Here you can</p>
+                            <p>Manage Users & other tasks</p>
+                            <a href="clerkmanagehome">Manage</a>
                     </div>
                 </aside>
                  <!-- end of aside----- -->
 
                     <section class="middle">
                         <div class="header">
-                            <h1>Overview</h1>
-                            <input type="date">
+                            <h1>Dashboard</h1>
+                            <input type="date" id="todayDateInput">
                         </div>
 
-                        <div class="cards">
-                            <div class="card">
-                                <div class="top">
-                                    <div class="left">
-                                        <img src="/static//images/BTC.png">
-                                        <h2>BTC</h2>
-                                    </div>
-                                    <img src="/static//images/visa.png" class="right">
-                                </div>
-                                <div class="middle">
-                                    <h1>$45,4424</h1>
-                                    <div class="chip">
-                                        <img src="/static//images/card chip.png">
-                                    </div>
-                                </div>
-                                <div class="bottom">
-                                    <div class="left">
-                                        <small>card holder</small>
-                                        <h5>Hohn doe</h5>
-                                    </div>
-                                    <div class="right">
-                                        <div class="expiry">
-                                            <small>Expiry</small>
-                                            <h5>08/23</h5>
-                                        </div>
-                                        <div class="cvv">
-                                            <small>CVV</small>
-                                            <h5>123</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>   
-                            <!-- End of card 1-->   
-                            <div class="card">
-                                <div class="top">
-                                    <div class="left">
-                                        <img src="/static//images/ETH.png">
-                                        <h2>ETH</h2>
-                                    </div>
-                                    <img src="/static//images/master card.png" class="right">
-                                </div>
-                                <div class="middle">
-                                    <h1>$45,4424</h1>
-                                    <div class="chip">
-                                        <img src="/static//images/card chip.png">
-                                    </div>
+                        <div class="insights">
+                          <div class="sales">
+                              <span class="material-icons-sharp">account_balance_wallet</span>
+                              <div class="middle">
+                                  <div class="left">
+                                      <h3>Total bank balance</h3>
+                                      <h1>Rs {{ total_amount }}</h1>
+                                  </div>
+                                  <div class="progress">
+                                      <svg>
+                                          <circle cx='38' cy='38' r='36'></circle>
+                                      </svg>
+                                      <div class="number">
+                                          <p>81%</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <small class="text-muted">Last 24 hours</small>
+                          </div>
+                          <!------------ END OF SALES -------------->
+                          <div class="expenses">
+                              <span class="material-icons-sharp">bar_chart</span>
+                              <div class="middle">
+                                  <div class="left">
+                                      <h3>Total Expenses</h3>
+                                      <h1>$85,758</h1>
+                                  </div>
+                                  <div class="progress">
+                                      <svg>
+                                          <circle cx='38' cy='38' r='36'></circle>
+                                      </svg>
+                                      <div class="number">
+                                          <p>41%</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <small class="text-muted">Last 24 hours</small>
+                          </div>
+                          <!------------ END OF expense -------------->
+                          <div class="income">
+                              <span class="material-icons-sharp">stacked_line_chart</span>
+                              <div class="middle">
+                                  <div class="left">
+                                      <h3>Total income</h3>
+                                
+                                        
+                                     
+                                      <h1>$85,7557</h1>
+                                  </div>
+                                  <div class="progress">
+                                      <svg>
+                                          <circle cx='38' cy='38' r='36'></circle>
+                                      </svg>
+                                      <div class="number">
+                                          <p>44%</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <small class="text-muted">Last 24 hours</small>
+                          </div>
+                          <!------------ END OF INCOME -------------->
+                      </div>
+                        
+                        <!-- <canvas id="chart"></canvas> -->
+                        <div class="recent-orders">
+                            <h2>Recent Transaction</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Transaction No</th>
+                                        <th>Transaction type</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Cid</th>
+
+                
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for transaction in transaction %} 
+                                <tr>
+                                    <td>{{ transaction[0] }}</td>
+                                    <td>{{ transaction[1] }}</td>
+                                    <td>{{ transaction[2] }}</td>
+                                    <td class="warning">{{ transaction[3] }}</td>
+                                    <td>{{ transaction[4] }}</td>
+
                                     
-                                </div>
-                                <div class="bottom">
-                                    <div class="left">
-                                        <small>card holder</small>
-                                        <h5>Hohn doe</h5>
-                                    </div>
-                                    <div class="right">
-                                        <div class="expiry">
-                                            <small>Expiry</small>
-                                            <h5>08/23</h5>
-                                        </div>
-                                        <div class="cvv">
-                                            <small>CVV</small>
-                                            <h5>123</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>   
-                            <!-- End of card 2--> 
-                            <div class="card">
-                                <div class="top">
-                                    <div class="left">
-                                        <img src="/static//images/BTC.png">
-                                        <h2>BTC</h2>
-                                    </div>
-                                    <img src="/static//images/visa.png" class="right">
-                                </div>
-                                <div class="middle">
-                                    <h1>$45,424</h1>
-                                    <div class="chip">
-                                        <img src="/static//images/card chip.png">
-                                    </div>
-                                </div>
-                                <div class="bottom">
-                                    <div class="left">
-                                        <small>card holder</small>
-                                        <h5>Hohn doe</h5>
-                                    </div>
-                                    <div class="right">
-                                        <div class="expiry">
-                                            <small>Expiry</small>
-                                            <h5>08/28</h5>
-                                        </div>
-                                        <div class="cvv">
-                                            <small>CVV</small>
-                                            <h5>123</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>   
-                            <!-- End of card 3-->      
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <a href="#">show all</a>
                         </div>
-                        <!-- ----end of cards------ -->
-                        <div class="monthly-report">
-                            <div class="report">
-                                <h3>income</h3>
-                                <div>
-                                    <details>
-                                        <h1>$7465665</h1>
-                                        <h6 class="success">+4.5%</h6>
-                                    </details>
-                                    <p class="text-muted">Co,pared to $26,433
-                                        last months
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- end of income report -->
-                            <div class="report">
-                                <h3>expenses</h3>
-                                <div>
-                                    <details>
-                                        <h1>$74,655</h1>
-                                        <h6 class="danger">-4.5%</h6>
-                                    </details>
-                                    <p class="text-muted">Co,pared to $6,433
-                                        last months
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- end of expenses report -->
-                            <div class="report">
-                                <h3>cashback</h3>
-                                <div>
-                                    <details>
-                                        <h1>$72,65665</h1>
-                                        <h6 class="success">+7.5%</h6>
-                                    </details>
-                                    <p class="text-muted">Co,pared to $26,433
-                                        last months
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- end of cashback report -->
-                            <div class="report">
-                                <h3>income</h3>
-                                <div>
-                                    <details>
-                                        <h1>$7465665</h1>
-                                        <h6 class="success">+4.5%</h6>
-                                    </details>
-                                    <p class="text-muted">Co,pared to $26,433
-                                        last months
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- end of turnover report -->
-                        </div>
-                        <!-- ---end of monthly reports----- -->
-                        <div class="fast-payment">
-                            <h2>fast payment</h2>
-                            <div class="badges">
-                                <div class="badge">
-                                    <span class="material-icons-sharp">add</span>
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-primary"></span>
-                                    <div>
-                                        <h5>Training</h5>
-                                        <h4>$50</h4>
-                                    </div> 
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-danger"></span>
-                                    <div>
-                                        <h5>internet</h5>
-                                        <h4>$50</h4>
-                                    </div> 
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-primary"></span>
-                                    <div>
-                                        <h5>gas</h5>
-                                        <h4>$30</h4>
-                                    </div> 
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-warning"></span>
-                                    <div>
-                                        <h5>movies</h5>
-                                        <h4>$50</h4>
-                                    </div> 
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-primary"></span>
-                                    <div>
-                                        <h5>education</h5>
-                                        <h4>$50</h4>
-                                    </div> 
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-danger"></span>
-                                    <div>
-                                        <h5>electircity</h5>
-                                        <h4>$50</h4>
-                                    </div> 
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-success"></span>
-                                    <div>
-                                        <h5>food</h5>
-                                        <h4>$50</h4>
-                                    </div> 
-                            </div>
-                        </div>
-                        </div>
-                        <!----------- end of payment----- -->
-                        <canvas id="chart"></canvas>
                  </section>
                  <!-- --------end of middle------ -->
-                 <section class="right">
-                    <div class="investments">
-                        <div class="header">
-                            <h2>Investments</h2>
-                            <a href="#">More<span class="material-icons-sharp">chevron_right
-                            </span></a>
-                        </div>
-                        <div class="investment">
-                            <img src="/static//images/uniliver.png">
-                            <h4>uniliver</h4>
-                            <div class="date-time">
-                                <p>7 Nov, 2021</p>
-                                <small class="text-muted">9.14pm</small>
-                            </div>
-                            <div class="bonds">
-                                <p>1402</p>
-                                <small class="text-muted">Bonds</small>
-                            </div>
-                            <div class="amount">
-                                <h4>$45,434</h4>
-                                <small class="danger">-4.45%</small>
-                            </div>
-                        </div>
-                        <!--======= end of investment======= -->
-                        <div class="investment">
-                            <img src="/static//images/tesla.png">
-                            <h4>Tesla</h4>
-                            <div class="date-time">
-                                <p>7 Nov, 2021</p>
-                                <small class="text-muted">9.14pm</small>
-                            </div>
-                            <div class="bonds">
-                                <p>1402</p>
-                                <small class="text-muted">Bonds</small>
-                            </div>
-                            <div class="amount">
-                                <h4>$45,434</h4>
-                                <small class="success">+4.45%</small>
-                            </div>
-                        </div>
-                        <!--======= end of investment======= -->
-                        <div class="investment">
-                            <img src="/static//images/monster.png">
-                            <h4>Monster</h4>
-                            <div class="date-time">
-                                <p>7 Nov, 2021</p>
-                                <small class="text-muted">9.14pm</small>
-                            </div>
-                            <div class="bonds">
-                                <p>1402</p>
-                                <small class="text-muted">Bonds</small>
-                            </div>
-                            <div class="amount">
-                                <h4>$45,434</h4>
-                                <small class="success">+9.45%</small>
-                            </div>
-                        </div>
-                        <!--======= end of investment======= -->
-                        <div class="investment">
-                            <img src="/static//images/mcdonalds.png">
-                            <h4>mcdonalds</h4>
-                            <div class="date-time">
-                                <p>7 Nov, 2021</p>
-                                <small class="text-muted">9.14pm</small>
-                            </div>
-                            <div class="bonds">
-                                <p>1402</p>
-                                <small class="text-muted">Bonds</small>
-                            </div>
-                            <div class="amount">
-                                <h4>$45,434</h4>
-                                <small class="danger">-4.45%</small>
-                            </div>
-                        </div>
-                        <!--======= end of investment======= -->
-                    </div>
-                    <!------------------------ end of investments-------------- -->
-                    <div class="recent-transactions">
-                        <div class="header">
-                            <h2>Transaction</h2>
-                            <a href="#">More<span class="material-icons-sharp">chevron_right</span>
-                            </a>
-                        </div>
-                        <div class="transaction">
-                            <div class="service">
-                                <div class="icon bg-purple-light">
-                                    <span class="material-icons-sharp">headset_mic</span>
-                                </div>
-                                <div class="details">
-                                    <h4>Music</h4>
-                                    <p>20.11.2021</p>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="card bg-danger">
-                                    <img src="/static//images/visa.png">
-                                </div>
-                                <div class="details">
-                                   <p>*2757</p> 
-                                   <small class="text-muted">Credit card</small>
-                                </div>
-                            </div>
-                            <h4>$20</h4>
-                        </div>
-                        <!-- end of transaction -->
-                        <div class="transaction">
-                            <div class="service">
-                                <div class="icon bg-purple-light">
-                                    <span class="material-icons-sharp purple">shopping_bag</span>
-                                </div>
-                                <div class="details">
-                                    <h4>Shopping</h4>
-                                    <p>10.11.2021</p>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="card bg-primary">
-                                    <img src="/static//images/visa.png">
-                                </div>
-                                <div class="details">
-                                   <p>*2757</p> 
-                                   <small class="text-muted">Credit card</small>
-                                </div>
-                            </div>
-                            <h4>$20</h4>
-                        </div>
-                        <!-- end of transactions -->
-                        <div class="transaction">
-                            <div class="service">
-                                <div class="icon bg-purple-light">
-                                    <span class="material-icons-sharp">medication</span>
-                                </div>
-                                <div class="details">
-                                    <h4>Pharmacy</h4>
-                                    <p>15.11.2021</p>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="card bg-danger">
-                                    <img src="/static//images/visa.png">
-                                </div>
-                                <div class="details">
-                                   <p>*2757</p> 
-                                   <small class="text-muted">Credit card</small>
-                                </div>
-                            </div>
-                            <h4>$20</h4>
-                        </div>
-                        <!-- end of transactions -->
-                        <div class="transaction">
-                            <div class="service">
-                                <div class="icon bg-purple-light">
-                                    <span class="material-icons-sharp">headphones</span>
-                                </div>
-                                <div class="details">
-                                    <h4>Music</h4>
-                                    <p>20.11.2021</p>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="card bg-danger">
-                                    <img src="/static//images/visa.png">
-                                </div>
-                                <div class="details">
-                                   <p>*2757</p> 
-                                   <small class="text-muted">Credit card</small>
-                                </div>
-                            </div>
-                            <h4>$20</h4>
-                        </div>
-                        <div class="transaction">
-                            <div class="service">
-                                <div class="icon bg-purple-light">
-                                    <span class="material-icons-sharp">headphones</span>
-                                </div>
-                                <div class="details">
-                                    <h4>Music</h4>
-                                    <p>20.11.2021</p>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="card bg-dark">
-                                    <img src="/static//images/master card.png">
-                                </div>
-                                <div class="details">
-                                   <p>*2757</p> 
-                                   <small class="text-muted">Master card</small>
-                                </div>
-                            </div>
-                            <h4>$20</h4>
-                        </div>
-                        <div class="transaction">
-                            <div class="service">
-                                <div class="icon bg-purple-light">
-                                    <span class="material-icons-sharp">headphones</span>
-                                </div>
-                                <div class="details">
-                                    <h4>Music</h4>
-                                    <p>20.11.2021</p>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="card bg-dark">
-                                    <img src="/static//images/master card.png">
-                                </div>
-                                <div class="details">
-                                   <p>*2757</p> 
-                                   <small class="text-muted">Master card</small>
-                                </div>
-                            </div>
-                            <h4>$20</h4>
-                        </div>
-                        <div class="transaction">
-                            <div class="service">
-                                <div class="icon bg-purple-light">
-                                    <span class="material-icons-sharp">food_bank</span>
-                                </div>
-                                <div class="details">
-                                    <h4>food</h4>
-                                    <p>20.11.2021</p>
-                                </div>
-                            </div>
-                            <div class="card-details">
-                                <div class="card bg-danger">
-                                    <img src="/static//images/visa.png">
-                                </div>
-                                <div class="details">
-                                   <p>*2757</p> 
-                                   <small class="text-muted">Credit card</small>
-                                </div>
-                            </div>
-                            <h4>$20</h4>
-                        </div>
-                        
-                        <!-- end of transactions -->
-                    </div>
-                 <!-- ------------------------end of recent transactions-------------------- -->
+                 <div class="right">
+                    
+                   
 
-                 </section>
+                    <div class="recent-updates">
+                        <h2>Recent updates</h2>
+                        <div class="updates">
+                            <div class="update">
+                                <div class="profile-photo">
+                                    <img src="/static/images/profile-2.jpg">
+                                </div>
+                                <div class="message">
+                                    <p><b>mike tyson</b>
+                                    recyeyy is hehe of yegfegge.</p>
+                                    <small class="text-muted">2minutes ago</small>
+                                </div>
+                            </div>
+                            <div class="update">
+                                <div class="profile-photo">
+                                    <img src="/static//images/profile-2.jpg">
+                                </div>
+                                <div class="message">
+                                    <p><b>mike tyson</b>
+                                    recyeyy is hehe of yegfegge.</p>
+                                    <small class="text-muted">2minutes ago</small>
+                                </div>
+                            </div>
+                            <div class="update">
+                                <div class="profile-photo">
+                                    <img src="/static//images/profile-4.jpg">
+                                </div>
+                                <div class="message">
+                                    <p><b>mike tyson</b>
+                                    recyeyy is hehe of yegfegge.</p>
+                                    <small class="text-muted">2minutes ago</small>
+                                </div>
+                            </div>
+                            <div class="update">
+                                <div class="profile-photo">
+                                    <img src="/static//images/profile-4.jpg">
+                                </div>
+                                <div class="message">
+                                    <p><b>mike tyson</b>
+                                    recyeyy is hehe of yegfegge.</p>
+                                    <small class="text-muted">2minutes ago</small>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="sales-analytics">
+                        <h2>Recent Transactions</h2>
+                        <div class="item online">
+                            <div class="icon">
+                                <span class="material-icons-sharp">shopping_cart</span>
+                            </div>
+                            <div class="right">
+                                <div class="info">
+                                    <h4>Online orders</h4>
+                                    <small class="text-muted">Last 24 hours</small>
+                                </div>
+                                <h5 class="success">+39%</h5>
+                                <h4>432</h4>
+                            </div>
+                        </div>
+                        <div class="item offline">
+                            <div class="icon">
+                                <span class="material-icons-sharp">local_mall</span>
+                            </div>
+                            <div class="right">
+                                <div class="info">
+                                    <h4>Online orders</h4>
+                                    <small class="text-muted">Last 24 hours</small>
+                                </div>
+                                <h5 class="success">+39%</h5>
+                                <h4>4332</h4>
+                            </div>
+                        </div>
+                        <div class="item customers">
+                            <div class="icon">
+                                <span class="material-icons-sharp">person</span>
+                            </div>
+                            <div class="right">
+                                <div class="info">
+                                    <h4>customers</h4>
+                                    <small class="text-muted">Last 24 hours</small>
+                                </div>
+                                <h5 class="success">+22%</h5>
+                                <h4>132</h4>
+                            </div>
+                        </div>
+                            <div class="item add-product">
+                                <div>
+                                <span class="material-icons-sharp">send</span>
+                                <a href="adminsendmessage"><h3>message</h3></a>
+                        
+                                </div>
+                            </div>
+                    </div>
+                </div>
                  <!-- end of right -->
+                 
+                 
             </main>  
     <!-- ====================end of aside==========================   -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" 
     integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ==" 
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/js/customer.js"></script>
+    <script>
+   
+  
+    // Get today's date
+  var today = new Date();
+
+// Format the date as "YYYY-MM-DD" for setting the input value
+var formattedDate = today.toISOString().split("T")[0];
+
+// Set the input value to today's date
+document.getElementById("todayDateInput").value = formattedDate;
+  </script>
+  <script>
+    function showMessages() {
+  // Perform actions to show the messages
+  // For example, open a modal or navigate to a new page
+
+  // After showing the messages, remove the message count
+  var messageCountElement = document.getElementById('messageCount');
+  messageCountElement.style.display = 'none';
+}
+  </script>
+ 
+
 </body>
 </html>
