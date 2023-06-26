@@ -526,6 +526,22 @@ main table tbody td{
     border-bottom: 1px solid var(--color-light1);
     color: var(--color-dark-variant);
 }
+
+
+/* #container-8{
+    height: 3rem;
+   
+    padding-left: 20px;
+    left: 30%;
+    background: #27282f;
+}
+#container-8 h3{
+    background: rgb(53, 50, 45);
+} */
+
+
+
+
 main table tbody tr:last-child td{
     border: none;
 }

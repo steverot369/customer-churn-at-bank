@@ -1,0 +1,43 @@
+
+{% include 'customersidebar.html' %}
+
+<section class="middle">
+    <div class="header">
+        <input type="date">
+        
+    
+    </div>
+    <div id="container-11">
+            <br>
+            <br>
+        <section id="row">
+            <table>
+                <h1>Account Details</h1>
+                <th id="account-number-header">Account No</th>
+                <th id="balance-header">Balance</th>
+                <th id="stated-date-header">Acc stated date</th>
+
+            {% for accounts in accounts %}
+            
+                <tr class="{{ loop.cycle('even-row', '') }}">
+                    <td class="account-number">{{ accounts[0] }}</td>
+                    <td class="balance">{{ accounts[1] }}</td>
+                    <td class="stated-date">{{ accounts[2] }}</td>
+                </tr>  
+            
+                
+            {% endfor %}    
+        </table>  
+        </section>
+    </div>
+</section>
+     </main>  
+  
+
+
+    
+   
+
+  
+</body>
+</html>

@@ -345,9 +345,9 @@ function toggleProfileContainer() {
                         <span class="material-icons-sharp">dashboard</span>
                         <h4>Dashboard</h4>
                     </a>
-                    <a href="#">
+                    <a href="customerviewaccount">
                         <span class="material-icons-sharp">currency_exchange</span>
-                        <h4>income</h4>
+                        <h4>accounts</h4>
                     </a>
                     <a href="#">
                         <span class="material-icons-sharp">account_balance_wallet</span>
@@ -467,26 +467,35 @@ function toggleProfileContainer() {
                                         <th>Transaction type</th>
                                         <th>Amount</th>
                                         <th>Date</th>
-                                        <th>Cid</th>
+                                        <th> </th>
 
                 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for transaction in transaction %} 
-                                <tr>
-                                    <td>{{ transaction[0] }}</td>
-                                    <td>{{ transaction[1] }}</td>
-                                    <td>{{ transaction[2] }}</td>
-                                    <td class="warning">{{ transaction[3] }}</td>
-                                    <td>{{ transaction[4] }}</td>
-
-                                    
-                                </tr>
-                                {% endfor %}
+                                  {% for transaction in transaction %} 
+                                    <tr> 
+                                      <td>{{ transaction[0] }}</td>
+                                      <td>{{ transaction[1] }}</td>
+                                      <td>{{ transaction[2] }}</td>
+                                      <td class="warning">{{ transaction[3] }}</td>
+                                      <!-- <td>
+                                        <span class="material-icons-sharp add-icon">add</span>
+                                      </td>    
+                                    </tr>
+                                    <tr>
+                                      <td style="border: none;">
+                                        <div id="container-8">
+                                          <h3>{{ transaction[3] }}</h3>
+                                         
+                                        </div>
+                                      </td>   -->
+                                    </tr>
+                                  {% endfor %}
                                 </tbody>
+                                
                             </table>
-                            <a href="#">show all</a>
+                            <a href="customerviewtransaction">show all</a>
                         </div>
                  </section>
                  <!-- --------end of middle------ -->
@@ -495,7 +504,9 @@ function toggleProfileContainer() {
                    
 
                     <div class="recent-updates">
-                        <h2>Recent updates</h2>
+                      <h2>Recent Updates</h2>
+                      <a href="#">More<span class="material-icons-sharp">chevron_right</span>
+                      </a>
                         <div class="updates">
                             <div class="update">
                                 <div class="profile-photo">
@@ -540,8 +551,10 @@ function toggleProfileContainer() {
                             
                         </div>
                     </div>
+                    <br>
                     <div class="sales-analytics">
-                        <h2>Recent Transactions</h2>
+                        <h2>Recent Online Transactions</h2>
+                        <br>
                         <div class="item online">
                             <div class="icon">
                                 <span class="material-icons-sharp">shopping_cart</span>
@@ -583,8 +596,8 @@ function toggleProfileContainer() {
                         </div>
                             <div class="item add-product">
                                 <div>
-                                <span class="material-icons-sharp">send</span>
-                                <a href="adminsendmessage"><h3>message</h3></a>
+                                <span class="material-icons-sharp">pin</span>
+                                <a href="customersetpin"><h3>Set MPI pin</h3></a>
                         
                                 </div>
                             </div>
@@ -599,6 +612,24 @@ function toggleProfileContainer() {
     integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ==" 
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/js/customer.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+      // jQuery event handler for add icon click
+      $(document).ready(function() {
+        $('.add-icon').click(function() {
+          // Find the corresponding container for this add icon
+          var container = $(this).closest('tr').find('.container-8');
+          
+          // Toggle the display of the container
+          
+          
+          // Toggle the "expanded" class on the parent table cell
+         
+        });
+      });
+    </script>
+    
     <script>
    
   

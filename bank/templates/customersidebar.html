@@ -602,7 +602,39 @@ label{
 .modal-body td:last-child {
   color: #007bff; /* Customize the color as needed */
 }
+#container-11 {
+        background-color: #f2f2f2;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 550px;
+        margin: 0 auto;
+    }
 
+    /* #row {
+        margin-top: 1px;
+    } */
+
+    #account-number-header,
+    #balance-header,
+    #stated-date-header {
+        background-color: #f9f9f9;
+        border-bottom: 1px solid #ddd;
+        padding: 50px;
+        text-align: left;
+        font-size: 15px;
+    }
+
+    .account-number,
+    .balance,
+    .stated-date {
+        padding: 40px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .even-row {
+        background-color: #f2f2f2;
+    }
   </style>
 <body>
     <nav>
@@ -640,24 +672,15 @@ label{
                         <span class="material-icons-sharp">close</span>
                    </button>
                    <div class="sidebar" class="active">
-                    <a href="clerkhome" style="text-decoration: none;">
+                    <a href="customerhome" style="text-decoration: none;">
                         <span class="material-icons-sharp">dashboard</span>
                         <h4>Dashboard</h4>
                     </a>
                     <a href="#" class="menu-link" style="text-decoration: none;">
-                      <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
-                      <h4>customers</h4>
+                      <span class="material-icons-sharp">expand_circle_down</span>
+                      <h4>View Account</h4>
                   </a>
-                  <div class="submenu">
-                    <a href="clerkadduser" style="text-decoration: none;">add customer</a>
-                    
-                    <a href="clerkmanagecustomers" style="text-decoration: none;">Manage customer</a>
-                    <a href="clerkviewaccdetails" style="text-decoration: none;">view accounts</a>
-
-                    
-
-                    
-                </div>
+                  
                     <a href="#" class="menu-link" style="text-decoration: none;">
                       <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
                       <h4>Open new Account</h4>
