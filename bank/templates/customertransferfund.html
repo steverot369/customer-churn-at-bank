@@ -11,34 +11,43 @@
           <div class="col-12 col-md-9 col-lg-7 col-xl-6">
             <div class="card" style="border-radius: 15px; background:rgb(213, 230, 236);">
               <div class="card-body p-5">
-                <h2 class="text-uppercase text-center mb-5">Set MPI Pin</h2>
+                <h2 class="text-uppercase text-center mb-5">Transfer To</h2>
   
                 <form method="post">
 
                   <div class="form-outline mb-4 pb-3">
-                    <div class="dropdown dropdown-custom">
-                      <input type="text" name="accno" id="new-dropdown-input" class="form-control form-control-lg" placeholder="Search by accno or customer name....">
-                      <span class="dropdown-custom-icon">&#9662;</span>
-                      <ul class="dropdown-custom-list" style="display: block;">
+                    <div class="dropdown dropdown-custom-4">
+                      <input type="text" name="accno" id="new-dropdown-input-4" class="form-control form-control-lg" placeholder="Search by accno or customer name....">
+                      <span class="dropdown-custom-icon-4">&#9662;</span>
+                      <ul class="dropdown-custom-list-4" style="display: block;">
                         {% for row in acc_no %}
-                        <li>{{ row[0] }}</li>
+                        <li>&#8377; {{ row[1] }} <div class="space"></div> <b>{{ row[0] }} Savings A/c</b></li>
                         {% endfor %}
                       </ul>
+                      
                     </div>
+                    <label class="form-label" for="form1">Select Account</label>
+
                     <br><br>
                     <div class="form-outline mb-4 pb-2">
                       <input type="text" name="newpin" id="form1" class="form-control form-control-lg" />
-                      <label class="form-label" for="form1">New pin</label>
+                      <label class="form-label" for="form1">Name</label>
                     </div>
-                  
+                    <div class="form-outline mb-4 pb-2">
+                      <input type="text" name="newpin" id="form1" class="form-control form-control-lg" />
+                      <label class="form-label" for="form1">Acc number</label>
+                    </div>
                     <div class="form-outline mb-4">
                       <input type="text" name="confirmpin" id="form2" class="form-control form-control-lg" />
-                      <label class="form-label" for="form2">Confirm pin</label><br>
+                      <label class="form-label" for="form2">Re-Enter Acc Number</label><br>
                       <span class="error-message" style="display: none;">Pin numbers do not match</span>
                       <span class="error-message1" style="display: none;">numbers match</span>
 
                     </div>
-  
+                    <div class="form-outline mb-4 pb-2">
+                      <input type="text" name="amount" id="form1" class="form-control form-control-lg" />
+                      <label class="form-label" for="form1">Amount</label>
+                    </div>
                   
                  
                   
@@ -46,7 +55,7 @@
 
                   <div class="d-flex justify-content-center">
                 
-                      <input type="submit"  name="add" value="Set Pin" class="btn btn-primary btn-lg gradient-custom-4 text-body">
+                      <input type="submit"  name="add" value="pay amount" class="btn btn-primary btn-lg gradient-custom-4 text-body">
                     </div>
   
                  
@@ -86,10 +95,10 @@
     
     
             <script>
-              const newInput = document.querySelector('#new-dropdown-input');
-              const newDropdownList = document.querySelector('.dropdown-custom-list');
+              const newInput = document.querySelector('#new-dropdown-input-4');
+              const newDropdownList = document.querySelector('.dropdown-custom-list-4');
               const newOptions = Array.from(newDropdownList.getElementsByTagName('li'));
-              const newDropdownIcon = document.querySelector('.dropdown-custom-icon');
+              const newDropdownIcon = document.querySelector('.dropdown-custom-icon-4');
               
               newInput.addEventListener('input', function() {
                 const searchText = newInput.value.toLowerCase();
@@ -114,7 +123,7 @@
                 const selectedOption = event.target;
                 if (selectedOption.tagName === 'LI') {
                   const optionValues = selectedOption.textContent.trim().split(' ');
-                  newInput.value = optionValues[optionValues.length - 1];
+                  newInput.value = optionValues[optionValues.length - 3];
                   newDropdownList.style.display = 'none';
                 }
               });

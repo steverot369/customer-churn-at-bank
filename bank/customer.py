@@ -43,13 +43,26 @@ def customerviewaccount():
 @customer.route('/customertransferfund')
 def customertransferfund():
     # data={}
-    return render_template('customertransferfund.html')
+    cursor = db.cursor()
+
+    cursor.execute("SELECT acc_no,balance from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
+    acc_no = cursor.fetchall()
+    return render_template('customertransferfund.html',acc_no=acc_no)
 
 
-@customer.route('/customersetpin')
+@customer.route('/customersetpin',methods=['post', 'get'])
 def customersetpin():
     # data={}
-    return render_template('customersetpin.html')
+    cursor = db.cursor()
+    cursor.execute("SELECT acc_no from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
+    acc_no = cursor.fetchall()
+    if 'add' in request.form:
+        acc_no=request.form['accno']
+        confirmpin = request.form['confirmpin']
+        cursor.execute("UPDATE savingsacc SET pin_no = %s WHERE acc_no = %s",(confirmpin, acc_no,))
+        flash("successful Set Pin...")
+        return redirect(url_for('customer.customersetpin'))
+    return render_template('customersetpin.html',acc_no=acc_no)
 
 
 @customer.route('/customerpayloan')
@@ -61,7 +74,10 @@ def customerpayloan():
 @customer.route('/customerviewloanpayments')
 def customerviewloanpayments():
     # data={}
-    return render_template('customerviewloanpayments.html')
+    cursor=db.cursor()
+    cursor.execute("select acc_no,ifsccode,loan_type,maturity_date,interest_rate,interst_amt,issued_amount,remaing_amount,date_interest from loanacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
+    loan=cursor.fetchall()
+    return render_template('customerviewloanpayments.html',loan=loan)
 
 
 

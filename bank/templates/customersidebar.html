@@ -635,6 +635,72 @@ label{
     .even-row {
         background-color: #f2f2f2;
     }
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .error-message1 {
+      color: rgb(61, 135, 58);
+      margin-top: 10px;
+      font-size: 14px;
+
+    }
+
+
+
+/* ---------------- */
+.dropdown-custom-4{
+    position: relative;
+  }
+
+  .new-dropdown-input-4 {
+    width: 200px;
+    padding: 8px;
+  }
+
+  .dropdown-custom-list-4 {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: scroll;
+    border: 1px solid rgb(195, 184, 184);
+    background-color: #fff;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+  }
+
+  .dropdown-custom-list-4 li {
+    padding: 9px;
+    cursor: pointer;
+    font-size: 15px;
+    border-bottom: 1px solid rgb(213, 209, 209);
+
+  }
+  .space {
+    /* width: 3rem; */
+    word-spacing: 15px;
+    
+}
+  .dropdown-custom-list-4 li:hover {
+    background-color: #f1f1f1;
+  }
+
+  .dropdown-custom-icon-4 {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+
+
+    
   </style>
 <body>
     <nav>
@@ -681,52 +747,13 @@ label{
                       <h4>View Account</h4>
                   </a>
                   
-                    <a href="#" class="menu-link" style="text-decoration: none;">
+                    <a href="customerviewloanpayments" class="menu-link" style="text-decoration: none;">
                       <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
-                      <h4>Open new Account</h4>
+                      <h4>loan</h4>
             
                   </a>
-                  <div class="submenu">
-                      <a href="clerksavingsaccount" style="text-decoration: none;">savings</a>
-                      
-                      <a href="clerkdepositaccount" style="text-decoration: none;">Fixed Deposit</a>
-                      <a href="clerkloanaccount" style="text-decoration: none;">loan Account</a>
-                     
-
-
-                      
-                  </div>
-                  <a href="#" class="menu-link" style="text-decoration: none;">
-                    <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
-                    <h4>transactions</h4>
                   
-                </a>
-                <div class="submenu">
-                    <a href="clerkdepositcash" style="text-decoration: none;">deposit/withdrawal</a>
-                   
-
-                    
-                    
-                   
-                    
-
-                    
-                </div>
-                    
-                      
-                  
-                   
-                    
-                    <a href="#" style="text-decoration: none;">
-                      
-                      <span class="material-icons-sharp  submenu-icon">expand_circle_down</span>
-                      <h4>loan</h4>
-                  </a>
-                  <div class="submenu">
-                    <a href="clerkloancash" style="text-decoration: none;">loan form</a>
-                    <a href="clerkviewloanacc" style="text-decoration: none;">view loan card holders</a>
-                    
-                </div>
+   
                   <a href="#" style="text-decoration: none;">
                       
                     <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
@@ -737,6 +764,14 @@ label{
                   <a href="clerkviewloanacc" style="text-decoration: none;">view credit card holders</a>
                   
               </div>
+
+              <a href="customertransferfund" style="text-decoration: none;">
+                      
+                <span class="material-icons-sharp">expand_circle_down</span>
+                <h4>Transfer money</h4>
+            </a>
+            
+                
                  </div>
                 
               
@@ -746,7 +781,7 @@ label{
                             <h4>Go back</h4>
                             <p>to home page</p>
                           
-                            <a href="clerkhome" style="text-decoration: none;">Go Back</a>
+                            <a href="javascript:history.back()" style="text-decoration: none;">Go Back</a>
                     </div>
                 </aside>
                  <!-- end of aside----- -->

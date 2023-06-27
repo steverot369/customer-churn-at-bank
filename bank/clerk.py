@@ -145,7 +145,7 @@ def clerksavingsaccount():
         query = "SELECT cid FROM customers WHERE fname = %s AND lname = %s"
         cursor.execute(query, (first_name, last_name))
         cid = cursor.fetchone()[0]
-        q = "INSERT INTO savingsacc (customer_id, branch_id, acc_no, ifsccode, balance,acc_started_date,acc_status) VALUES (%s, %s, %s, %s, %s, %s, 'active')"
+        q = "INSERT INTO savingsacc (customer_id, branch_id, acc_no, ifsccode, balance,acc_started_date,pin_no,acc_status) VALUES (%s, %s, %s, %s, %s, %s,'1', 'active')"
         values = (cid, bid, accno, ifsccode, balance, acc_started_date)
         cursor.execute(q, values)
                 # Generate random cheque number
