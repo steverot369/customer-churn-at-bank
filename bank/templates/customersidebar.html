@@ -524,13 +524,13 @@ i{
       width: 16px;
       height: 16px;
       border-radius: 25%;
-      border: 2px solid rgb(85, 36, 94);
+      border: 2px solid rgb(67, 27, 74);
       margin-right: 5px;
       vertical-align: middle;
     }
 
     .form-check-input[type="checkbox"]:checked + .form-check-label:before {
-      background-color: #59064b;
+      background-color: #d32db7;
       border-color: #333;
     }
 
@@ -725,7 +725,91 @@ label{
   border-bottom: 1px solid rgb(157, 152, 152); /* Add a bottom border */
   padding-bottom: 10px; /* Adjust the padding if needed */
 }
+#form4{
+    background: rgb(213, 230, 236);;
+  border: none; /* Remove the default border */
+  border-bottom: 1px solid rgb(157, 152, 152); /* Add a bottom border */
+  padding-bottom: 10px; /* Adjust the padding if needed */
+}
+#form5{
+    background: rgb(213, 230, 236);;
+  border: none; /* Remove the default border */
+  border-bottom: 1px solid rgb(157, 152, 152); /* Add a bottom border */
+  padding-bottom: 10px; /* Adjust the padding if needed */
+}
+.fade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  /* display: none; */
+}
+.popup-container {
+  /* display: none; */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 19%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
 
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-size: 25px;
+  color: black;
+}
+
+.popup-icon {
+  font-size: 50px;
+  color: green;
+  margin-bottom: 10px;
+}
+
+.popup-content p {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: black;
+}
+.popup-content input[type="submit"] {
+  margin-top: 20px;
+}
+  .loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .loading-spinner {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
   </style>
 <body>
     <nav>

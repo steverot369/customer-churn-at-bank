@@ -13,7 +13,7 @@
               <div class="card-body p-5">
                 <h2 class="text-uppercase text-center mb-5">Quick Transfer</h2>
   
-                <form method="post" myForm>
+                <form method="post">
 
                   <div class="form-outline mb-4">
                     <label class="form-label" for="form1">Select Account</label>
@@ -79,35 +79,26 @@
 </div>
                  
                   
+                  
 
 <div class="d-flex justify-content-center">
-  <button class="btn btn-primary btn-lg gradient-custom-4 text-body" onclick="showLoadingAnimation(event)">Submit</button>
-</div>
-<div id="fadeOverlay" class="fade-overlay" style="display: none;">
+  <!-- <input type="submit" name="add" value="pay amount" class="btn btn-primary btn-lg gradient-custom-4 text-body" onclick="showLoadingAnimation(event)"> -->
+  <input type="submit" name="add" value="pay amount" class="btn btn-primary btn-lg gradient-custom-4 text-body">
 
-<div id="popupContainer" class="popup-container">
-  <div class="popup-content">
-    <span class="popup-icon">&#10004;</span>
-    <p>Transaction is successful</p>
-    <p id="fromValue"></p>
-    <p id="toValue"></p>
-    <p id="balanceValue"></p>
-    <p id="remainingBalanceValue"></p>
-    <p id="dateValue"></p>
-   
-    <input type="submit" name="add" value="OK" class="btn btn-primary btn-lg gradient-custom-4 text-body" onclick="submitForm()">
-  </div>
-</div>    
 </div>
+  
+                 
+  
       </form>
-      
+  
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-  <!-- <script>
+  <script>
     function showLoadingAnimation(event) {
       event.preventDefault(); // Prevent the default form submission
   
@@ -132,7 +123,7 @@
   
     function showPopupAndSubmit(event) {
   event.preventDefault(); // Prevent the default form submission
-  // document.getElementById('myForm').submit();
+  
   var from = document.getElementById('new-dropdown-input-4').value;
   var to = document.getElementById('form2').value;
 
@@ -177,73 +168,10 @@
     popupContainer.remove();
 
     // Submit the form programmatically
-    document.getElementById('myForm').submit();
+    event.target.form.submit();
   }, 5000);
- 
 }
-</script> -->
-  
-<script>
-  function showLoadingAnimation(event) {
-    event.preventDefault(); // Prevent the default form submission
-
-    // Create the loading container and spinner
-    var loadingContainer = document.createElement('div');
-    loadingContainer.classList.add('loading-container');
-    var loadingSpinner = document.createElement('div');
-    loadingSpinner.classList.add('loading-spinner');
-
-    // Append the spinner to the container
-    loadingContainer.appendChild(loadingSpinner);
-
-    // Append the container to the document body
-    document.body.appendChild(loadingContainer);
-
-    // After 5 seconds, remove the loading container and show the pop-up
-    setTimeout(function() {
-      loadingContainer.remove();
-      showPopup();
-    }, 5000);
-  }
-
-  function showPopup() {
-    // Get the form values
-    var from = document.getElementById('new-dropdown-input-4').value;
-    var to = document.getElementById('form2').value;
-    var accountBalance = document.getElementById('balance').value;
-    var enteredAmount = document.getElementById('form4').value;
-
-    // Convert accountBalance and enteredAmount to numbers
-    accountBalance = parseInt(accountBalance);
-    enteredAmount = parseInt(enteredAmount);
-
-    // Calculate the remaining balance
-    var remainingBalance = accountBalance - enteredAmount;
-
-    // Get the current date
-    var currentDate = new Date().toISOString().slice(0, 10);
-
-    // Update the popup content with the form values
-    document.getElementById('fromValue').textContent = "from: " + from;
-    document.getElementById('toValue').textContent = "to: " + to;
-    document.getElementById('balanceValue').textContent = "Balance: ₹" + accountBalance;
-    document.getElementById('remainingBalanceValue').textContent = "Remaining Balance: ₹" + remainingBalance;
-    document.getElementById('dateValue').textContent = "Date: " + currentDate;
-
-    // Show the popup container
-    document.getElementById('popupContainer').style.display = "block";
-    document.getElementById('fadeOverlay').style.display = "block";
-
-  }
-
-  function submitForm() {
-    // Submit the form programmatically
-    document.getElementById('myForm').submit();
-  }
 </script>
-
-
-
   <script>
     $(document).ready(function() {
       // Function to fill the second form field with value 1

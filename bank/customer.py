@@ -1,6 +1,7 @@
 from flask import *
 from database import *
 from datetime import datetime
+import random
 db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -40,13 +41,54 @@ def customerviewaccount():
     return render_template('customerviewaccount.html',accounts=accounts)
 
 
-@customer.route('/customertransferfund')
+@customer.route('/customertransferfund',methods=['post', 'get'])
 def customertransferfund():
     # data={}
     cursor = db.cursor()
 
     cursor.execute("SELECT acc_no,balance,ifsccode from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
     acc_no = cursor.fetchall()
+    if 'add' in request.form:
+        accno=request.form['accno']
+        # from_acc = request.form['acc']
+        to_acc = request.form['acc1']
+        amount=request.form['amount']
+        pin=request.form['mpipin']
+        print("pin == ",pin)
+        print("amount= ",amount)
+        print("our account",acc_no)
+        cursor.execute("select pin_no,balance,customer_id,branch_id,savings_id from savingsacc where acc_no='%s'"%(accno))
+        mpipin=cursor.fetchone()
+        balance=mpipin[1]
+        cid=mpipin[2]
+        branch_id=mpipin[3]
+        savings_id=mpipin[4]
+        amount_debited = int(balance) - int(amount)
+        date = datetime.now()
+        trans_no = str(random.randint(1000000000000000, 9999999999999999))
+
+        print(mpipin[0])
+        if mpipin[0] == '1':
+            flash("set mpi pin...")
+            return redirect(url_for('customer.customersetpin'))
+        elif mpipin[0] == pin:
+            cursor.execute("UPDATE savingsacc SET balance = balance + %s WHERE acc_no = %s",(amount, to_acc,))
+            cursor.execute("UPDATE savingsacc SET balance = balance - %s WHERE acc_no = %s",(amount, accno,))
+            transaction = "INSERT INTO o_transaction (acc_id, customer_id, branch_id, from_acc, to_acc, amount_credited, amount_debited, t_type, t_no, date) VALUES (%s, %s, %s, %s, %s, %s, %s, 'online', %s, %s)"
+            transaction_values = (savings_id, cid, branch_id, accno, to_acc, amount, amount, trans_no, date)
+            cursor.execute(transaction, transaction_values)
+ 
+            transaction1 = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'cash depsoit',%s,%s)"
+            transaction_values1 = (cid,savings_id,branch_id,trans_no,amount,date)
+            cursor.execute(transaction1, transaction_values1) 
+
+            flash("success...")
+            return redirect(url_for('customer.customertransferfund'))
+        
+        else:
+            flash("wrong pin")
+            return redirect(url_for('customer.customertransferfund'))
+        
     return render_template('customertransferfund.html',acc_no=acc_no)
 
 

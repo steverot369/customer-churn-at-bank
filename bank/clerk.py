@@ -434,7 +434,9 @@ def clerkdepositcash():
             cursor.execute("UPDATE savingsacc SET balance = balance + %s WHERE acc_no = %s",(deposit, accno))
             transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'cash depsoit',%s,%s)"
             transaction_values = (cid,savings_id,bid,trans_no,deposit,date)
-            cursor.execute(transaction, transaction_values)    
+            cursor.execute(transaction, transaction_values)
+            
+            cursor.execute(transaction, transaction_values)     
             if fivers > 0:
                 transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '5',%s)"
                 transaction_values = (bid,fivers)
