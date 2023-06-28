@@ -45,7 +45,7 @@ def customertransferfund():
     # data={}
     cursor = db.cursor()
 
-    cursor.execute("SELECT acc_no,balance from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
+    cursor.execute("SELECT acc_no,balance,ifsccode from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
     acc_no = cursor.fetchall()
     return render_template('customertransferfund.html',acc_no=acc_no)
 

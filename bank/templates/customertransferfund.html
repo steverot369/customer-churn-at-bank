@@ -11,42 +11,63 @@
           <div class="col-12 col-md-9 col-lg-7 col-xl-6">
             <div class="card" style="border-radius: 15px; background:rgb(213, 230, 236);">
               <div class="card-body p-5">
-                <h2 class="text-uppercase text-center mb-5">Transfer To</h2>
+                <h2 class="text-uppercase text-center mb-5">Quick Transfer</h2>
   
                 <form method="post">
 
                   <div class="form-outline mb-4 pb-3">
+                    <label class="form-label" for="form1">Select Account</label>
                     <div class="dropdown dropdown-custom-4">
-                      <input type="text" name="accno" id="new-dropdown-input-4" class="form-control form-control-lg" placeholder="Search by accno or customer name....">
+                      <input type="text" name="accno" id="new-dropdown-input-4" style="background: #f2e5e5;" class="form-control form-control-lg" placeholder="Search by accno or customer name....">
                       <span class="dropdown-custom-icon-4">&#9662;</span>
                       <ul class="dropdown-custom-list-4" style="display: block;">
                         {% for row in acc_no %}
-                        <li>&#8377; {{ row[1] }} <div class="space"></div> <b>{{ row[0] }} Savings A/c</b></li>
+                        <li onclick="selectAccount('{{ row[0] }}', '{{ row[1] }}','{{ row[2] }}')">&#8377; {{ row[1] }} <div class="space"></div> <b>{{ row[0] }} Savings A/c</b></li>
                         {% endfor %}
                       </ul>
-                      
                     </div>
-                    <label class="form-label" for="form1">Select Account</label>
+  
+                   <i><h3 style="padding: 8px;" id="balance" style="display: none;"></h3></i> 
+                   <i><h3 style="padding: 8px;" id="ifsccode" style="display: none;"></h3></i> 
+                   
 
-                    <br><br>
+                    <br>
                     <div class="form-outline mb-4 pb-2">
-                      <input type="text" name="newpin" id="form1" class="form-control form-control-lg" />
-                      <label class="form-label" for="form1">Name</label>
+                      <input type="text"  id="form1"  class="form-control form-control-lg" placeholder="Name*"/>
+                      <!-- <label class="form-label" for="form1">Name</label> -->
                     </div>
                     <div class="form-outline mb-4 pb-2">
-                      <input type="text" name="newpin" id="form1" class="form-control form-control-lg" />
-                      <label class="form-label" for="form1">Acc number</label>
+                      <input type="text" name="newpin" id="form2" class="form-control form-control-lg" placeholder="Account number*"/>
+                      <!-- <label class="form-label" for="form1">Acc number</label> -->
                     </div>
+                    
                     <div class="form-outline mb-4">
-                      <input type="text" name="confirmpin" id="form2" class="form-control form-control-lg" />
-                      <label class="form-label" for="form2">Re-Enter Acc Number</label><br>
+                      <input type="text" name="confirmpin" id="form3" class="form-control form-control-lg" placeholder="Re-Enter Acc Number*"/>
+                      <!-- <label class="form-label" for="form2">Re-Enter Acc Number</label><br> -->
                       <span class="error-message" style="display: none;">Pin numbers do not match</span>
                       <span class="error-message1" style="display: none;">numbers match</span>
 
                     </div>
+                   <i><h3 style="padding: 8px;" id="ifsccode" style="display: none;"></h3></i> 
+
+                    <i><h3 style="color: rgb(135, 131, 131);">please note that only the the beneficary account number and ifsc <br>
+                      information will be use for quick transfer.<br>
+                    (please ensure corrections),the beneficary name provided will not be
+                    considered as per RBI guidelines</h3></i>
+<br>
+                    <div class="form-group">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="gridCheck">
+                        <label class="form-check-label" for="gridCheck">
+                          Send <span class='rupee-symbol'>&#8377;</span>1 as test amount<br>
+                              <p class="down">(Optional,if not sure about A/c no.)</p>
+                        </label>
+                      </div>
+                    </div>
+
                     <div class="form-outline mb-4 pb-2">
-                      <input type="text" name="amount" id="form1" class="form-control form-control-lg" />
-                      <label class="form-label" for="form1">Amount</label>
+                      <input type="text" name="amount" id="form1" class="form-control form-control-lg" placeholder="Amount*" />
+                      <!-- <label class="form-label" for="form1">Amount</label> -->
                     </div>
                   
                  
@@ -70,26 +91,39 @@
     </div>
   </section>
   <script>
-    $(document).ready(function() {
-      // Function to compare the values in form 1 and form 2
-      function comparePins() {
-        var pin1 = $('#form1').val();
-        var pin2 = $('#form2').val();
+    function selectAccount(accno, balance,ifsccode) {
+      // Update the selected account's balance
+      document.getElementById("balance").innerHTML = "Available Balance : <span class='rupee-symbol'>&#8377;</span> " + balance;
+      document.getElementById("ifsccode").innerHTML = "Ifsccode :  " + ifsccode;
 
-        if (pin1 !== pin2) {
-          $('.error-message').show();
-        } else {
-          $('.error-message').hide();
-          $('.error-message1').show();
+      document.getElementById("balance").style.display = "block";
+      document.getElementById("ifsccode").style.display = "block";
 
-        }
+    }
+  </script>
+ <script>
+  $(document).ready(function() {
+    // Function to compare the values in form 1 and form 2
+    function comparePins() {
+      var pin1 = $('#form2').val();
+      var pin2 = $('#form3').val();
 
+      if (pin1 !== pin2) {
+        $('.error-message').show();
+      } else {
+        $('.error-message').hide();
+        $('.error-message1').show();
+        setTimeout(function() {
+          $('.error-message1').hide();
+        }, 3000); // Delay for 5 seconds (5000 milliseconds)
       }
+    }
 
-      // Call the comparePins function whenever typing in form 2
-      $('#form2').on('input', comparePins);
-    });
-  </script>            
+    // Call the comparePins function whenever typing in form 2
+    $('#form3').on('input', comparePins);
+  });
+</script>
+            
                 
             </main>  
     
