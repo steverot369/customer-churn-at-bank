@@ -810,6 +810,386 @@ label{
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+ /* Apply general styles to the form */
+#creditCardForm {
+  max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      height: 300px;
+}
+
+/* Style the labels */
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+input[type="radio"],
+    input[type="range"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+/* Style the radio buttons */
+input[type="radio"] {
+  display: none;
+}
+
+/* Style the radio button labels */
+input[type="radio"] + label {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Style the selected radio button label */
+input[type="radio"]:checked + label {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Style the range input */
+input[type="range"] {
+  width: 100%;
+}
+
+/* Style the select dropdown */
+select {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Style the submit button */
+input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+#show{
+  /* display: flex; */
+      /* flex-wrap: wrap; */
+      /* justify-content: center; */
+      margin-left: 420px;
+}
+/* Apply specific styles to the interest select dropdown */
+#interest {
+  width: 100%;
+  padding: 5px;
+}
+
+    .credit-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding-top: 20px;
+      gap: 34px;
+      
+    }
+
+    .credit-card {
+  width: 300px;
+  height: 560px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.card-front {
+  position: relative;
+  width: 250px;
+  height: 150px;
+  /* background-color: #fff; */
+  background-image: linear-gradient(rgb(181, 252, 15),rgb(73, 8, 8));
+
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+
+}
+
+.card-logo {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.card-logo img {
+  width: 20px;
+  margin-right: 10px;
+}
+
+.bank-name {
+  font-size: 14px;
+}
+
+.card-number {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.card-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.card-holder,
+.card-expiry {
+  font-size: 14px;
+  color: white;
+}
+
+.card-features {
+  margin-top: 60px;
+  /* margin-left: 130px; */
+  /* background: #a58a8a; */
+  /* padding: 20px 20px; */
+}
+/* .container-45{
+  background: #0056b3;
+  padding: 10px 12px;
+  height: 1400px;
+  /* width: 10%; */
+  /* margin-top:35px; */
+  /* border-radius: 5px; */
+  
+/* }  */
+.card-features ul {
+  list-style-type: none;
+  padding: 10px 10px;
+  margin: 0;
+  /* background: #ffffff; */
+  width: 250px;
+  /* margin-right: 231px; */
+}
+
+.card-features ul li {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  /* gap: 2rem; */
+}
+
+.request-online,
+.read-more {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 30px;
+}
+
+.read-more {
+  background-color: transparent;
+  color: blue;
+  border: 1px solid blue;
+}
+
+
+
+  
+
+#sasi{
+  margin-top: 20px;
+  margin-left: 370px;
+}
+#employee-type,
+#incomeValue1,
+#category {
+  
+  display: inline-block;
+  margin-right: 10px;
+  font-weight: bold;
+  color: rgb(14, 13, 13);
+  border: 2px solid white;
+  border-radius: 10px;
+  padding:10px 15px;
+  background: rgb(243, 231, 209);
+}
+.card {
+  position: relative;
+  width: 250px;
+  height: 150px;
+  background-image: linear-gradient(rgb(7, 109, 92),rgb(37, 30, 30));
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.bank-name {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  font-size: 12px;
+}
+
+.chip {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 40px;
+  height: 30px;
+  background-color: #333;
+  border-radius: 6px;
+}
+
+.chip img {
+  width: 20px;
+  height: auto;
+  display: block;
+  margin: 5px auto;
+}
+
+.data {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: #fff;
+  font-size: 12px;
+}
+
+.pan {
+  font-size: 14px;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.first-digits {
+  font-size: 10px;
+}
+
+.exp-date-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.left-label {
+  font-size: 10px;
+  margin-right: 5px;
+}
+
+.exp-date {
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.upper-labels {
+  font-size: 8px;
+  margin-right: 3px;
+}
+
+.date {
+  font-size: 10px;
+}
+
+.name-on-card {
+  font-size: 12px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lines-down,
+.lines-up {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 20px;
+  background-color: #333;
+}
+
+.lines-down {
+  z-index: 1;
+}
+
+.lines-up {
+  z-index: 2;
+  transform: translateY(-20px);
+}
+.card-features-1 {
+  margin-top: 40px;
+  
+}
+
+  
+
+.card-features-1 ul {
+  list-style-type: none;
+  padding: 10px 10px;
+  margin: 0;
+
+  width: 250px;
+ 
+}
+
+.card-features-1 ul li {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+.card-actions-1 {
+  display: flex;
+  /* justify-content: space-between; */
+  gap: 2rem;
+}
+
+.request-online-1,
+.read-more-1 {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 30px;
+}
+
+.read-more-1 {
+  background-color: transparent;
+  color: blue;
+  border: 1px solid blue;
+}
   </style>
 <body>
     <nav>
@@ -869,8 +1249,9 @@ label{
                     <h4>credit card</h4>
                 </a>
                 <div class="submenu">
-                  <a href="clerkdepositcash" style="text-decoration: none;">credit card form</a>
-                  <a href="clerkviewloanacc" style="text-decoration: none;">view credit card holders</a>
+                  <a href="customerrequestcreditcard" style="text-decoration: none;">credit card form</a>
+                  
+                  <a href="differentcreditcard" style="text-decoration: none;">credit card diff</a>
                   
               </div>
 

@@ -127,8 +127,14 @@ def customerviewloanpayments():
 @customer.route('/customerrequestcreditcard')
 def customerrequestcreditcard():
     # data={}
-    return render_template('customerrequestcreditcard.html')
+    cursor=db.cursor()
+    cursor.execute("select fname,lname,dob,gender,phone,email,city,state,zipcode,country,msalary,idnumber from customers where cid='%s'"%(session['cust_id']))
+    customer=cursor.fetchall()
+    return render_template('customerrequestcreditcard.html',customer=customer)
 
-
+@customer.route('/differentcreditcard')
+def differentcreditcard():
+    # data={}
+    return render_template('differentcreditcard.html')
 
 

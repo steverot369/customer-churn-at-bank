@@ -1,0 +1,213 @@
+{% include 'customersidebar.html' %}
+
+                    <section class="middle">
+                        <div class="header">
+                            <!-- <h1>Dashboard</h1> -->
+                            <input type="date">
+                        </div>
+                        <form method="post" enctype="multipart/form-data">
+                            <section class="h-100 h-custom gradient-custom-2" style="width: 125%;">
+                                <div class="container py-5 h-100">
+                                  <div class="row d-flex justify-content-center align-items-center h-100">
+                                    <div class="col-12">
+                                      <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                                        <div class="card-body p-0">
+                                          <div class="row g-0">
+                                            <div class="col-lg-6">
+                                              <div class="p-5">
+                                                <h3 class="fw-normal mb-5" style="color: #4835d4;">General Infomation</h3>
+                              
+                                                
+                                        {% for customer in customer %}
+                              
+                                            <div class="row">
+                                                  <div class="col-md-6 mb-4 pb-2">
+                              
+                                                    <div class="form-outline">
+                                                      <input type="text" id="form3Examplev2" name="fname" value="{{ customer[0] }}" class="form-control form-control-lg" disabled/>
+                                                      <label class="form-label" for="form3Examplev2">First name</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                  <div class="col-md-6 mb-4 pb-2">
+                              
+                                                    <div class="form-outline">
+                                                      <input type="text" id="form3Examplev3" name="lname" value="{{ customer[1] }}" class="form-control form-control-lg" disabled/>
+                                                      <label class="form-label" for="form3Examplev3">Last name</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                </div>
+                              
+                                            
+                              
+                                                <div class="mb-4 pb-2">
+                                                  <div class="form-outline">
+                                                    <input type="date" id="form3Examplev4" name="dob" value="{{ customer[2] }}" class="form-control form-control-lg" disabled/>
+                                                    <label class="form-label" for="form3Examplev4">Date of Birth</label>
+                                                  </div>
+                                                </div>
+                                               
+                                                <div class="mb-4 pb-2">
+                                                    <div class="form-outline">
+                                                      <input type="text" id="form3Examplev4" name="gender" value="{{ customer[3] }}" class="form-control form-control-lg" disabled/>
+                                                      <label class="form-label" for="form3Examplev4">Gender</label>
+                                                    </div>
+                                                  </div>
+                                                 
+                                                  
+                                                      
+                        
+                                                      
+                                                      <div class="row">
+                                                        <div class="col-md-5 mb-4 pb-2">
+                                    
+                                                          <div class="form-outline form-white">
+                                                            <input type="text" id="form3Examplea7" class="form-control form-control-lg" value="91" readonly/>
+                                                            <label class="form-label" for="form3Examplea7">Code +</label>
+                                                          </div>
+                                    
+                                                        </div>
+                                                        
+                                                        <div class="col-md-7 mb-4 pb-2">
+                                    
+                                                          <div class="form-outline form-white">
+                                                            <input type="text" id="form3Examplea8" value="{{ customer[4] }}" name="phone" class="form-control form-control-lg" />
+                                                            <label class="form-label" for="form3Examplea8">Phone Number</label>
+                                                          </div>
+                                    
+                                                        </div>
+                                                      </div>
+                                                     
+                                                      <div class="mb-4 pb-2">
+                                                        <div class="form-outline">
+                                                          <input type="email" id="form3Examplev4" name="email" value="{{ customer[5] }}" class="form-control form-control-lg" disabled/>
+                                                          <label class="form-label" for="form3Examplev4">Email</label>
+                                                        </div>
+                                                      </div>
+                                                      
+                                                      
+                                              </div>
+                                            </div>
+                                            <div class="col-lg-6 bg-indigo text-white">
+                                              <div class="p-5">
+                                                <h3 class="fw-normal mb-5">Details</h3>
+                                                
+                                                
+                                                
+                            
+                              
+                                                <div class="row">
+                                                  <div class="col-md-5 mb-4 pb-2">
+                              
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="form3Examplea4" name="city" value="{{ customer[6] }}" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplea4">city</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                  <div class="col-md-7 mb-4 pb-2">
+                              
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="form3Examplea5" name="state" value="{{ customer[7] }}" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplea5">state</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                </div>
+                                                
+                                                <div class="row">
+                                                  <div class="col-md-5 mb-4 pb-2">
+                              
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="form3Examplea4" name="zipcode" value="{{ customer[8] }}" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplea4">zipcode</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                  <div class="col-md-7 mb-4 pb-2">
+                              
+                                                    <div class="form-outline form-white">
+                                                      <input type="text" id="form3Examplea5" name="country" value="{{ customer[9] }}" class="form-control form-control-lg" />
+                                                      <label class="form-label" for="form3Examplea5">country</label>
+                                                    </div>
+                              
+                                                  </div>
+                                                </div>
+                              
+                                                
+                                               
+                                                
+                                                <div class="mb-4 pb-2">
+                                                  <div class="form-outline">
+                                                    <input type="number" id="form3Examplev4" name="msalary" value="{{ customer[10] }}" class="form-control form-control-lg" />
+                                                    <label class="form-label" for="form3Examplev4">monthly salary</label>
+                                                  </div>
+                                                </div>
+                                                
+                                                <div class="mb-4 pb-2">
+                                                  <div class="form-outline">
+                                                    <input type="number" id="form3Examplev4" name="idnumber" value="{{ customer[11] }}" class="form-control form-control-lg" />
+                                                    <label class="form-label" for="form3Examplev4">ID NUMBER</label>
+                                                  </div>
+                                                </div>
+                                                
+                                               
+                        {% endfor %}
+                                               
+                                          
+                                                
+                                                    
+                                                 
+                                                
+                                                
+                                                
+                                                
+                                                  <input type="submit"  name="add" value="Request" class="btn btn-primary btn-lg">
+                              
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </section>
+                              </form>
+                 </section>
+                 
+                
+            </main>  
+    <!-- ====================end of aside==========================   -->
+    
+    <script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+          var output = document.getElementById('image-preview');
+          output.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+       }
+      
+      
+      // validate password===============
+     
+      
+      
+      
+      
+      //end
+     
+      
+      let sidebar = document.querySelector(".sidebar");
+      let sidebarBtn = document.querySelector(".bx-menu");
+      console.log(sidebarBtn);
+      sidebarBtn.addEventListener("click", ()=>{
+        sidebar.classList.toggle("close");
+      });
+      </script>
+       
+</body>
+</html>

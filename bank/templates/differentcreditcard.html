@@ -1,0 +1,185 @@
+{% include 'customersidebar.html' %}
+
+                    <section class="middle">
+                        <div class="header">
+                            <!-- <h1>Dashboard</h1> -->
+                            <input type="date">
+                        </div>
+                        <h1>Credit Card Selector</h1>
+  
+                        <form id="creditCardForm">
+                            <label for="employment">Employment Type:</label>
+                            <input type="radio" id="employee" name="employment" value="employee" checked>
+                            <label for="employee">Employee</label>
+                            <input type="radio" id="self-employed" name="employment" value="self-employed">
+                            <label for="self-employed">Self-Employed</label>
+                          
+                            <label id="label" for="income">Annual Income:</label>
+                            <input type="range" id="income" name="income" min="10000" max="100000" step="1000" value="50000">
+                            <span id="incomeValue">50,000</span>
+                            
+                            <label for="interest">Interest:</label>
+                            <select id="interest" name="interest">
+                              <option value="fuel">Fuel</option>
+                              <option value="lifestyle">Lifestyle</option>
+                              <option value="travel">Travel</option>
+                            </select>
+                        </form>
+                            <!-- <input type="submit" value="Find Credit Card"> -->
+                            
+                          
+                            <button style="right: 20px;" class="btn btn-primary btn-lg" id="show">Show Credit Cards</button>
+                            <div id="sasi" style="display: none;">
+                            <h3 id="employee-type"></h3>
+                            <h3 id="incomeValue1"></h3>
+                            <h3 id="category"></h3>
+                            </div>
+                            
+
+                          <div class="credit-cards" id="creditCardsContainer">
+                            <div class="credit-card" id="credit1" style="display: none;">
+                                <div class="card-front">
+                                  <div class="card-logo">
+                                    <img src="/static/images/tesla.png" alt="Card Logo">
+                                    <span class="bank-name">Millennia Credit Card</span>
+                                  </div>
+                                  <div class="card-number">
+                                    1234 5678 9012 3456
+                                  </div>
+                                  <div class="card-details">
+                                    <div class="card-holder">
+                                      Cardholder Name
+                                    </div>
+                                    <div class="card-expiry">
+                                      12/23
+                                    </div>
+                                    
+                                </div>
+                                <!-- <div class="card-back">
+                                    CVV
+                                  </div> -->
+                               
+                                <div class="card-features">
+                                    <ul>
+                                        <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
+                                      <li>&#127873; 2.5% CashBack on all online spends</li>
+                                      <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
+                                      <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                    </ul>
+                                  </div>
+                                  <div class="card-actions">
+                                    <button class="request-online">Request Online</button>
+                                    <a href="#" class="read-more">Read More</a>
+                                  </div>
+                                </div>
+                            </div>
+                              
+                              
+                        <div class="credit-card" id="credit2" style="display: none;">
+                            <div class="card">
+                                <div class="bank-name" title="BestBank">BestBank</div>
+                                <div class="chip">
+                                    <img src="/static/images/tesla.png" alt="Card Logo">
+                                    
+                                </div>
+                                <div class="data">
+                                    <div class="pan">4123 4567 8910 1112</div>
+                                    <div class="first-digits">4123</div>
+                                    <div class="exp-date-wrapper">
+                                        <div class="left-label">EXPIRES END</div>
+                                        <div class="exp-date">
+                                            <div class="upper-labels">MONTH/YEAR</div>
+                                            <div class="date" title="01/17">01/17</div>
+                                        </div>
+                                    </div>
+                                    <div class="name-on-card" title="John Doe">John Doe</div>
+                                </div>
+                                
+                            </div>
+                            <div class="card-features-1">
+                                <ul>
+                                    <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
+                                  <li>&#127873; 2.5% CashBack on all online spends</li>
+                                  <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
+                                  <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                  
+                                </ul>
+                              </div>
+                              <div class="card-actions-1">
+                                <button class="request-online-1">Request Online</button>
+                                <a href="#" class="read-more-1">Read More</a>
+                              </div>
+                            </div> 
+                        </div>
+                            <div class="credit-card" id="credit3" style="display: none;">
+                              <h3>Credit Card 3</h3>
+                              <p>Card Details and Benefits</p>
+                            </div>
+                          </div>
+                          
+                          
+                 </section>
+                 
+                
+            </main>  
+    <!-- ====================end of aside==========================   -->
+     <script>
+        // Get the range input and the span element to display the value
+        var incomeRange = document.getElementById('income');
+        var incomeValue = document.getElementById('incomeValue');
+      
+        // Update the span element with the initial value
+        incomeValue.textContent = numberWithCommas(incomeRange.value);
+      
+        // Add an event listener to update the span element whenever the range value changes
+        incomeRange.addEventListener('input', function() {
+          incomeValue.textContent = numberWithCommas(incomeRange.value);
+        });
+      
+        // Helper function to add commas to the number for better readability
+        function numberWithCommas(number) {
+          return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+      </script> 
+    
+    
+    <script>
+      document.getElementById('show').addEventListener('click', function() {
+        var employmentType = document.querySelector('input[name="employment"]:checked').value;
+        var annualIncome = parseInt(document.getElementById('income').value);
+        var selectedInterest = document.getElementById('interest').value;
+    
+        // Reset display of all credit cards to none
+        var creditCards = document.getElementsByClassName('credit-card');
+        for (var i = 0; i < creditCards.length; i++) {
+          creditCards[i].style.display = 'none';
+        }
+    
+        // Show the respective credit card based on conditions
+        if (employmentType === 'employee' && annualIncome >= 50000 && selectedInterest === 'fuel') {
+          document.getElementById('credit1').style.display = 'block';
+          document.getElementById('credit2').style.display = 'block';
+
+        } else if (employmentType === 'self-employed' && annualIncome >= 70000 && selectedInterest === 'lifestyle') {
+          document.getElementById('credit2').style.display = 'block';
+        } else if (employmentType === 'employee' && annualIncome >= 60000 && selectedInterest === 'travel') {
+          document.getElementById('credit3').style.display = 'block';
+        }
+    
+        // Display selected values
+        document.getElementById('employee-type').textContent = employmentType;
+        document.getElementById('incomeValue1').textContent = annualIncome.toLocaleString();
+        document.getElementById('category').textContent = selectedInterest;
+    
+        // Add styling to the selected values
+        document.getElementById('sasi').style.display = 'block';
+
+        document.getElementById('employee-type').classList.add('selected-value');
+        document.getElementById('incomeValue1').classList.add('selected-value');
+        document.getElementById('category').classList.add('selected-value');
+      });
+    </script>
+    
+       
+</body>
+</html>
