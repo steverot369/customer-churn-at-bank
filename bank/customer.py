@@ -130,11 +130,12 @@ def customerrequestcreditcard():
     cursor=db.cursor()
     cursor.execute("select fname,lname,dob,gender,phone,email,city,state,zipcode,country,msalary,idnumber from customers where cid='%s'"%(session['cust_id']))
     customer=cursor.fetchall()
-    return render_template('customerrequestcreditcard.html',customer=customer)
+    card_name = request.args.get('card_name')
+    return render_template('customerrequestcreditcard.html',customer=customer,card_name=card_name)
 
-@customer.route('/differentcreditcard')
+@customer.route('/differentcreditcard',methods=['post','get'])
 def differentcreditcard():
-    # data={}
+   
     return render_template('differentcreditcard.html')
 
 

@@ -29,214 +29,464 @@
                             
                           
                             <button style="right: 20px;" class="btn btn-primary btn-lg" id="show">Show Credit Cards</button>
-                            <div id="sasi" style="display: none;">
-                            <h3 id="employee-type"></h3>
-                            <h3 id="incomeValue1"></h3>
-                            <h3 id="category"></h3>
-                            </div>
+                            <div id="container-56">
+                              <div id="sasi" style="display: none;">
+                                <h3 id="employee-type"></h3>
+                                <h3 id="incomeValue1"></h3>
+                                <h3 id="category"></h3>
+                                </div>
+                                <button id="clearButton" style="display: none;">Clear All</button>
+                              </div>
+                                <p id="matchCount" style="display: none;"></p>
+                                
                             
-                                  
-                      <div class="credit-cards" id="creditCardsContainer">
-                        <!-- card 1 -->
-                            <div class="credit-card" id="credit1" style="display: none;">
-                                <div class="card-front">
-                                  <div class="card-logo">
-                                    <img src="/static/images/tesla.png" alt="Card Logo">
-                                    <span class="bank-name">Millennia Credit Card</span>
-                                  </div>
-                                  <div class="card-number">
-                                    1234 5678 9012 3456
-                                  </div>
-                                  <div class="card-details">
-                                    <div class="card-holder">
-                                      Cardholder Name
+                            
+                         <!-- <form method="post"> -->
+                          <div class="credit-cards" id="creditCardsContainer">
+                            <!-- card 1 -->
+                                <div class="credit-card" id="credit1" style="display: none;">
+                                  <h3><b>Millennia Credit Card</h3></b></h3>       
+                                    <h4>Best CashBack Credit Card</h4> 
+                                    <!-- <input type="hidden" name="card_name" value="Millennia Credit Card"> -->
+                                    <div class="card-front">
+                                      <div class="card-logo">
+                                        <img src="/static/images/tesla.png" alt="Card Logo">
+                                        <span class="bank-name">Millennia Credit Card</span>
+                                      </div>
+                                      <div class="card-number">
+                                        1234 5678 9012 3456
+                                      </div>
+                                      <div class="card-details">
+                                        <div class="card-holder">
+                                          Cardholder Name
+                                        </div>
+                                        <div class="card-expiry">
+                                          12/23
+                                        </div>
+                                        
                                     </div>
-                                    <div class="card-expiry">
-                                      12/23
+                                  
+                                   
+                                    <div class="card-features">
+                                        <ul>
+                                            <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
+                                          <li>&#127873; 2.5% CashBack on all online spends</li>
+                                          <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
+                                          <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                        </ul>
+                                      </div>
+                                      <div class="card-actions">
+                                        <!-- <input type="submit" name="add" class="request-online" value="Request Online"> -->
+                                        <!-- <button class="request-online">Request Online</button> -->
+                                        <a href="{{ url_for('customer.customerrequestcreditcard', card_name='Millennia Credit Card') }}" style="text-decoration: none;" class="request-online">Request Online</a>
+                                        <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
+                                      </div>
+                                    </div>
+                                </div>
+                                  <!-- end 1 -->
+    
+    
+                            <!-- card 2 -->
+                                  
+                            <div class="credit-card" id="credit2" style="display: none;">
+                              <h3><b>Millennia Credit Card</h3></b></h3>       
+                                    <h4>Best CashBack Credit Card</h4>
+                                <div class="card1">
+                                    <div class="bank-name" title="BestBank">BestBank</div>
+                                    <div class="chip">
+                                        <img src="/static/images/tesla.png" alt="Card Logo">
+                                        
+                                    </div>
+                                    <div class="data">
+                                        <div class="pan">4123 4567 8910 1112</div>
+                                        <div class="first-digits">4123</div>
+                                        <div class="exp-date-wrapper">
+                                            <div class="left-label">EXPIRES END</div>
+                                            <div class="exp-date">
+                                                <div class="upper-labels">MONTH/YEAR</div>
+                                                <div class="date" title="01/17">01/17</div>
+                                            </div>
+                                        </div>
+                                        <div class="name-on-card" title="John Doe">John Doe</div>
                                     </div>
                                     
                                 </div>
-                              
-                               
-                                <div class="card-features">
+                                <div class="card-features-1">
                                     <ul>
                                         <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
                                       <li>&#127873; 2.5% CashBack on all online spends</li>
                                       <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
                                       <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                      
                                     </ul>
                                   </div>
-                                  <div class="card-actions">
-                                    <button class="request-online">Request Online</button>
-                                    <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
+                                  <div class="card-actions-1">
+                                    <button class="request-online-1">Request Online</button>
+                                    <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
                                   </div>
+                                </div> 
+                                  <!-- end 2 -->
+                           
+    
+                            <!-- card 3 -->
+    
+                            <div class="credit-card" id="credit3" style="display: none;">
+                              <div class="card-front">
+                                <div class="card-logo">
+                                  <img src="/static/images/tesla.png" alt="Card Logo">
+                                  <span class="bank-name">Millennia Credit Card</span>
                                 </div>
-                            </div>
-                              <!-- end 1 -->
-
-
-                        <!-- card 2 -->
-                              
-                        <div class="credit-card" id="credit2" style="display: none;">
-                            <div class="card">
-                                <div class="bank-name" title="BestBank">BestBank</div>
-                                <div class="chip">
-                                    <img src="/static/images/tesla.png" alt="Card Logo">
-                                    
+                                <div class="card-number">
+                                  1234 5678 9012 3456
                                 </div>
-                                <div class="data">
-                                    <div class="pan">4123 4567 8910 1112</div>
-                                    <div class="first-digits">4123</div>
-                                    <div class="exp-date-wrapper">
-                                        <div class="left-label">EXPIRES END</div>
-                                        <div class="exp-date">
-                                            <div class="upper-labels">MONTH/YEAR</div>
-                                            <div class="date" title="01/17">01/17</div>
-                                        </div>
-                                    </div>
-                                    <div class="name-on-card" title="John Doe">John Doe</div>
+                                <div class="card-details">
+                                  <div class="card-holder">
+                                    Cardholder Name
+                                  </div>
+                                  <div class="card-expiry">
+                                    12/23
+                                  </div>
+                                  
+                              </div>
+                            
+                             
+                              <div class="card-features">
+                                  <ul>
+                                      <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
+                                    <li>&#127873; 2.5% CashBack on all online spends</li>
+                                    <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
+                                    <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                  </ul>
+                                </div>
+                                <div class="card-actions">
+                                  <button class="request-online">Request Online</button>
+                                  <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
+                                </div>
+                              </div>
+                          </div>
+                              <!-- end 3 -->
+    
+    
+    
+                            <!-- card 4 -->
+    
+                          <div class="credit-card" id="credit4" style="display: none;">
+                            <div class="card-front">
+                              <div class="card-logo">
+                                <img src="/static/images/tesla.png" alt="Card Logo">
+                                <span class="bank-name">Millennia Credit Card</span>
+                              </div>
+                              <div class="card-number">
+                                1234 5678 9012 3456
+                              </div>
+                              <div class="card-details">
+                                <div class="card-holder">
+                                  Cardholder Name
+                                </div>
+                                <div class="card-expiry">
+                                  12/23
                                 </div>
                                 
                             </div>
-                            <div class="card-features-1">
+                          
+                           
+                            <div class="card-features">
                                 <ul>
                                     <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
                                   <li>&#127873; 2.5% CashBack on all online spends</li>
                                   <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
                                   <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
-                                  
                                 </ul>
                               </div>
-                              <div class="card-actions-1">
-                                <button class="request-online-1">Request Online</button>
-                                <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                              <div class="card-actions">
+                                <button class="request-online">Request Online</button>
+                                <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
                               </div>
-                            </div> 
-                              <!-- end 2 -->
-                       
-
-                        <!-- card 3 -->
-
-                        <div class="credit-card" id="credit3" style="display: none;">
-                          <div class="card-front">
-                            <div class="card-logo">
-                              <img src="/static/images/tesla.png" alt="Card Logo">
-                              <span class="bank-name">Millennia Credit Card</span>
                             </div>
-                            <div class="card-number">
-                              1234 5678 9012 3456
-                            </div>
-                            <div class="card-details">
-                              <div class="card-holder">
-                                Cardholder Name
+                        </div>
+                              <!-- end 4 -->
+    
+    
+                        <!-- card 5 -->
+    
+                        <div class="credit-card" id="credit5" style="display: none;">
+                          <div class="card1">
+                              <div class="bank-name" title="BestBank">BestBank</div>
+                              <div class="chip">
+                                  <img src="/static/images/tesla.png" alt="Card Logo">
+                                  
                               </div>
-                              <div class="card-expiry">
-                                12/23
+                              <div class="data">
+                                  <div class="pan">4123 4567 8910 1112</div>
+                                  <div class="first-digits">4123</div>
+                                  <div class="exp-date-wrapper">
+                                      <div class="left-label">EXPIRES END</div>
+                                      <div class="exp-date">
+                                          <div class="upper-labels">MONTH/YEAR</div>
+                                          <div class="date" title="01/17">01/17</div>
+                                      </div>
+                                  </div>
+                                  <div class="name-on-card" title="John Doe">John Doe</div>
                               </div>
                               
                           </div>
-                        
-                         
-                          <div class="card-features">
+                          <div class="card-features-1">
                               <ul>
                                   <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
                                 <li>&#127873; 2.5% CashBack on all online spends</li>
                                 <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
                                 <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                
                               </ul>
                             </div>
-                            <div class="card-actions">
-                              <button class="request-online">Request Online</button>
-                              <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
+                            <div class="card-actions-1">
+                              <button class="request-online-1">Request Online</button>
+                              <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
                             </div>
-                          </div>
-                      </div>
-                          <!-- end 3 -->
-
-
-
-                        <!-- card 4 -->
-
-                      <div class="credit-card" id="credit4" style="display: none;">
-                        <div class="card-front">
-                          <div class="card-logo">
-                            <img src="/static/images/tesla.png" alt="Card Logo">
-                            <span class="bank-name">Millennia Credit Card</span>
-                          </div>
-                          <div class="card-number">
-                            1234 5678 9012 3456
-                          </div>
-                          <div class="card-details">
-                            <div class="card-holder">
-                              Cardholder Name
-                            </div>
-                            <div class="card-expiry">
-                              12/23
-                            </div>
-                            
-                        </div>
-                      
-                       
-                        <div class="card-features">
-                            <ul>
-                                <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
-                              <li>&#127873; 2.5% CashBack on all online spends</li>
-                              <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
-                              <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
-                            </ul>
-                          </div>
-                          <div class="card-actions">
-                            <button class="request-online">Request Online</button>
-                            <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
-                          </div>
-                        </div>
-                    </div>
-                          <!-- end 4 -->
-
-
-                    <!-- card 5 -->
-
-                    <div class="credit-card" id="credit5" style="display: none;">
-                      <div class="card">
-                          <div class="bank-name" title="BestBank">BestBank</div>
-                          <div class="chip">
-                              <img src="/static/images/tesla.png" alt="Card Logo">
-                              
-                          </div>
-                          <div class="data">
-                              <div class="pan">4123 4567 8910 1112</div>
-                              <div class="first-digits">4123</div>
-                              <div class="exp-date-wrapper">
-                                  <div class="left-label">EXPIRES END</div>
-                                  <div class="exp-date">
-                                      <div class="upper-labels">MONTH/YEAR</div>
-                                      <div class="date" title="01/17">01/17</div>
+                          </div> 
+                              <!-- end 5-->
+    
+                            <!-- card 6 -->
+                              <div class="credit-card" id="credit6" style="display: none;">
+                                <div class="card1">
+                                    <div class="bank-name" title="BestBank">BestBank</div>
+                                    <div class="chip">
+                                        <img src="/static/images/tesla.png" alt="Card Logo">
+                                        
+                                    </div>
+                                    <div class="data">
+                                        <div class="pan">4123 4567 8910 1112</div>
+                                        <div class="first-digits">4123</div>
+                                        <div class="exp-date-wrapper">
+                                            <div class="left-label">EXPIRES END</div>
+                                            <div class="exp-date">
+                                                <div class="upper-labels">MONTH/YEAR</div>
+                                                <div class="date" title="01/17">01/17</div>
+                                            </div>
+                                        </div>
+                                        <div class="name-on-card" title="John Doe">John Doe</div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="card-features-1">
+                                    <ul>
+                                        <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
+                                      <li>&#127873; 2.5% CashBack on all online spends</li>
+                                      <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
+                                      <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                      
+                                    </ul>
                                   </div>
+                                  <div class="card-actions-1">
+                                    <button class="request-online-1">Request Online</button>
+                                    <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                                  </div>
+                                </div>
+                               <!-- end 6-->
+    
+                               <!-- card 7 -->
+                              <div class="credit-card" id="credit7" style="display: none;">
+                                <div class="card1">
+                                    <div class="bank-name" title="BestBank">BestBank</div>
+                                    <div class="chip">
+                                        <img src="/static/images/tesla.png" alt="Card Logo">
+                                        
+                                    </div>
+                                    <div class="data">
+                                        <div class="pan">4123 4567 8910 1112</div>
+                                        <div class="first-digits">4123</div>
+                                        <div class="exp-date-wrapper">
+                                            <div class="left-label">EXPIRES END</div>
+                                            <div class="exp-date">
+                                                <div class="upper-labels">MONTH/YEAR</div>
+                                                <div class="date" title="01/17">01/17</div>
+                                            </div>
+                                        </div>
+                                        <div class="name-on-card" title="John Doe">John Doe</div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="card-features-1">
+                                    <ul>
+                                        <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
+                                      <li>&#127873; 2.5% CashBack on all online spends</li>
+                                      <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
+                                      <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                      
+                                    </ul>
+                                  </div>
+                                  <div class="card-actions-1">
+                                    <button class="request-online-1">Request Online</button>
+                                    <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                                  </div>
+                                </div>
+                               <!-- end 7-->
+    
+    
+                               <!-- card 7 -->
+                              <div class="credit-card" id="credit7" style="display: none;">
+                                <div class="card1">
+                                    <div class="bank-name" title="BestBank">BestBank</div>
+                                    <div class="chip">
+                                        <img src="/static/images/tesla.png" alt="Card Logo">
+                                        
+                                    </div>
+                                    <div class="data">
+                                        <div class="pan">4123 4567 8910 1112</div>
+                                        <div class="first-digits">4123</div>
+                                        <div class="exp-date-wrapper">
+                                            <div class="left-label">EXPIRES END</div>
+                                            <div class="exp-date">
+                                                <div class="upper-labels">MONTH/YEAR</div>
+                                                <div class="date" title="01/17">01/17</div>
+                                            </div>
+                                        </div>
+                                        <div class="name-on-card" title="John Doe">John Doe</div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="card-features-1">
+                                    <ul>
+                                        <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
+                                      <li>&#127873; 2.5% CashBack on all online spends</li>
+                                      <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
+                                      <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                      
+                                    </ul>
+                                  </div>
+                                  <div class="card-actions-1">
+                                    <button class="request-online-1">Request Online</button>
+                                    <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                                  </div>
+                                </div>
+                               <!-- end 7-->
+    
+    
+                              <!-- card 8 -->
+                                                            
+                              <div class="credit-card" id="credit8" style="display: none;">
+                                <div class="card1">
+                                    <div class="bank-name" title="BestBank">BestBank</div>
+                                    <div class="chip">
+                                        <img src="/static/images/tesla.png" alt="Card Logo">
+                                        
+                                    </div>
+                                    <div class="data">
+                                        <div class="pan">4123 4567 8910 1112</div>
+                                        <div class="first-digits">4123</div>
+                                        <div class="exp-date-wrapper">
+                                            <div class="left-label">EXPIRES END</div>
+                                            <div class="exp-date">
+                                                <div class="upper-labels">MONTH/YEAR</div>
+                                                <div class="date" title="01/17">01/17</div>
+                                            </div>
+                                        </div>
+                                        <div class="name-on-card" title="John Doe">John Doe</div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="card-features-1">
+                                    <ul>
+                                        <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
+                                      <li>&#127873; 2.5% CashBack on all online spends</li>
+                                      <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
+                                      <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                      
+                                    </ul>
+                                  </div>
+                                  <div class="card-actions-1">
+                                    <button class="request-online-1">Request Online</button>
+                                    <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                                  </div>
+                                </div> 
+                                  <!-- end 8 -->
+    
+    
+                                    <!-- card 9 -->
+                                                            
+                              <div class="credit-card" id="credit9" style="display: none;">
+                                <div class="card1">
+                                    <div class="bank-name" title="BestBank">BestBank</div>
+                                    <div class="chip">
+                                        <img src="/static/images/tesla.png" alt="Card Logo">
+                                        
+                                    </div>
+                                    <div class="data">
+                                        <div class="pan">4123 4567 8910 1112</div>
+                                        <div class="first-digits">4123</div>
+                                        <div class="exp-date-wrapper">
+                                            <div class="left-label">EXPIRES END</div>
+                                            <div class="exp-date">
+                                                <div class="upper-labels">MONTH/YEAR</div>
+                                                <div class="date" title="01/17">01/17</div>
+                                            </div>
+                                        </div>
+                                        <div class="name-on-card" title="John Doe">John Doe</div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="card-features-1">
+                                    <ul>
+                                        <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
+                                      <li>&#127873; 2.5% CashBack on all online spends</li>
+                                      <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
+                                      <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                      
+                                    </ul>
+                                  </div>
+                                  <div class="card-actions-1">
+                                    <button class="request-online-1">Request Online</button>
+                                    <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                                  </div>
+                                </div> 
+                                  <!-- end 9 -->
+    
+                            <!-- card 10 -->
+                                                                                  
+                            <div class="credit-card" id="credit10" style="display: none;">
+                              <div class="card1">
+                                  <div class="bank-name" title="BestBank">BestBank</div>
+                                  <div class="chip">
+                                      <img src="/static/images/tesla.png" alt="Card Logo">
+                                      
+                                  </div>
+                                  <div class="data">
+                                      <div class="pan">4123 4567 8910 1112</div>
+                                      <div class="first-digits">4123</div>
+                                      <div class="exp-date-wrapper">
+                                          <div class="left-label">EXPIRES END</div>
+                                          <div class="exp-date">
+                                              <div class="upper-labels">MONTH/YEAR</div>
+                                              <div class="date" title="01/17">01/17</div>
+                                          </div>
+                                      </div>
+                                      <div class="name-on-card" title="John Doe">John Doe</div>
+                                  </div>
+                                  
                               </div>
-                              <div class="name-on-card" title="John Doe">John Doe</div>
+                              <div class="card-features-1">
+                                  <ul>
+                                      <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
+                                    <li>&#127873; 2.5% CashBack on all online spends</li>
+                                    <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
+                                    <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                    
+                                  </ul>
+                                </div>
+                                <div class="card-actions-1">
+                                  <button class="request-online-1">Request Online</button>
+                                  <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                                </div>
+                              </div> 
+                                <!-- end 10 -->
+    
+    
                           </div>
+                         <!-- </form>          -->
+                      
                           
-                      </div>
-                      <div class="card-features-1">
-                          <ul>
-                              <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
-                            <li>&#127873; 2.5% CashBack on all online spends</li>
-                            <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
-                            <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
-                            
-                          </ul>
-                        </div>
-                        <div class="card-actions-1">
-                          <button class="request-online-1">Request Online</button>
-                          <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
-                        </div>
-                      </div> 
-                          <!-- end 5-->
-
-                           
-                      </div>
-                          
-                          
+                      
+                         
                  </section>
                  
                 
@@ -260,9 +510,95 @@
           return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
       </script> 
+  <script>
+    document.getElementById('show').addEventListener('click', function() {
+      var employmentType = document.querySelector('input[name="employment"]:checked').value;
+      var annualIncome = parseInt(document.getElementById('income').value);
+      var selectedInterest = document.getElementById('interest').value;
+  
+      // Reset display of all credit cards to none
+      var creditCards = document.getElementsByClassName('credit-card');
+      for (var i = 0; i < creditCards.length; i++) {
+        creditCards[i].style.display = 'none';
+      }
+  
+      // Show the respective credit card based on conditions
+      if (employmentType === 'employee' && annualIncome >= 10000 && selectedInterest === 'fuel') {
+        document.getElementById('credit1').style.display = 'block';
+        document.getElementById('credit2').style.display = 'block';
+        document.getElementById('credit10').style.display = 'block';
+        document.getElementById('credit3').style.display = 'block';
+
+        // Show other relevant credit cards
+  
+        // Update match count and clear button
+        document.getElementById('matchCount').textContent = "Showing 4 match card from 10";
+        document.getElementById('matchCount').style.display = 'block';
+        document.getElementById('clearButton').style.display = 'block';
+      } else if (employmentType === 'self-employed' && annualIncome >= 70000 && selectedInterest === 'lifestyle') {
+        // Show relevant credit cards
+        document.getElementById('credit2').style.display = 'block';
+        document.getElementById('credit10').style.display = 'block';
+        document.getElementById('credit3').style.display = 'block';
+  
+        // Update match count and clear button
+        document.getElementById('matchCount').textContent = "Showing 3 match card from 10";
+        document.getElementById('matchCount').style.display = 'block';
+        document.getElementById('clearButton').style.display = 'block';
+      } else if (employmentType === 'employee' && annualIncome >= 60000 && selectedInterest === 'travel') {
+        // Show relevant credit cards
+        document.getElementById('credit4').style.display = 'block';
+        document.getElementById('credit6').style.display = 'block';
+        document.getElementById('credit8').style.display = 'block';
+        // Update match count and clear button
+        document.getElementById('matchCount').textContent = "There are 2 matches out of 10";
+        document.getElementById('matchCount').style.display = 'block';
+        document.getElementById('clearButton').style.display = 'block';
+      }
+  
+      // Display selected values
+      document.getElementById('employee-type').textContent = employmentType;
+      document.getElementById('incomeValue1').textContent = "\u20B9 " + annualIncome.toLocaleString();
+      document.getElementById('category').textContent = selectedInterest;
+  
+
+      document.getElementById('sasi').style.display = 'block';
+      // Add styling to the selected values
+      document.getElementById('employee-type').classList.add('selected-value');
+      document.getElementById('incomeValue1').classList.add('selected-value');
+      document.getElementById('category').classList.add('selected-value');
+      
+
+    });
+  
+    // Clear button click event
+    document.getElementById('clearButton').addEventListener('click', function() {
+      // Reset display of all credit cards to none
+      var creditCards = document.getElementsByClassName('credit-card');
+      for (var i = 0; i < creditCards.length; i++) {
+        creditCards[i].style.display = 'none';
+      }
+  
+      // Hide match count and clear button
+      document.getElementById('matchCount').style.display = 'none';
+      document.getElementById('clearButton').style.display = 'none';
+
+      // Clear selected values
+  document.getElementById('employee-type').textContent = '';
+  document.getElementById('incomeValue1').textContent = '';
+  document.getElementById('category').textContent = '';
+
+  // Remove styling from selected values
+  document.getElementById('employee-type').classList.remove('selected-value');
+  document.getElementById('incomeValue1').classList.remove('selected-value');
+  document.getElementById('category').classList.remove('selected-value');
+  document.getElementById('sasi').style.display = 'none';
+
+
+    });
+  </script>  
     
-    
-    <script>
+    <!-- <script>
       document.getElementById('show').addEventListener('click', function() {
         var employmentType = document.querySelector('input[name="employment"]:checked').value;
         var annualIncome = parseInt(document.getElementById('income').value);
@@ -275,7 +611,7 @@
         }
     
         // Show the respective credit card based on conditions
-        if (employmentType === 'employee' && annualIncome >= 50000 && selectedInterest === 'fuel') {
+        if (employmentType === 'employee' && annualIncome >= 10000 && selectedInterest === 'fuel') {
           document.getElementById('credit1').style.display = 'block';
           document.getElementById('credit2').style.display = 'block';
           document.getElementById('credit3').style.display = 'block';
@@ -287,8 +623,13 @@
 
         } else if (employmentType === 'self-employed' && annualIncome >= 70000 && selectedInterest === 'lifestyle') {
           document.getElementById('credit2').style.display = 'block';
+          document.getElementById('credit5').style.display = 'block';
+          document.getElementById('credit8').style.display = 'block';
+
         } else if (employmentType === 'employee' && annualIncome >= 60000 && selectedInterest === 'travel') {
-          document.getElementById('credit3').style.display = 'block';
+          document.getElementById('credit6').style.display = 'block';
+          document.getElementById('credit10').style.display = 'block';
+          document.getElementById('credit9').style.display = 'block';
         }
     
         // Display selected values
@@ -303,7 +644,7 @@
         document.getElementById('incomeValue1').classList.add('selected-value');
         document.getElementById('category').classList.add('selected-value');
       });
-    </script>
+    </script> -->
     
        
 </body>
