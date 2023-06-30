@@ -131,11 +131,16 @@ def customerrequestcreditcard():
     cursor.execute("select fname,lname,dob,gender,phone,email,city,state,zipcode,country,msalary,idnumber from customers where cid='%s'"%(session['cust_id']))
     customer=cursor.fetchall()
     card_name = request.args.get('card_name')
-    return render_template('customerrequestcreditcard.html',customer=customer,card_name=card_name)
+    salary = request.args.get('salary')
+
+    return render_template('customerrequestcreditcard.html',customer=customer,card_name=card_name,salary=salary)
 
 @customer.route('/differentcreditcard',methods=['post','get'])
 def differentcreditcard():
-   
-    return render_template('differentcreditcard.html')
+    cursor=db.cursor()
+    cursor.execute("select msalary from customers where cid='%s'"%(session['cust_id']))
+    salary=cursor.fetchall()
+    print(salary)
+    return render_template('differentcreditcard.html',salary=salary)
 
 

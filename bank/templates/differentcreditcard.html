@@ -14,9 +14,11 @@
                             <input type="radio" id="self-employed" name="employment" value="self-employed">
                             <label for="self-employed">Self-Employed</label>
                           
-                            <label id="label" for="income">Annual Income:</label>
+                            <label id="label" for="income">Credit Card limit:</label>
+                           
+
                             <input type="range" id="income" name="income" min="10000" max="100000" step="1000" value="50000">
-                            <span id="incomeValue">50,000</span>
+                            <span id="incomeValue"></span>
                             
                             <label for="interest">Interest:</label>
                             <select id="interest" name="interest">
@@ -78,7 +80,7 @@
                                       <div class="card-actions">
                                         <!-- <input type="submit" name="add" class="request-online" value="Request Online"> -->
                                         <!-- <button class="request-online">Request Online</button> -->
-                                        <a href="{{ url_for('customer.customerrequestcreditcard', card_name='Millennia Credit Card') }}" style="text-decoration: none;" class="request-online">Request Online</a>
+                                        <a href="{{ url_for('customer.customerrequestcreditcard', card_name='Millennia Credit Card',salary=salary[0]) }}" style="text-decoration: none;" class="request-online">Request Online</a>
                                         <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
                                       </div>
                                     </div>
@@ -486,7 +488,7 @@
                       
                           
                       
-                         
+                               
                  </section>
                  
                 
