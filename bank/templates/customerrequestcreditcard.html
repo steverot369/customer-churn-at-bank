@@ -87,10 +87,57 @@
                                                       </div>
                                                       <div class="mb-4 pb-2">
                                                         <div class="form-outline">
-                                                          <input type="text" id="form3Examplev4" name="email" value="{{ card_name }}" class="form-control form-control-lg" disabled/>
+                                                          <input type="text" id="form3Examplev4" name="cardname" value="{{ card_name }}" class="form-control form-control-lg" disabled/>
                                                           <label class="form-label" for="form3Examplev4">card name</label>
                                                         </div>
                                                       </div>
+                                                      <h2><b style="color: black;">Job details</b></h2>
+                                                      <div id="show-btn" class="icon-container">
+                                                        <i class="fas fa-plus"></i>
+                                                      </div>
+
+                                                      <div id="container-67" style="display: none;">
+
+                                                        <div class="mb-4 pb-2">
+                                                          <select name="j_name" class="form-control form-control-lg p-2" id="jobTypeSelect">
+                                                            <option disabled selected value>Select job type</option>
+                                                            <option value="doctor">Doctor</option>
+                                                            <option value="defence">Defence</option>
+                                                            <option value="pensioner">Pensioner</option>
+                                                            <option value="others">Others</option>
+                                                          </select>
+                                                          <label class="form-label" for="form3Examplev4">Job Type</label>
+                                                        </div>
+                                                        
+                                                        <div id="otherJobForm" style="display: none;">
+                                                          <!-- Additional form fields for the "others" job type -->
+                                                          <!-- Add your form fields here -->
+                                                          
+                                                            <div class="mb-4 pb-2">
+                                                              <div class="form-outline">
+                                                                <input type="text" name="j_name" id="form3Examplev4" name="email" class="form-control form-control-lg">
+                                                                <label class="form-label" for="form3Examplev4">Job Name</label>
+                                                              </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="mb-4 pb-2">
+                                                          <div class="form-outline">
+                                                            <input type="text" name="c_name" id="form3Examplev4" name="email"  class="form-control form-control-lg">
+                                                            <label class="form-label" for="form3Examplev4">Company Name</label>
+                                                          </div>
+                                                        </div>
+                                                        <div class="mb-4 pb-2">
+                                                          <div class="form-outline">
+                                                            <input type="text" name="c_location" id="form3Examplev4" name="email"  class="form-control form-control-lg">
+                                                            <label class="form-label" for="form3Examplev4">Company Location</label>
+                                                          </div>
+                                                        </div>
+                                                        
+                                                       
+                                                      </div>
+                                                      
                                                       
                                                       
                                               </div>
@@ -100,10 +147,16 @@
                                                 <h3 class="fw-normal mb-5">Details</h3>
                                                 
                                                 
-                                                
+                                                <div class="mb-4 pb-2">
+                                                  <div class="form-outline form-white">
+                                                    <input name="address" id="form3Examplea2" class="form-control form-control-lg" value="{{ customer[12] }}">
+                                                    <label class="form-label" for="form3Examplea2">Address</label>
+                                                  </div>
+                                                </div>
                             
                               
                                                 <div class="row">
+                                                  
                                                   <div class="col-md-5 mb-4 pb-2">
                               
                                                     <div class="form-outline form-white">
@@ -125,6 +178,7 @@
                                                 <div class="row">
                                                   <div class="col-md-5 mb-4 pb-2">
                               
+                                                    
                                                     <div class="form-outline form-white">
                                                       <input type="text" id="form3Examplea4" name="zipcode" value="{{ customer[8] }}" class="form-control form-control-lg" />
                                                       <label class="form-label" for="form3Examplea4">zipcode</label>
@@ -151,30 +205,25 @@
                                                   </div>
                                                 </div>
                                                 
-                                                <div class="mb-4 pb-2">
-                                                  <div class="form-outline">
-                                                    <input type="number" id="form3Examplev4" name="idnumber" value="{{ customer[11] }}" class="form-control form-control-lg" />
-                                                    <label class="form-label" for="form3Examplev4">ID NUMBER</label>
-                                                  </div>
-                                                </div>
+                                                
                                                 <div class="form-outline">
-                                                  <input type="file" name="image" class="form-control form-control-lg" id="inputGroupFile01">
+                                                  <input type="file" name="file1" class="form-control form-control-lg" id="inputGroupFile01">
                                                   <label for="inputGroupFile01" class="form-label">Choose your identity card</label>
                                                   
                                                 </div>
                                                 <div class="form-outline">
-                                                  <input type="file" name="image" class="form-control form-control-lg" id="inputGroupFile01">
+                                                  <input type="file" name="file2" class="form-control form-control-lg" id="inputGroupFile01">
                                                   <label for="inputGroupFile01" class="form-label">Choose address proof</label>
                                                   
                                                 </div>
                                                 <div class="form-outline">
-                                                  <input type="file" name="image" class="form-control form-control-lg" id="inputGroupFile01">
+                                                  <input type="file" name="file3" class="form-control form-control-lg" id="inputGroupFile01">
                                                   <label for="inputGroupFile01" class="form-label">Income proof</label>
                                                   
                                                 </div>
                                                 
                                                
-                        {% endfor %}
+                       
                                                
                                           
                                                 
@@ -185,7 +234,7 @@
                                                 
                                                 
                                                   <input type="submit"  name="add" value="Request" class="btn btn-primary btn-lg">
-                              
+                                                  {% endfor %}
                                               </div>
                                             </div>
                                           </div>
@@ -203,32 +252,31 @@
     <!-- ====================end of aside==========================   -->
     
     <script>
-    function previewImage(event) {
-        var reader = new FileReader();
-        reader.onload = function() {
-          var output = document.getElementById('image-preview');
-          output.src = reader.result;
+      var jobTypeSelect = document.getElementById('jobTypeSelect');
+      var otherJobForm = document.getElementById('otherJobForm');
+    
+      jobTypeSelect.addEventListener('change', function() {
+        if (jobTypeSelect.value === 'others') {
+          otherJobForm.style.display = 'block';
+        } else {
+          otherJobForm.style.display = 'none';
         }
-        reader.readAsDataURL(event.target.files[0]);
-       }
-      
-      
-      // validate password===============
-     
-      
-      
-      
-      
-      //end
-     
-      
-      let sidebar = document.querySelector(".sidebar");
-      let sidebarBtn = document.querySelector(".bx-menu");
-      console.log(sidebarBtn);
-      sidebarBtn.addEventListener("click", ()=>{
-        sidebar.classList.toggle("close");
       });
-      </script>
-       
+    </script>
+       <script>
+        var showContainer = document.getElementById('container-67');
+var showBtn = document.getElementById('show-btn');
+
+showBtn.addEventListener('click', function() {
+if (showContainer.style.display === 'none') {
+showContainer.style.display = 'block';
+showBtn.innerHTML = '<i class="fas fa-minus"></i>';
+} else {
+showContainer.style.display = 'none';
+showBtn.innerHTML = '<i class="fas fa-plus"></i>';
+}
+});
+
+       </script>
 </body>
 </html>

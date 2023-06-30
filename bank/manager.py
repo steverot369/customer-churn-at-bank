@@ -338,4 +338,12 @@ def managerviewtransaction():
     return render_template('managerviewtransaction.html',employees=employees,name=name,formatted_date=formatted_date)
         
           
-        
+@manager.route('/managerviewcreditcard')
+def managerviewcreditcard():
+    cursor = db.cursor()
+    # cursor.execute("SELECT card_name, job_type, c_name, c_location, m_salary, file1, file2, file3, date, status FROM o_credit_card_request WHERE branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')" % (session['mid']))
+    cursor.execute("SELECT c.card_name, c.job_type, c.c_name, c.c_location, c.m_salary, c.file1, c.file2, c.file3, c.date, c.status, cu.fname, cu.lname, cu.phone FROM o_credit_card_request c INNER JOIN customers cu ON c.customer_id = cu.cid WHERE c.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')"% (session['mid']))
+    credit_card = cursor.fetchall()
+
+
+    return render_template('managerviewcreditcard.html',credit_card=credit_card)       

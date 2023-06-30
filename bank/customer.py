@@ -1,3 +1,4 @@
+import uuid
 from flask import *
 from database import *
 from datetime import datetime
@@ -124,15 +125,49 @@ def customerviewloanpayments():
 
 
 
-@customer.route('/customerrequestcreditcard')
+@customer.route('/customerrequestcreditcard',methods=['post','get'])
 def customerrequestcreditcard():
     # data={}
     cursor=db.cursor()
-    cursor.execute("select fname,lname,dob,gender,phone,email,city,state,zipcode,country,msalary,idnumber from customers where cid='%s'"%(session['cust_id']))
+    cursor.execute("select fname,lname,dob,gender,phone,email,city,state,zipcode,country,msalary,idnumber,address from customers where cid='%s'"%(session['cust_id']))
     customer=cursor.fetchall()
     card_name = request.args.get('card_name')
     salary = request.args.get('salary')
+    if 'add' in request.form:
+        # card_name=request.form['cardname']
+        jobname = request.form['j_name']
+        company_name = request.form['c_name']
+        company_location = request.form['c_location']
+        m_salary = request.form['msalary']
 
+        i1=request.files['file1']
+        img1="uploads/"+str(uuid.uuid4())+i1.filename
+        i1.save('bank/static/'+img1)
+
+        i2=request.files['file2']
+        img2="uploads/"+str(uuid.uuid4())+i2.filename
+        i2.save('bank/static/'+img2)
+
+        i3=request.files['file3']
+        img3="uploads/"+str(uuid.uuid4())+i3.filename
+        i3.save('bank/static/'+img3)
+
+        request_date = datetime.now().date()  # Get current date
+       
+        cursor.execute("select cid from customers where cid='%s'"%(session['cust_id']))
+        cid=cursor.fetchone()[0]
+        cursor.execute("select branch_id from customers where cid='%s'"%(session['cust_id']))
+        bid=cursor.fetchone()[0]
+        credit_card = "INSERT INTO o_credit_card_request(customer_id,branch_id,card_name,job_type,c_name,c_location,m_salary,file1,file2,file3,date,status) VALUES (%s, %s, %s, %s, %s, %s, %s,%s, %s, %s,%s,'active')"
+        credit_card_values = (cid, bid, card_name, jobname,company_name, company_location, m_salary, img1, img2,img3,request_date)
+        cursor.execute(credit_card, credit_card_values)
+
+        
+        flash("request successful...")
+
+    
+        return redirect(url_for('customer.customerrequestcreditcard'))
+    
     return render_template('customerrequestcreditcard.html',customer=customer,card_name=card_name,salary=salary)
 
 @customer.route('/differentcreditcard',methods=['post','get'])
