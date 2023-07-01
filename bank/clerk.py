@@ -2,7 +2,8 @@ from flask import *
 from database import *
 import uuid
 import demjson
-import datetime
+# import datetime
+from datetime import datetime,timedelta
 import smtplib
 # import schedule
 # import time
@@ -138,7 +139,7 @@ def clerksavingsaccount():
         accno = request.form['accno']
         ifsccode = request.form['ifsccode']
         balance='0'
-        acc_started_date = datetime.datetime.now().date()
+        acc_started_date = datetime.now().date()
         name_parts = name.split(" ")
         first_name = name_parts[0]
         last_name = name_parts[1] if len(name_parts) > 1 else ""
@@ -162,7 +163,7 @@ def clerksavingsaccount():
         # Generate random debit card details
         debit_card_no = str(random.randint(1000000000000000, 9999999999999999))
         cv = str(random.randint(100, 999))
-        expiry_date = (datetime.datetime.now() + datetime.timedelta(days=365 * 20)).date()
+        expiry_date = (datetime.now() + timedelta(days=365 * 20)).date()
         
         # Insert debit card details into Debit Card table
         debit_card_query = "INSERT INTO debitcard (customer_id,savings_id,debit_no,cv,expiry_date, status) VALUES (%s, %s,%s, %s, %s,'active')"
@@ -219,12 +220,19 @@ def clerkdepositaccount():
         query = "SELECT cid FROM customers WHERE fname = %s AND lname = %s"
         cursor.execute(query, (first_name, last_name))
         cid = cursor.fetchone()[0]
-        date = datetime.datetime.now().date()
+        date = datetime.now().date()
         formatted_date = date.strftime("%d-%m-%y")
         fixeddeposit = "INSERT INTO depositacc (customer_id, acc_no, ifsccode, deposit_amt, tenure, deposit_date, deposit_type, maturity_date, interest_rate, interest_amt, interest_earn,acc_to, last_transaction_date,acc_type, acc_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,'0',%s,%s, 'deposit', 'active')"
         fixeddeposit_values = (cid, newaccno, ifsccode, depositamt, tenure, formatted_date, depositType, maturityDate, interestRate,interestEarned,toaccno,formatted_date)
         cursor.execute(fixeddeposit, fixeddeposit_values)
-
+        cursor.execute("SELECT count FROM bankproducts WHERE customer_id = %s", (cid,))
+        existing_record = cursor.fetchone()
+        if existing_record:  
+            count = existing_record[0] + 1
+            cursor.fetchall()
+            cursor.execute("UPDATE bankproducts SET count = %s WHERE customer_id = %s", (count, cid))
+        else:
+            cursor.execute("INSERT INTO bankproducts (customer_id, count) VALUES (%s, %s)", (cid, 1))   
         flash("Registration successful...")
         return redirect(url_for('clerk.clerkdepositaccount'))
         
@@ -295,6 +303,14 @@ def clerkloanaccount():
             loan = "INSERT INTO loanacc (customer_id,branch_id,acc_no,ifsccode,loan_type,acc_payable,maturity_date,tenure,interest_rate,interst_amt,issued_amount,remaing_amount,date_issued,date_interest,acc_type,acc_status,penality_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s,%s, %s, %s,%s,%s,'loanaccount', 'active','0')"
             loan_values = (cid,bid, newaccno, ifsccode,loanType,toaccno,maturityDate,tenure,interestRate,emiPayment, loanAmount,loanAmount,formatted_date,interestPayableDate)
             cursor.execute(loan, loan_values)
+            cursor.execute("SELECT count FROM bankproducts WHERE customer_id = %s", (cid,))
+            existing_record = cursor.fetchone()
+            if existing_record:  
+                count = existing_record[0] + 1
+                cursor.fetchall()
+                cursor.execute("UPDATE bankproducts SET count = %s WHERE customer_id = %s", (count, cid))
+            else:
+                cursor.execute("INSERT INTO bankproducts (customer_id, count) VALUES (%s, %s)", (cid, 1))   
             flash("loan account registered  successfully...")
             return redirect(url_for('clerk.clerkloanaccount'))
     return render_template('clerkloanaccount.html',fname=fname,branch_id=branch_id,accno=accno)
@@ -324,8 +340,11 @@ def clerkloancash():
         name = request.form['name']
         loanAmount = float(request.form['remaining'])
         interestRate = float(request.form['interestRate'])
-        date = datetime.datetime.now().date()
-        interest_date = date + datetime.timedelta(days=30)
+        date = datetime.now().date()
+        formatted_date = date.strftime("%d-%m-%y")
+        interest_date = date + timedelta(days=30)
+        interest_date_new=interest_date.strftime("%d-%m-%y")
+        print(interest_date)
         trans_no = str(random.randint(1000000000000000, 9999999999999999))
         
         name_parts = name.split(" ")
@@ -355,20 +374,45 @@ def clerkloancash():
 
         print(principleAmount)
         print(outstandingBalance)
-        cursor.execute("select loan_id from loanacc where acc_no='%s'"%(accno1,))
-        loan_id=cursor.fetchone()[0]
+        cursor.execute("select loan_id,date_interest from loanacc where acc_no='%s'"%(accno1,))
+        result1 = cursor.fetchone()
+        if result1 is not None:
+            loan_id = result1[0]
+            interest_new_date = result1[1]
+        else:
+            # Handle the case when no matching record is found
+            # For example, set default values or display an error message
+            loan_id = None
+            interest_new_date = None
+        interest_new_date = datetime.strptime(interest_new_date, '%d-%m-%y').date()
+        print(formatted_date)
+        print(interest_new_date)
+        if interest_new_date>=datetime.strptime(formatted_date, '%d-%m-%y').date():
+            cursor.execute("UPDATE loanacc SET remaing_amount = %s ,date_interest = %s WHERE acc_no = %s",(outstandingBalance,interest_date_new, accno1,))
+            loan="INSERT INTO loan_payment(customer_id,branch_id,loan_id,emi_paid,date_paid)  VALUES ( %s, %s,%s,%s,%s)"
+            loan_values = (cid, bid, loan_id, loanEmi,formatted_date)
+            cursor.execute(loan,loan_values)
+            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'loan_payment',%s,%s)"
+            transaction_values = (cid,loan_id,bid,trans_no,loanEmi,formatted_date)
+            cursor.execute(transaction,transaction_values)
 
-        cursor.execute("UPDATE loanacc SET remaing_amount = %s ,date_interest = %s WHERE acc_no = %s",(outstandingBalance,interest_date, accno1,))
-        loan="INSERT INTO loan_payment(customer_id,branch_id,loan_id,emi_paid,date_paid)  VALUES ( %s, %s,%s,%s,%s)"
-        loan_values = (cid, bid, loan_id, loanEmi,date)
-        cursor.execute(loan,loan_values)
-        transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'loan_payment',%s,%s)"
-        transaction_values = (cid,loan_id,bid,trans_no,loanEmi,date)
-        cursor.execute(transaction,transaction_values)
+            db.commit()  # Commit the changes to the database
+            flash("emi paid successfully")
+            return redirect(url_for('clerk.clerkloancash'))
+        else:
+            penality_count='1'
+            cursor.execute("UPDATE loanacc SET remaing_amount = %s ,date_interest = %s,penality_count=penality_count + %s WHERE acc_no = %s",(outstandingBalance,interest_date_new,penality_count, accno1,))
+            
+            loan="INSERT INTO loan_payment(customer_id,branch_id,loan_id,emi_paid,date_paid)  VALUES ( %s, %s,%s,%s,%s)"
+            loan_values = (cid, bid, loan_id, loanEmi,formatted_date)
+            cursor.execute(loan,loan_values)
+            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'loan_payment',%s,%s)"
+            transaction_values = (cid,loan_id,bid,trans_no,loanEmi,formatted_date)
+            cursor.execute(transaction,transaction_values)
 
-        db.commit()  # Commit the changes to the database
-        flash("emi paid successfully...")
-        return redirect(url_for('clerk.clerkloancash'))
+            db.commit()  # Commit the changes to the database
+            flash("emi paid successfully...also a penality")
+            return redirect(url_for('clerk.clerkloancash'))
     return render_template('clerkloancash.html', name=name, accno=accno, accountDetails=accountDetails)
 
 
@@ -405,7 +449,7 @@ def clerkviewloanacc():
     name = cursor.fetchall()
     cursor.execute("SELECT c.fname,c.lname,l.acc_no,l.ifsccode,l.interst_amt,l.interest_rate,l.issued_amount,l.remaing_amount,l.acc_status,l.date_interest,l.loan_type FROM customers c,loanacc l where c.cid=l.customer_id and l.branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
     employees = cursor.fetchall()
-    date = datetime.datetime.now().date()
+    date = datetime.now().date()
     formatted_date = date.strftime("%d-%m-%y")
     return render_template('clerkviewloanacc.html',employees=employees,name=name,formatted_date=formatted_date)
 
@@ -456,7 +500,7 @@ def clerkdepositcash():
         
         cursor.execute("select branch_id from branch where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
         bid=cursor.fetchone()[0]
-        date = datetime.datetime.now()
+        date = datetime.now()
         trans_no = str(random.randint(1000000000000000, 9999999999999999))
         cursor.execute("select savings_id from savingsacc where acc_no='%s'"%(accno))
         savings_id=cursor.fetchone()[0]
