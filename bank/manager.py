@@ -1,6 +1,7 @@
 from flask import *
 from database import *
 from datetime import datetime
+import datetime
 import joblib
 import pandas as pd
 import random
@@ -33,7 +34,7 @@ def managerhome():
     labels = []
     values = []
     for month in months:
-        month_num = datetime.strptime(month, '%B').month
+        month_num = datetime.datetime.strptime(month, '%B').month
         found = False
         for row in data:
             if row[0] == month_num:
@@ -342,8 +343,98 @@ def managerviewtransaction():
 def managerviewcreditcard():
     cursor = db.cursor()
     # cursor.execute("SELECT card_name, job_type, c_name, c_location, m_salary, file1, file2, file3, date, status FROM o_credit_card_request WHERE branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')" % (session['mid']))
-    cursor.execute("SELECT c.card_name, c.job_type, c.c_name, c.c_location, c.m_salary, c.file1, c.file2, c.file3, c.date, c.status, cu.fname, cu.lname, cu.phone FROM o_credit_card_request c INNER JOIN customers cu ON c.customer_id = cu.cid WHERE c.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')"% (session['mid']))
+    cursor.execute("SELECT c.card_name, c.job_type, c.c_name, c.c_location, c.m_salary, c.file1, c.file2, c.file3, c.date, c.status, cu.fname, cu.lname, cu.phone,c.o_request_id FROM o_credit_card_request c INNER JOIN customers cu ON c.customer_id = cu.cid WHERE c.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')"% (session['mid']))
     credit_card = cursor.fetchall()
 
+    if "action" in request.args:
+        action=request.args['action']
+        id=request.args['id']
+    else:
+        action="none"
+    if action=="approve":
+        cursor.execute("SELECT msalary, job_type FROM customers WHERE branch_id=(SELECT branch_id FROM employee WHERE employe_id='%s')" % (session['mid']))
+        credit_request = cursor.fetchone()
+        msalary = credit_request[0]
+        jobtype = credit_request[1]
+        cursor.fetchall()
+
+        cursor.execute("SELECT cid, branch_id, dob FROM customers WHERE branch_id=(SELECT branch_id FROM employee WHERE employe_id='%s')" % (session['mid']))
+        result = cursor.fetchone()
+        cid = result[0]
+        branch_id = result[1]
+        dob = result[2]
+
+        # Fetch all results before executing the next query
+        cursor.fetchall()
+
+        date = datetime.datetime.now().date()
+        dob_date = datetime.datetime.strptime(dob, "%Y-%m-%d").date()
+        age = (date - dob_date).days // 365
+
+        expiry_date = (datetime.datetime.now() + datetime.timedelta(days=365 * 20)).date()
+
+        cursor.execute("SELECT COUNT(customer_id) FROM transaction WHERE customer_id='%s'" % (cid))
+        transaction = cursor.fetchone()[0]
+
+        if age >= 18:
+            credit = 5000
+            if msalary >= 5000:
+                credit += 5000
+            if transaction > 2:
+                credit += 5000
+            if age >= 21:
+                credit += 3000
+            if msalary >= 10000:
+                credit += 3000
+            if transaction > 5:
+                credit += 3000
+            if age >= 25:
+                credit += 2000
+            if msalary >= 15000:
+                credit += 2000
+            if transaction > 10:
+                credit += 2000
+            if age >= 30:
+                credit += 1000
+            if msalary >= 20000:
+                credit += 1000
+            if transaction > 15:
+                credit += 1000
+
+        # Additional credit based on job type
+        if jobtype == "doctor":
+            credit += 5000
+        elif jobtype == "defense":
+            credit += 4000
+        elif jobtype == "pensioner":
+            credit += 3000
+        else:
+            credit += 2000
+
+        total_limit = credit
+
+
+        
+
+        
+        debit_card_no = str(random.randint(1000000000000000, 9999999999999999))
+        cv = str(random.randint(100, 999))
+        expiry_date = (datetime.datetime.now() + datetime.timedelta(days=365 * 20)).date()
+        cursor.execute("SELECT count(customer_id) FROM transaction WHERE customer_id='%s'"%(cid))
+        transaction = cursor.fetchone()[0]
+        
+       
+        cursor.fetchall()
+        cursor.execute("update o_credit_card_request set status='Active' where o_request_id='%s'"%(id))
+        credit_card="INSERT INTO credit_card(customer_id,branch_id,card_no,card_limit,cv,expiry_date,j_date,status)  VALUES (%s, %s, %s, %s, %s,%s,%s,'approve')"
+        credit_card_values = (cid, branch_id, debit_card_no, total_limit,cv, expiry_date,date)
+        cursor.execute(credit_card, credit_card_values)
+        flash('Approve successfully !')
+        return redirect(url_for('manager.managerviewcreditcard'))
+        
+    if action=="reject":
+        cursor.execute("update o_credit_card_request set status='reject' where o_request_id='%s'"%(id))
+        flash('Rejected successfully !')
+        return redirect(url_for('manager.managerviewcreditcard'))
 
     return render_template('managerviewcreditcard.html',credit_card=credit_card)       

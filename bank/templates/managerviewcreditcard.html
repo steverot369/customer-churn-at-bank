@@ -44,7 +44,9 @@
                         <th style="font-size: 16px;">file2</th>
                         <th style="font-size: 16px;">file3</th>
                         <th style="font-size: 16px;">Date</th>
-                        <th style="font-size: 16px;">status</th> 
+                        <th style="font-size: 16px;">status</th>
+                        <th style="font-size: 16px;">Manage</th> 
+
 
                     </tr>
                 </thead>
@@ -76,7 +78,17 @@
 
                         <!-- 07-09-23 -->
                         
+                        {% if credit_card[9]=="pending" %}
+                        <td>
+                          <a href="?action=approve&id={{credit_card[13]}}" onclick="return confirm('Do you want to approve ?')">Approve
+                          </a>
+                        </td>
                         
+                        <td>
+                          <a href="?action=reject&id={{credit_card[13]}}" onclick="return confirm('Do you want to reject ?')">Reject
+                          </a>
+                        </td>
+                {% endif %}
                     
                         <td>
                           <a href="#" class="btn btn-info view-details-btn" data-toggle="modal" data-target="#employeeDetailsModal" data-employee-details="{{ employee }}">View Details</a>
@@ -84,6 +96,7 @@
                        <!-- Add a container to display the file content -->
                        
                       </tr>
+                     
                     
                     {% endfor %}
                     

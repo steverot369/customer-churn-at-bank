@@ -275,14 +275,28 @@ def clerkloanaccount():
         query = "SELECT cid FROM customers WHERE fname = %s AND lname = %s"
         cursor.execute(query, (first_name, last_name))
         cid = cursor.fetchone()[0]
+        cursor.fetchall()
+        cursor.execute("select acc_status from loanacc where customer_id='%s'"%(cid))
+        result = cursor.fetchone()
+        if result is not None:
+            acc_status = result[0]
+        else:
+            
+            acc_status = None
         date = datetime.datetime.now().date()
         formatted_date = date.strftime("%d-%m-%y")
         remaining_loanAmount='0'
-        fixeddeposit = "INSERT INTO loanacc (customer_id,branch_id,acc_no,ifsccode,loan_type,acc_payable,maturity_date,tenure,interest_rate,interst_amt,issued_amount,remaing_amount,date_issued,date_interest,acc_type,acc_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s,%s, %s, %s,%s,%s,'loanaccount', 'active')"
-        fixeddeposit_values = (cid,bid, newaccno, ifsccode,loanType,toaccno,maturityDate,tenure,interestRate,emiPayment, loanAmount,loanAmount,formatted_date,interestPayableDate)
-        cursor.execute(fixeddeposit, fixeddeposit_values)
-        flash("Registration successful...")
-        return redirect(url_for('clerk.clerkdepositaccount'))
+        
+        if acc_status == 'active':
+            flash("can create account because you have an existing loan")
+            return redirect(url_for('clerk.clerkloanaccount'))
+
+        else:
+            loan = "INSERT INTO loanacc (customer_id,branch_id,acc_no,ifsccode,loan_type,acc_payable,maturity_date,tenure,interest_rate,interst_amt,issued_amount,remaing_amount,date_issued,date_interest,acc_type,acc_status,penality_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s,%s, %s, %s,%s,%s,'loanaccount', 'active','0')"
+            loan_values = (cid,bid, newaccno, ifsccode,loanType,toaccno,maturityDate,tenure,interestRate,emiPayment, loanAmount,loanAmount,formatted_date,interestPayableDate)
+            cursor.execute(loan, loan_values)
+            flash("loan account registered  successfully...")
+            return redirect(url_for('clerk.clerkloanaccount'))
     return render_template('clerkloanaccount.html',fname=fname,branch_id=branch_id,accno=accno)
 
 
@@ -310,14 +324,26 @@ def clerkloancash():
         name = request.form['name']
         loanAmount = float(request.form['remaining'])
         interestRate = float(request.form['interestRate'])
+        date = datetime.datetime.now().date()
+        interest_date = date + datetime.timedelta(days=30)
+        trans_no = str(random.randint(1000000000000000, 9999999999999999))
         
         name_parts = name.split(" ")
         first_name = name_parts[0]
         last_name = name_parts[1] if len(name_parts) > 1 else ""
-        query = "SELECT cid FROM customers WHERE fname = %s AND lname = %s"
+        query = "SELECT cid, branch_id FROM customers WHERE fname = %s AND lname = %s"
         cursor.execute(query, (first_name, last_name))
-        cid = cursor.fetchone()[0]
-       
+        result = cursor.fetchone()
+        if result is not None:
+            cid = result[0]
+            bid = result[1]
+        else:
+            # Handle the case when no matching record is found
+            # For example, set default values or display an error message
+            cid = None
+            bid = None
+
+        
         # Calculate interest and EMI
         interestRate = interestRate / 100 / 12  # Convert to monthly interest rate
         monthlyinterest=loanAmount*interestRate
@@ -329,8 +355,17 @@ def clerkloancash():
 
         print(principleAmount)
         print(outstandingBalance)
+        cursor.execute("select loan_id from loanacc where acc_no='%s'"%(accno1,))
+        loan_id=cursor.fetchone()[0]
 
-        cursor.execute("UPDATE loanacc SET remaing_amount = %s WHERE acc_no = %s",(outstandingBalance, accno1,))
+        cursor.execute("UPDATE loanacc SET remaing_amount = %s ,date_interest = %s WHERE acc_no = %s",(outstandingBalance,interest_date, accno1,))
+        loan="INSERT INTO loan_payment(customer_id,branch_id,loan_id,emi_paid,date_paid)  VALUES ( %s, %s,%s,%s,%s)"
+        loan_values = (cid, bid, loan_id, loanEmi,date)
+        cursor.execute(loan,loan_values)
+        transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'loan_payment',%s,%s)"
+        transaction_values = (cid,loan_id,bid,trans_no,loanEmi,date)
+        cursor.execute(transaction,transaction_values)
+
         db.commit()  # Commit the changes to the database
         flash("emi paid successfully...")
         return redirect(url_for('clerk.clerkloancash'))

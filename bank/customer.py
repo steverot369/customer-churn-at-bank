@@ -158,7 +158,7 @@ def customerrequestcreditcard():
         cid=cursor.fetchone()[0]
         cursor.execute("select branch_id from customers where cid='%s'"%(session['cust_id']))
         bid=cursor.fetchone()[0]
-        credit_card = "INSERT INTO o_credit_card_request(customer_id,branch_id,card_name,job_type,c_name,c_location,m_salary,file1,file2,file3,date,status) VALUES (%s, %s, %s, %s, %s, %s, %s,%s, %s, %s,%s,'active')"
+        credit_card = "INSERT INTO o_credit_card_request(customer_id,branch_id,card_name,job_type,c_name,c_location,m_salary,file1,file2,file3,date,status) VALUES (%s, %s, %s, %s, %s, %s, %s,%s, %s, %s,%s,'pending')"
         credit_card_values = (cid, bid, card_name, jobname,company_name, company_location, m_salary, img1, img2,img3,request_date)
         cursor.execute(credit_card, credit_card_values)
 
