@@ -320,6 +320,94 @@ function toggleProfileContainer() {
             cursor: pointer;
             transition: 0.5s ease-out;
         }
+
+
+/* complaint container */
+ #container-99 {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 500px;
+    height: 300px;
+    max-width: 90%;
+    background-color: #ffffff;
+    padding: 20px;
+    border: 2px solid #ccc;
+           
+    box-shadow: 0 2px 6px rgba(3, 0, 0, 0.15);
+    border-radius: 5px;
+    z-index: 9999;
+    animation: slide-up 0.3s ease-out;
+} 
+
+#container-99.show {
+    display: block;
+    animation: slide-down 0.3s ease-out;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: #888;
+    cursor: pointer;
+}
+
+/* .animated-person {
+  /* width: 550px;
+            height: 550px;
+            background-image: url('https://i.gifer.com/Owm.gif'); */
+/* } */ 
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+form {
+    margin-top: 20px;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+input[type="submit"] {
+    background-color: #4caf50;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@keyframes slide-up {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-down {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+
+
 </style>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -439,7 +527,7 @@ function toggleProfileContainer() {
                         <span class="material-icons-sharp">help_center</span>
                         <h4>feedback</h4>
                     </a>
-                    <a href="customersendcomplaint">
+                    <a href="customersendcomplaint" id="complaint-link">
                       <span class="material-icons-sharp">help_center</span>
                       <h4>complaint</h4>
                   </a>
@@ -676,7 +764,7 @@ function toggleProfileContainer() {
                 </div>
                  <!-- end of right -->
                  
-                 <div id="container-90">
+              <div id="container-90">
                   <span class="close-btn" onclick="closePopup()">&times;</span>
                   <div class="animated-person"></div>
                   <h1>Hi Steve, send your feedback</h1>
@@ -688,7 +776,18 @@ function toggleProfileContainer() {
                       <input type="submit" name="add" value="submit">
                   </form>
               </div>
-          
+              <div id="container-99">
+                <span class="close-btn">&times;</span>
+                <div class="animated-person"></div>
+                <h1>Hi Steve, send your Enquiry</h1>
+                <form method="post">
+                    <input type="text" name="messages" placeholder="Type your feedback message" required>
+                    <br>
+                    <textarea name="comments" placeholder="Additional comments"></textarea>
+                    <br>
+                    <input type="submit" name="add1" value="submit">
+                </form>
+            </div>
             </main>  
     <!-- ====================end of aside==========================   -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" 
@@ -696,6 +795,28 @@ function toggleProfileContainer() {
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/js/customer.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      // Get the complaint link element
+var complaintLink = document.getElementById('complaint-link');
+
+// Get the complaint popup container element
+var complaintContainer = document.getElementById('container-99');
+
+// Get the close button element
+var closeButton = complaintContainer.querySelector('.close-btn');
+
+// Add event listener to open the complaint popup when the link is clicked
+complaintLink.addEventListener('click', function(event) {
+    event.preventDefault();
+    complaintContainer.classList.add('show');
+});
+
+// Add event listener to close the complaint popup when the close button is clicked
+closeButton.addEventListener('click', function() {
+    complaintContainer.classList.remove('show');
+});
+
+    </script>
     <script>
       window.onload = function() {
           setTimeout(function() {

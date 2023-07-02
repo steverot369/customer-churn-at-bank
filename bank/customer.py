@@ -42,8 +42,26 @@ def customerhome():
             cursor.execute(feedback, feedback_values)
             flash('success')
         else:
+            print('send after 1 hoursuccess')
+   
+    if 'add' in request.form:
+        messages=request.form['comments']
+
+        min_allowed_time =  date - timedelta(hours=1)
+
+     
+        cursor.execute("SELECT MAX(date_time) FROM complaints WHERE customer_id = %s", (cid,))
+        last_submission_time = cursor.fetchone()[0]
+
+      
+        if last_submission_time is None or last_submission_time < min_allowed_time:
+           
+            complaint = "INSERT INTO complaints (customer_id, branch_id, messages,reply date_time) VALUES (%s, %s, %s,'nothing to show', %s)"
+            complaint_values = (cid, bid, messages, date)
+            cursor.execute(complaint, complaint_values)
+            flash('success')
+        else:
             flash('send after 1 hoursuccess')
-    # Display an error message or handle the case when the feedback submission is not allowed
     return render_template('customerhome.html',transaction=transaction,name=name)
 
 
