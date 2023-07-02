@@ -252,7 +252,74 @@ function toggleProfileContainer() {
   opacity: 1;
   visibility: visible;
 }
-
+#container-90 {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #f8f8f8;
+            padding: 40px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            width: 500px;
+            max-width: 90%;
+            animation: slideIn 0.5s ease-in-out forwards;
+        }
+        
+        @keyframes slideIn {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(0); }
+        }
+        
+        #container-90 h1 {
+            margin: 0 0 20px;
+            font-size: 28px;
+            text-align: center;
+        }
+        
+        #container-90 .animated-person {
+            width: 250px;
+            height: 250px;
+            background-image: url('https://i.gifer.com/7SpJ.gif');
+            /* background-repeat: no-repeat;
+            background-size: contain;
+            animation: personAnimation 1s infinite; */
+        }
+        
+        @keyframes personAnimation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #container-90 input[type="text"],
+        #container-90 textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+        }
+        
+        #container-90 button {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        #container-90 .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #888;
+            cursor: pointer;
+            transition: 0.5s ease-out;
+        }
 </style>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -368,10 +435,14 @@ function toggleProfileContainer() {
                     </a>
                     
                        
-                    <a href="#">
+                    <a href="customersendfeedback">
                         <span class="material-icons-sharp">help_center</span>
-                        <h4>Help center</h4>
+                        <h4>feedback</h4>
                     </a>
+                    <a href="customersendcomplaint">
+                      <span class="material-icons-sharp">help_center</span>
+                      <h4>complaint</h4>
+                  </a>
                     <a href="publichome">
                         <span class="material-icons-sharp">logout</span>
                         <h4>logout</h4>
@@ -605,7 +676,19 @@ function toggleProfileContainer() {
                 </div>
                  <!-- end of right -->
                  
-                 
+                 <div id="container-90">
+                  <span class="close-btn" onclick="closePopup()">&times;</span>
+                  <div class="animated-person"></div>
+                  <h1>Hi Steve, send your feedback</h1>
+                  <form method="post">
+                      <input type="text" name="messages" placeholder="Type your feedback message" required>
+                      <br>
+                      <textarea name="" placeholder="Additional comments"></textarea>
+                      <br>
+                      <input type="submit" name="add" value="submit">
+                  </form>
+              </div>
+          
             </main>  
     <!-- ====================end of aside==========================   -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" 
@@ -613,7 +696,17 @@ function toggleProfileContainer() {
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/js/customer.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <script>
+      window.onload = function() {
+          setTimeout(function() {
+              document.getElementById('container-90').style.display = 'block';
+          }, 5000); // Display the container after 5 seconds
+      }
+      
+      function closePopup() {
+          document.getElementById('container-90').style.display = 'none';
+      }
+  </script>
     <script>
       // jQuery event handler for add icon click
       $(document).ready(function() {

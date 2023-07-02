@@ -35,7 +35,7 @@ rel="stylesheet">
     };
 </script> -->
 </head>
-<style>
+<!-- <style>
    #loading-animation {
   position: fixed;
   top: 0;
@@ -67,8 +67,8 @@ rel="stylesheet">
   }
 }
 
-    </style>
-    <script>
+    </style> -->
+    <!-- <script>
         window.addEventListener('load', function() {
         var loadingAnimation = document.getElementById('loading-animation');
       
@@ -77,8 +77,8 @@ rel="stylesheet">
           loadingAnimation.style.display = 'none';
         }, 3000);
       });
-      </script>
-<!-- {% with messages = get_flashed_messages() %}
+      </script> -->
+{% with messages = get_flashed_messages() %}
 {% if messages %}
   <ul class=flashes>
   {% for message in messages %}
@@ -86,7 +86,7 @@ rel="stylesheet">
   {% endfor %}
   </ul>
 {% endif %}
-{% endwith %} -->
+{% endwith %}
 <body>
     <!-- <div id="loading-animation">
         <p>Loading.....</p>

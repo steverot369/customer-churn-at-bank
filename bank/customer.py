@@ -1,7 +1,7 @@
 import uuid
 from flask import *
 from database import *
-from datetime import datetime
+from datetime import datetime,timedelta
 import random
 db = mysql.connector.connect(
     host="localhost",
@@ -11,7 +11,7 @@ db = mysql.connector.connect(
 )
 customer=Blueprint('customer',__name__)
 
-@customer.route('/customerhome')
+@customer.route('/customerhome',methods=['post', 'get'])
 def customerhome():
     # data={}
     cursor = db.cursor()
@@ -19,6 +19,31 @@ def customerhome():
     transaction = cursor.fetchall()
     cursor.execute("select fname,lname,email from customers where loginid='%s'"%(session['logid']))
     name = cursor.fetchall()
+    cursor.execute("select cid,branch_id from customers where cid='%s'"%(session['cust_id']))
+    customer=cursor.fetchone()
+    cid=customer[0]
+    bid=customer[1]
+    date = datetime.now()
+
+    if 'add' in request.form:
+        messages=request.form['messages']
+# Calculate the minimum allowed submission time (1 hour ago from the current time)
+        min_allowed_time =  date - timedelta(hours=1)
+
+        # Query the database to check the last submission time
+        cursor.execute("SELECT MAX(date_time) FROM feedbacks WHERE customer_id = %s", (cid,))
+        last_submission_time = cursor.fetchone()[0]
+
+        # If the last submission time is None or earlier than the minimum allowed time, allow the submission
+        if last_submission_time is None or last_submission_time < min_allowed_time:
+            # Insert the feedback into the database
+            feedback = "INSERT INTO feedbacks (customer_id, branch_id, messages, date_time) VALUES (%s, %s, %s, %s)"
+            feedback_values = (cid, bid, messages, date)
+            cursor.execute(feedback, feedback_values)
+            flash('success')
+        else:
+            flash('send after 1 hoursuccess')
+    # Display an error message or handle the case when the feedback submission is not allowed
     return render_template('customerhome.html',transaction=transaction,name=name)
 
 
@@ -179,3 +204,30 @@ def differentcreditcard():
     return render_template('differentcreditcard.html',salary=salary)
 
 
+
+@customer.route('/customersendfeedback')
+def customersendfeedback():
+    # data={}
+ 
+    return render_template('customersendfeedback.html')
+
+
+
+
+@customer.route('/customersendcomplaint')
+def customersendcomplaint():
+    # data={}
+    cursor=db.cursor()
+    cursor.execute("select cid,branch_id from customers where cid='%s'"%(session['cust_id']))
+    customer=cursor.fetchone()
+    cid=customer[0]
+    bid=customer[1]
+    current_datetime = datetime.now().date()
+    formatted_datetime =datetime.strftime(current_datetime,"%d-%m-%y %H:%M:%S")
+
+    if 'add' in request.form:
+        messages=request.form['messages']
+        complaint="insert into feedbacks(customer_id,branch_id,nessage,reply,date_time) values(%s,%s,%s,'0',%s)"
+        complaint_values=(cid,bid,messages,formatted_datetime)
+        cursor.execute(complaint,complaint_values)
+    return render_template('customersendcomplaint.html')
