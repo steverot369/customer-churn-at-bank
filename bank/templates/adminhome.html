@@ -358,29 +358,14 @@ rel="stylesheet">
                         </div>
                         </div>
                         <!----------- end of payment----- -->
-                        <canvas id="chart"></canvas>
+                        <!-- <canvas id="chart"></canvas> -->
+                        <button style="color:rebeccapurple;" onclick="moveChart()">Move Chart</button>
+                    <canvas id="chart"></canvas>
                  </section>
                  <!-- --------end of middle------ -->
                  <div class="right">
                     
-                    <!-- -------------end top---------------->
-                    <!-- <div class="recent-updates">
-                        <h2>Recent updates</h2>
-                        <div class="updates">
-                            <div class="update">
-                                <div class="profile-photo">
-                                    <img src="/static/images/profile-1.jpg">
-                                </div>
-                                <div class="message">
-                                    <p><b>mike tyson</b>
-                                    recyeyy is hehe of yegfegge.</p>
-                                    <small class="text-muted">2minutes ago</small>
-                                </div>
-                            </div>
-                           
-                            
-                        </div>
-                    </div> -->
+                   
 
                     <div class="recent-updates">
                         <h2>Recent feedbacks</h2>
@@ -405,20 +390,39 @@ rel="stylesheet">
                     </div>
                     <div class="sales-analytics">
                         <h2>Recent Transactions</h2><br>
+                        {% for online_transaction in online_transaction %}
                         <div class="item online">
+                            
                             <div class="icon">
-                                <span class="material-icons-sharp">shopping_cart</span>
+                                <!-- <span class="material-icons-sharp">shopping_cart</span> -->
+                                <img src="{{url_for('static', filename=online_transaction[2])}}" style="height: 30px; width:30px;">
+
                             </div>
                             <div class="right">
                                 <div class="info">
-                                    <h4>Online orders</h4>
-                                    <small class="text-muted">Last 24 hours</small>
+                                    <h4>{{ online_transaction[0] }} {{ online_transaction[1] }}</h4>
+                                    <small class="text-muted">{{ online_transaction[4] }}</small>
                                 </div>
-                                <h5 class="success">+39%</h5>
-                                <h4>432</h4>
+                                <h5 class="success">+ &#8377;{{ online_transaction[3] }}</h5>
+                                {% if online_transaction[5] == 'deposit' %}
+                                    <h4 style="color: rgb(128, 122, 0);">{{ online_transaction[5] }}</h4>
+                                {% elif online_transaction[5] == 'online' %}
+                                    <h4 style="color: blue;">{{ online_transaction[5] }}</h4>
+                                {% elif online_transaction[5] == 'fixed deposit' %}
+                                    <h4 style="color: rgb(9, 9, 225);">{{ online_transaction[5] }}</h4>
+                                {% elif online_transaction[5] == 'cheque_withdrawal' %}
+                                    <h4 style="color: yellow;">{{ online_transaction[5] }}</h4>
+                                {% elif online_transaction[5] == 'loan_payment' %}
+                                    <h4 style="color: purple;">{{ online_transaction[5] }}</h4>
+                                {% else %}
+                                    <h4 style="color: red;">{{ online_transaction[5] }}</h4>
+                                {% endif %}
+
                             </div>
                         </div>
-                        <div class="item offline">
+                        {% endfor %}
+
+                        <!-- <div class="item offline">
                             <div class="icon">
                                 <span class="material-icons-sharp">local_mall</span>
                             </div>
@@ -430,8 +434,8 @@ rel="stylesheet">
                                 <h5 class="success">+39%</h5>
                                 <h4>4332</h4>
                             </div>
-                        </div>
-                        <div class="item customers">
+                        </div> -->
+                        <!-- <div class="item customers">
                             <div class="icon">
                                 <span class="material-icons-sharp">person</span>
                             </div>
@@ -443,7 +447,7 @@ rel="stylesheet">
                                 <h5 class="success">+22%</h5>
                                 <h4>132</h4>
                             </div>
-                        </div>
+                        </div> -->
                             <div class="item add-product">
                                 <div>
                                 <span class="material-icons-sharp">send</span>
@@ -463,7 +467,7 @@ rel="stylesheet">
     integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ==" 
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/js/customer.js"></script>
-    <script>
+    <!-- <script>
     var ctx = document.getElementById('chart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -507,7 +511,126 @@ var myChart = new Chart(ctx, {
 });
 
 
-  </script>
+  </script> -->
+  
+  
+  <script>
+    var currentChartType = 'line';
+    var ctx = document.getElementById('chart').getContext('2d');
+    var myChart;
+
+    function createLineChart() {
+        destroyChart();
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ labels|tojson }},
+                datasets: [{
+                    label: 'Customer Transactions',
+                    data: {{ values|tojson }},
+                    backgroundColor: 'red',
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    pointRadius: 4,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Customer Transactions',
+                        fontSize: 16
+                    },
+                    legend: {
+                        display: true,
+                        labels: {
+                            fontSize: 12
+                        }
+                    },
+                    tooltip: {
+                        titleFontSize: 16, // Increase the font size of the tooltip title
+                        bodyFontSize: 12, // Increase the font size of the tooltip body
+                    }
+                }
+            }
+        });
+    }
+
+    function createBarChart() {
+        destroyChart();
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ labels|tojson }},
+                datasets: [{
+                    label: 'Customer Transactions',
+                    data: {{ values|tojson }},
+                    backgroundColor: 'blue',
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    barThickness: 10,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Customer Transactions',
+                        fontSize: 16
+                    },
+                    legend: {
+                        display: true,
+                        labels: {
+                            fontSize: 12
+                        }
+                    },
+                    tooltip: {
+                        titleFontSize: 16, // Increase the font size of the tooltip title
+                        bodyFontSize: 12, // Increase the font size of the tooltip body
+                    }
+                }
+            }
+        });
+    }
+
+
+
+
+
+    
+    function destroyChart() {
+        if (myChart) {
+            myChart.destroy();
+        }
+    }
+
+    function moveChart() {
+        if (currentChartType === 'line') {
+            createBarChart();
+            currentChartType = 'bar';
+        } else {
+            createLineChart();
+            currentChartType = 'line';
+        }
+    }
+
+    // Initial chart creation
+    createLineChart();
+</script>
   <script>
     // Get today's date
   var today = new Date();

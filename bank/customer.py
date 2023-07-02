@@ -122,7 +122,7 @@ def customertransferfund():
             transaction_values = (savings_id, cid, branch_id, accno, to_acc, amount, amount, trans_no, date)
             cursor.execute(transaction, transaction_values)
  
-            transaction1 = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'cash depsoit',%s,%s)"
+            transaction1 = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'online',%s,%s)"
             transaction_values1 = (cid,savings_id,branch_id,trans_no,amount,date)
             cursor.execute(transaction1, transaction_values1) 
 

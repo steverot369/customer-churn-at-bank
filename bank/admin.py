@@ -57,16 +57,20 @@ def adminhome():
     feedback_messages = cursor.fetchall()
  
     cursor = db.cursor()
+    cursor.execute("SELECT c.fname,c.lname,c.photo,tt.amount,tt.date_time,tt.t_type FROM customers c,o_transaction t,transaction tt where c.cid=tt.customer_id LIMIT 4")
+    online_transaction=cursor.fetchall()
     query = "SELECT COUNT(*) FROM complaints where reply='0'"
-    # latest message
-    # query="SELECT COUNT(*) FROM feedback WHERE date = (SELECT MAX(date) FROM feedback)"
+   
     cursor.execute(query)
     count = cursor.fetchone()[0]
     print("max date=",query)
     if 'count_removed' in session:
         session.pop('count_removed')  # Remove the 'count_removed' flag from session
     
-    return render_template('adminhome.html', labels=labels, values=values,total_amount=total_amount,name=name,feedback_messages=feedback_messages,count=count)
+    return render_template('adminhome.html', labels=labels, values=values,total_amount=total_amount,name=name,feedback_messages=feedback_messages,count=count,online_transaction=online_transaction)
+
+
+
 @admin.route('/adminviewcomplaints', methods=['POST', 'GET'])
 def adminviewcomplaints():
     
