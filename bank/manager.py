@@ -351,8 +351,8 @@ def managerviewcreditcard():
     cursor.execute("SELECT c.card_name, c.job_type, c.c_name, c.c_location, c.m_salary, c.file1, c.file2, c.file3, c.date, c.status, cu.fname, cu.lname, cu.phone,c.o_request_id FROM o_credit_card_request c INNER JOIN customers cu ON c.customer_id = cu.cid WHERE c.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')"% (session['mid']))
     credit_card = cursor.fetchall()
 
-    if "action" in request.args:
-        action=request.args['action']
+    if "" in request.args:
+       
         id=request.args['id']
     else:
         action="none"

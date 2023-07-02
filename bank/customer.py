@@ -44,7 +44,7 @@ def customerhome():
         else:
             print('send after 1 hoursuccess')
    
-    if 'add' in request.form:
+    if 'add1' in request.form:
         messages=request.form['comments']
 
         min_allowed_time =  date - timedelta(hours=1)
@@ -56,12 +56,12 @@ def customerhome():
       
         if last_submission_time is None or last_submission_time < min_allowed_time:
            
-            complaint = "INSERT INTO complaints (customer_id, branch_id, messages,reply date_time) VALUES (%s, %s, %s,'nothing to show', %s)"
+            complaint = "INSERT INTO complaints (customer_id, branch_id, messages,reply ,date_time) VALUES (%s, %s, %s,'0', %s)"
             complaint_values = (cid, bid, messages, date)
             cursor.execute(complaint, complaint_values)
             flash('success')
         else:
-            flash('send after 1 hoursuccess')
+            print('send after 1 hoursuccess')
     return render_template('customerhome.html',transaction=transaction,name=name)
 
 

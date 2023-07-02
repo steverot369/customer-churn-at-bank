@@ -149,9 +149,9 @@ rel="stylesheet">
                         <span class="material-icons-sharp">pie_chart</span>
                         <h4>Analytics</h4>
                     </a>
-                    <a href="adminviewfeedback" onclick="removeCount()">
+                    <a href="adminviewcomplaints" onclick="removeCount()">
                         <span class="material-icons-sharp">message</span>
-                        <h4>Messages</h4>
+                        <h4>Complaints</h4>
                         <span id="message-count" class="message-count">{{ count }}</span>
                     </a>
                     
@@ -383,7 +383,7 @@ rel="stylesheet">
                     </div> -->
 
                     <div class="recent-updates">
-                        <h2>Recent Updates</h2>
+                        <h2>Recent feedbacks</h2>
                         <a href="#">More<span class="material-icons-sharp">chevron_right</span>
                         </a>
                         <div class="updates">
@@ -391,10 +391,12 @@ rel="stylesheet">
                             {% for feedback in feedback_messages %}
                             <div class="update">
                                 <div class="profile-photo">
-                                    <img src="/static/images/profile-1.jpg">
+                                    <!-- <img src="/static/images/profile-1.jpg"> -->
+                                    <img src="{{url_for('static', filename=feedback[2])}}" style="height: 50px; width:50px;">
+
                                 </div>
                                 <div class="message">
-                                    <p><b>Steve rodrigues</b> {{ feedback[0] }}</p>
+                                    <p><b>{{ feedback[3] }} {{ feedback[4] }}</b> {{ feedback[0] }}</p>
                                     <small class="text-muted">{{ feedback[1] }}</small>
                                 </div>
                             </div>
@@ -402,7 +404,7 @@ rel="stylesheet">
                         </div>
                     </div>
                     <div class="sales-analytics">
-                        <h2>Recent Transactions</h2>
+                        <h2>Recent Transactions</h2><br>
                         <div class="item online">
                             <div class="icon">
                                 <span class="material-icons-sharp">shopping_cart</span>

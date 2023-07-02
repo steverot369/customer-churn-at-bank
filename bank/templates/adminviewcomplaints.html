@@ -1,0 +1,92 @@
+{% include 'adminsidebar.html' %}
+
+  
+    
+           
+                
+                
+
+<section id="container-34" class="middle">
+    <div class="header">
+    
+        <h2 style="margin-bottom: 30px; font-size:25px;">view complaints</h2> 
+             
+                       <!-- Header contents -->
+        </div><br><br>
+        
+                <ul class="message-list">
+                   
+                    {% for message in messages %}
+                    <li class="message-list-item">
+                        <img src="{{url_for('static', filename=message[4])}}" style="height: 55px; width:55px; border-radius: 5px;">  
+                        <p class="message-timestamp">{{ message[2] }} {{ message[3] }}</p>
+
+                        <!-- <p class="message-timestamp">{{ message[4] }}</p> -->
+
+                        <p class="message-timestamp">{{ message[0] }}</p>
+                        <p class="message-content">{{ message[1] }}</p>
+                        <button class="message-button" onclick="toggleMessageContainer(this)">Send Message</button>
+                        
+                            <div class="message-container">
+                                <form method="post">
+                               
+                                    <textarea name="reply" id="textarea"  placeholder="enter your message..."></textarea>
+                                <!-- <input type="text" name="reply"> -->
+                                <input type="hidden" name="complaint_id" value="{{message[6]}}">
+
+                                <input type="submit" name="add" class="send-button" value="send" class="btn btn-success">
+                                
+								<!-- <td><a href="?action=sendreply&comid={{message[6]}}">Send</a></td> -->
+								
+								
+                                
+                            </form>
+                                <span class="success-message"></span>
+                            </div>
+                    
+                    </li>
+                    {% endfor %}
+                </ul>
+           
+</section>
+                
+</main>  
+    <!-- ====================end of aside==========================   -->
+    <script>
+    function toggleMessageContainer(button) {
+        var messageContainer = button.nextElementSibling;
+        messageContainer.style.display = messageContainer.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function sendMessage(button) {
+        var textarea = button.previousElementSibling;
+        var message = textarea.value.trim();
+        
+        // Perform the necessary logic to send the message
+        
+        textarea.value = '';  // Clear the textarea after sending the message
+        
+        // Display success message
+        var successMessage = button.parentElement.querySelector('.success-message');
+        successMessage.style.display = 'block';
+        successMessage.textContent = 'Message sent successfully!';
+        
+        // Hide success message after 3 seconds
+        setTimeout(function() {
+            successMessage.style.display = 'none';
+            
+            // Close message container
+            var messageContainer = button.parentElement;
+            messageContainer.style.display = 'none';
+        }, 3000);
+        
+        // Update button text and color
+        button.textContent = 'Sended';
+        button.style.backgroundColor = 'gray';
+        button.disabled = true; // Disable the button to prevent further clicks
+    }
+</script>
+
+    
+</body>
+</html>

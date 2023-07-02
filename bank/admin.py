@@ -25,7 +25,7 @@ def adminhome():
         'October', 'November', 'December'
     ]
     cursor = db.cursor()
-    cursor.execute("SELECT MONTH(transaction_date), SUM(transaction_amount) FROM transactions GROUP BY MONTH(transaction_date)")
+    cursor.execute("SELECT MONTH(date_time), SUM(amount) FROM transaction GROUP BY MONTH(date_time)")
     data = cursor.fetchall()
     labels = []
     values = []
@@ -52,11 +52,12 @@ def adminhome():
 
 
     # ===============feedbacks
-    cursor.execute("select message,date from feedback order by date LIMIT 3")
+    cursor.execute("SELECT f.messages, f.date_time, c.photo,c.fname,c.lname FROM feedbacks f INNER JOIN customers c ON f.customer_id = c.cid ORDER BY f.date_time LIMIT 3")
+
     feedback_messages = cursor.fetchall()
  
     cursor = db.cursor()
-    query = "SELECT COUNT(*) FROM feedback WHERE DATE(date) = CURDATE()"
+    query = "SELECT COUNT(*) FROM complaints where reply='0'"
     # latest message
     # query="SELECT COUNT(*) FROM feedback WHERE date = (SELECT MAX(date) FROM feedback)"
     cursor.execute(query)
@@ -66,19 +67,25 @@ def adminhome():
         session.pop('count_removed')  # Remove the 'count_removed' flag from session
     
     return render_template('adminhome.html', labels=labels, values=values,total_amount=total_amount,name=name,feedback_messages=feedback_messages,count=count)
-
-
-@admin.route('/adminviewfeedback')
-def adminviewfeedback():
+@admin.route('/adminviewcomplaints', methods=['POST', 'GET'])
+def adminviewcomplaints():
+    
     cursor = db.cursor()
-    # cursor.execute("SELECT message,date FROM feedback")
-    query = "SELECT message,date FROM feedback WHERE DATE(date) = CURDATE()"
+    query = "SELECT c.messages, c.date_time, cu.fname, cu.lname, cu.photo, c.reply, c.complaint_id FROM complaints c INNER JOIN customers cu ON c.customer_id = cu.cid WHERE c.reply = '0'"
     cursor.execute(query)
     messages = cursor.fetchall()
 
-    # cursor.execute("select message,date from feedback order by date DESC LIMIT 6")
-    # messages = cursor.fetchall()
-    return render_template('adminviewfeedback.html',messages=messages)
+    if "add" in request.form:
+        id=request.form['complaint_id']
+        reply = request.form['reply']
+        print("reply===",reply)
+        cursor.execute("UPDATE complaints SET reply = %s WHERE complaint_id = %s", (reply, id))
+        flash("Send reply successfully")
+        return redirect(url_for('admin.adminviewcomplaints'))
+    
+    
+    return render_template('adminviewcomplaints.html', messages=messages)
+
 
 @admin.route('/adminsendmessage')
 def adminsendmessage():
@@ -181,6 +188,9 @@ def adminaddbranch():
 @admin.route('/adminmanagehome',methods=['post','get'])
 def adminmanagehome():
 	return render_template('adminmanagehome.html')
+
+
+
 
 
 @admin.route('/adminmanagemployee',methods=['post','get'])
