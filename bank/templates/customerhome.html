@@ -406,7 +406,65 @@ input[type="submit"] {
     }
 }
 
+.messages-container {
+    display: none;
+    position: fixed;
+    top: 50px;
+    right: 100px;
+    width: 300px;
+    max-width: 90%;
+    background-color: #ffffff;
+    padding: 20px;
+    border: 2px solid #ccc;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    z-index: 9999;
+    animation: slide-in 0.3s ease-in;
 
+
+
+
+    /* display: none;
+    position: fixed;
+    top: 70px;
+    right: 100px;
+    width: 300px;
+    height: 300px;
+    max-width: 90%;
+    background-color: #ffffff;
+    padding: 20px;
+    border: 2px solid #ccc;
+           
+    box-shadow: 0 2px 6px rgba(3, 0, 0, 0.15);
+    border-radius: 5px;
+    z-index: 9999;
+    animation: slide-in 0.3s ease-in; */
+}
+
+.messages {
+    margin-bottom: 10px;
+}
+
+.messages h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.messages p {
+    margin: 0;
+    padding: 5px 0;
+}
+
+.message-count {
+    position: absolute;
+    top: -10px;
+    right: 290px;
+    background-color: red;
+    color: #fff;
+    padding: 3px 7px;
+    border-radius: 50%;
+    font-size: 10px;
+}
 
 </style>
 {% with messages = get_flashed_messages() %}
@@ -426,7 +484,21 @@ input[type="submit"] {
                 <span class="material-icons-sharp">search</span>
                 <input type="search" placeholder="search">
             </div>
+            
             <div class="profile-area">
+              <span class="message-count" id="messageCount">{{ count }}</span>
+<span class="material-icons-sharp active" onclick="toggleMessageContainer()" onmouseover="showMessageContainer(); setCountToZero();" onmouseout="hideMessageContainer()">notifications</span>
+
+<div id="messages-container" class="messages-container" onmouseover="showMessageContainer()" onmouseout="hideMessageContainer()">
+                <div class="messages">
+                 
+                  <h1>From Bank</h1>
+                  <p>Welcome to our banking platform!</p>
+                  <p>We have some exciting offers for you.</p>
+                  <p>Don't miss out on our latest promotions.</p>
+                </div>
+                <a href="view-all-messages">View All</a>
+            </div>
                 <div class="theme-btn">
                     <span class="material-icons-sharp active">light_mode</span>
                     <span class="material-icons-sharp">dark_mode</span>
@@ -436,6 +508,7 @@ input[type="submit"] {
           
                <div class="profile">
                 <div class="profile-photo" onclick="toggleProfilePhoto()">
+                  
                   <img src="/static/images/profile-1.jpg">
                 </div>
                 {% for row in name %}
@@ -516,13 +589,14 @@ input[type="submit"] {
                         <span class="material-icons-sharp">pie_chart</span>
                         <h4>Analytics</h4>
                     </a>
-                    <a href="adminviewfeedback" onclick="removeCount()">
-                        <span class="material-icons-sharp">message</span>
-                        <h4>Messages</h4>
-                        <span id="message-count" class="message-count">23</span>
-                    </a>
                     
-                       
+                    
+                    <!-- <a href="customerviewmessages" class="messages-link">
+                      <span class="material-icons-sharp">message</span>
+                      <h4>Messages</h4>
+                      <span id="message-count" class="message-count">23</span>
+                      
+                  </a> -->
                     <a href="customersendfeedback">
                         <span class="material-icons-sharp">help_center</span>
                         <h4>feedback</h4>
@@ -549,7 +623,7 @@ input[type="submit"] {
 
                     <section class="middle">
                         <div class="header">
-                            <h1>Dashboard</h1>
+                            <h1>Dashboard</h1><br>
                             <input type="date" id="todayDateInput">
                         </div>
 
@@ -557,67 +631,71 @@ input[type="submit"] {
                           <div class="sales">
                               <span class="material-icons-sharp">account_balance_wallet</span>
                               <div class="middle">
-                                  <div class="left">
-                                      <h3>Total bank balance</h3>
-                                      <h1>Rs {{ total_amount }}</h1>
+                                <div class="left">
+                                  <h3>Total bank balance</h3>
+                                  <div id="bankBalance" class="change-value">
+                                      <h1 id="balanceValue">&#8377; {{ customer_details[0][0] }}</h1>
+                                      <i id="arrowIcon" class="fas fa-arrow-down"></i>
                                   </div>
-                                  <div class="progress">
-                                      <svg>
-                                          <circle cx='38' cy='38' r='36'></circle>
-                                      </svg>
-                                      <div class="number">
-                                          <p>81%</p>
-                                      </div>
-                                  </div>
+                              </div>
+                              <div class="progress">
+                                <svg>
+                                    <circle id="progressCircle" cx='38' cy='38' r='36'></circle>
+                                </svg>
+                                <div class="number">
+                                    <p id="progressValue">81%</p>
+                                </div>
+                            </div>
                               </div>
                               <small class="text-muted">Last 24 hours</small>
                           </div>
                           <!------------ END OF SALES -------------->
                           <div class="expenses">
-                              <span class="material-icons-sharp">bar_chart</span>
+                              <span class="material-icons-sharp">account_circle</span>
                               <div class="middle">
                                   <div class="left">
-                                      <h3>Total Expenses</h3>
-                                      <h1>$85,758</h1>
+                                      <h3>Account Number</h3>
+                                      <div id="accountDetails" class="change-value">
+                                        <h1 id="accountNo">{{ customer_details[0][1] }}</h1>
+                                        
+                                    </div>
                                   </div>
                                   <div class="progress">
-                                      <svg>
-                                          <circle cx='38' cy='38' r='36'></circle>
-                                      </svg>
-                                      <div class="number">
-                                          <p>41%</p>
-                                      </div>
-                                  </div>
+                                    <svg>
+                                        <circle id="progressCircle1" cx='38' cy='38' r='36'></circle>
+                                    </svg>
+                                    <div class="number">
+                                        <p id="progressValue1">81%</p>
+                                    </div>
+                                </div>
                               </div>
                               <small class="text-muted">Last 24 hours</small>
                           </div>
                           <!------------ END OF expense -------------->
                           <div class="income">
-                              <span class="material-icons-sharp">stacked_line_chart</span>
-                              <div class="middle">
-                                  <div class="left">
-                                      <h3>Total income</h3>
-                                
-                                        
-                                     
-                                      <h1>$85,7557</h1>
-                                  </div>
-                                  <div class="progress">
-                                      <svg>
-                                          <circle cx='38' cy='38' r='36'></circle>
-                                      </svg>
-                                      <div class="number">
-                                          <p>44%</p>
-                                      </div>
-                                  </div>
-                              </div>
-                              <small class="text-muted">Last 24 hours</small>
-                          </div>
-                          <!------------ END OF INCOME -------------->
-                      </div>
+                            <span class="material-icons-sharp">inventory_2</span>
+                            <div class="middle">
+                                <div class="left">
+                                    <h3>Bank products</h3>
+                                    <h1>{{ count }} No</h1>
+                                </div>
+                                <div class="progress">
+                                    <svg>
+                                        <circle id="progressCircle2" cx='38' cy='38' r='36'></circle>
+                                    </svg>
+                                    <div class="number">
+                                        <p id="progressValue2">44%</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <small class="text-muted">Last 24 hours</small>
+                        </div>
                         
-                        <!-- <canvas id="chart"></canvas> -->
-                        <div class="recent-orders">
+                          <!------------ END OF INCOME -------------->
+                      </div><br><br>
+                      <button style="color:rebeccapurple; background: none;" onclick="moveChart()">Move Chart</button>
+                        <canvas id="chart"></canvas>
+                        <!-- <div class="recent-orders">
                             <h2>Recent Transaction</h2>
                             <table>
                                 <thead>
@@ -638,24 +716,14 @@ input[type="submit"] {
                                       <td>{{ transaction[1] }}</td>
                                       <td>{{ transaction[2] }}</td>
                                       <td class="warning">{{ transaction[3] }}</td>
-                                      <!-- <td>
-                                        <span class="material-icons-sharp add-icon">add</span>
-                                      </td>    
-                                    </tr>
-                                    <tr>
-                                      <td style="border: none;">
-                                        <div id="container-8">
-                                          <h3>{{ transaction[3] }}</h3>
-                                         
-                                        </div>
-                                      </td>   -->
+                                     
                                     </tr>
                                   {% endfor %}
                                 </tbody>
                                 
                             </table>
                             <a href="customerviewtransaction">show all</a>
-                        </div>
+                        </div> -->
                  </section>
                  <!-- --------end of middle------ -->
                  <div class="right">
@@ -690,6 +758,7 @@ input[type="submit"] {
                             <div class="update">
                                 <div class="profile-photo">
                                     <img src="/static//images/profile-4.jpg">
+                                   
                                 </div>
                                 <div class="message">
                                     <p><b>mike tyson</b>
@@ -788,6 +857,7 @@ input[type="submit"] {
                     <input type="submit" name="add1" value="submit">
                 </form>
             </div>
+            
             </main>  
     <!-- ====================end of aside==========================   -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" 
@@ -796,6 +866,238 @@ input[type="submit"] {
     <script src="/static/js/customer.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+      var currentChartType = 'line';
+      var ctx = document.getElementById('chart').getContext('2d');
+      var myChart;
+  
+      function createLineChart() {
+          destroyChart();
+          myChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                  labels: {{ labels|tojson }},
+                  datasets: [{
+                      label: 'Customer Transactions',
+                      data: {{ values|tojson }},
+                      backgroundColor: 'red',
+                      borderColor: 'blue',
+                      borderWidth: 2,
+                      pointRadius: 4,
+                  }]
+              },
+              options: {
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero: true
+                          }
+                      }]
+                  },
+                  plugins: {
+                      title: {
+                          display: true,
+                          text: 'Customer Transactions',
+                          fontSize: 20
+                      },
+                      legend: {
+                          display: true,
+                          labels: {
+                              fontSize: 20
+                          }
+                      },
+                      tooltip: {
+                          titleFontSize: 26, // Increase the font size of the tooltip title
+                          bodyFontSize: 22, // Increase the font size of the tooltip body
+                      }
+                  }
+              }
+          });
+      }
+  
+      function createBarChart() {
+          destroyChart();
+          myChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                  labels: {{ labels|tojson }},
+                  datasets: [{
+                      label: 'Customer Transactions',
+                      data: {{ values|tojson }},
+                      backgroundColor: 'blue',
+                      borderColor: 'red',
+                      
+                      borderWidth: 2,
+                      barThickness: 10,
+                  }]
+              },
+              options: {
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero: true
+                          }
+                      }]
+                  },
+                  plugins: {
+                      title: {
+                          display: true,
+                          text: 'Customer Transactions',
+                          fontSize: 16
+                      },
+                      legend: {
+                          display: true,
+                          labels: {
+                              fontSize: 15
+                          }
+                      },
+                      tooltip: {
+                          titleFontSize: 16, // Increase the font size of the tooltip title
+                          bodyFontSize: 12, // Increase the font size of the tooltip body
+                      }
+                  }
+              }
+          });
+      }
+  
+  
+  
+  
+  
+      
+      function destroyChart() {
+          if (myChart) {
+              myChart.destroy();
+          }
+      }
+  
+      function moveChart() {
+          if (currentChartType === 'line') {
+              createBarChart();
+              currentChartType = 'bar';
+          } else {
+              createLineChart();
+              currentChartType = 'line';
+          }
+      }
+  
+      // Initial chart creation
+      createLineChart();
+  </script>
+    <script>
+      var messageContainer = document.getElementById("messages-container");
+      var messageCount = document.getElementById("messageCount");
+  
+      function toggleMessageContainer() {
+          if (messageContainer.style.display === "none") {
+              showMessageContainer();
+          } else {
+              hideMessageContainer();
+          }
+      }
+  
+      function showMessageContainer() {
+          messageContainer.style.display = "block";
+      }
+  
+      function hideMessageContainer() {
+          messageContainer.style.display = "none";
+      }
+  
+      function setCountToZero() {
+          messageCount.textContent = "0";
+      }
+  </script>
+
+
+    <script>
+      var values = [];
+  
+      {% for customer in customer_details %}
+          values.push({{ customer[0] }});
+      {% endfor %}
+
+      
+  
+      var currentIndex = 0;
+      var balanceValue = document.getElementById('balanceValue');
+      var accountValue = document.getElementById('accountValue');
+
+      var arrowIcon = document.getElementById('arrowIcon');
+      var progressCircle = document.getElementById('progressCircle');
+      var progressValue = document.getElementById('progressValue');
+  
+      function toggleValue() {
+          currentIndex = (currentIndex + 1) % values.length;
+          balanceValue.textContent = values[currentIndex];
+  
+          // Update progress
+          var progress = values[currentIndex] / Math.max(...values) * 100;
+          progressCircle.style.strokeDashoffset = 226 - (progress * 226) / 100;
+          progressValue.textContent = progress.toFixed(0) + '%';
+      }
+  
+      arrowIcon.addEventListener('click', toggleValue);
+  
+      // Automatically change value every 3 seconds
+      setInterval(toggleValue, 30000);
+ 
+
+    var values1 = [];
+  
+    {% for customer1 in customer_details %}
+        values1.push({{ customer1[1] }});
+    {% endfor %}
+    var currentIndex1 = 0;
+    var accountNo = document.getElementById('accountNo');
+    
+    
+    var progressCircle1 = document.getElementById('progressCircle1');
+      var progressValue1 = document.getElementById('progressValue1');
+
+    function toggleAccountNo() {
+        currentIndex1 = (currentIndex1 + 1) % values1.length;
+        accountNo.textContent = values1[currentIndex1];
+
+        var progress1 = values[currentIndex] / Math.max(...values) * 100;
+          progressCircle1.style.strokeDashoffset = 226 - (progress1 * 226) / 100;
+          progressValue1.textContent = progress1.toFixed(0) + '%';
+    }
+
+    arrowIcon.addEventListener('click', toggleAccountNo);
+
+    // Automatically change account number every 3 seconds
+    setInterval(toggleAccountNo, 30000);
+    
+</script>
+  
+<script>
+    var initialProductCount = 10; // Initial bank product count
+    var count = {{ count }}; // Count retrieved from the database
+    var progressCircle3 = document.getElementById('progressCircle2');
+    var progressValue3 = document.getElementById('progressValue2');
+
+    function updateProgress() {
+        var progress3 = (count / initialProductCount) * 100;
+        progressCircle3.style.strokeDashoffset = 226 - (progress3 * 226) / 100;
+        progressValue3.textContent = progress3.toFixed(0) + '%';
+    }
+
+    updateProgress(); // Call the function initially
+
+    // Optionally, call the function whenever the 'count' value changes
+    // and update the progress dynamically
+
+</script>
+
+
+
+
+
+
+
+
+ 
+  <script>
       // Get the complaint link element
 var complaintLink = document.getElementById('complaint-link');
 
@@ -817,17 +1119,22 @@ closeButton.addEventListener('click', function() {
 });
 
     </script>
+
+
+
     <script>
       window.onload = function() {
           setTimeout(function() {
               document.getElementById('container-90').style.display = 'block';
-          }, 5000); // Display the container after 5 seconds
+          }, 500000); // Display the container after 5 seconds
       }
       
       function closePopup() {
           document.getElementById('container-90').style.display = 'none';
       }
   </script>
+
+
     <script>
       // jQuery event handler for add icon click
       $(document).ready(function() {
@@ -856,12 +1163,11 @@ var formattedDate = today.toISOString().split("T")[0];
 // Set the input value to today's date
 document.getElementById("todayDateInput").value = formattedDate;
   </script>
+
+
   <script>
     function showMessages() {
-  // Perform actions to show the messages
-  // For example, open a modal or navigate to a new page
-
-  // After showing the messages, remove the message count
+  
   var messageCountElement = document.getElementById('messageCount');
   messageCountElement.style.display = 'none';
 }

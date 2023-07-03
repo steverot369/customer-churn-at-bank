@@ -15,6 +15,29 @@ customer=Blueprint('customer',__name__)
 def customerhome():
     # data={}
     cursor = db.cursor()
+    months = [
+        'January', 'February', 'March', 'April',
+        'May', 'June', 'July', 'August', 'September',
+        'October', 'November', 'December'
+    ]
+    cursor = db.cursor()
+    cursor.execute("SELECT MONTH(date_time), SUM(amount) FROM transaction where customer_id='%s' GROUP BY MONTH(date_time)"%(session['cust_id']))
+    data = cursor.fetchall()
+    labels = []
+    values = []
+    for month in months:
+        month_num = datetime.strptime(month, '%B').month
+        found = False
+        for row in data:
+            if row[0] == month_num:
+                labels.append(month)
+                values.append(row[1])
+                found = True
+                break
+        if not found:
+            labels.append(month)
+            values.append(0)
+   
     cursor.execute("SELECT t_no,t_type,amount,date_time,customer_id from transaction where customer_id=(select cid from customers where cid='%s') LIMIT 8"%(session['cust_id']))
     transaction = cursor.fetchall()
     cursor.execute("select fname,lname,email from customers where loginid='%s'"%(session['logid']))
@@ -24,7 +47,11 @@ def customerhome():
     cid=customer[0]
     bid=customer[1]
     date = datetime.now()
-
+    cursor.execute("select balance,acc_no,ifsccode from savingsacc where customer_id='%s'"%(session['cust_id']))
+    customer_details=cursor.fetchall()
+    cursor.execute("select count from bankproducts where customer_id='%s'"%(session['cust_id']))
+    count=cursor.fetchone()[0]
+    
     if 'add' in request.form:
         messages=request.form['messages']
 # Calculate the minimum allowed submission time (1 hour ago from the current time)
@@ -62,7 +89,7 @@ def customerhome():
             flash('success')
         else:
             print('send after 1 hoursuccess')
-    return render_template('customerhome.html',transaction=transaction,name=name)
+    return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,count=count,labels=labels, values=values)
 
 
 
