@@ -16,7 +16,7 @@
                         <p class="tenure">Tenure: <span>{{ tenure }}</span></p>
                         <p class="balance">Balance: <span>{{ balances }}</span></p>
                         <p class="num-of-products">NumOfProducts: <span>{{ NumOfProducts }}</span></p>
-                        <p class="has-cr-card">HasCrCard: <span>{{ 1 }}</span></p>
+                        <p class="has-cr-card">HasCrCard: <span>{{ credit_status }}</span></p>
                         <p class="is-active-member">IsActiveMember: (1: active, 0: not active): <span>{{ IsActiveMembervalue }}</span></p>
                         <p class="estimated-salary">EstimatedSalary: <span>{{ msalary }}</span></p>
                         <p class="geography-germany">Geography_Germany: <span>{{ Geography_Germany }}</span></p>
@@ -30,8 +30,52 @@
                             </h1>
                             <h1 id="workingText" class="alert alert-primary text-center" role="alert">
                                 Working on it...
+                                
                             </h1>
+                           <!-- <h1 >Reasons :{{ reasons }}</h1> -->
                         </div>
+                        <!-- ... -->
+                        <div class="result" id="predictionResult1" style="display: none;">
+                            <h3>{{ prediction_text }}</h3>
+                            <p>Probability of leaving: {{ probability }}%</p>
+                            {% if reason != "Unknown" %}
+                            <!-- {% for reason in reason %} -->
+                            <p>Reason for leaving: {{ reason }}</p>
+                            <!-- {% endfor %} -->
+                            <p>Suggestions for the bank:</p>
+                            <ul>
+                                {% if reason == "Low Tenure" %}
+                                <li>Improve onboarding experience</li>
+                                <li>Offer loyalty programs for long-term customers</li>
+                                <!-- Add more suggestions for Low Tenure -->
+                                {% endif %}
+                                {% if reason == "Low Credit Score" %}
+                                <li>Suggestion 1 for Low Credit Score</li>
+                                <li>Suggestion 2 for Low Credit Score</li>
+                                <!-- Add more suggestions for Low Credit Score -->
+                                {% endif %}
+                                {% if reason == "Inactive Customer" %}
+                                <li>Suggestion 1 for Inactive Customer</li>
+                                <li>Suggestion 2 for Inactive Customer</li>
+                                <!-- Add more suggestions for Inactive Customer -->
+                                {% endif %}
+                                {% if reason == "High Number of Bank Products" %}
+                                <li>Suggestion 1 for High Number of Bank Products</li>
+                                <li>Suggestion 2 for High Number of Bank Products</li>
+                                <!-- Add more suggestions for High Number of Bank Products -->
+                                {% endif %}
+                                {% if reason == "No Credit Card" %}
+                                <li>Suggestion 1 for No Credit Card</li>
+                                <li>Suggestion 2 for No Credit Card</li>
+                                <!-- Add more suggestions for No Credit Card -->
+                                {% endif %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        
+</div>
+<!-- ... -->
+
 
 
                      
@@ -49,6 +93,8 @@
         setTimeout(function() {
             document.getElementById('workingText').style.display = 'none';
             document.getElementById('predictionResult').style.display = 'block';
+            document.getElementById('predictionResult1').style.display = 'block';
+
         }, 5000);
     
     

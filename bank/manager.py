@@ -103,6 +103,8 @@ def managercustomerchurn(customer_id):
     
     cursor.execute("SELECT COUNT(customer_id) FROM transaction WHERE customer_id='%s'" % customer_id)
     customer_details3 = cursor.fetchone()
+
+
     # Calculate date and tenure
     dob = customer_details[0]
     msalary = customer_details[1]
@@ -110,6 +112,20 @@ def managercustomerchurn(customer_id):
     l_name = customer_details[7]
     state = customer_details[2]
 
+    cursor.execute("SELECT status FROM credit_card WHERE customer_id='%s'" % customer_id)
+    customer_details4 = cursor.fetchone()
+
+    try:
+        credit_status = customer_details4[0]
+        credit_status = 1 if credit_status == "approve" else 0
+    except TypeError:
+        credit_status = 0  # Default value if customer_details4 is None or IndexError occurs
+
+    print("==================", credit_status)
+
+
+    cursor.execute("SELECT penality_count FROM loanacc WHERE customer_id='%s'" % (customer_id))
+    penality = cursor.fetchone()[0]
 
     Geography_Germany = customer_details[2]
     if(Geography_Germany == 'kerala'):
@@ -143,26 +159,50 @@ def managercustomerchurn(customer_id):
     # balances = [balance[1] for balance in customer_balances]
     IsActiveMember = customer_details3[0]
     IsActiveMembervalue = 1 if IsActiveMember >= 5 else 0
-    if IsActiveMember >=3 and IsActiveMember <=10:
-        credit_score = random.randint(300, 350)
-    elif IsActiveMember >=11 and IsActiveMember <=20:
-        credit_score = random.randint(351, 450)
-    elif IsActiveMember >=21 and IsActiveMember <=30:
-        credit_score = random.randint(451, 550)
-    elif IsActiveMember >=31 and IsActiveMember <=40:
-        credit_score = random.randint(551, 650)
-    elif IsActiveMember >=41 and IsActiveMember <=50:
-        credit_score = random.randint(651, 700)
-    elif IsActiveMember >=51 and IsActiveMember <=60:
-        credit_score = random.randint(701, 750)
-    elif IsActiveMember >=61 and IsActiveMember <=70:
-        credit_score = random.randint(751, 800)
-    elif IsActiveMember >=71 and IsActiveMember <=80:
-        credit_score = random.randint(801, 850)
-    elif IsActiveMember >=81 and IsActiveMember <=90:
-        credit_score = random.randint(851, 900)
-    else:
-        credit_score = random.randint(901, 950)
+    credit_score = 0
+
+        # Age factor
+    if age >= 18 and age < 21:
+        credit_score += 100
+    elif age >= 21 and age < 25:
+        credit_score += 200
+    elif age >= 25 and age < 30:
+        credit_score += 300
+    elif age >= 30:
+        credit_score += 400
+
+        # Loan penalty factor
+    if penality > 0:
+        
+        credit_score -= 50
+
+        # Loan penalty factor
+
+
+        # Active member factor
+    if IsActiveMember > 1:
+        credit_score += 200
+        if IsActiveMember > 10:
+            credit_score += 100
+        if IsActiveMember > 20:
+                credit_score += 200
+
+        # NumOfProducts factor
+    if NumOfProducts >= 1 and NumOfProducts <= 4:
+        credit_score += NumOfProducts * 50
+        if NumOfProducts >= 2:
+            credit_score += 100
+        if NumOfProducts >= 3:
+            credit_score += 200
+        if NumOfProducts >= 4:
+            credit_score += 300
+
+        # Limit credit score to a maximum of 1000
+    credit_score = min(credit_score, 1000)
+
+        # Print the credit score
+    print("Credit Score:", credit_score)
+
 
     if 'add' in request.form:
         CreditScore=int(request.form['credit_score'])
@@ -191,7 +231,15 @@ def managercustomerchurn(customer_id):
         dob = customer_details[0]
         msalary = customer_details[1]
         state = customer_details[2]
+        cursor.execute("SELECT status FROM credit_card WHERE customer_id='%s'" % customer_id)
+        customer_details4 = cursor.fetchone()
+        
 
+        if customer_details4 is not None:
+            credit_status = 1 if customer_details4[0] == "approve" else 0
+
+        cursor.execute("SELECT penality_count FROM loanacc WHERE customer_id='%s'" % (customer_id))
+        penality = cursor.fetchone()[0]
 
         Geography_Germany = customer_details[2]
         if(Geography_Germany == 'kerala'):
@@ -224,27 +272,63 @@ def managercustomerchurn(customer_id):
         balances = customer_balances[1]
         # balances = [balance[1] for balance in customer_balances]
         IsActiveMember = customer_details3[0]
+        print("=================",IsActiveMember)
         IsActiveMembervalue = 1 if IsActiveMember >= 5 else 0
-        if IsActiveMember >=3 and IsActiveMember <=10:
-            credit_score = random.randint(300, 350)
-        elif IsActiveMember >=11 and IsActiveMember <=20:
-            credit_score = random.randint(351, 450)
-        elif IsActiveMember >=21 and IsActiveMember <=30:
-            credit_score = random.randint(451, 550)
-        elif IsActiveMember >=31 and IsActiveMember <=40:
-            credit_score = random.randint(551, 650)
-        elif IsActiveMember >=41 and IsActiveMember <=50:
-            credit_score = random.randint(651, 700)
-        elif IsActiveMember >=51 and IsActiveMember <=60:
-            credit_score = random.randint(701, 750)
-        elif IsActiveMember >=61 and IsActiveMember <=70:
-            credit_score = random.randint(751, 800)
-        elif IsActiveMember >=71 and IsActiveMember <=80:
-            credit_score = random.randint(801, 850)
-        elif IsActiveMember >=81 and IsActiveMember <=90:
-            credit_score = random.randint(851, 900)
-        else:
-            credit_score = random.randint(901, 950)
+        credit_score = 0
+
+        # Age factor
+        if age >= 18 and age < 21:
+            credit_score += 100
+        elif age >= 21 and age < 25:
+            credit_score += 200
+        elif age >= 25 and age < 30:
+            credit_score += 300
+        elif age >= 30:
+            credit_score += 400
+            print("credit score on age=",credit_score)
+        # Loan penalty factor
+        if penality > 0:
+            credit_score -= 50
+            print("credit score on penality=",credit_score)
+
+        # Loan penalty factor
+        # if penality > 0:
+        #     if penality > 10:
+        #         credit_score -= 500
+        #     elif penality > 5:
+        #         credit_score -= 400
+        #     elif penality > 2:
+        #         credit_score -= 300
+        #     else:
+        #         credit_score -= 200
+
+        # Active member factor
+        if IsActiveMember > 1:
+            credit_score += 200
+            if IsActiveMember > 10:
+                credit_score += 100
+            if IsActiveMember > 20:
+                credit_score += 200
+                print("credit score on transaction=",credit_score)
+
+
+        # NumOfProducts factor
+        if NumOfProducts >= 1 and NumOfProducts <= 4:
+            credit_score += NumOfProducts * 50
+            if NumOfProducts >= 2:
+                credit_score += 100
+            if NumOfProducts >= 3:
+                credit_score += 200
+            if NumOfProducts >= 4:
+                credit_score += 300
+                print("credit score on number of preoducts=",credit_score)
+
+        # Limit credit score to a maximum of 1000
+        credit_score = min(credit_score, 1000)
+
+        # Print the credit score
+        print("Credit Score:", credit_score)
+ 
         prediction_data = pd.DataFrame({
                 'CreditScore': [CreditScore],
                 'Age': [Age],
@@ -262,18 +346,49 @@ def managercustomerchurn(customer_id):
         prediction = model.predict(prediction_data)
         probability = model.predict_proba(prediction_data)[0][1] * 100
         stay_probability = 100 - probability
+      
+
+
         if prediction == 1:
-            churn="INSERT INTO churn_customers(customer_id,branch_id,leave_or_not)  VALUES (%s,%s,'will leave')"
+            churn = "INSERT INTO churn_customers(customer_id, branch_id, leave_or_not) VALUES (%s, %s, 'will leave')"
             churn_values = (customer_id, branch_id)
             cursor.execute(churn, churn_values)
+
+            # Check conditions and update reason
+            if Tenure < 7:
+                reason = "Low Tenure"
+            elif CreditScore < 700:
+                reason = "Low Credit Score"
+            elif IsActiveMember == 0:
+                reason = "Inactive Customer"
+            elif NumOfProducts > NumOfProducts:
+                reason = "High Number of Bank Products"
+            elif HasCrCard == 0:
+                reason = "No Credit Card"
+            else:
+                reason = "Unknown"
+
             return render_template('predictionresult.html', prediction_text="The Customer will leave the bank",
-                                   probability=probability, stay_probability=stay_probability,customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score,f_name=f_name,l_name=l_name,state=state)
+                                probability=probability, stay_probability=stay_probability,
+                                customer_id=customer_id, customer_details=customer_details, age=age,
+                                Geography_Germany=Geography_Germany, Geography_Spain=Geography_Spain,
+                                tenure=tenure, msalary=msalary, NumOfProducts=NumOfProducts, balances=balances,
+                                gender_value=gender_value, IsActiveMembervalue=IsActiveMembervalue,
+                                credit_score=credit_score, f_name=f_name, l_name=l_name, state=state,
+                                credit_status=credit_status, reason=reason)
         else:
             return render_template('predictionresult.html', prediction_text="The Customer will not leave the bank",
-                                   probability=stay_probability, stay_probability=probability,customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score,f_name=f_name,l_name=l_name,state=state)
+                                probability=stay_probability, stay_probability=probability,
+                                customer_id=customer_id, customer_details=customer_details, age=age,
+                                Geography_Germany=Geography_Germany, Geography_Spain=Geography_Spain,
+                                tenure=tenure, msalary=msalary, NumOfProducts=NumOfProducts, balances=balances,
+                                gender_value=gender_value, IsActiveMembervalue=IsActiveMembervalue,
+                                credit_score=credit_score, f_name=f_name, l_name=l_name, state=state,
+                                credit_status=credit_status)
+
 
     # Pass date and tenure to the template
-    return render_template('managercustomerchurn.html', customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score,f_name=f_name,l_name=l_name,state=state)
+    return render_template('managercustomerchurn.html', customer_id=customer_id, customer_details=customer_details, age=age,Geography_Germany=Geography_Germany,Geography_Spain=Geography_Spain,tenure=tenure,msalary=msalary,NumOfProducts=NumOfProducts,balances=balances,gender_value=gender_value,IsActiveMembervalue=IsActiveMembervalue,credit_score=credit_score,f_name=f_name,l_name=l_name,state=state,credit_status=credit_status)
 
 @manager.route('/customerchurnprediction', methods=['POST'])
 def customerchurnprediction():

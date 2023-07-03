@@ -18,7 +18,7 @@
                         <p class="tenure">Tenure: <span>{{ tenure }}</span></p>
                         <p class="balance">Balance: <span>{{ balances }}</span></p>
                         <p class="num-of-products">NumOfProducts: <span>{{ NumOfProducts }}</span></p>
-                        <p class="has-cr-card">HasCrCard: <span>{{ 1 }}</span></p>
+                        <p class="has-cr-card">HasCrCard: (1: active, 0: not active): <span>{{ credit_status }}</span></p>
                         <p class="is-active-member">IsActiveMember: (1: active, 0: not active): <span>{{ IsActiveMembervalue }}</span></p>
                         <p class="estimated-salary">EstimatedSalary: <span>{{ msalary }}</span></p>
                         <p class="customer-id">state: {{ state }}</p>
@@ -37,7 +37,7 @@
                         <input type="hidden" name="tenure" value="{{ tenure }}">
                         <input type="hidden" name="balance" value="{{ balances }}">
                         <input type="hidden" name="num_of_products" value="{{ NumOfProducts }}">
-                        <input type="hidden" name="has_cr_card" value="{{ 1 }}">
+                        <input type="hidden" name="has_cr_card" value="{{ credit_status }}">
                         <input type="hidden" name="is_active_member" value="{{ IsActiveMembervalue }}">
                         <input type="hidden" name="estimated_salary" value="{{ msalary }}">
                         <input type="hidden" name="geography_germany" value="{{ Geography_Germany }}">
