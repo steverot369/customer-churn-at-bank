@@ -273,7 +273,7 @@ def managercustomerchurn(customer_id):
         # balances = [balance[1] for balance in customer_balances]
         IsActiveMember = customer_details3[0]
         print("=================",IsActiveMember)
-        IsActiveMembervalue = 1 if IsActiveMember >= 5 else 0
+        IsActiveMembervalue = 1 if IsActiveMember >= 15 else 0
         credit_score = 0
 
         # Age factor
@@ -348,25 +348,28 @@ def managercustomerchurn(customer_id):
         stay_probability = 100 - probability
       
 
-
+        credit=CreditScore
         if prediction == 1:
             churn = "INSERT INTO churn_customers(customer_id, branch_id, leave_or_not) VALUES (%s, %s, 'will leave')"
             churn_values = (customer_id, branch_id)
             cursor.execute(churn, churn_values)
-
+            reason1 = "no data"
+            reason2 = "no data"
+            reason3 = "no data"
+            reason4 = "no data"
+            reason5 = "no data"
             # Check conditions and update reason
-            if Tenure < 7:
-                reason = "Low Tenure"
-            elif CreditScore < 700:
-                reason = "Low Credit Score"
-            elif IsActiveMember == 0:
-                reason = "Inactive Customer"
-            elif NumOfProducts > NumOfProducts:
-                reason = "High Number of Bank Products"
-            elif HasCrCard == 0:
-                reason = "No Credit Card"
-            else:
-                reason = "Unknown"
+            if Tenure < 2:
+                reason1 = "Low Tenure"
+            if CreditScore < CreditScore:
+                reason2 = "Low Credit Score"
+            if IsActiveMembervalue == 0:
+                reason3 = "Inactive Customer"
+            if NumOfProducts > NumOfProducts:
+                reason4 = "High Number of Bank Products"
+            if HasCrCard == 0:
+                reason5 = "No Credit Card"
+           
 
             return render_template('predictionresult.html', prediction_text="The Customer will leave the bank",
                                 probability=probability, stay_probability=stay_probability,
@@ -375,7 +378,7 @@ def managercustomerchurn(customer_id):
                                 tenure=tenure, msalary=msalary, NumOfProducts=NumOfProducts, balances=balances,
                                 gender_value=gender_value, IsActiveMembervalue=IsActiveMembervalue,
                                 credit_score=credit_score, f_name=f_name, l_name=l_name, state=state,
-                                credit_status=credit_status, reason=reason)
+                                credit_status=credit_status, reason1=reason1,reason2=reason2,reason3=reason3,reason4=reason4,reason5=reason5)
         else:
             return render_template('predictionresult.html', prediction_text="The Customer will not leave the bank",
                                 probability=stay_probability, stay_probability=probability,

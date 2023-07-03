@@ -8,7 +8,7 @@
                     <br>
                     <br>
                     <div class="container-5">
-                        <h2 class="churn-heading">Customer Churn</h2>
+                        <!-- <h2 class="churn-heading">Customer Churn</h2>
                         <p class="customer-id">Customer ID: {{ customer_id }}</p>
                         <p class="credit-score">CreditScore: {{ credit_score }}</p>
                       
@@ -23,10 +23,11 @@
                         <p class="geography-germany">Geography_Spain: <span>{{ Geography_Spain }}</span></p>
 
                         <p class="gender">Gender_Male: (1: male, 0: female): <span>{{ gender_value }}</span></p>
-                        <br><br>
+                        <br><br> -->
+
                         <div class="result">
                             <h1 id="predictionResult" class="alert alert-primary text-center" role="alert" style="display: none;">
-                                {{ prediction_text }} {{ probability }}%
+                                {{ prediction_text }}
                             </h1>
                             <h1 id="workingText" class="alert alert-primary text-center" role="alert">
                                 Working on it...
@@ -34,59 +35,147 @@
                             </h1>
                            <!-- <h1 >Reasons :{{ reasons }}</h1> -->
                         </div>
+                    </div>
                         <!-- ... -->
-                        <div class="result" id="predictionResult1" style="display: none;">
-                            <h3>{{ prediction_text }}</h3>
-                            <p>Probability of leaving: {{ probability }}%</p>
-                            {% if reason != "Unknown" %}
-                            <!-- {% for reason in reason %} -->
-                            <p>Reason for leaving: {{ reason }}</p>
-                            <!-- {% endfor %} -->
-                            <p>Suggestions for the bank:</p>
-                            <ul>
-                                {% if reason == "Low Tenure" %}
-                                <li>Improve onboarding experience</li>
-                                <li>Offer loyalty programs for long-term customers</li>
-                                <!-- Add more suggestions for Low Tenure -->
-                                {% endif %}
-                                {% if reason == "Low Credit Score" %}
-                                <li>Suggestion 1 for Low Credit Score</li>
-                                <li>Suggestion 2 for Low Credit Score</li>
-                                <!-- Add more suggestions for Low Credit Score -->
-                                {% endif %}
-                                {% if reason == "Inactive Customer" %}
-                                <li>Suggestion 1 for Inactive Customer</li>
-                                <li>Suggestion 2 for Inactive Customer</li>
-                                <!-- Add more suggestions for Inactive Customer -->
-                                {% endif %}
-                                {% if reason == "High Number of Bank Products" %}
-                                <li>Suggestion 1 for High Number of Bank Products</li>
-                                <li>Suggestion 2 for High Number of Bank Products</li>
-                                <!-- Add more suggestions for High Number of Bank Products -->
-                                {% endif %}
-                                {% if reason == "No Credit Card" %}
-                                <li>Suggestion 1 for No Credit Card</li>
-                                <li>Suggestion 2 for No Credit Card</li>
-                                <!-- Add more suggestions for No Credit Card -->
-                                {% endif %}
-                            </ul>
-                            {% endif %}
-                        </div>
+                        <!-- <div class="result prediction-result" id="predictionResult1" style="display: none;"> -->
+                {% if prediction_text == "The Customer will leave the bank" %}        
+                    <div id="predictionResult1" style="display: none;">
+                        <div class="result prediction-result">
+                            <div class="right">
+                               
+                                    <h2 style="font-size: 25px; font-weight: 700;">Possible reasons to Churn</h2>
+                                    {% if reason1 != "no data" %}
+                                        <p>Reason for leaving: {{ reason1 }}</p>
+                                    {% endif %}
+                                    {% if reason2 != "no data" %}
+                                        <p>Reason for leaving: {{ reason2 }}</p>
+                                    {% endif %}
+                                    {% if reason3 != "no data" %}
+                                        <p>Reason for leaving: {{ reason3 }}</p>
+                                    {% endif %}
+                                    {% if reason4 != "no data" %}
+                                        <p>Reason for leaving: {{ reason4 }}</p>
+                                    {% endif %}
+                                    {% if reason5 != "no data" %}
+                                        <p>Reason for leaving: {{ reason5 }}</p>
+                                    {% endif %}
+
+                                    <p style="font-size: 20px; font-weight: 700;">Suggestions for the bank:</p>
+                                <ul>
+                                    {% if reason1 == "Low Tenure" %}
+                                    <h2 style="font-size: 15px; font-weight: 700;">Tenure</h2>
+                                    <li>1. Improve onboarding experience</li>
+                                    <li>2. Offer personalized welcome messages</li>
+                                    <li>3. Provide educational resources for new customers</li>
+                                    <li>4. Offer incentives for customers to stay beyond a certain tenure</li>
+                                    <li>5. Assign dedicated relationship managers for new customers</li>
+                                  {% endif %}
+                                  
+                                  {% if reason2 == "Low Credit Score" %}
+                                  <h2 style="font-size: 15px; font-weight: 700;">Low Credit Score</h2>
+
+                                    <li>1. Provide credit counseling services</li>
+                                    <li>2. Offer credit score improvement programs</li>
+                                    <li>3. Provide resources for financial education and budgeting</li>
+                                    <li>4. Offer secured credit cards to help rebuild credit</li>
+                                    <li>5. Provide personalized credit improvement plans</li>
+                                  {% endif %}
+                                  
+                                  {% if reason3 == "Inactive Customer" %}
+                                  <h2 style="font-size: 15px; font-weight: 700;">Inactive Customer</h2>
+
+                                  <li>1. Send personalized and targeted re-engagement campaigns</li>
+                                  <li>2. Offer exclusive promotions or discounts for inactive customers</li>
+                                    <li>3. Provide tailored product recommendations based on past interactions</li>
+                                    <li>4. Send reminders or notifications to encourage activity</li>
+                                    <li>5. Offer loyalty rewards for continued engagement</li>
+                                  {% endif %}
+                                  
+                                  {% if reason4 == "High Number of Bank Products" %}
+                                  <h2 style="font-size: 15px; font-weight: 700;">Bank Products</h2>
+
+                                    <li>1. Offer personalized product recommendations based on individual needs</li>
+                                    <li>2. Provide streamlined account management for multiple products</li>
+                                    <li>3. Simplify the user interface and navigation for easy access to all products</li>
+                                    <li>4. Offer bundled pricing or discounts for customers with multiple products</li>
+                                    <li>5. Provide dedicated support for customers with multiple products</li>
+                                  {% endif %}
+                                  
+                                  {% if reason5 == "No Credit Card" %}
+                                  <h2 style="font-size: 15px; font-weight: 700;">Credit Card</h2>
+
+                                    <li>1. Educate customers about the benefits of having a credit card</li>
+                                    <li>2. Offer credit card options tailored to different needs (e.g., rewards, cashback, low interest rate)</li>
+                                    <li>3. Simplify the credit card application process</li>
+                                    <li>4. Provide credit-building resources for customers without a credit history</li>
+                                    <li>5. Offer introductory offers or incentives for new credit card customers</li>
+                                  {% endif %}
+                                  
+                                </ul>
+                                </div>
+                            
+                            
+                            <div class="left">
+                                <p>Probability of leaving: <b>{{ probability }}%</b></p>
+                                <div class="chart-container">
+                                    <canvas id="churnProbabilityChart"></canvas>
+                                </div>
+                                {% if reason3 == "Inactive Customer" %}
+                                  <h2 style="font-size: 15px; font-weight: 700;">Inactive Customer</h2>
+
+                                  <li>1. Send personalized and targeted re-engagement campaigns</li>
+                                  <li>2. Offer exclusive promotions or discounts for inactive customers</li>
+                                    <li>3. Provide tailored product recommendations based on past interactions</li>
+                                    <li>4. Send reminders or notifications to encourage activity</li>
+                                    <li>5. Offer loyalty rewards for continued engagement</li>
+                                  {% endif %}
+                            </div>
                         
-</div>
-<!-- ... -->
+<!-- ... -->            </div>
+                    </div>
+                {% endif %}
 
 
 
                      
                       
                     
-                    </div>
+                   
                    
              </section>
                 
             </main>  
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- ====================end of aside==========================   -->
+    <script>
+        // Retrieve probability data from the server-side
+        var probabilityData = {{ probability }};
+    
+        // Create a new Chart instance
+        var ctx = document.getElementById('churnProbabilityChart').getContext('2d');
+        var churnProbabilityChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Probability of Leaving', 'Probability of Staying'],
+                datasets: [{
+                    data: [probabilityData, 100 - probabilityData],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.8)', // Red color for leaving
+                        'rgba(54, 162, 235, 0.8)', // Blue color for staying
+                    ],
+                }],
+            },
+            options: {
+                responsive: true,
+                 // Disable aspect ratio scaling
+                legend: {
+                    position: 'right',
+                },
+            },
+        });
+    </script>
+    
     <script>
       
         // Delay the display of the prediction result
