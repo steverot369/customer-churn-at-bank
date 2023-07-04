@@ -851,6 +851,134 @@ label{
     margin-bottom: 5px;
 }
 
+.additional-buttons {
+    display: none;
+    padding-top: 10px;
+  }
+
+  .additional-buttons.show {
+    display: block;
+  }
+
+  .additional-buttons a {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+/* complaint container */
+#container-99 {
+ 
+    display: none;
+    position: fixed;
+    bottom: 500px;
+    right: 250px;
+    width: 500px;
+    height: 400px;
+    max-width: 90%;
+    background-color: #d9d3d3;
+    padding: 20px;
+    border: 2px solid rgb(55, 53, 53);
+           
+    box-shadow: 0 2px 6px rgba(3, 0, 0, 0.15);
+    border-radius: 5px;
+    z-index: 9999;
+    animation: slide-up 0.3s ease-out;
+} 
+
+#container-99.show {
+    display: block;
+    animation: slide-down 0.3s ease-out;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: #888;
+    cursor: pointer;
+}
+
+
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+form {
+    margin-top: 20px;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgb(134, 130, 130);
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+input[type="submit"] {
+    background-color: #4caf50;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+
+/* @keyframes slide-down {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+} */
+
+.messages-container {
+    display: none;
+    position: fixed;
+    top: 50px;
+    right: 100px;
+    width: 300px;
+    max-width: 90%;
+    background-color: #ffffff;
+    padding: 20px;
+    border: 2px solid #ccc;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    z-index: 9999;
+    animation: slide-in 0.3s ease-in;
+
+}
+
+.messages {
+    margin-bottom: 10px;
+}
+
+.messages h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.messages p {
+    margin: 0;
+    padding: 5px 0;
+}
+
+.message-count {
+    position: absolute;
+    top: -10px;
+    right: 290px;
+    background-color: red;
+    color: #fff;
+    padding: 3px 7px;
+    border-radius: 50%;
+    font-size: 10px;
+}
 
 
   </style>

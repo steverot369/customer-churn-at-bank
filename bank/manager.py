@@ -78,9 +78,32 @@ def managermanagecustomers():
     name = cursor.fetchall()
     cursor.execute("SELECT * FROM customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
     employees = cursor.fetchall()
+
     
 
     return render_template('managermanagecustomers.html',employees=employees,name=name)
+
+@manager.route('/managersendnotification/<customer_id>',methods=['post','get'])
+def managersendnotification(customer_id):
+
+    cursor = db.cursor()
+    
+    cursor.execute("select branch_id from customers where cid='%s'" % customer_id)
+    details=cursor.fetchone()
+    print(details)
+    branch_id=details[0]
+    date=datetime.datetime.now().date()
+    if 'add' in request.form:
+
+        messages=request.form['messages']
+        credit_card="INSERT INTO bank_messages(customer_id,branch_id,messages,date)  VALUES ( %s, %s, %s,%s)"
+        credit_card_values = (customer_id, branch_id,messages,date)
+        cursor.execute(credit_card, credit_card_values)
+
+        return render_template('managermanagecustomers.html')
+
+
+    return render_template('managermanagecustomers.html')
 
 
 # @manager.route('/managercustomerchurn/<customer_id>', methods=['GET', 'POST'])
