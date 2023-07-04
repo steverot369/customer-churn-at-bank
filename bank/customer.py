@@ -51,7 +51,46 @@ def customerhome():
     customer_details=cursor.fetchall()
     cursor.execute("select count from bankproducts where customer_id='%s'"%(session['cust_id']))
     count=cursor.fetchone()[0]
-    
+    cursor.execute("SELECT from_acc, to_acc, amount,t_type, date FROM o_transaction WHERE customer_id = '%s' LIMIT 4" % (session['cust_id']))
+
+    transaction_details=cursor.fetchall()
+
+    # cursor.execute("select to_acc from o_transaction where customer_id='%s'"%(session['cust_id']))
+    # to_acc=cursor.fetchone()[0]
+    # print("to account number",to_acc)
+    # cursor.fetchall()
+    logged_in_user_id=int(session['cust_id'])
+    print("login_id=====",logged_in_user_id)
+
+    # cursor.execute("SELECT customer_id, reciever_id, amount_debited FROM o_transaction WHERE customer_id = '%s' OR reciever_id = '%s'"%(logged_in_user_id, logged_in_user_id))
+    # details = cursor.fetchall()
+    # cursor.execute("""SELECT t.customer_id, t.reciever_id,c.fname, c.lname, c.photo,t.date,t.amount_debited FROM o_transaction t JOIN customers c ON t.customer_id = c.cid OR t.reciever_id = c.cid where t.customer_id=%s or t.reciever_id=%s ORDER BY t.date"""%(logged_in_user_id,logged_in_user_id))
+    # details = cursor.fetchall()
+    # print(details)
+    cursor.execute("SELECT customer_id, reciever_id,amount,date,name,photo,from_name,from_photo FROM o_transaction where customer_id=%s or reciever_id=%s ORDER BY date DESC LIMIT 5"%(logged_in_user_id,logged_in_user_id))
+    details = cursor.fetchall()
+
+    # cursor.execute("select reciever_id from o_transaction where customer_id='%s'"%(session['cust_id']))
+    # receiver_id=cursor.fetchone()[0]
+    # cursor.fetchall()
+    # cursor.execute("SELECT fname,lname,photo from customers where cid=%s"%(receiver_id))
+    # details1 = cursor.fetchone()
+    # fname1=details1[0]
+    # lname1=details1[1]
+    # photo1=details1[2]
+
+    # cursor.execute("SELECT customer_id FROM o_transaction WHERE customer_id = 2")
+    # sender_id = cursor.fetchone()
+    # print(sender_id)
+    # if sender_id is not None:
+    #     id = sender_id[0]
+
+    #     cursor.execute("SELECT fname, lname, photo FROM customers WHERE cid = %s" % id)
+    #     details2 = cursor.fetchone()
+    #     fname = details2[0]
+    #     lname = details2[1]
+    #     photo = details2[2]
+
     if 'add' in request.form:
         messages=request.form['messages']
 # Calculate the minimum allowed submission time (1 hour ago from the current time)
@@ -89,7 +128,7 @@ def customerhome():
             flash('success')
         else:
             print('send after 1 hoursuccess')
-    return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,count=count,labels=labels, values=values)
+    return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,count=count,labels=labels, values=values,transaction_details=transaction_details,details=details,logged_in_user_id=logged_in_user_id)
 
 
 
@@ -128,13 +167,35 @@ def customertransferfund():
         print("pin == ",pin)
         print("amount= ",amount)
         print("our account",acc_no)
+        cursor.execute("select c.cid,c.fname,c.lname,c.photo from savingsacc s,customers c  where s.customer_id=c.cid and acc_no='%s'"%(to_acc))
+        customer_details=cursor.fetchone()
+        receiver_id=customer_details[0]
+        fname=customer_details[1]
+        lname=customer_details[2]
+        full_name = fname + ' ' + lname
+        photo=customer_details[3]
+
+
+        cursor.execute("select c.cid,c.fname,c.lname,c.photo from savingsacc s,customers c  where s.customer_id=c.cid and acc_no=%s",(accno,))
+        customer_details1=cursor.fetchone()
+        # receiver_id=customer_details1[0]
+        fname1=customer_details1[1]
+        lname1=customer_details1[2]
+        full_name1 = fname1 + ' ' + lname1
+        photo1=customer_details1[3]
+
+
+       
+
+
+        print("receiver_id================",receiver_id)
         cursor.execute("select pin_no,balance,customer_id,branch_id,savings_id from savingsacc where acc_no='%s'"%(accno))
         mpipin=cursor.fetchone()
         balance=mpipin[1]
         cid=mpipin[2]
         branch_id=mpipin[3]
         savings_id=mpipin[4]
-        amount_debited = int(balance) - int(amount)
+        
         date = datetime.now()
         trans_no = str(random.randint(1000000000000000, 9999999999999999))
 
@@ -145,8 +206,8 @@ def customertransferfund():
         elif mpipin[0] == pin:
             cursor.execute("UPDATE savingsacc SET balance = balance + %s WHERE acc_no = %s",(amount, to_acc,))
             cursor.execute("UPDATE savingsacc SET balance = balance - %s WHERE acc_no = %s",(amount, accno,))
-            transaction = "INSERT INTO o_transaction (acc_id, customer_id, branch_id, from_acc, to_acc, amount_credited, amount_debited, t_type, t_no, date) VALUES (%s, %s, %s, %s, %s, %s, %s, 'online', %s, %s)"
-            transaction_values = (savings_id, cid, branch_id, accno, to_acc, amount, amount, trans_no, date)
+            transaction = "INSERT INTO o_transaction (acc_id, customer_id,reciever_id, branch_id, from_acc, to_acc,name,photo,from_name,from_photo,amount,t_type, t_no, date) VALUES (%s, %s, %s,%s, %s,%s, %s,%s,%s, %s, %s, 'online', %s, %s)"
+            transaction_values = (savings_id, cid,receiver_id, branch_id, accno, to_acc,full_name,photo,full_name1,photo1, amount,trans_no, date)
             cursor.execute(transaction, transaction_values)
  
             transaction1 = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'online',%s,%s)"

@@ -783,45 +783,44 @@ input[type="submit"] {
                     <div class="sales-analytics">
                         <h2>Recent Online Transactions</h2>
                         <br>
+                        {% for transaction in details %}
+                        {% if logged_in_user_id == transaction[0] %}
                         <div class="item online">
-                            <div class="icon">
-                                <span class="material-icons-sharp">shopping_cart</span>
+                            <div class="icon">   
+                                <img src="{{url_for('static', filename=transaction[5])}}" style="height: 40px; width:40px; border-radius: 50%;">   
+                            </div>
+                            <!-- sender-------- -->
+                            <div class="right">
+                                <div class="info">
+                                    <h4>{{transaction[4]}}</h4>
+                                    <small class="text-muted">{{ transaction[3] }}</small>
+                                </div>
+                                <h5 class="danger">-{{ transaction[2] }}</h5>
+                                <h4>debited</h4>
+                            </div>
+</div>
+                            {% else %}
+                            <div class="item online">
+                            <div class="icon">   
+                                <!-- <span class="material-icons-sharp">shopping_cart</span>    -->
+                                <img src="{{url_for('static', filename=transaction[5])}}" style="height: 40px; width:40px; border-radius: 50%;">
                             </div>
                             <div class="right">
                                 <div class="info">
-                                    <h4>Online orders</h4>
-                                    <small class="text-muted">Last 24 hours</small>
+                                    <h4>{{transaction[6]}}</h4>
+                                    <small class="text-muted">{{ transaction[3] }}</small>
                                 </div>
-                                <h5 class="success">+39%</h5>
-                                <h4>432</h4>
+                                
+                                <h5 class="success">+{{ transaction[2] }}</h5>
+                                <h4>credited</h4>
                             </div>
                         </div>
-                        <div class="item offline">
-                            <div class="icon">
-                                <span class="material-icons-sharp">local_mall</span>
-                            </div>
-                            <div class="right">
-                                <div class="info">
-                                    <h4>Online orders</h4>
-                                    <small class="text-muted">Last 24 hours</small>
-                                </div>
-                                <h5 class="success">+39%</h5>
-                                <h4>4332</h4>
-                            </div>
-                        </div>
-                        <div class="item customers">
-                            <div class="icon">
-                                <span class="material-icons-sharp">person</span>
-                            </div>
-                            <div class="right">
-                                <div class="info">
-                                    <h4>customers</h4>
-                                    <small class="text-muted">Last 24 hours</small>
-                                </div>
-                                <h5 class="success">+22%</h5>
-                                <h4>132</h4>
-                            </div>
-                        </div>
+                            {% endif %}
+                       
+                            {% endfor %} 
+                        
+                        
+                       
                             <div class="item add-product">
                                 <div>
                                 <span class="material-icons-sharp">pin</span>
@@ -832,7 +831,17 @@ input[type="submit"] {
                     </div>
                 </div>
                  <!-- end of right -->
-                 
+                 {% for transaction in details %}
+        
+            {% if logged_in_user_id == transaction[0] %}
+                <td>Debited</td>
+                <td>{{ transaction[7] }}</td>
+            {% else %}
+                <td>Credited</td>
+                <td>{{ transaction[7] }}</td>
+            {% endif %}
+        
+        {% endfor %}
               <div id="container-90">
                   <span class="close-btn" onclick="closePopup()">&times;</span>
                   <div class="animated-person"></div>
