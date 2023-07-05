@@ -301,7 +301,7 @@ rel="stylesheet">
                         </div>
                         <!-- ---end of monthly reports----- -->
                         <div class="fast-payment">
-                            <h2>fast payment</h2>
+                            <h2>Bank Notes count</h2>
                             <div class="badges">
                               <div class="badge">
                                 <span class="material-icons-sharp">add</span>
@@ -311,7 +311,7 @@ rel="stylesheet">
                                 <span class="bg-primary" id="random-{{ loop.index }}"></span>
                                 <div>
                                   <h5>{{ row[0] }}</h5>
-                                  <h4>&#8377; {{ row[1] }}</h4>
+                                  <h4 id="result-{{ loop.index }}">count {{ row[1] }}</h4>
                                 </div> 
                               </div>
                               {% endfor %}
@@ -356,7 +356,7 @@ rel="stylesheet">
                             
                             <div class="icon">
                                 <!-- <span class="material-icons-sharp">shopping_cart</span> -->
-                                <img src="{{url_for('static', filename=online_transaction[2])}}" style="height: 30px; width:30px;">
+                                <img src="{{url_for('static', filename=online_transaction[2])}}" style="height: 40px; width:40px; border-radius: 50%;">
 
                             </div>
                             <div class="right">
@@ -473,6 +473,29 @@ var myChart = new Chart(ctx, {
 
 
   </script> -->
+  <script>
+    {% for row in notes %}
+      (function() {
+        var result{{ loop.index }} = document.getElementById("result-{{ loop.index }}");
+        var row1 = parseInt("{{ row[0] }}");
+        var row2 = parseInt("{{ row[1] }}");
+        var multiplicationResult = row1 * row2;
+        var originalValue = row2;
+        var toggle = true;
+  
+        setInterval(function() {
+          if (toggle) {
+            result{{ loop.index }}.innerText = "₹"+" "+multiplicationResult;
+          } else {
+            result{{ loop.index }}.innerText ="count"+ originalValue;
+          }
+  
+          toggle = !toggle; // Toggle the value
+  
+        }, 50000);
+      })();
+    {% endfor %}
+  </script>
   
   <script>
     // Generate random background colors for each bg-primary element
@@ -492,6 +515,9 @@ var myChart = new Chart(ctx, {
       return color;
     }
   </script>
+
+
+
   <script>
     var currentChartType = 'line';
     var ctx = document.getElementById('chart').getContext('2d');
