@@ -1,6 +1,6 @@
 from flask import *
 from database import *
-from datetime import datetime
+from datetime import datetime,timedelta
 import datetime
 import joblib
 import pandas as pd
@@ -47,7 +47,7 @@ def managerhome():
             values.append(0)
     cursor.execute("select sum(transaction_amount) from transactions")
     total_amount = cursor.fetchone()[0]
-    cursor.execute("select employe_fname,employee_lname from employee where loginid='%s'"%(session['logid']))
+    cursor.execute("select employe_fname,employee_lname,email from employee where loginid='%s'"%(session['logid']))
     name = cursor.fetchall()
     # ===============feedbacks
     cursor.execute("select message,date from feedback order by date LIMIT 4")
@@ -78,32 +78,33 @@ def managermanagecustomers():
     name = cursor.fetchall()
     cursor.execute("SELECT * FROM customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
     employees = cursor.fetchall()
-
+    date=datetime.datetime.now()
+    if 'add' in request.form:
+       
+        messages=request.form['messages']
+        customer_id=request.form['customer_id']
+        min_allowed_time =  date - timedelta(hours=1)
+        cursor.execute("SELECT MAX(date) FROM bank_messages WHERE customer_id = %s", (customer_id,))
+        last_submission_time = cursor.fetchone()[0]
+        cursor.execute("select branch_id from customers where cid='%s'" % customer_id)
+        details=cursor.fetchone()
+        print(details)
+        branch_id=details[0]
+        
+        if last_submission_time is None or last_submission_time < min_allowed_time:
+            bank_messages="INSERT INTO bank_messages(customer_id,branch_id,messages,date)  VALUES ( %s, %s, %s,%s)"
+            bank_messages_values = (customer_id, branch_id,messages,date)
+            cursor.execute(bank_messages, bank_messages_values)
+            # cursor.execute("SELECT * FROM customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
+            # employees = cursor.fetchall()
+            flash("successfully send notification")
+        else:
+            print('send after 1 hoursuccess')
+        
     
 
     return render_template('managermanagecustomers.html',employees=employees,name=name)
 
-@manager.route('/managersendnotification/<customer_id>',methods=['post','get'])
-def managersendnotification(customer_id):
-
-    cursor = db.cursor()
-    
-    cursor.execute("select branch_id from customers where cid='%s'" % customer_id)
-    details=cursor.fetchone()
-    print(details)
-    branch_id=details[0]
-    date=datetime.datetime.now().date()
-    if 'add' in request.form:
-
-        messages=request.form['messages']
-        credit_card="INSERT INTO bank_messages(customer_id,branch_id,messages,date)  VALUES ( %s, %s, %s,%s)"
-        credit_card_values = (customer_id, branch_id,messages,date)
-        cursor.execute(credit_card, credit_card_values)
-
-        return render_template('managermanagecustomers.html')
-
-
-    return render_template('managermanagecustomers.html')
 
 
 # @manager.route('/managercustomerchurn/<customer_id>', methods=['GET', 'POST'])

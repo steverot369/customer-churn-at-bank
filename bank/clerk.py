@@ -671,3 +671,10 @@ def clerkcheckdeposit():
         flash("depsoited successfully...")
         return redirect(url_for('clerk.clerkdepositcash'))
     return render_template('clerkdepositcash.html', name=name, employees=employees, accno=accno, accountDetails=accountDetails)
+
+
+@clerk.route('/publichome')
+def publichome():
+    session.clear()
+    flash("Successfully logout...")
+    return redirect(url_for('public.publichome'))

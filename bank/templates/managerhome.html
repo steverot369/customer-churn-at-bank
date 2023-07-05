@@ -16,6 +16,7 @@ rel="stylesheet">
 <!-- STYLESHEET -->
 
 <link rel="stylesheet" href="/static/css/customer.css">
+<script src="https://kit.fontawesome.com/c7705f70af.js" crossorigin="anonymous"></script>
 
 <script>
     function removeCount() {
@@ -37,6 +38,170 @@ rel="stylesheet">
 </head>
 <style>
     
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+.profile-photo1 {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.profile-photo1 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-details .profile-photo1 {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.profile-details .profile-photo1 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.expand-icon {
+  cursor: pointer;
+}
+
+.profile-container {
+    display: none; 
+    width: 300px;
+    padding: 20px;
+    background-color: #e3d4d4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 60px;
+    right: 0;
+    z-index: 999;
+    transition: transform 0.3s ease-in-out;
+    transform-origin: top right;
+    border-radius: 10px;;
+}
+
+.profile-container.show {
+  display: block;
+  max-height: 500px; /* Adjust the maximum height as needed */
+}
+
+.profile-content {
+  animation: slideDown 0.5s ease;
+}
+
+.profile-details ul {
+  list-style-type: none;
+   margin: 0;
+  padding: 0; 
+    display: flex; 
+  flex-direction: column;
+   align-items: flex-start;
+   margin-right: 15px
+   
+}
+
+.profile-details ul li {
+  padding: 10px 0;
+  /* border-bottom: 1px solid #ccc; */
+  
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+.profile-details ul li::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250%; /* Adjust the padding as needed */
+  
+  border-bottom: 1px solid #ccc; /* Adjust the color as desired */
+}
+.profile-details ul li:last-child {
+  border-bottom: none;
+}
+
+.profile-details ul li i {
+  margin-right: 10px;
+  /* justify-content: space-between; */
+}
+
+.profile-details ul li a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.profile-details ul li a:hover {
+  color: #000;
+  font-weight: bold;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+}
+
+.social-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 10px;
+  font-size: 20px;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+  color: #000;
+}
+
+.social-icon::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px;
+  background-color: #333;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.social-icon:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
 </style>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -61,15 +226,56 @@ rel="stylesheet">
                     <span class="material-icons-sharp">dark_mode</span>
 
                 </div>
-                <div class="profile">
-                    <div class="profile-photo">
-                        <img src="/static/images/profile-1.jpg">
-                    </div>
-                    {% for row in name %}
-                <h5>{{ row[0] }} {{ row[1]}}</h5>
+          
+          
+               <div class="profile">
+                <div class="profile-photo" onclick="toggleProfilePhoto()">
+                  <img src="/static/images/profile-1.jpg">
+                </div>
+                {% for row in name %}
+                <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
                 {% endfor %}
-                <span class="material-icons-sharp">expand_more</span>
-            </div>
+                <span class="material-icons-sharp expand-icon" onclick="toggleProfileContainer()">expand_more</span>
+              </div>
+              
+              <div class="profile-container">
+                <div class="profile-content">
+                  <div class="profile-details">
+                    <div class="profile-photo1">
+                      <img src="/static/images/profile-1.jpg">
+                    </div>
+                <!--  <b><h5>Steve Rodrigues</h5></b> -->
+                
+                {% for row in name %}
+                <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
+                
+                <p><h5>{{row[2]}}</h5></p>
+                {% endfor %}
+                <div class="social-icons">
+                    <a href="#" class="social-icon" data-tooltip="Key">
+                      <i class="fa-solid fa-key"></i>
+                    </a>
+                    <a href="#" class="social-icon" data-tooltip="Twitter">
+                      <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon" data-tooltip="Instagram">
+                      <i class="fab fa-instagram"></i>
+                    </a>
+                  </div>
+                  
+                    <ul>
+                      <li><i class="material-icons">person</i><a href="#">profile</a></li>
+                      <li><i class="material-icons">settings</i><a href="#">Settings</a></li>
+                      <li><i class="material-icons">exit_to_app</i><a href="publichome">Logout</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              
+              
+              
+              
             <button id="menu-btn">
                 <span class="material-icons-sharp">menu</span>
             </button>
@@ -408,7 +614,25 @@ rel="stylesheet">
     integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ==" 
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/js/customer.js"></script>
-    
+    <script>
+        
+function toggleProfilePhoto() {
+  var profilePhoto = document.querySelector('.profile-photo');
+  var profileContainer = document.querySelector('.profile-container');
+  
+  profilePhoto.classList.toggle('show');
+  
+  if (profileContainer.classList.contains('show')) {
+    profileContainer.classList.remove('show');
+  }
+}
+
+function toggleProfileContainer() {
+  var profileContainer = document.querySelector('.profile-container');
+  
+  profileContainer.classList.toggle('show');
+}
+    </script>
   <script>
     // Get today's date
   var today = new Date();

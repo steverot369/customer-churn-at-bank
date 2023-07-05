@@ -303,60 +303,21 @@ rel="stylesheet">
                         <div class="fast-payment">
                             <h2>fast payment</h2>
                             <div class="badges">
-                                <div class="badge">
-                                    <span class="material-icons-sharp">add</span>
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-primary"></span>
-                                    <div>
-                                        <h5>Training</h5>
-                                        <h4>$50</h4>
-                                    </div> 
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-danger"></span>
-                                    <div>
-                                        <h5>internet</h5>
-                                        <h4>$50</h4>
-                                    </div> 
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-primary"></span>
-                                    <div>
-                                        <h5>gas</h5>
-                                        <h4>$30</h4>
-                                    </div> 
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-warning"></span>
-                                    <div>
-                                        <h5>movies</h5>
-                                        <h4>$50</h4>
-                                    </div> 
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-primary"></span>
-                                    <div>
-                                        <h5>education</h5>
-                                        <h4>$50</h4>
-                                    </div> 
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-danger"></span>
-                                    <div>
-                                        <h5>electircity</h5>
-                                        <h4>$50</h4>
-                                    </div> 
-                                </div>
-                                <div class="badge">
-                                    <span class="bg-success"></span>
-                                    <div>
-                                        <h5>food</h5>
-                                        <h4>$50</h4>
-                                    </div> 
+                              <div class="badge">
+                                <span class="material-icons-sharp">add</span>
+                              </div>
+                              {% for row in notes %}
+                              <div class="badge">
+                                <span class="bg-primary" id="random-{{ loop.index }}"></span>
+                                <div>
+                                  <h5>{{ row[0] }}</h5>
+                                  <h4>&#8377; {{ row[1] }}</h4>
+                                </div> 
+                              </div>
+                              {% endfor %}
                             </div>
-                        </div>
-                        </div>
+                          </div>
+                          
                         <!----------- end of payment----- -->
                         <!-- <canvas id="chart"></canvas> -->
                         <button style="color:rebeccapurple; background: none;" onclick="moveChart()">Move Chart</button>
@@ -513,7 +474,24 @@ var myChart = new Chart(ctx, {
 
   </script> -->
   
+  <script>
+    // Generate random background colors for each bg-primary element
+    var bgPrimaryElements = document.querySelectorAll('.bg-primary');
+    bgPrimaryElements.forEach(function(element) {
+      var randomColor = getRandomColor();
+      element.style.backgroundColor = randomColor;
+    });
   
+    // Function to generate a random color
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+  </script>
   <script>
     var currentChartType = 'line';
     var ctx = document.getElementById('chart').getContext('2d');

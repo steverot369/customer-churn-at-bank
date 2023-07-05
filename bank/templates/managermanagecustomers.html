@@ -25,6 +25,8 @@
             <table id="employeeTable" class="table">
                 <thead class="thead-light">
                     <tr>
+                      <th>customer_id</th>
+
                         <th>Name</th>
                         <th>dob</th>
                        
@@ -51,6 +53,8 @@
                     <!-- Employee details data -->
                     {% for employee in employees %}
                     <tr data-usertype="{{ employee[9] }}">
+                      <td>{{ employee[0] }}</td>
+
                         <td><img src="{{url_for('static', filename=employee[6])}}" style="width: 60px;height: 60px;border-radius: 50%;">{{ employee[3] }} {{ employee[4] }}</td>
                         <td>{{ employee[5] }}</td>
                         
@@ -84,7 +88,7 @@
                          
   
                       </tr>
-                     
+                    
                       {% endfor %}
                     
                 </tbody>
@@ -92,27 +96,26 @@
           </form>
           <!-- Modal -->
           {% for employee in employees %}
-          <div id="container-99">
+          <div id="container-99" class="additional-buttons">
             <span class="close-btn">&times;</span>
             <div class="animated-person"></div>
             <h1>Hi Steve, send any Notification</h1>
-         
             <form method="post">
-              
-              
+              <input type="hidden" name="customer_id" id="cid" required>
               <input type="text" name="messages" placeholder="Type your feedback message" required>
               <br>
               <textarea name="comments" placeholder="Additional comments"></textarea>
               <br>
-              <a href="{{ url_for('manager.managersendnotification', customer_id=employee[0]) }}" class="btn btn-danger">Customer Churn</a>
-
-             
+              <input type="submit" value="Submit" name="add">
             </form>
+          </div>
+          
          
           </div>
-        </div>  
+        </div> 
+       
         {% endfor %}
-
+        
             <div class="pagination">
                 <button onclick="previousPage()">Previous</button>
                 <button onclick="nextPage()">Next</button>
@@ -183,11 +186,29 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+      $(document).ready(function() {
+        $('.complaint-link').click(function() {
+          var customerID = $(this).closest('tr').find('td:eq(0)').text();
+          $('#cid').val(customerID);
+          $('#container-99').addClass('show');
+        });
+    
+        $('.close-btn').click(function() {
+          $('#container-99').removeClass('show');
+        });
+      });
+    </script>
+    
+    
+    
+   <script>
    // Get the send notification link elements
    var sendNotificationLinks = document.querySelectorAll('.complaint-link');
 
 // Get the complaint popup container element
 var complaintContainer = document.getElementById('container-99');
+
+
 
 // Get the close button element
 var closeButton = complaintContainer.querySelector('.close-btn');
@@ -348,7 +369,7 @@ var employeeTable = document.getElementById("employeeTable");
   var foundMatch = false;
 
   for (var i = 1; i < rows.length; i++) {
-    var nameColumn = rows[i].getElementsByTagName("td")[0];
+    var nameColumn = rows[i].getElementsByTagName("td")[1];
     if (nameColumn.innerHTML.toUpperCase().indexOf(filter) > -1) {
       rows[i].style.display = "";
       foundMatch = true;

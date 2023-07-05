@@ -51,6 +51,25 @@ def adminhome():
     name = cursor.fetchone()[0]
 
 
+
+
+    cursor.execute("""
+        SELECT note_type, SUM(count) AS total_count
+        FROM notescount
+        GROUP BY note_type
+        ORDER BY note_type DESC;
+    """)
+
+    # Fetch all rows from the result
+    notes = cursor.fetchall()
+
+    
+   
+
+
+
+
+
     # ===============feedbacks
     cursor.execute("SELECT f.messages, f.date_time, c.photo,c.fname,c.lname FROM feedbacks f INNER JOIN customers c ON f.customer_id = c.cid ORDER BY f.date_time LIMIT 3")
 
@@ -67,7 +86,7 @@ def adminhome():
     if 'count_removed' in session:
         session.pop('count_removed')  # Remove the 'count_removed' flag from session
     
-    return render_template('adminhome.html', labels=labels, values=values,total_amount=total_amount,name=name,feedback_messages=feedback_messages,count=count,online_transaction=online_transaction)
+    return render_template('adminhome.html', labels=labels, values=values,total_amount=total_amount,name=name,feedback_messages=feedback_messages,count=count,online_transaction=online_transaction,notes=notes)
 
 
 
