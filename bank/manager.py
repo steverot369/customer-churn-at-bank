@@ -67,6 +67,14 @@ def publichome():
 def managermanagehome():
     return render_template('managermanagehome.html')
 
+@manager.route('/userprofile')
+def userprofile():
+    cursor = db.cursor() 
+
+    cursor.execute("select * from employee where employe_id=%s"%(session['mid']))
+    details = cursor.fetchall()
+    print(details)
+    return render_template('userprofile.html',details=details)
 
 
 

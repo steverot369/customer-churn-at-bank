@@ -678,3 +678,14 @@ def publichome():
     session.clear()
     flash("Successfully logout...")
     return redirect(url_for('public.publichome'))
+
+
+
+@clerk.route('/userprofile')
+def userprofile():
+    cursor = db.cursor() 
+
+    cursor.execute("select * from employee where employe_id=%s"%(session['clid']))
+    details = cursor.fetchall()
+    print(details)
+    return render_template('userprofile.html',details=details)
