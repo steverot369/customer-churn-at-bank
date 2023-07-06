@@ -6,16 +6,16 @@
                  
         <section>
            
-
+            {% for details in details %}
             <div class="container-50 emp-profile">
-                <form method="post">
+                <form method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="profile-img">
-                                {% for details in details %}
+                               
 
                         <img src="{{url_for('static', filename=details[6])}}">
-                        {% endfor %}
+                       
                                 <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt=""/> -->
                                 <div class="file btn btn-lg btn-primary">
                                     Change Photo
@@ -37,18 +37,17 @@
                                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">update profile</a>
+                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Change Password</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="password-tab" data-toggle="tab" href="#password" role="tab" aria-controls="password" aria-selected="false">change password</a>
-                                    </li>
+                                    
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
+                            <input type="submit" class="profile-edit-btn" name="add" value="Edit Profile"/>
                         </div>
                     </div>
+                </form>  
                     <div class="row">
                         <div class="col-md-4">
                             <div class="profile-work">
@@ -65,14 +64,15 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            {% for details in details %}
+                           
 
                             <div class="tab-content profile-tab" id="myTabContent">
                                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <h1 style="margin-right:450px;">Profile Details</h1>
                                     
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label>Name</label>
+                                                    <label>Full Name</label>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <p>{{ details[3] }} {{ details[4] }}</p>
@@ -80,7 +80,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label>Dob</label>
+                                                    <label>Date of birth</label>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <p>{{ details[5] }}</p>
@@ -123,7 +123,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label>Phone</label>
+                                                    <label>Phone No</label>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <p>{{ details[15] }}</p>
@@ -132,68 +132,43 @@
                                            
                                             
                                 </div>
-                                {% endfor %}
+                              
                                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Experience</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <p>Expert</p>
-                                                </div>
+                                           <h1 style="margin-right:335px;">Change your password</h1>
+                                        <form method="post">
+                                           
+                                            <div class="form-outline">
+                                                <label class="form-label" for="form3Examplev4">Password</label>
+                                                <input type="password" id="form3Examplev4" name="oldpassword" class="form-control form-control-lg" />
+                                                <span id="password-match"></span>
+                                              </div>
+                                              <div id="forgot-password-link"></div>
+
+                                          <div class="mb-4 pb-2">
+                                            <label class="form-label" for="form3Examplev4">New Password</label>
+                                            <div class="form-outline">
+                                              <input type="password" id="form3Examplev4" name="newpassword" class="form-control form-control-lg" />
+                                              
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Hourly Rate</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <p>10$/hr</p>
-                                                </div>
+                                          </div>
+                                          <div class="mb-4 pb-2">
+                                            <label class="form-label" for="form3Examplev4">Confirm Password</label>
+                                            <div class="form-outline">
+                                              <input type="password" id="form3Examplev4" name="newpassword" class="form-control form-control-lg" />
+                                              
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Total Projects</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <p>230</p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>English Level</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <p>Expert</p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Availability</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <p>6 months</p>
-                                                </div>
-                                            </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label>Your Bio</label><br/>
-                                            <p>Your detail description</p>
-                                        </div>
-                                    </div>
+                                          </div>
+                                         
+                                            <input type="submit" class="btn btn-primary btn-lg" name="add1" value="Edit Password"/>
+                                        
+                                        </form>
+                                    
                                 </div>
 
-                                <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
-                                    <div class="row">
-                                        
-                                                <h2>hello Steve</h2>
-                        </div>
-
-
-
-                            </div>
+                                {% endfor %}    
                         </div>
                     </div>
-                </form>           
+                        
             </div>
 
 
@@ -205,7 +180,26 @@
     <!-- ====================end of aside==========================   -->
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+    <script>
+        const passwordInput = document.getElementById('form3Examplev4');
+        const passwordMatchSpan = document.getElementById('password-match');
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+      
+        passwordInput.addEventListener('input', function () {
+          const enteredPassword = passwordInput.value;
+          const originalPassword = "{{ password }}"; // Replace with the actual value of the password
+      
+          if (enteredPassword === originalPassword) {
+            passwordMatchSpan.textContent = "Passwords match!";
+            passwordMatchSpan.style.color = "green";
+            forgotPasswordLink.innerHTML = "";
+          } else {
+            passwordMatchSpan.textContent = "Passwords do not match.";
+            passwordMatchSpan.style.color = "red";
+            forgotPasswordLink.innerHTML = '<a href="/forgot-password">Forgot Password?</a>';
+          }
+        });
+      </script>
 
     
 </body>
