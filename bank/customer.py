@@ -358,3 +358,11 @@ def customerprofile():
             return redirect(url_for('customer.customerprofile'))
 
     return render_template('customerprofile.html',details=details,password=password)
+
+
+
+
+@customer.route('/customerpaysloan', methods=['POST', 'GET'])
+def customerpaysloan():
+    
+    return render_template('customerpaysloan.html')
