@@ -681,27 +681,36 @@ def publichome():
 
 
 
-@clerk.route('/userprofile',methods=['post','get'])
+@clerk.route('/userprofile', methods=['POST', 'GET'])
 def userprofile():
-    cursor = db.cursor() 
-
-    cursor.execute("select * from employee where employe_id=%s"%(session['clid']))
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM employee WHERE employe_id = %s" % (session['clid']))
     details = cursor.fetchall()
-    cursor.execute("select password from login where loginid=%s"%(session['logid']))
+    cursor.execute("SELECT password FROM login WHERE loginid = %s" % (session['logid']))
     password = cursor.fetchone()[0]
     print(details)
-    if 'add' in request.form:
-        image=request.files['file']
-        img="uploads/"+str(uuid.uuid4())+image.filename
-        image.save('bank/static/'+img)
-        cursor.execute("UPDATE employee SET image = %s", (img,))
-        flash("photo updated sucessfully")
-        return redirect(url_for('clerk.userprofile'))
-    if 'add1' in request.form:
-        
-        newpassword=request.files['file']
-        
-        flash("photo updated sucessfully")
-        return redirect(url_for('clerk.userprofile'))
+
+    if request.method == 'POST':
+        if 'add' in request.form:
+            image = request.files['file']
+            if image:
+                img = "uploads/" + str(uuid.uuid4()) + image.filename
+                image.save('bank/static/' + img)
+                cursor.execute("UPDATE employee SET image = %s WHERE loginid = %s", (img, session['logid']))
+                flash("Photo updated successfully")
+            else:
+                flash("No photo selected")
+            return redirect(url_for('clerk.userprofile'))
+    if request.method == 'POST':
+        if 'add1' in request.form:
+            
+            newpassword=request.form['confirmpassword']
+            if newpassword:
+                cursor.execute("UPDATE login SET password = '%s' where loginid='%s'"%(newpassword,session['logid']))
+                flash("password updated sucessfully")
+                return redirect(url_for('public.login'))
+            else:
+                flash("No password selected")
+            return redirect(url_for('clerk.userprofile'))
 
     return render_template('userprofile.html',details=details,password=password)

@@ -321,3 +321,40 @@ def customersendcomplaint():
         complaint_values=(cid,bid,messages,formatted_datetime)
         cursor.execute(complaint,complaint_values)
     return render_template('customersendcomplaint.html')
+
+
+
+
+@customer.route('/customerprofile', methods=['POST', 'GET'])
+def customerprofile():
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM customers WHERE cid = %s" % (session['cust_id']))
+    details = cursor.fetchall()
+    cursor.execute("SELECT password FROM login WHERE loginid = %s" % (session['logid']))
+    password = cursor.fetchone()[0]
+    print(details)
+
+    if request.method == 'POST':
+        if 'add' in request.form:
+            image = request.files['file']
+            if image:
+                img = "uploads/" + str(uuid.uuid4()) + image.filename
+                image.save('bank/static/' + img)
+                cursor.execute("UPDATE customers SET photo = %s WHERE loginid = %s", (img, session['logid']))
+                flash("Photo updated successfully")
+            else:
+                flash("No photo selected")
+            return redirect(url_for('customer.customerprofile'))
+    if request.method == 'POST':
+        if 'add1' in request.form:
+            
+            newpassword=request.form['confirmpassword']
+            if newpassword:
+                cursor.execute("UPDATE login SET password = '%s' where loginid='%s'"%(newpassword,session['logid']))
+                flash("password updated sucessfully")
+                return redirect(url_for('public.login'))
+            else:
+                flash("No password selected")
+            return redirect(url_for('customer.customerprofile'))
+
+    return render_template('customerprofile.html',details=details,password=password)

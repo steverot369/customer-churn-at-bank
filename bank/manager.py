@@ -1,5 +1,6 @@
 from flask import *
 from database import *
+import uuid
 from datetime import datetime,timedelta
 import datetime
 import joblib
@@ -67,14 +68,7 @@ def publichome():
 def managermanagehome():
     return render_template('managermanagehome.html')
 
-@manager.route('/userprofile')
-def userprofile():
-    cursor = db.cursor() 
 
-    cursor.execute("select * from employee where employe_id=%s"%(session['mid']))
-    details = cursor.fetchall()
-    print(details)
-    return render_template('userprofile.html',details=details)
 
 
 
@@ -638,3 +632,39 @@ def managerviewchurncustomer():
    
 
     return render_template('managerviewchurncustomer.html',churn_cutomers=churn_cutomers)
+
+
+
+@manager.route('/userprofile', methods=['POST', 'GET'])
+def userprofile():
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM employee WHERE employe_id = %s" % (session['mid']))
+    details = cursor.fetchall()
+    cursor.execute("SELECT password FROM login WHERE loginid = %s" % (session['logid']))
+    password = cursor.fetchone()[0]
+    print(details)
+    logged_in_user_id=session['mid']
+    if request.method == 'POST':
+        if 'add' in request.form:
+            image = request.files['file']
+            if image:
+                img = "uploads/" + str(uuid.uuid4()) + image.filename
+                image.save('bank/static/' + img)
+                cursor.execute("UPDATE employee SET image = %s WHERE loginid = %s", (img, session['logid']))
+                flash("Photo updated successfully")
+            else:
+                flash("No photo selected")
+            return redirect(url_for('manager.userprofile'))
+    if request.method == 'POST':
+        if 'add1' in request.form:
+            
+            newpassword=request.form['confirmpassword']
+            if newpassword:
+                cursor.execute("UPDATE login SET password = '%s' where loginid='%s'"%(newpassword,session['logid']))
+                flash("password updated sucessfully")
+                return redirect(url_for('public.login'))
+            else:
+                flash("No password selected")
+            return redirect(url_for('manager.userprofile'))
+
+    return render_template('userprofile.html',details=details,password=password,logged_in_user_id=logged_in_user_id)
