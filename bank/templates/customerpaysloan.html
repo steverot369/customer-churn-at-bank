@@ -7,7 +7,7 @@
         <input type="date">
     </div>
          
-    <div class="contenedor">
+<div class="contenedor">
 
 		<!-- Tarjeta -->
 		<section class="tarjeta" id="tarjeta">
@@ -39,15 +39,17 @@
 				<div class="barra-magnetica"></div>
 				<div class="datos">
 					<div class="grupo" id="firma">
-						<p class="label">Firma</p>
+						<p style="color: #fff;" class="label">Signature
+
+						</p>
 						<div class="firma"><p></p></div>
 					</div>
 					<div class="grupo" id="ccv">
-						<p class="label">CCV</p>
-						<p class="ccv"></p>
+						<p style="color: #fff;" class="label">CCV</p>
+						<p style="font-size: 15px;" class="ccv"></p>
 					</div>
 				</div>
-				<p class="leyenda">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus exercitationem, voluptates illo.</p>
+				<p style="color: #fff;" class="leyenda">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus exercitationem, voluptates illo.</p>
 				<a href="#" class="link-banco">www.tubanco.com</a>
 			</div>
 		</section>
@@ -60,46 +62,112 @@
 		</div>
 
 		<!-- Formulario -->
-		<form action="" id="formulario-tarjeta" class="formulario-tarjeta">
+		<form id="formulario-tarjeta" class="formulario-tarjeta" method="post">
+			<label class="form-label" for="form1">Select Account</label>
+                    <div class="dropdown dropdown-custom-4">
+                      <input type="text" name="accno" id="new-dropdown-input-4" style="background: #f2e5e5;" class="form-control form-control-lg" placeholder="Search by accno or customer name....">
+                      <span class="dropdown-custom-icon-4">&#9662;</span>
+                      <ul class="dropdown-custom-list-4" style="display: block;">
+                        {% for row in acc_no %}
+                        <li onclick="selectAccount('{{ row[0] }}', '{{ row[1] }}','{{ row[2] }}')">&#8377; {{ row[1] }} <div class="space"></div> <b>{{ row[0] }} Savings A/c</b></li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+					{% if accountDetails %}
+					{% for account in accountDetails %}
+
+
+					<input type="hidden" name="savings_account" value="{{ account[0] }}" readonly>
+					
+					
+					<div class="grupo">
+						<label for="inputNumero">Loan Account number</label>
+						<div class="dropdown dropdown-custom-8">
+							<input type="text" name="loan_acc" id="new-dropdown-input-8" style="background: #f2e5e5;" class="form-control form-control-lg" placeholder="Search by accno or customer name....">
+							<span class="dropdown-custom-icon-8">&#9662;</span>
+							<ul class="dropdown-custom-list-8" style="display: block;">
+								{% for loan in loan_account %}
+									<li data-emi="{{ loan[2] }} {{ loan[3] }} {{ loan[4] }}">{{ loan[0] }} {{ loan[1] }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+					
+					<div class="grupo">
+						<label for="inputNumero">Emi amount</label>
+						<input type="hidden" name="emi_amount" id="emi_amount_input" maxlength="19" readonly>
+					</div>
+					
+					<div class="grupo">
+						<label for="inputNumero">Interest Rate</label>
+						<input type="hidden" name="interest_rate" id="interest_rate_input" maxlength="19" readonly>
+					</div>
+					
+					<div class="grupo">
+						<label for="inputNumero">Remaining Amount</label>
+						<input type="hidden" name="remaining_amount" id="remaining_amount_input" readonly>
+					</div>
+					<h1>=============Your card details==============</h1>	
 			<div class="grupo">
 				<label for="inputNumero">Card number</label>
-				<input type="text" id="inputNumero" maxlength="19" autocomplete="off">
+				<input type="text" name="card_no" id="inputNumero" value="{{ account[5] }}" maxlength="19" autocomplete="off">
 			</div>
+			
+
 			<div class="grupo">
 				<label for="inputNombre">Name</label>
-				<input type="text" id="inputNombre" maxlength="19" autocomplete="off">
+				<input type="text" id="inputNombre" value="{{ account[3] }} {{ account[4] }}" maxlength="19"  autocomplete="off">
 			</div>
+			
 			<div class="flexbox">
 				<div class="grupo expira">
-					<label for="selectMes">Expiration</label>
+					<label for="selectMes">Month</label>
 					<div class="flexbox">
 						<div class="grupo-select">
-							<select name="mes" id="selectMes">
-								<option disabled selected>Mes</option>
-							</select>
-							<i class="fas fa-angle-down"></i>
+				<input type="text" name="mes"  id="selectMes" value="{{ month }}" maxlength="19"  autocomplete="off">
+
+							<!-- <select name="mes" id="selectMes">
+								<option disabled selected>Month</option>
+								<option value="{{ account[7] }}">{{ account[7] }}</option>
+
+							</select> -->
+							<!-- <i class="fas fa-angle-down"></i> -->
 						</div>
 						<div class="grupo-select">
-							<select name="year" id="selectYear">
-								<option disabled selected>Año</option>
-							</select>
-							<i class="fas fa-angle-down"></i>
+							<!-- <select name="year" id="selectYear">
+								<option disabled selected>year</option>
+							</select> -->
+				<input type="text" name="year" id="selectYear" value="{{ year }}" maxlength="19"  autocomplete="off">
+
+							<!-- <i class="fas fa-angle-down"></i> -->
 						</div>
 					</div>
 				</div>
 
 				<div class="grupo ccv">
 					<label for="inputCCV">CCV</label>
-					<input type="text" id="inputCCV" maxlength="3">
+					<input type="text" value="{{ account[6] }}" id="inputCCV" maxlength="3">
 				</div>
 			</div>
-			<button type="submit" class="btn-enviar">Enviar</button>
-		</form>
+
+			
+			<button type="submit" name="add1" class="btn-enviar">Pay Loan</button><br><br>
+		
+		{% endfor %}
+                                               
+                                                
+
+		{% endif %}
+		<div class="d-flex justify-content-center">
+			<input type="submit" name="add" value="Search" id="btn" class="btn btn-success btn-lg gradient-custom-4 text-body">
+		</div>
+	</form>
 	</div>
 
 
 
 
+                    
 
 
 
@@ -111,6 +179,181 @@
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
+	<script>
+		const newInput = document.querySelector('#new-dropdown-input-4');
+		const newDropdownList = document.querySelector('.dropdown-custom-list-4');
+		const newOptions = Array.from(newDropdownList.getElementsByTagName('li'));
+		const newDropdownIcon = document.querySelector('.dropdown-custom-icon-4');
+		
+		newInput.addEventListener('input', function() {
+		  const searchText = newInput.value.toLowerCase();
+		
+		  newOptions.forEach(option => {
+			const text = option.textContent.toLowerCase();
+			if (text.includes(searchText)) {
+			  option.style.display = 'block';
+			} else {
+			  option.style.display = 'none';
+			}
+		  });
+		
+		  newDropdownList.style.display = 'block';
+		});
+		
+		newDropdownIcon.addEventListener('click', function() {
+		  newDropdownList.style.display = newDropdownList.style.display === 'block' ? 'none' : 'block';
+		});
+		
+		newDropdownList.addEventListener('click', function(event) {
+		  const selectedOption = event.target;
+		  if (selectedOption.tagName === 'LI') {
+			const optionValues = selectedOption.textContent.trim().split(' ');
+			newInput.value = optionValues[optionValues.length - 3];
+			newDropdownList.style.display = 'none';
+		  }
+		});
+		
+		newInput.addEventListener('click', function() {
+		  newDropdownList.style.display = 'none';
+		});
+		
+		newDropdownList.style.display = 'none';
+	  </script>
+
+<script>
+    // Get the input fields and dropdown list
+    const accnoInput = document.getElementById('new-dropdown-input-8');
+    const emiAmountInput = document.getElementById('emi_amount_input');
+    const interestRateInput = document.getElementById('interest_rate_input');
+    const remainingAmountInput = document.getElementById('remaining_amount_input');
+
+    // Add event listener to the dropdown list
+    const dropdownItems = document.querySelectorAll('.dropdown-custom-list-8 li');
+    dropdownItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            // Get the selected value and data attributes
+            const selectedValue = item.textContent.trim();
+            const dataAttributes = item.getAttribute('data-emi').split(' ');
+
+            // Update the input fields with the selected values
+            accnoInput.value = selectedValue;
+            emiAmountInput.value = dataAttributes[0];
+            interestRateInput.value = dataAttributes[1];
+            remainingAmountInput.value = dataAttributes[2];
+        });
+    });
+</script>
+
+
+
+
+
+
+
+<script>
+	const newInput1 = document.querySelector('#new-dropdown-input-8');
+	const newDropdownList1 = document.querySelector('.dropdown-custom-list-8');
+	const newOptions1 = Array.from(newDropdownList.getElementsByTagName('li'));
+	const newDropdownIcon1 = document.querySelector('.dropdown-custom-icon-8');
+	
+	newInput1.addEventListener('input', function() {
+	  const searchText1 = newInput1.value.toLowerCase();
+	
+	  newOptions1.forEach(option => {
+		const text = option.textContent.toLowerCase();
+		if (text.includes(searchText1)) {
+		  option.style.display = 'block';
+		} else {
+		  option.style.display = 'none';
+		}
+	  });
+	
+	  newDropdownList1.style.display = 'block';
+	});
+	
+	newDropdownIcon1.addEventListener('click', function() {
+	  newDropdownList1.style.display = newDropdownList1.style.display === 'block' ? 'none' : 'block';
+	});
+	
+	newDropdownList1.addEventListener('click', function(event) {
+	  const selectedOption1 = event.target;
+	  if (selectedOption1.tagName === 'LI') {
+		const optionValues1 = selectedOption1.textContent.trim().split(' ');
+		newInput1.value = optionValues1[optionValues1.length - 2];
+		newDropdownList1.style.display = 'none';
+	  }
+	});
+	
+	newInput.addEventListener('click', function() {
+	  newDropdownList1.style.display = 'none';
+	});
+	
+	newDropdownList1.style.display = 'none';
+  </script>
+
+
+
+
+ 
+	<script>
+		function showLoadingAnimation(event) {
+		  event.preventDefault(); // Prevent the default form submission
+	  
+		  // Create the loading container and spinner
+		  var loadingContainer = document.createElement('div');
+		  loadingContainer.classList.add('loading-container');
+		  var loadingSpinner = document.createElement('div');
+		  loadingSpinner.classList.add('loading-spinner');
+	  
+		  // Append the spinner to the container
+		  loadingContainer.appendChild(loadingSpinner);
+	  
+		  // Append the container to the document body
+		  document.body.appendChild(loadingContainer);
+	  
+		  // After 5 seconds, remove the loading container and show the pop-up
+		  setTimeout(function() {
+			loadingContainer.remove();
+			showPopup();
+		  }, 5000);
+		}
+	  
+		function showPopup() {
+		  // Get the form values
+		  var from = document.getElementById('new-dropdown-input-4').value;
+		  var to = document.getElementById('form2').value;
+		  var accountBalance = document.getElementById('balance').value;
+		  var enteredAmount = document.getElementById('form4').value;
+	  
+		  // Convert accountBalance and enteredAmount to numbers
+		  accountBalance = parseInt(accountBalance);
+		  enteredAmount = parseInt(enteredAmount);
+	  
+		  // Calculate the remaining balance
+		  var remainingBalance = accountBalance - enteredAmount;
+	  
+		  // Get the current date
+		  var currentDate = new Date().toISOString().slice(0, 10);
+	  
+		  // Update the popup content with the form values
+		  document.getElementById('fromValue').textContent = "from: " + from;
+		  document.getElementById('toValue').textContent = "to: " + to;
+		  document.getElementById('balanceValue').textContent = "Balance: ₹" + accountBalance;
+		  document.getElementById('remainingBalanceValue').textContent = "Remaining Balance: ₹" + remainingBalance;
+		  document.getElementById('dateValue').textContent = "Date: " + currentDate;
+	  
+		  // Show the popup container
+		  document.getElementById('popupContainer').style.display = "block";
+		  document.getElementById('fadeOverlay').style.display = "block";
+	  
+		}
+	  
+		function submitForm() {
+		  // Submit the form programmatically
+		  document.getElementById('myForm').submit();
+		}
+	  </script>
+	
 	<script>
         const tarjeta = document.querySelector('#tarjeta'),
 	  btnAbrirFormulario = document.querySelector('#btn-abrir-formulario'),

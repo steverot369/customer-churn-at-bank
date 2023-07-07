@@ -179,7 +179,7 @@ def customertransferfund():
         
         date = datetime.now()
         trans_no = str(random.randint(1000000000000000, 9999999999999999))
-        messages=f"a new transaction has done by you from acc {full_name} to {full_name1}"
+       
         print(mpipin[0])
         if mpipin[0] == '1':
             flash("set mpi pin...")
@@ -190,9 +190,7 @@ def customertransferfund():
             transaction = "INSERT INTO o_transaction (acc_id, customer_id,reciever_id, branch_id, from_acc, to_acc,name,photo,from_name,from_photo,amount,t_type, t_no, date) VALUES (%s, %s, %s,%s, %s,%s, %s,%s,%s, %s, %s, 'online', %s, %s)"
             transaction_values = (savings_id, cid,receiver_id, branch_id, accno, to_acc,full_name,photo,full_name1,photo1, amount,trans_no, date)
             cursor.execute(transaction, transaction_values)
-            messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,date) VALUES (%s, %s, %s)"
-            messages_values = (cid,branch_id,messages,date)
-            cursor.execute(messages, messages_values)
+
  
             transaction1 = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'online',%s,%s)"
             transaction_values1 = (cid,savings_id,branch_id,trans_no,amount,date)
@@ -364,5 +362,116 @@ def customerprofile():
 
 @customer.route('/customerpaysloan', methods=['POST', 'GET'])
 def customerpaysloan():
+        # data={}
+    cursor = db.cursor()
+    cursor.execute("SELECT acc_no,balance,ifsccode from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
+    acc_no = cursor.fetchall()
+    cursor.execute("SELECT acc_no,loan_type,interst_amt,interest_rate,remaing_amount FROM loanacc where customer_id = '%s'"%(session['cust_id']))
+    loan_account = cursor.fetchall()
+    accountDetails = []  # Initialize accountDetails with a default value
+
+    year = None
+    month = None
+
+    if 'add' in request.form:
+        accno = request.form['accno']
+        print(accno)
     
-    return render_template('customerpaysloan.html')
+        cursor.execute("SELECT s.acc_no, s.ifsccode, s.balance, c.fname, c.lname, ch.debit_no, ch.cv, ch.expiry_date FROM customers c, savingsacc s, debitcard ch WHERE c.cid=s.customer_id AND s.savings_id=ch.savings_id AND s.acc_no = %s", (accno,))
+        accountDetails = cursor.fetchall()
+        print(accountDetails)
+        cursor.execute("SELECT ch.expiry_date FROM customers c, savingsacc s, debitcard ch WHERE c.cid=s.customer_id AND s.savings_id=ch.savings_id AND s.acc_no = %s", (accno,))
+        accountDetails1 = cursor.fetchone()
+        
+        if accountDetails1:
+            expiry_date = accountDetails1[0]  # Assuming the expiry_date is in the format 'yyyy-mm-dd'
+            expiry_date_parts = expiry_date.split('-')  # Split the date string into year, month, and day parts
+
+            year = int(expiry_date_parts[0])
+            month = int(expiry_date_parts[1])
+            print("Year:", year)
+            print("Month:", month)
+    if 'add1' in request.form:
+        loan_acc = request.form['loan_acc']
+        savings_acc = request.form['savings_account']
+
+        emi_amount = request.form['emi_amount']
+        loanAmount = float(request.form['remaining_amount'])
+        interestRate = float(request.form['interest_rate'])
+        date = datetime.now().date()
+        formatted_date = date.strftime("%d-%m-%y")
+        interest_date = date + timedelta(days=30)
+        interest_date_new=interest_date.strftime("%d-%m-%y")
+        interestRate = interestRate / 100 / 12  # Convert to monthly interest rate
+        monthlyinterest=loanAmount*interestRate
+        principleAmount = float(emi_amount) - monthlyinterest
+
+        outstandingBalance = loanAmount - principleAmount
+        print(interestRate)
+        print(monthlyinterest)
+
+        print(principleAmount)
+        print(outstandingBalance)
+
+        
+        trans_no = str(random.randint(1000000000000000, 9999999999999999))
+    
+        cursor.execute("select loan_id,date_interest,customer_id,branch_id from loanacc where acc_no='%s'"%(loan_acc,))
+        result1 = cursor.fetchone()
+        if result1 is not None:
+            loan_id = result1[0]
+            interest_new_date = result1[1]
+            cid = result1[2]
+            bid = result1[3]
+
+        else:
+            # Handle the case when no matching record is found
+            # For example, set default values or display an error message
+            loan_id = None
+            interest_new_date = None
+            cid = None
+            bid = None
+        interest_new_date = datetime.strptime(interest_new_date, '%d-%m-%y').date()
+        print(formatted_date)
+        print(interest_new_date)
+        
+        if interest_new_date>=datetime.strptime(formatted_date, '%d-%m-%y').date():
+            cursor.execute("UPDATE loanacc SET remaing_amount = %s ,date_interest = %s WHERE acc_no = %s",(outstandingBalance,interest_date_new, loan_acc,))
+            loan="INSERT INTO loan_payment(customer_id,branch_id,loan_id,emi_paid,date_paid)  VALUES ( %s, %s,%s,%s,%s)"
+            loan_values = (cid, bid, loan_id, emi_amount,formatted_date)
+            cursor.execute(loan,loan_values)
+            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'loan payment',%s,%s)"
+            transaction_values = (cid,loan_id,bid,trans_no,emi_amount,formatted_date)
+            cursor.execute(transaction,transaction_values)
+            cursor.execute("UPDATE savingsacc SET balance = balance - %s WHERE acc_no = %s",(emi_amount, savings_acc))
+            bank_messages=f"you have paid your loan Emi Rs.{emi_amount}"
+
+            messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,date) VALUES (%s, %s, %s,%s)"
+            messages_values = (cid,bid,bank_messages,date)
+            cursor.execute(messages, messages_values)
+            
+            db.commit()  # Commit the changes to the database
+            flash("emi paid successfully")
+            return redirect(url_for('customer.customerpaysloan'))
+        else:
+            penality_count='1'
+            cursor.execute("UPDATE loanacc SET remaing_amount = %s ,date_interest = %s,penality_count=penality_count + %s WHERE acc_no = %s",(outstandingBalance,interest_date_new,penality_count,loan_acc,))
+            
+            loan="INSERT INTO loan_payment(customer_id,branch_id,loan_id,emi_paid,date_paid)  VALUES ( %s, %s,%s,%s,%s)"
+            loan_values = (cid, bid, loan_id, emi_amount,formatted_date)
+            cursor.execute(loan,loan_values)
+            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'loan payment',%s,%s)"
+            transaction_values = (cid,loan_id,bid,trans_no,emi_amount,formatted_date)
+            cursor.execute(transaction,transaction_values)
+            cursor.execute("UPDATE savingsacc SET balance = balance - %s WHERE acc_no = %s",(emi_amount,savings_acc))
+
+            db.commit()  # Commit the changes to the database
+            flash("emi paid successfully...also a penality")
+            return redirect(url_for('customer.customerpaysloan'))
+            
+        
+    return render_template('customerpaysloan.html', acc_no=acc_no, accountDetails=accountDetails, year=year, month=month,loan_account=loan_account)
+
+
+
+    
