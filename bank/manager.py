@@ -147,11 +147,16 @@ def managercustomerchurn(customer_id):
     except TypeError:
         credit_status = 0  # Default value if customer_details4 is None or IndexError occurs
 
-    print("==================", credit_status)
+    print("credit==================", credit_status)
 
 
-    cursor.execute("SELECT penality_count FROM loanacc WHERE customer_id='%s'" % (customer_id))
-    penality = cursor.fetchone()[0]
+    cursor.execute("SELECT sum(penality_count) FROM loanacc WHERE customer_id='%s'" % (customer_id))
+    penality_result = cursor.fetchone()
+
+    if penality_result:
+        penality = penality_result[0]
+    else:
+        penality = 0
 
     Geography_Germany = customer_details[2]
     if(Geography_Germany == 'kerala'):
@@ -198,7 +203,7 @@ def managercustomerchurn(customer_id):
         credit_score += 400
 
         # Loan penalty factor
-    if penality > 0:
+    if penality is not None and penality > 0:
         
         credit_score -= 50
 
@@ -264,8 +269,13 @@ def managercustomerchurn(customer_id):
         if customer_details4 is not None:
             credit_status = 1 if customer_details4[0] == "approve" else 0
 
-        cursor.execute("SELECT penality_count FROM loanacc WHERE customer_id='%s'" % (customer_id))
-        penality = cursor.fetchone()[0]
+        cursor.execute("SELECT sum(penality_count) FROM loanacc WHERE customer_id='%s'" %(customer_id))
+        penality_result = cursor.fetchone()
+
+        if penality_result:
+            penality = penality_result[0]
+        else:
+            penality = 0
 
         Geography_Germany = customer_details[2]
         if(Geography_Germany == 'kerala'):
@@ -298,7 +308,7 @@ def managercustomerchurn(customer_id):
         balances = customer_balances[1]
         # balances = [balance[1] for balance in customer_balances]
         IsActiveMember = customer_details3[0]
-        print("=================",IsActiveMember)
+        print("transaction=================",IsActiveMember)
         IsActiveMembervalue = 1 if IsActiveMember >= 15 else 0
         credit_score = 0
 
@@ -313,9 +323,9 @@ def managercustomerchurn(customer_id):
             credit_score += 400
             print("credit score on age=",credit_score)
         # Loan penalty factor
-        if penality > 0:
+        if penality is not None and penality > 0:
             credit_score -= 50
-            print("credit score on penality=",credit_score)
+        print("credit score on penality=",credit_score)
 
         # Loan penalty factor
         # if penality > 0:
@@ -335,7 +345,7 @@ def managercustomerchurn(customer_id):
                 credit_score += 100
             if IsActiveMember > 20:
                 credit_score += 200
-                print("credit score on transaction=",credit_score)
+            print("credit score on transaction=",credit_score)
 
 
         # NumOfProducts factor
@@ -347,10 +357,10 @@ def managercustomerchurn(customer_id):
                 credit_score += 200
             if NumOfProducts >= 4:
                 credit_score += 300
-                print("credit score on number of preoducts=",credit_score)
+            print("credit score on number of preoducts=",credit_score)
 
         # Limit credit score to a maximum of 1000
-        credit_score = min(credit_score, 1000)
+        credit_score = min(credit_score, 950)
 
         # Print the credit score
         print("Credit Score:", credit_score)
@@ -495,7 +505,8 @@ def managerviewcreditcard():
     cursor.execute("SELECT c.card_name, c.job_type, c.c_name, c.c_location, c.m_salary, c.file1, c.file2, c.file3, c.date, c.status, cu.fname, cu.lname, cu.phone,c.o_request_id FROM o_credit_card_request c INNER JOIN customers cu ON c.customer_id = cu.cid WHERE c.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')"% (session['mid']))
     credit_card = cursor.fetchall()
 
-    if "" in request.args:
+    if "action" in request.args:
+        action=request.args['action']
        
         id=request.args['id']
     else:
@@ -526,8 +537,13 @@ def managerviewcreditcard():
 
         cursor.execute("SELECT COUNT(customer_id) FROM transaction WHERE customer_id='%s'" % (cid))
         transaction = cursor.fetchone()[0]
-        cursor.execute("SELECT penality_count FROM loanacc WHERE customer_id='%s'" % (cid))
-        penality = cursor.fetchone()[0]
+        cursor.execute("SELECT sum(penality_count) FROM loanacc WHERE customer_id='%s'" % (cid))
+        penality_result = cursor.fetchone()
+
+        if penality_result:
+            penality = penality_result[0]
+        else:
+            penality = 0
         if age >= 18:
             credit = 5000
             if msalary >= 5000:
@@ -565,12 +581,7 @@ def managerviewcreditcard():
         print("jobtype=",credit)
         if penality is not None and penality > 0:
             credit -= penality * 1000
-            if penality > 2:
-                credit -= 2000
-            if penality > 5:
-                credit -= 3000
-            if penality > 10:
-                credit -= 4000
+            
             print("penality=",credit)
         total_limit = credit
 

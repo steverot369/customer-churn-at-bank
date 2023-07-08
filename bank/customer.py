@@ -69,6 +69,9 @@ def customerhome():
     cursor.execute("SELECT customer_id, reciever_id, amount, date, name, photo, from_name, from_photo FROM o_transaction WHERE (customer_id = %s OR reciever_id = %s) AND DATE(date) = %s ORDER BY date DESC LIMIT 3", (logged_in_user_id, logged_in_user_id, current_date))
 
     details1 = cursor.fetchall()
+
+    cursor.execute("SELECT messages,date FROM bank_messages where customer_id=%s ORDER BY date DESC LIMIT 3"%(session['cust_id']))
+    bank_messages = cursor.fetchall()
    
 
    
@@ -109,7 +112,7 @@ def customerhome():
             flash('success')
         else:
             print('send after 1 hoursuccess')
-    return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,count=count,labels=labels, values=values,transaction_details=transaction_details,details=details,details1=details1,logged_in_user_id=logged_in_user_id)
+    return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,count=count,labels=labels, values=values,transaction_details=transaction_details,details=details,details1=details1,logged_in_user_id=logged_in_user_id,bank_messages=bank_messages)
 
 
 
@@ -399,6 +402,8 @@ def customerpaysloan():
         loanAmount = float(request.form['remaining_amount'])
         interestRate = float(request.form['interest_rate'])
         date = datetime.now().date()
+        date1 = datetime.now()
+
         formatted_date = date.strftime("%d-%m-%y")
         interest_date = date + timedelta(days=30)
         interest_date_new=interest_date.strftime("%d-%m-%y")
@@ -447,7 +452,7 @@ def customerpaysloan():
             bank_messages=f"you have paid your loan Emi Rs.{emi_amount}"
 
             messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,date) VALUES (%s, %s, %s,%s)"
-            messages_values = (cid,bid,bank_messages,date)
+            messages_values = (cid,bid,bank_messages,date1)
             cursor.execute(messages, messages_values)
             
             db.commit()  # Commit the changes to the database
@@ -464,6 +469,13 @@ def customerpaysloan():
             transaction_values = (cid,loan_id,bid,trans_no,emi_amount,formatted_date)
             cursor.execute(transaction,transaction_values)
             cursor.execute("UPDATE savingsacc SET balance = balance - %s WHERE acc_no = %s",(emi_amount,savings_acc))
+            cursor.execute(transaction,transaction_values)
+            cursor.execute("UPDATE savingsacc SET balance = balance - %s WHERE acc_no = %s",(emi_amount, savings_acc))
+            bank_messages=f"you have paid your loan Emi Rs.{emi_amount}"
+
+            messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,date) VALUES (%s, %s, %s,%s)"
+            messages_values = (cid,bid,bank_messages,date1)
+            cursor.execute(messages, messages_values)
 
             db.commit()  # Commit the changes to the database
             flash("emi paid successfully...also a penality")

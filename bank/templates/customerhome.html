@@ -751,16 +751,17 @@ input[type="submit"] {
                             {% endif %}
                        
                             {% endfor %}
+                            {% for message in bank_messages %}
                             <div class="update">
                                 <div class="profile-photo">
                                     <img src="/static//images/profile-2.jpg">
                                 </div>
                                 <div class="message">
-                                    <p><b>mike tyson</b>
-                                    recyeyy is hehe of yegfegge.</p>
-                                    <small class="text-muted">2minutes ago</small>
+                                    <p><b>loan payment</b> {{ message[0] }}</p>
+                                    <small class="text-muted">{{ message[1] }}</small>
                                 </div>
                             </div>
+                            {% endfor %}
                         </div>
                         
                     </div>
