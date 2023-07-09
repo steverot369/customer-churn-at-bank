@@ -194,39 +194,44 @@ def managercustomerchurn(customer_id):
 
         # Age factor
     if age >= 18 and age < 21:
-        credit_score += 100
+        credit_score += 120
     elif age >= 21 and age < 25:
-        credit_score += 200
+        credit_score += 150
     elif age >= 25 and age < 30:
-        credit_score += 300
+        credit_score += 175
     elif age >= 30:
-        credit_score += 400
+        credit_score += 300
+    print("credit score on age=",credit_score)
 
         # Loan penalty factor
     if penality is not None and penality > 0:
         
-        credit_score -= 50
+        credit_score -= 100
+    print("credit score on penality=",credit_score)
 
         # Loan penalty factor
 
 
         # Active member factor
+    if NumOfProducts >= 1:
+        credit_score += 20
+        if NumOfProducts >= 2:
+            credit_score += 50
+        if NumOfProducts >= 3:
+            credit_score += 75
+        if NumOfProducts >= 4:
+            credit_score += 100
+        print("credit score on number of preoducts=",credit_score)
+
+        # NumOfProducts factor
+        # Active member factor
     if IsActiveMember > 1:
-        credit_score += 200
+        credit_score += 50
         if IsActiveMember > 10:
             credit_score += 100
         if IsActiveMember > 20:
-                credit_score += 200
-
-        # NumOfProducts factor
-    if NumOfProducts >= 1 and NumOfProducts <= 4:
-        credit_score += NumOfProducts * 50
-        if NumOfProducts >= 2:
-            credit_score += 100
-        if NumOfProducts >= 3:
-            credit_score += 200
-        if NumOfProducts >= 4:
-            credit_score += 300
+            credit_score += 150
+        print("credit score on transaction=",credit_score)
 
         # Limit credit score to a maximum of 1000
     credit_score = min(credit_score, 1000)
@@ -314,49 +319,40 @@ def managercustomerchurn(customer_id):
 
         # Age factor
         if age >= 18 and age < 21:
-            credit_score += 100
+            credit_score += 120
         elif age >= 21 and age < 25:
-            credit_score += 200
+            credit_score += 150
         elif age >= 25 and age < 30:
-            credit_score += 300
+            credit_score += 175
         elif age >= 30:
-            credit_score += 400
+            credit_score += 300
             print("credit score on age=",credit_score)
         # Loan penalty factor
         if penality is not None and penality > 0:
-            credit_score -= 50
+            credit_score -= 100
         print("credit score on penality=",credit_score)
 
-        # Loan penalty factor
-        # if penality > 0:
-        #     if penality > 10:
-        #         credit_score -= 500
-        #     elif penality > 5:
-        #         credit_score -= 400
-        #     elif penality > 2:
-        #         credit_score -= 300
-        #     else:
-        #         credit_score -= 200
+       
 
         # Active member factor
         if IsActiveMember > 1:
-            credit_score += 200
+            credit_score += 50
             if IsActiveMember > 10:
                 credit_score += 100
             if IsActiveMember > 20:
-                credit_score += 200
+                credit_score += 150
             print("credit score on transaction=",credit_score)
 
 
         # NumOfProducts factor
-        if NumOfProducts >= 1 and NumOfProducts <= 4:
-            credit_score += NumOfProducts * 50
+        if NumOfProducts >= 1:
+            credit_score += 20
             if NumOfProducts >= 2:
-                credit_score += 100
+                credit_score += 50
             if NumOfProducts >= 3:
-                credit_score += 200
+                credit_score += 75
             if NumOfProducts >= 4:
-                credit_score += 300
+                credit_score += 100
             print("credit score on number of preoducts=",credit_score)
 
         # Limit credit score to a maximum of 1000
@@ -386,9 +382,9 @@ def managercustomerchurn(customer_id):
 
         credit=CreditScore
         if prediction == 1:
-            churn = "INSERT INTO churn_customers(customer_id, branch_id, leave_or_not) VALUES (%s, %s, 'will leave')"
-            churn_values = (customer_id, branch_id)
-            cursor.execute(churn, churn_values)
+            # churn = "INSERT INTO churn_customers(customer_id, branch_id, leave_or_not) VALUES (%s, %s, 'will leave')"
+            # churn_values = (customer_id, branch_id)
+            # cursor.execute(churn, churn_values)
             reason1 = "no data"
             reason2 = "no data"
             reason3 = "no data"
