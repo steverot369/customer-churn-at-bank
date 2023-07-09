@@ -2,7 +2,7 @@ from flask import *
 from database import *
 import uuid
 import os
-from datetime import datetime
+from datetime import datetime,timedelta
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -76,8 +76,84 @@ def adminhome():
     feedback_messages = cursor.fetchall()
  
     cursor = db.cursor()
-    cursor.execute("SELECT c.fname,c.lname,c.photo,tt.amount,tt.date_time,tt.t_type FROM customers c,o_transaction t,transaction tt where c.cid=tt.customer_id LIMIT 4")
+    cursor.execute("SELECT c.fname,c.lname,c.photo,tt.amount,tt.date_time,tt.t_type,tt.t_no FROM customers c,transaction tt where c.cid=tt.customer_id and tt.t_type='online' LIMIT 4")
     online_transaction=cursor.fetchall()
+    cursor.execute("SELECT c.fname,c.lname,tt.t_no,tt.t_type,tt.amount,tt.date_time FROM customers c,transaction tt where c.cid=tt.customer_id LIMIT 10")
+    transaction=cursor.fetchall()
+
+    current_month_start = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    current_month_end = current_month_start.replace(day=1, month=current_month_start.month + 1) - timedelta(days=1)
+
+    current_month_query = "SELECT SUM(amount) FROM transaction WHERE date_time BETWEEN %s AND %s"
+    cursor.execute(current_month_query, (current_month_start, current_month_end))
+    current_month_result = cursor.fetchone()
+    current_month_amount = current_month_result[0] if current_month_result[0] is not None else 0
+
+    previous_month_query = "SELECT SUM(amount) FROM transaction WHERE date_time BETWEEN %s AND %s"
+    cursor.execute(previous_month_query, (current_month_start - timedelta(days=30), current_month_start - timedelta(days=1)))
+    previous_month_result = cursor.fetchone()
+    previous_month_amount = previous_month_result[0] if previous_month_result[0] is not None else 0
+
+    percentage_change = ((current_month_amount - previous_month_amount) / previous_month_amount) * 100 if previous_month_amount != 0 else 0
+    percentage_change = min(percentage_change, 100)  # Limit the percentage change to 100
+    percentage_change = round(percentage_change, 2)
+
+
+    current_year = datetime.now().year
+    previous_year = current_year - 1
+
+    current_year_query = "SELECT COUNT(*) FROM customers WHERE YEAR(date) = %s"
+    cursor.execute(current_year_query, (current_year,))
+    current_year_result = cursor.fetchone()
+    current_year_count = current_year_result[0] if current_year_result[0] is not None else 0
+
+    previous_year_query = "SELECT COUNT(*) FROM customers WHERE YEAR(date) = %s"
+    cursor.execute(previous_year_query, (previous_year,))
+    previous_year_result = cursor.fetchone()
+    previous_year_count = previous_year_result[0] if previous_year_result[0] is not None else 0
+
+    customer_percentage_change = ((current_year_count - previous_year_count) / previous_year_count) * 100 if previous_year_count != 0 else 0
+    customer_percentage_change = min(customer_percentage_change, 100)  # Limit the percentage change to 100
+    customer_percentage_change = round(customer_percentage_change, 2)  # Round to two decimal places
+
+   
+
+    current_month_query1 = "SELECT COUNT(savings_id) FROM savingsacc WHERE acc_started_date BETWEEN %s AND %s"
+    cursor.execute(current_month_query1, (current_month_start, current_month_end))
+    current_month_result = cursor.fetchone()
+    print("======current_month_result==========",current_month_result)
+    current_month_balance = current_month_result[0] if current_month_result[0] is not None else 0
+
+    previous_month_query1 = "SELECT COUNT(savings_id) FROM savingsacc WHERE acc_started_date BETWEEN %s AND %s"
+    cursor.execute(previous_month_query1, (current_month_start - timedelta(days=30), current_month_start - timedelta(days=1)))
+    previous_month_result = cursor.fetchone()
+    print("=======previous_month_result=========",previous_month_result)
+    previous_month_balance = previous_month_result[0] if previous_month_result[0] is not None else 0
+
+    account_percentage_change = ((current_month_balance - previous_month_balance) / previous_month_balance) * 100 if previous_month_balance != 0 else 0
+    account_percentage_change = round(account_percentage_change, 2)
+
+
+    # for loan account
+    current_month_query2 = "SELECT COUNT(loan_id) FROM loanacc WHERE date_issued BETWEEN %s AND %s"
+    cursor.execute(current_month_query2, (current_month_start, current_month_end))
+    current_month_result = cursor.fetchone()
+    print("======current_month_result==========",current_month_result)
+    current_month_balance1 = current_month_result[0] if current_month_result[0] is not None else 0
+
+    previous_month_query2 = "SELECT COUNT(loan_id) FROM loanacc WHERE date_issued BETWEEN %s AND %s"
+    cursor.execute(previous_month_query2, (current_month_start - timedelta(days=30), current_month_start - timedelta(days=1)))
+    previous_month_result = cursor.fetchone()
+    print("=======previous_month_result=========",previous_month_result)
+    previous_month_balance1 = previous_month_result[0] if previous_month_result[0] is not None else 0
+
+    loan_account_percentage_change = ((current_month_balance1 - previous_month_balance1) / previous_month_balance1) * 100 if previous_month_balance1 != 0 else 0
+    loan_account_percentage_change = round(loan_account_percentage_change, 2)
+
+    cursor.execute("select count(*) from customers")
+    customer_count=cursor.fetchone()[0]
+    cursor.execute("select count(*) from employee")
+    employee_count=cursor.fetchone()[0]
     query = "SELECT COUNT(*) FROM complaints where reply='0'"
    
     cursor.execute(query)
@@ -86,7 +162,14 @@ def adminhome():
     if 'count_removed' in session:
         session.pop('count_removed')  # Remove the 'count_removed' flag from session
     
-    return render_template('adminhome.html', labels=labels, values=values,total_amount=total_amount,name=name,feedback_messages=feedback_messages,count=count,online_transaction=online_transaction,notes=notes)
+    return render_template('adminhome.html', 
+    labels=labels, values=values,total_amount=total_amount,name=name,feedback_messages=feedback_messages,count=count,online_transaction=online_transaction,notes=notes,
+    transaction=transaction, current_month_amount=current_month_amount,
+     previous_month_amount=previous_month_amount, percentage_change=percentage_change,
+     current_year_count=current_year_count, previous_year_count=previous_year_count, customer_percentage_change=customer_percentage_change, 
+     current_month_balance=current_month_balance, previous_month_balance=previous_month_balance, account_percentage_change=account_percentage_change,
+     current_month_balance1=current_month_balance1, previous_month_balance1=previous_month_balance1, loan_account_percentage_change=loan_account_percentage_change,
+     customer_count=customer_count,employee_count=employee_count)
 
 
 

@@ -183,60 +183,62 @@ rel="stylesheet">
                         </div>
 
                         <div class="insights">
-                          <div class="sales">
-                              <span class="material-icons-sharp">account_balance_wallet</span>
-                              <div class="middle">
-                                  <div class="left">
-                                      <h3>Total bank balance</h3>
-                                      <h1>Rs {{ total_amount }}</h1>
-                                  </div>
-                                  <div class="progress">
-                                      <svg>
-                                          <circle cx='38' cy='38' r='36'></circle>
-                                      </svg>
-                                      <div class="number">
-                                          <p>81%</p>
-                                      </div>
-                                  </div>
-                              </div>
-                              <small class="text-muted">Last 24 hours</small>
-                          </div>
+                            <div class="sales">
+                                <span class="material-icons-sharp">group</span>
+                                <div class="middle">
+                                    <div class="left">
+                                        <h3>Total Customers</h3>
+                                        <h1>{{ customer_count }}</h1>
+                                    </div>
+                                    <div class="progress">
+                                        <svg>
+                                            <!-- <circle cx='38' cy='38' r='36'></circle> -->
+                                            <circle class="progress-bar" cx='38' cy='38' r='36'></circle>
+                                        </svg>
+                                        <div class="number">
+                                            <p>{{ customer_percentage }}%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted">Last 24 hours</small>
+                            </div>
+                            
                           <!------------ END OF SALES -------------->
                           <div class="expenses">
-                              <span class="material-icons-sharp">bar_chart</span>
-                              <div class="middle">
-                                  <div class="left">
-                                      <h3>Total Expenses</h3>
-                                      <h1>$85,758</h1>
-                                  </div>
-                                  <div class="progress">
-                                      <svg>
-                                          <circle cx='38' cy='38' r='36'></circle>
-                                      </svg>
-                                      <div class="number">
-                                          <p>41%</p>
-                                      </div>
-                                  </div>
-                              </div>
-                              <small class="text-muted">Last 24 hours</small>
-                          </div>
+                            <span class="material-icons-sharp">support_agent</span>
+                            <div class="middle">
+                                <div class="left">
+                                    <h3>Total Employee</h3>
+                                    <h1>{{ employee_count }}</h1>
+                                </div>
+                                <div class="progress">
+                                    <svg>
+                                        <circle id="progress-bar" cx='38' cy='38' r='36'></circle>
+                                    </svg>
+                                    <div class="number" id="number">
+                                        <p id="value">41%</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <small class="text-muted">Last 24 hours</small>
+                        </div>
                           <!------------ END OF expense -------------->
                           <div class="income">
-                              <span class="material-icons-sharp">stacked_line_chart</span>
+                              <span class="material-icons-sharp">inventory_2</span>
                               <div class="middle">
                                   <div class="left">
-                                      <h3>Total income</h3>
+                                      <h3>Total Bank Product</h3>
                                 
                                         
                                      
-                                      <h1>$85,7557</h1>
+                                      <h1>12</h1>
                                   </div>
                                   <div class="progress">
                                       <svg>
-                                          <circle cx='38' cy='38' r='36'></circle>
+                                          <circle id="progress-bar1" cx='38' cy='38' r='36'></circle>
                                       </svg>
-                                      <div class="number">
-                                          <p>44%</p>
+                                      <div class="number" id="number1">
+                                          <p id="value1">44%</p>
                                       </div>
                                   </div>
                               </div>
@@ -247,54 +249,64 @@ rel="stylesheet">
                         <!-- ----end of cards------ -->
                         <div class="monthly-report">
                             <div class="report">
-                                <h3>income</h3>
+                                <h3>Transaction Rate</h3>
                                 <div>
                                     <details>
-                                        <h1>$7465665</h1>
-                                        <h6 class="success">+4.5%</h6>
+                                        <h1>&#8377; {{ current_month_amount }}</h1>
+                                        {% if previous_month_amount > current_month_amount %}
+                                            <h6 class="danger">{{ percentage_change }}%</h6>
+                                        {% else %}
+                                            <h6 class="success">{{ percentage_change }}%</h6>
+                                        {% endif %}
                                     </details>
-                                    <p class="text-muted">Co,pared to $26,433
-                                        last months
-                                    </p>
+                                    <p class="text-muted">Compared to ${{ previous_month_amount }} last 30 days</p>
                                 </div>
                             </div>
                             <!-- end of income report -->
                             <div class="report">
-                                <h3>expenses</h3>
+                                <h3>Customer Rate</h3>
                                 <div>
                                     <details>
-                                        <h1>$74,655</h1>
-                                        <h6 class="danger">-4.5%</h6>
+                                        <h1>count {{ current_year_count }}</h1>
+                                        {% if previous_year_count > current_year_count %}
+                                            <h6 class="danger">-{{ customer_percentage_change }}%</h6>
+                                        {% else %}
+                                            <h6 class="success">+{{ customer_percentage_change }}%</h6>
+                                        {% endif %}
                                     </details>
-                                    <p class="text-muted">Co,pared to $6,433
-                                        last months
-                                    </p>
+                                    <p class="text-muted">Compared to ${{ previous_year_count }} last year</p>
                                 </div>
                             </div>
+                            
                             <!-- end of expenses report -->
                             <div class="report">
-                                <h3>cashback</h3>
+                                <h3>Account Rate</h3>
                                 <div>
                                     <details>
-                                        <h1>$72,65665</h1>
-                                        <h6 class="success">+7.5%</h6>
+                                        <h1>${{ current_month_balance }}</h1>
+                                        {% if previous_month_balance > current_month_balance %}
+                                            <h6 class="danger">-{{ account_percentage_change }}%</h6>
+                                        {% else %}
+                                            <h6 class="success">+{{ account_percentage_change }}%</h6>
+                                        {% endif %}
                                     </details>
-                                    <p class="text-muted">Co,pared to $26,433
-                                        last months
-                                    </p>
+                                    <p class="text-muted">Compared to ${{ previous_month_balance }} last month</p>
                                 </div>
                             </div>
+                            
                             <!-- end of cashback report -->
                             <div class="report">
-                                <h3>income</h3>
+                                <h3>loan Users</h3>
                                 <div>
                                     <details>
-                                        <h1>$7465665</h1>
-                                        <h6 class="success">+4.5%</h6>
+                                        <h1>${{ current_month_balance1 }}</h1>
+                                        {% if previous_month_balance1 > current_month_balance1 %}
+                                            <h6 class="danger">-{{ loan_account_percentage_change }}%</h6>
+                                        {% else %}
+                                            <h6 class="success">+{{ loan_account_percentage_change }}%</h6>
+                                        {% endif %}
                                     </details>
-                                    <p class="text-muted">Co,pared to $26,433
-                                        last months
-                                    </p>
+                                    <p class="text-muted">Compared to ${{ previous_month_balance1 }} last month</p>
                                 </div>
                             </div>
                             <!-- end of turnover report -->
@@ -321,7 +333,53 @@ rel="stylesheet">
                         <!----------- end of payment----- -->
                         <!-- <canvas id="chart"></canvas> -->
                         <button style="color:rebeccapurple; background: none;" onclick="moveChart()">Move Chart</button>
-                    <canvas id="chart"></canvas>
+                    <canvas id="chart"  style="display: block;"></canvas>
+                     <div class="recent-orders" style="display: none;">
+                            <h2>Recent Transaction</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Transaction No</th>
+                                        <th>Transaction type</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        
+
+                
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  {% for transaction in transaction %} 
+                                    <tr> 
+                                      <td>{{ transaction[0] }} {{ transaction[1] }}</td>
+
+                                      <td>{{ transaction[2] }}</td>
+
+                                  {% if transaction[3] == 'deposit' %}
+                                      <td style="color: rgb(128, 122, 0);">{{ transaction[3] }}</td>
+                                  {% elif transaction[3] == 'online' %}
+                                      <td style="color: blue;">{{ transaction[3] }}</td>
+                                  {% elif transaction[3] == 'fixed deposit' %}
+                                      <td style="color: rgb(9, 9, 225);">{{ transaction[3] }}</td>
+                                  {% elif transaction[3] == 'cheque withdrawl' %}
+                                      <td style="color: rgb(45, 175, 115);">{{ transaction[3] }}</td>
+                                  {% elif transaction[3] == 'loan_payment' %}
+                                      <td style="color: purple;">{{ transaction[3] }}</td>
+                                  {% else %}
+                                      <td style="color: red;">{{ transaction[3] }}</td>
+                                  {% endif %}
+
+                                      <td>{{ transaction[4] }}</td>
+                                      <td class="warning">{{ transaction[5] }}</td>
+                                     
+                                    </tr>
+                                  {% endfor %}
+                                </tbody>
+                                
+                            </table>
+                            <a href="customerviewtransaction">show all</a>
+                        </div> 
                  </section>
                  <!-- --------end of middle------ -->
                  <div class="right">
@@ -350,7 +408,10 @@ rel="stylesheet">
                         </div>
                     </div>
                     <div class="sales-analytics">
-                        <h2>Recent Transactions</h2><br>
+                        <h2>Recent Transactions</h2>
+                        <a href="#" style="color: rgb(0, 42, 110); margin-left:300px;">More &#8594;
+                        </a>
+                        <br><br>
                         {% for online_transaction in online_transaction %}
                         <div class="item online">
                             
@@ -365,50 +426,15 @@ rel="stylesheet">
                                     <small class="text-muted">{{ online_transaction[4] }}</small>
                                 </div>
                                 <h5 class="success">+ &#8377;{{ online_transaction[3] }}</h5>
-                                {% if online_transaction[5] == 'deposit' %}
-                                    <h4 style="color: rgb(128, 122, 0);">{{ online_transaction[5] }}</h4>
-                                {% elif online_transaction[5] == 'online' %}
-                                    <h4 style="color: blue;">{{ online_transaction[5] }}</h4>
-                                {% elif online_transaction[5] == 'fixed deposit' %}
-                                    <h4 style="color: rgb(9, 9, 225);">{{ online_transaction[5] }}</h4>
-                                {% elif online_transaction[5] == 'cheque_withdrawal' %}
-                                    <h4 style="color: yellow;">{{ online_transaction[5] }}</h4>
-                                {% elif online_transaction[5] == 'loan_payment' %}
-                                    <h4 style="color: purple;">{{ online_transaction[5] }}</h4>
-                                {% else %}
-                                    <h4 style="color: red;">{{ online_transaction[5] }}</h4>
-                                {% endif %}
+                                
+                                    <h4 style="color: rgb(0, 128, 111);">{{ online_transaction[5] }}</h4>
+                                
 
                             </div>
                         </div>
                         {% endfor %}
 
-                        <!-- <div class="item offline">
-                            <div class="icon">
-                                <span class="material-icons-sharp">local_mall</span>
-                            </div>
-                            <div class="right">
-                                <div class="info">
-                                    <h4>Online orders</h4>
-                                    <small class="text-muted">Last 24 hours</small>
-                                </div>
-                                <h5 class="success">+39%</h5>
-                                <h4>4332</h4>
-                            </div>
-                        </div> -->
-                        <!-- <div class="item customers">
-                            <div class="icon">
-                                <span class="material-icons-sharp">person</span>
-                            </div>
-                            <div class="right">
-                                <div class="info">
-                                    <h4>customers</h4>
-                                    <small class="text-muted">Last 24 hours</small>
-                                </div>
-                                <h5 class="success">+22%</h5>
-                                <h4>132</h4>
-                            </div>
-                        </div> -->
+                        
                             <div class="item add-product">
                                 <div>
                                 <span class="material-icons-sharp">send</span>
@@ -428,6 +454,48 @@ rel="stylesheet">
     integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ==" 
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/js/customer.js"></script>
+
+    <script>
+        var employeeCount = 12;
+        var totalEmployees = 15;  // Set the maximum value for the progress bar
+    
+        // Calculate the employee percentage
+        var employeePercentage = (employeeCount / totalEmployees) * 100;
+        employeePercentage = Math.min(employeePercentage, 100);  // Limit the percentage to 100
+    
+        // Update the progress bar
+        var progressBar = document.getElementById('progress-bar1');
+        var circumference = 2 * Math.PI * 36;  // Calculate the circumference of the circle
+        var offset = circumference - (circumference * employeePercentage) / 100;
+        progressBar.style.strokeDasharray = circumference;
+        progressBar.style.strokeDashoffset = offset;
+    
+        // Update the employee percentage text
+        var valueElement = document.getElementById('value1');
+        valueElement.textContent = employeePercentage.toFixed(1) + '%';
+    </script>
+
+
+
+    <script>
+        var employeeCount = {{ employee_count }};
+        var totalEmployees = 500;  // Set the maximum value for the progress bar
+    
+        // Calculate the employee percentage
+        var employeePercentage = (employeeCount / totalEmployees) * 100;
+        employeePercentage = Math.min(employeePercentage, 100);  // Limit the percentage to 100
+    
+        // Update the progress bar
+        var progressBar = document.getElementById('progress-bar');
+        var circumference = 2 * Math.PI * 36;  // Calculate the circumference of the circle
+        var offset = circumference - (circumference * employeePercentage) / 100;
+        progressBar.style.strokeDasharray = circumference;
+        progressBar.style.strokeDashoffset = offset;
+    
+        // Update the employee percentage text
+        var valueElement = document.getElementById('value');
+        valueElement.textContent = employeePercentage.toFixed(1) + '%';
+    </script>
     <!-- <script>
     var ctx = document.getElementById('chart').getContext('2d');
 var myChart = new Chart(ctx, {
@@ -474,6 +542,28 @@ var myChart = new Chart(ctx, {
 
   </script> -->
   <script>
+    var customerCount = {{ customer_count }};
+    var totalCustomers = 1000;  // Set the maximum value for the progress bar
+
+    // Calculate the customer percentage
+    var customerPercentage = (customerCount / totalCustomers) * 100;
+    customerPercentage = Math.min(customerPercentage, 100);  // Limit the percentage to 100
+
+    // Update the progress bar
+    var progressBar = document.querySelector('.progress-bar');
+    var circumference = 2 * Math.PI * 36;  // Calculate the circumference of the circle
+    var offset = circumference - (circumference * customerPercentage) / 100;
+    progressBar.style.strokeDasharray = circumference;
+    progressBar.style.strokeDashoffset = offset;
+
+    // Update the customer percentage text
+    var numberText = document.querySelector('.number p');
+    numberText.textContent = customerPercentage.toFixed(1) + '%';
+</script>
+
+
+  
+  <script>
     {% for row in notes %}
       (function() {
         var result{{ loop.index }} = document.getElementById("result-{{ loop.index }}");
@@ -518,7 +608,7 @@ var myChart = new Chart(ctx, {
 
 
 
-  <script>
+<script>
     var currentChartType = 'line';
     var ctx = document.getElementById('chart').getContext('2d');
     var myChart;
@@ -611,11 +701,6 @@ var myChart = new Chart(ctx, {
         });
     }
 
-
-
-
-
-    
     function destroyChart() {
         if (myChart) {
             myChart.destroy();
@@ -623,18 +708,31 @@ var myChart = new Chart(ctx, {
     }
 
     function moveChart() {
-        if (currentChartType === 'line') {
-            createBarChart();
-            currentChartType = 'bar';
-        } else {
-            createLineChart();
-            currentChartType = 'line';
-        }
+    var chart = document.getElementById('chart');
+    var recentOrders = document.getElementsByClassName('recent-orders')[0];
+
+    if (currentChartType === 'line') {
+        destroyChart();
+        createBarChart();
+        chart.style.display = 'none';
+        recentOrders.style.display = 'block';
+        currentChartType = 'bar';
+    } else if (currentChartType === 'bar') {
+        destroyChart();
+        recentOrders.style.display = 'none';
+        chart.style.display = 'block';
+        createLineChart();
+        currentChartType = 'line';
     }
+}
+
 
     // Initial chart creation
     createLineChart();
 </script>
+
+
+
   <script>
     // Get today's date
   var today = new Date();

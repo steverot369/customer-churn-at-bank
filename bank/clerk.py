@@ -548,7 +548,7 @@ def clerkdepositcash():
                 transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '1000',%s)"
                 transaction_values = (bid,thousandrs)
                 cursor.execute(transaction, transaction_values)
-        flash("depsoited successfully...")
+        flash("deposited successfully...")
         return redirect(url_for('clerk.clerkdepositcash'))
 
     if 'add2' in request.form:
