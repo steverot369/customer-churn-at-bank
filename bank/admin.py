@@ -266,7 +266,8 @@ def adminaddemployee():
         id=insert(q)
         q = "INSERT INTO employee VALUES(null,'%s','%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s', '%s', '%s', '%s','%s ','%s','active')" % (id, branch_id,fname, lname, age,img,status,gender,branch,employee_type,address,zipcode,place,district, phone, email)
         insert(q)
-       
+        cursor.execute("select * from branch")
+        branch=cursor.fetchall()
         # Execute the employee query here
         flash("Registration successful...")
 
@@ -275,21 +276,33 @@ def adminaddemployee():
     
     return render_template('adminaddemployee.html',branch_names=branch_names)
 
-        
-@admin.route('/adminaddbranch',methods=['post','get'])
+@admin.route('/adminaddbranch', methods=['post', 'get'])
 def adminaddbranch():
+   
     if 'add' in request.form:
         bname = request.form['bname']
         location = request.form['location']
         phoneno = request.form['phone']
         ifsccode = request.form['ifsccode']
-
-        q = "INSERT INTO branch VALUES(null,'%s', '%s', '%s','%s')" % (bname, location, phoneno,ifsccode)
+        q = "INSERT INTO branch VALUES (null, '%s', '%s', '%s', '%s')" % (bname, location, phoneno, ifsccode)
         insert(q)
-        # Execute the employee query here
         flash("Registration successful...")
         return redirect(url_for('admin.adminaddbranch'))
+
     return render_template('adminaddbranch.html')
+
+
+
+@admin.route('/adminviewbranch', methods=['post', 'get'])
+def adminviewbranch():
+    cursor = db.cursor()
+   
+    cursor.execute("SELECT * FROM branch")
+    branch = cursor.fetchall()
+
+    return render_template('adminviewbranch.html', branch=branch)
+
+
 
 @admin.route('/adminmanagehome',methods=['post','get'])
 def adminmanagehome():

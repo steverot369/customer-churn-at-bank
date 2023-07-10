@@ -697,6 +697,213 @@ label{
             font-weight: bold;
             margin-top: 5px;
         }
+        .password-container i:hover {
+      color: #666;
+    }
+    
+    .password-message {
+      font-size: 14px;
+      margin-top: 5px;
+      color:red;
+    }
+    .valid-password {
+      color: white;
+    }
+    
+    #usernameMessage {
+      font-size: 15px;
+      margin-top: 2px;
+    }
+    
+    .valid {
+      color: rgb(128, 0, 94);
+    }
+    
+    .invalid {
+      color: red;
+    }
+    .submenu {
+    display: none;
+    padding-left: 80px;
+   
+}
+
+.show {
+    display: block;
+}
+.container1 {
+  padding: 20px;
+  border-radius: 10px;
+ 
+
+  background-color: #fff5;
+
+    backdrop-filter: blur(10px);
+    box-shadow: 0 .4rem .9rem #0005;
+    border-radius: 1rem;
+    height: 98%;
+}
+
+section {
+  margin-bottom: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+
+.search-input,
+.filter,
+#rowCount {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.search-input:focus,
+.filter:focus,
+#rowCount:focus {
+  outline: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter {
+  width: 150px;
+}
+
+
+@keyframes scaleAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#rowCount {
+  animation: scaleAnimation 1s infinite;
+}
+
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff5;
+
+    backdrop-filter: blur(7px);
+    box-shadow: 0 .4rem .8rem #0005;
+    border-radius: .8rem;
+    font-size: 14px;
+    
+}
+th{
+    font-weight: 750;
+}
+.table th,
+.table td {
+
+  width: 100%;
+    height: 10%;
+    background-color: #fff4;
+    padding: .8rem 1rem;
+
+  
+    justify-content: space-between;
+    align-items: center
+}
+
+.table th {
+  background-color: #ffffff;
+  text-align: left;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: rgba(248, 245, 245, 0.267);
+}
+.table tbody tr:hover {
+  background-color: #e6e6e6;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn {
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #007bff;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+} 
+#noUserFoundMessage {
+  display: none;
+  padding: 50px;
+  background-color: #f2f2f2;
+  text-align: center;
+  
+}
+
+#noUserFoundMessage p {
+  color: rgb(173, 24, 24);
+  font-weight: bold;
+  font-size: 30px;
+
+}
+
+
+
+
+i{
+  cursor: pointer;
+  /* padding: 10px; */
+}
+.submenu {
+    display: none;
+    padding-left: 80px;
+   
+}
+
+.show {
+    display: block;
+}
   </style>
 <body>
     <nav>
@@ -757,7 +964,7 @@ label{
                  </a>
                  <div class="submenu">
                      <a href="adminaddbranch" style="text-decoration: none;">add branch</a>
-                     <a href="#" style="text-decoration: none;">view branch</a>
+                     <a href="adminviewbranch" style="text-decoration: none;">view branch</a>
                  
                  </div>
                  
@@ -768,28 +975,7 @@ label{
                    
                </a>
                
-                  
-                   
-                   <a href="/adminviewtranasction" style="text-decoration: none;">
-                     
-                     <span class="material-icons-sharp">stacked_bar_chart</span>
-                     <h4>transactions</h4>
-                 </a>
            
-               <a href="/adminviewtranasction" style="text-decoration: none;">
-                     
-                 <span class="material-icons-sharp">mark_email_unread</span>
-                 <h4>feedback</h4>
-             </a>
-             <a href="/adminviewtranasction" style="text-decoration: none;">
-                     
-               <span class="material-icons-sharp">speaker_notes</span>
-               <h4>complaint</h4>
-           </a>
-                   <a href="#" style="text-decoration: none;">
-                       <span class="material-icons-sharp">settings</span>
-                       <h4>Settings</h4>
-                   </a>
                   </div>
                     </div>
                     <!---------end of side bar--- -->
@@ -798,7 +984,7 @@ label{
                              <h4>Go back</h4>
                              <p>to home page</p>
                            
-                             <a href="adminhome" style="text-decoration: none;">Go Back</a>
+                             <a href="javascript:history.back()" style="text-decoration: none;">Go Back</a>
                      </div>
                  </aside>
                  <!-- end of aside----- -->
@@ -808,17 +994,5 @@ label{
               
     <!-- ====================end of aside==========================   -->
 </body>
-<script>
-  var submenuIcons = document.querySelectorAll('.submenu-icon');
-// Loop through each submenu icon
-submenuIcons.forEach(function(icon) {
-   // Add a click event listener to each submenu icon
-   icon.addEventListener('click', function() {
-       // Get the corresponding submenu for this icon
-       var submenu = icon.parentElement.nextElementSibling; 
-       // Toggle the visibility of the submenu
-       submenu.classList.toggle('show');
-   });
-});
-</script>
+
 </html>

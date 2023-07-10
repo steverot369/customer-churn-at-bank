@@ -1,19 +1,16 @@
 {% include 'adminsidebar.html' %}
+<section class="middle">
+    <div class="header">
+        <h1>Dashboard</h1>
+        <input type="date">
+          </div>
 
-
-                 <div class="container1">
+        <div class="container1" style="width: 600px; margin-left: 300px; height: 530px;">
         <section>
             <h1>Employee Details</h1>
             <div class="search-filter">
                 <input type="search" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search by name">
-                <select id="userTypeFilter" class="filter">
-                  <option disabled selected value="">Branch names</option>
-
-
-                  {% for branch in branch_names %}
-                  <option value="{{ branch }}">{{ branch }}</option>
-                  {% endfor %}
-                </select>
+            
                 
                 <label for="rowCount">Select number of rows:</label>
                 <select id="rowCount" onchange="changeRowCount()">
@@ -22,52 +19,37 @@
                     <option value="10">10</option>
                     <option value="15">15</option>
                 </select>
-                <select id="genderOption" class="filter">
-                  <option value="">Select employee type</option>
-                  <option value="clerk">clerk</option>
-                  <option value="manager">manager</option>
-              </select>
+               
             </div>
           <form method="post">  
             <table id="employeeTable" class="table">
                 <thead class="thead-light">
                     <tr>
-                        <th>Name</th>
+                       
                         <th>Age</th>
                         <th>Marital Status</th>
                         
-                        <th id="genderHeader">Gender</th>
-                        <th>Branch</th>
-                        
-                        <th> Employee Type</th>
-                        <th>Address</th>
-                        <th>Place</th>
-                        <th>District</th>
-                        <th>Phone</th>
-                        <th>Email</th>
+                        <th>Gender</th>
+                      
                         <th colspan="2">Manage</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Employee details data -->
-                    {% for employee in employees %}
-                    <tr data-usertype="{{ employee[9] }}">
-                        <td><img src="{{url_for('static', filename=employee[6])}}" style="width: 60px;height: 60px;border-radius: 50%;">{{ employee[3] }} {{ employee[4] }}</td>
-                        <td>{{ employee[5] }}</td>
+                    {% for branch in branch %}
+                    <tr>
                         
-                        <td>{{ employee[7] }}</td>
-                        <td>{{ employee[8] }}</td>
-                        <td>{{ employee[9] }}</td>
-                        <td>{{ employee[10] }}</td>
-                        <td>{{ employee[11] }}</td>
-                        <td>{{ employee[13] }}</td>
-                        <td>{{ employee[14] }}</td>
-                        <td>{{ employee[15] }}</td>
-                        <td>{{ employee[16] }}</td>
+                       
+                        
+                        <td>{{ branch[1] }}</td>
+                        <td>{{ branch[2] }}</td>
+                        <td>{{ branch[3] }}</td>
+                       
+                      
                         
                         <td>
                           <td>
-                            <a href="{{ url_for('admin.viewdetails', name1=employee[3],name2=employee[4], age=employee[5], image=employee[6], maritalStatus=employee[7], gender=employee[8], branch=employee[9], employeeType=employee[10], address=employee[11], place=employee[13], district=employee[14], phone=employee[15], email=employee[16]) }}" class="btn btn-info">View Details</a>
+                            <a href="" class="btn btn-info">View Details</a>
                           </td>
                           
                           
