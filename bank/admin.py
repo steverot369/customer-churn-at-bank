@@ -78,7 +78,7 @@ def adminhome():
     cursor = db.cursor()
     cursor.execute("SELECT c.fname,c.lname,c.photo,tt.amount,tt.date_time,tt.t_type,tt.t_no FROM customers c,transaction tt where c.cid=tt.customer_id and tt.t_type='online' LIMIT 4")
     online_transaction=cursor.fetchall()
-    cursor.execute("SELECT c.fname,c.lname,tt.t_no,tt.t_type,tt.amount,tt.date_time FROM customers c,transaction tt where c.cid=tt.customer_id LIMIT 10")
+    cursor.execute("SELECT c.fname,c.lname,tt.t_no,tt.t_type,tt.amount,tt.date_time FROM customers c,transaction tt where c.cid=tt.customer_id")
     transaction=cursor.fetchall()
 
     current_month_start = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)

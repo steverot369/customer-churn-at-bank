@@ -14,8 +14,11 @@ rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;1,700&display=swap" rel="stylesheet">
 <!-- STYLESHEET -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 
 <link rel="stylesheet" href="/static/css/customer.css">
+<script src="https://kit.fontawesome.com/c7705f70af.js" crossorigin="anonymous"></script>
 
 <script>
     function removeCount() {
@@ -35,8 +38,8 @@ rel="stylesheet">
     };
 </script> -->
 </head>
-<!-- <style>
-   #loading-animation {
+ <style>
+   /* #loading-animation {
   position: fixed;
   top: 0;
   left: 0;
@@ -65,9 +68,57 @@ rel="stylesheet">
   100% {
     transform: rotate(360deg);
   }
+} */
+.details-row {
+    display: none;
 }
 
-    </style> -->
+.details-row.show {
+    display: table-row;
+}
+.transaction-details {
+        background-color: #f3e7e7;
+        padding: 20px;
+    }
+
+    .transaction-details p {
+        margin: 0;
+        color: rgb(122, 104, 3);
+        font-size:14px ;
+        font-weight: 600;
+    }
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pagination button {
+    padding: 10px 20px;
+        margin: 0 5px;
+        border: none;
+        background: transparent;
+        color: rgb(0, 0, 0);
+        cursor: pointer;
+        font-size: 13px;
+        transition: color 0.3s ease;
+}
+
+.pagination button:hover {
+        color: rgb(102, 102, 102);
+    }
+    
+.search-input
+{
+  margin-bottom: 10px;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+    </style> 
     <!-- <script>
         window.addEventListener('load', function() {
         var loadingAnimation = document.getElementById('loading-animation');
@@ -334,52 +385,91 @@ rel="stylesheet">
                         <!-- <canvas id="chart"></canvas> -->
                         <button style="color:rebeccapurple; background: none;" onclick="moveChart()">Move Chart</button>
                     <canvas id="chart"  style="display: block;"></canvas>
-                     <div class="recent-orders" style="display: none;">
-                            <h2>Recent Transaction</h2>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Transaction No</th>
-                                        <th>Transaction type</th>
-                                        <th>Amount</th>
-                                        <th>Date</th>
-                                        
+                    <div class="recent-orders" style="display: none;">
+                        <h2>Recent Transaction</h2>
+               
 
-                
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                  {% for transaction in transaction %} 
-                                    <tr> 
-                                      <td>{{ transaction[0] }} {{ transaction[1] }}</td>
+                        <table id="employeeTable">
+                            <input type="search" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search by name">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Transaction No</th>
+                                    <th>Transaction type</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    
 
-                                      <td>{{ transaction[2] }}</td>
+            
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for transaction in transaction %} 
+                                <tr> 
+                                  <td>{{ transaction[0] }} {{ transaction[1] }}</td>
 
-                                  {% if transaction[3] == 'deposit' %}
-                                      <td style="color: rgb(128, 122, 0);">{{ transaction[3] }}</td>
-                                  {% elif transaction[3] == 'online' %}
-                                      <td style="color: blue;">{{ transaction[3] }}</td>
-                                  {% elif transaction[3] == 'fixed deposit' %}
-                                      <td style="color: rgb(9, 9, 225);">{{ transaction[3] }}</td>
-                                  {% elif transaction[3] == 'cheque withdrawl' %}
-                                      <td style="color: rgb(45, 175, 115);">{{ transaction[3] }}</td>
-                                  {% elif transaction[3] == 'loan_payment' %}
-                                      <td style="color: purple;">{{ transaction[3] }}</td>
-                                  {% else %}
-                                      <td style="color: red;">{{ transaction[3] }}</td>
-                                  {% endif %}
+                                  <td>{{ transaction[2] }}</td>
 
-                                      <td>{{ transaction[4] }}</td>
-                                      <td class="warning">{{ transaction[5] }}</td>
-                                     
-                                    </tr>
-                                  {% endfor %}
-                                </tbody>
-                                
-                            </table>
-                            <a href="customerviewtransaction">show all</a>
-                        </div> 
+                              {% if transaction[3] == 'deposit' %}
+                                  <td style="color: rgb(128, 122, 0);">{{ transaction[3] }}</td>
+                              {% elif transaction[3] == 'online' %}
+                                  <td style="color: blue;">{{ transaction[3] }}</td>
+                              {% elif transaction[3] == 'fixed deposit' %}
+                                  <td style="color: rgb(9, 9, 225);">{{ transaction[3] }}</td>
+                              {% elif transaction[3] == 'cheque withdrawl' %}
+                                  <td style="color: rgb(45, 175, 115);">{{ transaction[3] }}</td>
+                              {% elif transaction[3] == 'loan_payment' %}
+                                  <td style="color: purple;">{{ transaction[3] }}</td>
+                              {% else %}
+                                  <td style="color: red;">{{ transaction[3] }}</td>
+                              {% endif %}
+
+                                  <td>{{ transaction[4] }}</td>
+                                  <td class="warning">{{ transaction[5] }}</td>
+                                  <td>
+                                    <span class="expand-icon" onclick="toggleDetails(this)">
+                                        <i class="material-icons" style="cursor: pointer;">add</i>
+                                    </span>
+                                </td>
+                                </tr>
+                                <tr class="details-row">
+                                    <td colspan="6">
+                                        <div class="transaction-details">
+                                                    
+                                                    {% if transaction[3] == 'deposit' %}
+                                                    <p>
+                                                its a fixed deposit transaction where customer deposit &#8377; {{ transaction[4] }} on {{ transaction[5] }} by using payment slip</p>
+                                                {% elif transaction[3] == 'online' %}
+                                                    <p>
+                                                    its a online transaction done by customer &#8377; {{ transaction[4] }} on {{ transaction[5] }} </p>
+                                                {% elif transaction[3] == 'fixed deposit' %}
+                                                    <p>
+                                                        its a fixed fixed deposit transaction where customer recieve his interest &#8377; {{ transaction[4] }} on {{ transaction[5] }} </p>
+                                                {% elif transaction[3] == 'cheque withdrawl' %}
+                                                    <p>{{ transaction[3] }}
+                                                       its a withdrawl transaction where  customer has withdrawn &#8377; {{ transaction[4] }} on {{ transaction[5] }} by using his cheque
+                                                    </p>
+                                                {% elif transaction[3] == 'loan_payment' %}
+                                                    <p>
+                                                        customer pays he loan Emi &#8377; {{ transaction[4] }} on {{ transaction[5] }}</p>
+                                                {% else %}
+                                                    <p style="color: red;">{{ transaction[3] }}</p>
+                                                {% endif %}
+                                                </div>
+                                            </td>
+                                </tr>
+                              {% endfor %}
+                            
+                            </tbody>
+                            
+                        </table>
+                        <div class="pagination">
+                            <button id="btn" onclick="previousPage()">Previous</button>
+                            <button id="btn" onclick="nextPage()">Next</button>
+                        </div>
+                        <!-- <a href="customerviewtransaction">show all</a> -->
+                    </div> 
+                    
                  </section>
                  <!-- --------end of middle------ -->
                  <div class="right">
@@ -408,7 +498,7 @@ rel="stylesheet">
                         </div>
                     </div>
                     <div class="sales-analytics">
-                        <h2>Recent Transactions</h2>
+                        <h2>Recent Online Transactions</h2>
                         <a href="#" style="color: rgb(0, 42, 110); margin-left:300px;">More &#8594;
                         </a>
                         <br><br>
@@ -454,7 +544,101 @@ rel="stylesheet">
     integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ==" 
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/js/customer.js"></script>
+   
+   <script>
+     // Function to filter the table based on user type
+     document.getElementById('userTypeFilter').addEventListener('change', function() {
+  var searchKeyword = document.getElementById('searchInput').value.toLowerCase();
+  var userType = this.value;
+  var rows = document.querySelectorAll('#employeeTable tbody tr');
+  
+  rows.forEach(function(row) {
+    var employeeName = row.children[1].textContent.toLowerCase() + ' ' + row.children[2].textContent.toLowerCase();
+    var userRole = row.getAttribute('data-usertype');
+    if ((searchKeyword === '' || employeeName.includes(searchKeyword)) && (userType === 'all' || userRole === userType)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+});
 
+        // Function to search the table based on name
+        function searchTable() {
+  var input = document.getElementById("searchInput");
+  var filter = input.value.toUpperCase();
+  var table = document.getElementById("employeeTable");
+  var rows = table.getElementsByTagName("tr");
+  var noUserFoundMessage = document.getElementById("noUserFoundMessage");
+
+  var foundMatch = false;
+
+  for (var i = 1; i < rows.length; i++) {
+    var nameColumn = rows[i].getElementsByTagName("td")[0];
+    if (nameColumn.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      rows[i].style.display = "";
+      foundMatch = true;
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+
+  if (!foundMatch) {
+    noUserFoundMessage.style.display = "block";
+  } else {
+    noUserFoundMessage.style.display = "none";
+  }
+}
+   </script>
+   <script>
+        const rowsPerPage = 18; // Number of rows to display per page
+        let currentPage = 1;
+        
+        function showRows() {
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            const rows = employeeTable.getElementsByTagName('tr');
+        
+            for (let i = 1; i < rows.length; i++) {
+                if (i >= startIndex && i < endIndex) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }  
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                showRows();
+            }
+        }
+        
+        function nextPage() {
+            const rows = employeeTable.getElementsByTagName('tr');
+            const totalRows = rows.length - 1;
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+        
+            if (currentPage < totalPages) {
+                currentPage++;
+                showRows();
+            }
+        }
+        
+        // Add this code after the existing JavaScript code within the <script> tags
+        document.addEventListener('DOMContentLoaded', () => {
+            showRows();
+        });
+        
+        </script>
+    <script>
+        function toggleDetails(icon) {
+            var row = icon.closest('tr');
+            var detailsRow = row.nextElementSibling;
+            detailsRow.classList.toggle('show');
+            icon.querySelector('i').textContent = detailsRow.classList.contains('show') ? 'remove' : 'add';
+        }
+    </script>
     <script>
         var employeeCount = 12;
         var totalEmployees = 15;  // Set the maximum value for the progress bar
