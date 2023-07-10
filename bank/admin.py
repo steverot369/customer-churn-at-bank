@@ -354,4 +354,21 @@ def publichome():
     session.clear()
     flash("Successfully logout...")
     return redirect(url_for('public.publichome'))
+
+
+
+
+@admin.route('/adminviewcustomer',methods=['post','get'])
+def adminviewcustomer():
+
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM customers order by cid desc LIMIT 10")
+    employees = cursor.fetchall()
+
+    cursor.execute("select uname from login where login_type='admin';")
+    name = cursor.fetchone()[0]
+    cursor = db.cursor()
+    cursor.execute("SELECT branch_name FROM branch")
+    branch_names = [row[0] for row in cursor.fetchall()]
+    return render_template('adminviewcustomer.html',employees=employees,name=name,branch_names=branch_names)
     
