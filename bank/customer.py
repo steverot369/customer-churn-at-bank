@@ -1,3 +1,5 @@
+from email import encoders
+from email.mime.base import MIMEBase
 from io import BytesIO
 import uuid
 from flask import *
@@ -10,6 +12,9 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Spacer, Ima
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.platypus import Paragraph
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 db = mysql.connector.connect(
     host="localhost",
@@ -504,10 +509,14 @@ def accountstatement():
     cursor = db.cursor()
     cursor.execute("SELECT t_no, t_type, amount, balance, date_time FROM transaction WHERE customer_id = '%s'"%(session['cust_id']))
     transactions = cursor.fetchall()
-
+    cursor.execute("select acc_no from savingsacc where customer_id='%s'"%(session['cust_id']))
+    account_details=cursor.fetchall()
+    date=datetime.now().date()
     if request.method == 'POST':
         from_date = request.form.get('from_date')
         to_date = request.form.get('to_date')
+        account = request.form.get('accno')
+
 
         # Convert the from_date and to_date to datetime objects for comparison
         from_date = datetime.strptime(from_date, '%Y-%m-%d')
@@ -515,14 +524,24 @@ def accountstatement():
 
         # Fetch the transactions within the specified date range from the database
         cursor = db.cursor()
-        cursor.execute("SELECT t_no, t_type, amount, balance, date_time FROM transaction WHERE customer_id = '%s' AND date_time BETWEEN '%s' AND '%s'" % (session['cust_id'], from_date, to_date))
+        cursor.execute("select savings_id,ifsccode from savingsacc where acc_no='%s'"%(account))
+        account1=cursor.fetchone()
+        savings_id=account1[0]
+        ifsccode=account1[1]
+        cursor.fetchall()
+        cursor.execute("SELECT t_no, t_type, amount, balance, date_time FROM transaction WHERE customer_id = '%s' AND acc_id='%s' AND date_time BETWEEN '%s' AND '%s'"  % (session['cust_id'],savings_id, from_date, to_date))
         transactions = cursor.fetchall()
-        cursor.execute("SELECT fname, lname, address, phone, email FROM customers WHERE cid='%s'" % (session['cust_id']))
+        cursor.execute("SELECT fname, lname, address, phone, email,branch FROM customers WHERE cid='%s'" % (session['cust_id']))
         customer_details = cursor.fetchone()
         fname = customer_details[0]
-        address = customer_details[1]
-        phone = customer_details[2]
-        email = customer_details[3]
+        lname = customer_details[1]
+
+        full_name = fname + ' ' + lname
+        address = customer_details[2]
+        phone = customer_details[3]
+        email = customer_details[4]
+        branch = customer_details[5]
+
        
        
 
@@ -565,17 +584,23 @@ def accountstatement():
 
         # Add the logo at the top right
         logo = "C:/mca project 2023/BankManagement/bank/static/images/logo3.png"
-        logo_image = Image(logo, width=100, height=50)
+        logo_image = Image(logo, width=90, height=30)
         logo_image.hAlign = 'LEFT'
         elements.append(logo_image)
 
         # Add customer details
         customer_details_table_data = [
-            ['Customer Details'],
-            ['Name:', fname],
+           
+            ['Date',date],
+            ['Account Name:', full_name],
             ['Address:', address],
             ['Phone:', phone],
             ['Email:', email],
+            ['Account No:', account],
+            ['Ifsccode:', ifsccode],
+            ['Branch',branch],
+
+
            
 
         ]
@@ -608,8 +633,29 @@ def accountstatement():
         # Set the appropriate MIME type for PDF
         response.mimetype = 'application/pdf'
 
-        # Send the response as a download
-        return response
+        msg = MIMEMultipart()
+        msg['From'] = 'mltalerts.mlt.co.in@gmail.com'
+        msg['To'] = email  # Replace with the customer's email address
+        msg['Subject'] = 'Account Statement'
+        message = f"Your account statement from {from_date} {to_date}!."
+
+        msg.attach(MIMEText(message, "plain"))
+        # Attach the PDF file to the email
+        attachment = MIMEBase('application', 'octet-stream')
+        attachment.set_payload(response.data)
+        encoders.encode_base64(attachment)
+        attachment.add_header('Content-Disposition', 'attachment', filename='account_statement.pdf')
+        msg.attach(attachment)
+
+        # Send the email
+        with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+            smtp.starttls()
+            smtp.login('mltalerts.mlt.co.in@gmail.com', 'kjerrrtwgllsaqdp')  # Replace with your email credentials
+            smtp.send_message(msg)
+
+            # Send the response as a download
+        flash("mail send successfully to your email")
+        
 
 
-    return render_template('accountstatement.html', transactions=transactions)
+    return render_template('accountstatement.html', transactions=transactions,account_details=account_details)
