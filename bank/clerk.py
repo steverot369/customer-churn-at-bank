@@ -392,8 +392,8 @@ def clerkloancash():
             loan="INSERT INTO loan_payment(customer_id,branch_id,loan_id,emi_paid,date_paid)  VALUES ( %s, %s,%s,%s,%s)"
             loan_values = (cid, bid, loan_id, loanEmi,formatted_date)
             cursor.execute(loan,loan_values)
-            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'loan_payment',%s,%s)"
-            transaction_values = (cid,loan_id,bid,trans_no,loanEmi,formatted_date)
+            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance,date_time) VALUES (%s, %s,%s, %s, 'loan_payment',%s,%s,%s)"
+            transaction_values = (cid,loan_id,bid,trans_no,loanEmi,outstandingBalance,formatted_date)
             cursor.execute(transaction,transaction_values)
 
             db.commit()  # Commit the changes to the database
@@ -406,8 +406,8 @@ def clerkloancash():
             loan="INSERT INTO loan_payment(customer_id,branch_id,loan_id,emi_paid,date_paid)  VALUES ( %s, %s,%s,%s,%s)"
             loan_values = (cid, bid, loan_id, loanEmi,formatted_date)
             cursor.execute(loan,loan_values)
-            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'loan_payment',%s,%s)"
-            transaction_values = (cid,loan_id,bid,trans_no,loanEmi,formatted_date)
+            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance,date_time) VALUES (%s, %s,%s, %s, 'loan_payment',%s,%s,%s)"
+            transaction_values = (cid,loan_id,bid,trans_no,loanEmi,outstandingBalance,formatted_date)
             cursor.execute(transaction,transaction_values)
 
             db.commit()  # Commit the changes to the database
@@ -482,7 +482,7 @@ def clerkdepositcash():
         accno = request.form['accno1']
         transaction_type=request.form['paymentMethod']
         withdrawal_amt=request.form['amounts']
-
+        balance=int(request.form['balance'])
         # note
         fivers = int(request.form['5'])
         tenrs = int(request.form['10'])
@@ -497,7 +497,8 @@ def clerkdepositcash():
 
         print('deposit',deposit)
         print('amt',accno)
-        
+        balance_deposit=balance + deposit
+        print("balancr on depsoit======",balance_deposit)
         cursor.execute("select branch_id from branch where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
         bid=cursor.fetchone()[0]
         date = datetime.now()
@@ -511,8 +512,8 @@ def clerkdepositcash():
             return redirect(url_for('clerk.clerkdepositcash'))
         else:
             cursor.execute("UPDATE savingsacc SET balance = balance + %s WHERE acc_no = %s",(deposit, accno))
-            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'cash depsoit',%s,%s)"
-            transaction_values = (cid,savings_id,bid,trans_no,deposit,date)
+            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance, date_time) VALUES (%s, %s,%s, %s, 'deposit',%s,%s,%s)"
+            transaction_values = (cid,savings_id,bid,trans_no,deposit,balance_deposit,date)
             cursor.execute(transaction, transaction_values)
             
             cursor.execute(transaction, transaction_values)     
@@ -555,11 +556,13 @@ def clerkdepositcash():
         deposit = request.form['amt']
         accno = request.form['accno1']
         
-        withdrawal_amt=request.form['amounts']
-        balance=request.form['balance']
+        withdrawal_amt=int(request.form['amounts'])
+        balance=int(request.form['balance'])
+        balance_withdrawal=balance - withdrawal_amt
+        print("balance at withdrwal is ====",balance_withdrawal)
         cursor.execute("select branch_id from branch where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
         bid=cursor.fetchone()[0]
-        date = datetime.datetime.now()
+        date = datetime.now()
         trans_no = str(random.randint(1000000000000000, 9999999999999999))
         cursor.execute("select savings_id from savingsacc where acc_no='%s'"%(accno))
         savings_id=cursor.fetchone()[0]
@@ -570,8 +573,8 @@ def clerkdepositcash():
             return redirect(url_for('clerk.clerkdepositcash'))
         else:
             cursor.execute("UPDATE savingsacc SET balance = balance - %s WHERE acc_no = %s",(withdrawal_amt, accno))
-            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'cheque withdrawl',%s,%s)"
-            transaction_values = (cid,savings_id,bid,trans_no,withdrawal_amt,date)
+            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance, date_time) VALUES (%s, %s,%s, %s, 'cheque withdrawl',%s,%s,%s)"
+            transaction_values = (cid,savings_id,bid,trans_no,withdrawal_amt,balance_withdrawal,date)
             cursor.execute(transaction, transaction_values)
         
         

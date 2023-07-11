@@ -1,0 +1,52 @@
+
+{% include 'customersidebar.html' %}
+
+<section class="middle">
+    <div class="header">
+        <input type="date">
+        
+    
+    </div>
+    <h1>Account Statement</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Transaction No</th>
+                <th>Transaction Type</th>
+                <th>Amount</th>
+                <th>Balance</th>
+                <th>Date/Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction[0] }}</td>
+                    <td>{{ transaction[1] }}</td>
+                    <td>{{ transaction[2] }}</td>
+                    <td>{{ transaction[3] }}</td>
+                    <td>{{ transaction[4] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form method="POST">
+        <label for="from_date">From Date:</label>
+        <input type="date" id="from_date" name="from_date"><br>
+
+        <label for="to_date">To Date:</label>
+        <input type="date" id="to_date" name="to_date"><br>
+
+        <input type="submit" value="Download Account Statement">
+    </form>
+</section>
+     </main>  
+  
+
+
+    
+   
+
+  
+</body>
+</html>

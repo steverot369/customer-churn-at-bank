@@ -1,8 +1,16 @@
+from io import BytesIO
 import uuid
 from flask import *
 from database import *
 from datetime import datetime,timedelta
 import random
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Spacer, Image
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.platypus import Paragraph
+
 db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -38,7 +46,7 @@ def customerhome():
             labels.append(month)
             values.append(0)
    
-    cursor.execute("SELECT t_no,t_type,amount,date_time,customer_id from transaction where customer_id=(select cid from customers where cid='%s') LIMIT 8"%(session['cust_id']))
+    cursor.execute("SELECT t_no,t_type,amount,date_time from transaction where customer_id='%s'"%(session['cust_id']))
     transaction = cursor.fetchall()
     cursor.execute("select fname,lname,email from customers where loginid='%s'"%(session['logid']))
     name = cursor.fetchall()
@@ -146,8 +154,11 @@ def customertransferfund():
         accno=request.form['accno']
         # from_acc = request.form['acc']
         to_acc = request.form['acc1']
-        amount=request.form['amount']
+        amount=int(request.form['amount'])
         pin=request.form['mpipin']
+        # balance_transaction=request.form['balance']
+        
+
         print("pin == ",pin)
         print("amount= ",amount)
         print("our account",acc_no)
@@ -184,6 +195,8 @@ def customertransferfund():
         trans_no = str(random.randint(1000000000000000, 9999999999999999))
        
         print(mpipin[0])
+        calculate_balance=balance-amount
+        print("caldddddd======",calculate_balance)
         if mpipin[0] == '1':
             flash("set mpi pin...")
             return redirect(url_for('customer.customersetpin'))
@@ -195,8 +208,8 @@ def customertransferfund():
             cursor.execute(transaction, transaction_values)
 
  
-            transaction1 = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'online',%s,%s)"
-            transaction_values1 = (cid,savings_id,branch_id,trans_no,amount,date)
+            transaction1 = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance, date_time) VALUES (%s, %s,%s, %s, 'online',%s,%s,%s)"
+            transaction_values1 = (cid,savings_id,branch_id,trans_no,amount,calculate_balance,date)
             cursor.execute(transaction1, transaction_values1) 
 
             flash("success...")
@@ -411,7 +424,7 @@ def customerpaysloan():
         monthlyinterest=loanAmount*interestRate
         principleAmount = float(emi_amount) - monthlyinterest
 
-        outstandingBalance = loanAmount - principleAmount
+        outstandingBalance = int(loanAmount) - principleAmount
         print(interestRate)
         print(monthlyinterest)
 
@@ -445,8 +458,8 @@ def customerpaysloan():
             loan="INSERT INTO loan_payment(customer_id,branch_id,loan_id,emi_paid,date_paid)  VALUES ( %s, %s,%s,%s,%s)"
             loan_values = (cid, bid, loan_id, emi_amount,formatted_date)
             cursor.execute(loan,loan_values)
-            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'loan payment',%s,%s)"
-            transaction_values = (cid,loan_id,bid,trans_no,emi_amount,formatted_date)
+            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance, date_time) VALUES (%s, %s,%s, %s, 'loan payment',%s,%s,%s)"
+            transaction_values = (cid,loan_id,bid,trans_no,emi_amount,outstandingBalance,formatted_date)
             cursor.execute(transaction,transaction_values)
             cursor.execute("UPDATE savingsacc SET balance = balance - %s WHERE acc_no = %s",(emi_amount, savings_acc))
             bank_messages=f"you have paid your loan Emi Rs.{emi_amount}"
@@ -465,8 +478,8 @@ def customerpaysloan():
             loan="INSERT INTO loan_payment(customer_id,branch_id,loan_id,emi_paid,date_paid)  VALUES ( %s, %s,%s,%s,%s)"
             loan_values = (cid, bid, loan_id, emi_amount,formatted_date)
             cursor.execute(loan,loan_values)
-            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount, date_time) VALUES (%s, %s,%s, %s, 'loan payment',%s,%s)"
-            transaction_values = (cid,loan_id,bid,trans_no,emi_amount,formatted_date)
+            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance, date_time) VALUES (%s, %s,%s, %s, 'loan payment',%s,%s,%s)"
+            transaction_values = (cid,loan_id,bid,trans_no,emi_amount,outstandingBalance,formatted_date)
             cursor.execute(transaction,transaction_values)
             cursor.execute("UPDATE savingsacc SET balance = balance - %s WHERE acc_no = %s",(emi_amount,savings_acc))
             cursor.execute(transaction,transaction_values)
@@ -486,4 +499,117 @@ def customerpaysloan():
 
 
 
-    
+@customer.route('/accountstatement', methods=['GET', 'POST'])
+def accountstatement():
+    cursor = db.cursor()
+    cursor.execute("SELECT t_no, t_type, amount, balance, date_time FROM transaction WHERE customer_id = '%s'"%(session['cust_id']))
+    transactions = cursor.fetchall()
+
+    if request.method == 'POST':
+        from_date = request.form.get('from_date')
+        to_date = request.form.get('to_date')
+
+        # Convert the from_date and to_date to datetime objects for comparison
+        from_date = datetime.strptime(from_date, '%Y-%m-%d')
+        to_date = datetime.strptime(to_date, '%Y-%m-%d')
+
+        # Fetch the transactions within the specified date range from the database
+        cursor = db.cursor()
+        cursor.execute("SELECT t_no, t_type, amount, balance, date_time FROM transaction WHERE customer_id = '%s' AND date_time BETWEEN '%s' AND '%s'" % (session['cust_id'], from_date, to_date))
+        transactions = cursor.fetchall()
+        cursor.execute("SELECT fname, lname, address, phone, email FROM customers WHERE cid='%s'" % (session['cust_id']))
+        customer_details = cursor.fetchone()
+        fname = customer_details[0]
+        address = customer_details[1]
+        phone = customer_details[2]
+        email = customer_details[3]
+       
+       
+
+        # Generate the PDF using ReportLab
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+
+        # Define styles
+        styles = getSampleStyleSheet()
+        customer_details_style = ParagraphStyle(
+            'customer_details_style',
+            parent=styles['Normal'],
+            fontSize=12,
+            leading=14,
+            leftIndent=0,
+            spaceAfter=12,
+        )
+
+        # Create the table to hold the transaction data
+        table_data = [['Transaction No', 'Transaction Type', 'Amount', 'Balance', 'Date']]
+        for transaction in transactions:
+            table_data.append(list(transaction))
+
+        table = Table(table_data)
+
+        # Apply styling to the table
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ]))
+
+        # Build the PDF document
+        elements = []
+
+        # Add the logo at the top right
+        logo = "C:/mca project 2023/BankManagement/bank/static/images/logo3.png"
+        logo_image = Image(logo, width=100, height=50)
+        logo_image.hAlign = 'LEFT'
+        elements.append(logo_image)
+
+        # Add customer details
+        customer_details_table_data = [
+            ['Customer Details'],
+            ['Name:', fname],
+            ['Address:', address],
+            ['Phone:', phone],
+            ['Email:', email],
+           
+
+        ]
+        customer_details_table = Table(customer_details_table_data)
+        customer_details_table.setStyle(TableStyle([
+            ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, -1), 12),
+        ]))
+        
+        elements.append(customer_details_table)
+
+        # Add spacer to align the transaction table
+        elements.append(Spacer(1, 0.5 * inch))
+        account_statements_message = f"Account Statements from {from_date} to {to_date}"
+        elements.append(Paragraph(account_statements_message, styles['Normal']))
+        elements.append(Spacer(1, 0.5 * inch))
+        elements.append(table)
+        
+        doc.build(elements)
+
+        # Move the buffer's pointer to the beginning
+        buffer.seek(0)
+
+        # Create a Flask response with the PDF file data
+        response = make_response(buffer.getvalue())
+
+        # Set the Content-Disposition header to specify the attachment filename
+        response.headers['Content-Disposition'] = 'attachment; filename=account_statement.pdf'
+
+        # Set the appropriate MIME type for PDF
+        response.mimetype = 'application/pdf'
+
+        # Send the response as a download
+        return response
+
+
+    return render_template('accountstatement.html', transactions=transactions)

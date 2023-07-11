@@ -15,7 +15,7 @@ rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;1,700&display=swap" rel="stylesheet">
 <!-- STYLESHEET -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <link rel="stylesheet" href="/static/css/customer.css">
 <script src="https://kit.fontawesome.com/c7705f70af.js" crossorigin="anonymous"></script>
 <script>
@@ -447,7 +447,53 @@ input[type="submit"] {
     border-radius: 50%;
     font-size: 10px;
 }
+.details-row {
+    display: none;
+}
 
+.details-row.show {
+    display: table-row;
+}
+.transaction-details {
+        background-color: #f3e7e7;
+        padding: 20px;
+    }
+
+    .transaction-details p {
+        margin: 0;
+        color: rgb(122, 104, 3);
+        font-size:14px ;
+        font-weight: 600;
+    }
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pagination button {
+    padding: 10px 20px;
+        margin: 0 5px;
+        border: none;
+        background: transparent;
+        color: rgb(0, 0, 0);
+        cursor: pointer;
+        font-size: 13px;
+        transition: color 0.3s ease;
+}
+
+.pagination button:hover {
+        color: rgb(102, 102, 102);
+    }
+    .submenu {
+    display: none;
+    padding-left: 80px;
+   
+}
+
+.show {
+    display: block;
+}
 </style>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -555,34 +601,45 @@ input[type="submit"] {
                         <span class="material-icons-sharp">dashboard</span>
                         <h4>Dashboard</h4>
                     </a>
-                    <a href="customerviewaccount">
-                        <span class="material-icons-sharp">currency_exchange</span>
-                        <h4>accounts</h4>
-                    </a>
-                    <a href="#">
-                        <span class="material-icons-sharp">account_balance_wallet</span>
-                        <h4>Wallet</h4>
-                    </a>
-                    <a href="#">
-                        <span class="material-icons-sharp">payment</span>
-                        <h4>Transaction</h4>
-                    </a>
-                    <a href="#">
-                        <span class="material-icons-sharp">pie_chart</span>
-                        <h4>Analytics</h4>
-                    </a>
-                    
-                    
-                    <!-- <a href="customerviewmessages" class="messages-link">
-                      <span class="material-icons-sharp">message</span>
-                      <h4>Messages</h4>
-                      <span id="message-count" class="message-count">23</span>
+                    <!-- <a href="customerviewaccount" class="menu-link" style="text-decoration: none;">
+                        <span class="material-icons-sharp">manage_accounts</span>
+                        <h4>Accounts</h4>
+                    </a> -->
+                    <a href="#" style="text-decoration: none;">
                       
-                  </a> -->
-                    <a href="customersendfeedback">
+                        <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
+                        <h4>Accounts</h4>
+                    </a>
+                    <div class="submenu">
+                      <a href="customerviewaccount" style="text-decoration: none;">Accounts</a>
+                      <a href="accountstatement" style="text-decoration: none;">Account Statement</a>
+                      
+                  </div>
+                      <a href="customerviewloanpayments" class="menu-link" style="text-decoration: none;">
+                        <span class="material-symbols-outlined">real_estate_agent</span>
+                        <h4>loan</h4>
+                    </a>
+                    
+     
+                    <a href="differentcreditcard" style="text-decoration: none;">
+                        
+                      <span class="material-symbols-outlined">credit_score</span>
+                      <h4>credit card</h4>
+                  </a>
+                 
+  
+                <a href="customertransferfund" style="text-decoration: none;">
+                        
+                  <span class="material-icons-sharp">stacked_bar_chart</span>
+                  <h4>Transfer money</h4>
+              </a>
+                    
+                    
+                    
+                    <!-- <a href="customersendfeedback">
                         <span class="material-icons-sharp">help_center</span>
                         <h4>feedback</h4>
-                    </a>
+                    </a> -->
                     <a href="customersendcomplaint" id="complaint-link">
                       <span class="material-icons-sharp">help_center</span>
                       <h4>complaint</h4>
@@ -594,12 +651,12 @@ input[type="submit"] {
                    </div>
                    <!---------end of side bar--- -->
                    <div class="updates">
-                        <span class="material-icons-sharp">manage_accounts</span>
-                            <h4>Manage task</h4>
-                            <p>Here you can</p>
-                            <p>Manage Users & other tasks</p>
-                            <a href="clerkmanagehome">Manage</a>
-                    </div>
+                    <span class="material-icons-sharp">update</span>
+                        <h4>Updates available</h4>
+                        <p>Security updates</p>
+                        <p>General updates updates</p>
+                        <a href="#">Update now</a>
+                </div>
                 </aside>
                  <!-- end of aside----- -->
 
@@ -677,17 +734,21 @@ input[type="submit"] {
                       </div><br><br>
                       <button style="color:rebeccapurple; background: none;" onclick="moveChart()">Move Chart</button>
                         <canvas id="chart"></canvas>
-                        <!-- <div class="recent-orders">
+                        <div class="recent-orders" style="display: none;">
                             <h2>Recent Transaction</h2>
-                            <table>
+                   
+    
+                            <table id="employeeTable">
+                                <!-- <input type="search" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search by name"> -->
                                 <thead>
                                     <tr>
+                                       
                                         <th>Transaction No</th>
                                         <th>Transaction type</th>
                                         <th>Amount</th>
                                         <th>Date</th>
-                                        <th> </th>
-
+                                        
+    
                 
                                     </tr>
                                 </thead>
@@ -695,17 +756,68 @@ input[type="submit"] {
                                   {% for transaction in transaction %} 
                                     <tr> 
                                       <td>{{ transaction[0] }}</td>
-                                      <td>{{ transaction[1] }}</td>
-                                      <td>{{ transaction[2] }}</td>
-                                      <td class="warning">{{ transaction[3] }}</td>
+    
+                                      
+    
+                                  {% if transaction[1] == 'deposit' %}
+                                      <td style="color: rgb(128, 122, 0);">{{ transaction[1] }}</td>
+                                  {% elif transaction[1] == 'online' %}
+                                      <td style="color: blue;">{{ transaction[1] }}</td>
+                                  {% elif transaction[1] == 'fixed deposit' %}
+                                      <td style="color: rgb(9, 9, 225);">{{ transaction[1] }}</td>
+                                  {% elif transaction[1] == 'cheque withdrawl' %}
+                                      <td style="color: rgb(45, 175, 115);">{{ transaction[1] }}</td>
+                                  {% elif transaction[1] == 'loan_payment' %}
+                                      <td style="color: purple;">{{ transaction[1] }}</td>
+                                  {% else %}
+                                      <td style="color: red;">{{ transaction[1] }}</td>
+                                  {% endif %}
+                                  <td>{{ transaction[2] }}</td>
+                                      <td>{{ transaction[3] }}</td>
                                      
+                                      <td>
+                                        <span class="expand-icon" onclick="toggleDetails(this)">
+                                            <i class="material-icons" style="cursor: pointer;">add</i>
+                                        </span>
+                                    </td>
+                                    </tr>
+                                    <tr class="details-row">
+                                        <td colspan="6">
+                                            <div class="transaction-details">
+                                                        
+                                                        {% if transaction[1] == 'deposit' %}
+                                                        <p>
+                                                    its a fixed deposit transaction where you have deposited &#8377; {{ transaction[2] }} on {{ transaction[3] }} by using payment slip on to your bank account</p>
+                                                    {% elif transaction[1] == 'online' %}
+                                                        <p>
+                                                        its a online transaction done by you on &#8377; {{ transaction[2] }} on {{ transaction[3] }} </p>
+                                                    {% elif transaction[1] == 'fixed deposit' %}
+                                                        <p>
+                                                            its a fixed fixed deposit transaction where you have recieve your interest &#8377; {{ transaction[2] }} on {{ transaction[3] }} </p>
+                                                    {% elif transaction[1] == 'cheque withdrawl' %}
+                                                        <p>{{ transaction[1] }}
+                                                           its a withdrawl transaction where you have withdrawn &#8377; {{ transaction[2] }} on {{ transaction[3] }} by your cheque
+                                                        </p>
+                                                    {% elif transaction[1] == 'loan_payment' %}
+                                                        <p>
+                                                          its a loan transaction where you have paid your loan Emi &#8377; {{ transaction[4] }} on {{ transaction[5] }}</p>
+                                                    {% else %}
+                                                        <p style="color: red;">{{ transaction[1] }}</p>
+                                                    {% endif %}
+                                                    </div>
+                                                </td>
                                     </tr>
                                   {% endfor %}
+                                
                                 </tbody>
                                 
                             </table>
-                            <a href="customerviewtransaction">show all</a>
-                        </div> -->
+                            <div class="pagination">
+                                <button id="btn" onclick="previousPage()">Previous</button>
+                                <button id="btn" onclick="nextPage()">Next</button>
+                            </div>
+                            <!-- <a href="customerviewtransaction">show all</a> -->
+                        </div> 
                  </section>
                  <!-- --------end of middle------ -->
                  <div class="right">
@@ -823,7 +935,7 @@ input[type="submit"] {
                     </div>
                 </div>
                  <!-- end of right -->
-                 {% for transaction in details %}
+                 <!-- {% for transaction in details %}
         
             {% if logged_in_user_id == transaction[0] %}
                 <td>Debited</td>
@@ -833,7 +945,7 @@ input[type="submit"] {
                 <td>{{ transaction[7] }}</td>
             {% endif %}
         
-        {% endfor %}
+        {% endfor %} -->
               <div id="container-90">
                   <span class="close-btn" onclick="closePopup()">&times;</span>
                   <div class="animated-person"></div>
@@ -867,123 +979,189 @@ input[type="submit"] {
     <script src="/static/js/customer.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-      var currentChartType = 'line';
-      var ctx = document.getElementById('chart').getContext('2d');
-      var myChart;
-  
-      function createLineChart() {
-          destroyChart();
-          myChart = new Chart(ctx, {
-              type: 'line',
-              data: {
-                  labels: {{ labels|tojson }},
-                  datasets: [{
-                      label: 'Customer Transactions',
-                      data: {{ values|tojson }},
-                      backgroundColor: 'red',
-                      borderColor: 'blue',
-                      borderWidth: 2,
-                      pointRadius: 4,
-                  }]
-              },
-              options: {
-                  scales: {
-                      yAxes: [{
-                          ticks: {
-                              beginAtZero: true
-                          }
-                      }]
-                  },
-                  plugins: {
-                      title: {
-                          display: true,
-                          text: 'Customer Transactions',
-                          fontSize: 20
-                      },
-                      legend: {
-                          display: true,
-                          labels: {
-                              fontSize: 20
-                          }
-                      },
-                      tooltip: {
-                          titleFontSize: 26, // Increase the font size of the tooltip title
-                          bodyFontSize: 22, // Increase the font size of the tooltip body
-                      }
-                  }
-              }
-          });
-      }
-  
-      function createBarChart() {
-          destroyChart();
-          myChart = new Chart(ctx, {
-              type: 'bar',
-              data: {
-                  labels: {{ labels|tojson }},
-                  datasets: [{
-                      label: 'Customer Transactions',
-                      data: {{ values|tojson }},
-                      backgroundColor: 'blue',
-                      borderColor: 'red',
-                      
-                      borderWidth: 2,
-                      barThickness: 10,
-                  }]
-              },
-              options: {
-                  scales: {
-                      yAxes: [{
-                          ticks: {
-                              beginAtZero: true
-                          }
-                      }]
-                  },
-                  plugins: {
-                      title: {
-                          display: true,
-                          text: 'Customer Transactions',
-                          fontSize: 16
-                      },
-                      legend: {
-                          display: true,
-                          labels: {
-                              fontSize: 15
-                          }
-                      },
-                      tooltip: {
-                          titleFontSize: 16, // Increase the font size of the tooltip title
-                          bodyFontSize: 12, // Increase the font size of the tooltip body
-                      }
-                  }
-              }
-          });
-      }
-  
-  
-  
-  
-  
-      
-      function destroyChart() {
-          if (myChart) {
-              myChart.destroy();
-          }
-      }
-  
-      function moveChart() {
-          if (currentChartType === 'line') {
-              createBarChart();
-              currentChartType = 'bar';
-          } else {
-              createLineChart();
-              currentChartType = 'line';
-          }
-      }
-  
-      // Initial chart creation
-      createLineChart();
-  </script>
+        var submenuIcons = document.querySelectorAll('.submenu-icon');
+      // Loop through each submenu icon
+      submenuIcons.forEach(function(icon) {
+         // Add a click event listener to each submenu icon
+         icon.addEventListener('click', function() {
+             // Get the corresponding submenu for this icon
+             var submenu = icon.parentElement.nextElementSibling; 
+             // Toggle the visibility of the submenu
+             submenu.classList.toggle('show');
+         });
+      });
+      </script>
+    <script>
+        const rowsPerPage = 18; // Number of rows to display per page
+        let currentPage = 1;
+        
+        function showRows() {
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            const rows = employeeTable.getElementsByTagName('tr');
+        
+            for (let i = 1; i < rows.length; i++) {
+                if (i >= startIndex && i < endIndex) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }  
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                showRows();
+            }
+        }
+        
+        function nextPage() {
+            const rows = employeeTable.getElementsByTagName('tr');
+            const totalRows = rows.length - 1;
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+        
+            if (currentPage < totalPages) {
+                currentPage++;
+                showRows();
+            }
+        }
+        
+        // Add this code after the existing JavaScript code within the <script> tags
+        document.addEventListener('DOMContentLoaded', () => {
+            showRows();
+        });
+        
+        </script>
+         <script>
+            function toggleDetails(icon) {
+                var row = icon.closest('tr');
+                var detailsRow = row.nextElementSibling;
+                detailsRow.classList.toggle('show');
+                icon.querySelector('i').textContent = detailsRow.classList.contains('show') ? 'remove' : 'add';
+            }
+        </script>
+    <script>
+        var currentChartType = 'line';
+        var ctx = document.getElementById('chart').getContext('2d');
+        var myChart;
+    
+        function createLineChart() {
+            destroyChart();
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ labels|tojson }},
+                    datasets: [{
+                        label: 'Customer Transactions',
+                        data: {{ values|tojson }},
+                        backgroundColor: 'red',
+                        borderColor: 'blue',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Customer Transactions',
+                            fontSize: 16
+                        },
+                        legend: {
+                            display: true,
+                            labels: {
+                                fontSize: 12
+                            }
+                        },
+                        tooltip: {
+                            titleFontSize: 16, // Increase the font size of the tooltip title
+                            bodyFontSize: 12, // Increase the font size of the tooltip body
+                        }
+                    }
+                }
+            });
+        }
+    
+        function createBarChart() {
+            destroyChart();
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ labels|tojson }},
+                    datasets: [{
+                        label: 'Customer Transactions',
+                        data: {{ values|tojson }},
+                        backgroundColor: 'blue',
+                        borderColor: 'red',
+                        borderWidth: 2,
+                        barThickness: 10,
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Customer Transactions',
+                            fontSize: 16
+                        },
+                        legend: {
+                            display: true,
+                            labels: {
+                                fontSize: 12
+                            }
+                        },
+                        tooltip: {
+                            titleFontSize: 16, // Increase the font size of the tooltip title
+                            bodyFontSize: 12, // Increase the font size of the tooltip body
+                        }
+                    }
+                }
+            });
+        }
+    
+        function destroyChart() {
+            if (myChart) {
+                myChart.destroy();
+            }
+        }
+    
+        function moveChart() {
+        var chart = document.getElementById('chart');
+        var recentOrders = document.getElementsByClassName('recent-orders')[0];
+    
+        if (currentChartType === 'line') {
+            destroyChart();
+            createBarChart();
+            chart.style.display = 'none';
+            recentOrders.style.display = 'block';
+            currentChartType = 'bar';
+        } else if (currentChartType === 'bar') {
+            destroyChart();
+            recentOrders.style.display = 'none';
+            chart.style.display = 'block';
+            createLineChart();
+            currentChartType = 'line';
+        }
+    }
+    
+    
+        // Initial chart creation
+        createLineChart();
+    </script>
     <script>
       var messageContainer = document.getElementById("messages-container");
       var messageCount = document.getElementById("messageCount");
