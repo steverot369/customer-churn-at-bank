@@ -73,20 +73,6 @@ function toggleProfileContainer() {
 <style>
   
 
-/* .profile-container {
-    display: none; 
-    width: 300px;
-    padding: 20px;
-    background-color: #e3d4d4;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    top: 60px;
-    right: 0;
-    z-index: 999;
-    transition: transform 0.3s ease-in-out;
-    transform-origin: top right;
-    border-radius: 10px;
-} */
 
 .profile {
   display: flex;
@@ -494,6 +480,34 @@ input[type="submit"] {
 .show {
     display: block;
 }
+
+
+.search-input,
+.filter,
+#rowCount {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.search-input:focus,
+.filter:focus,
+#rowCount:focus {
+  outline: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter {
+  width: 150px;
+}
+
+
+
+
 </style>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -738,7 +752,17 @@ input[type="submit"] {
                             <h2>Recent Transaction</h2>
                    
     
-                            <table id="employeeTable">
+                            
+                                
+                                    
+                                <select id="userTypeFilter" class="filter">
+                                    <option value="">Account Number</option>
+                                    {% for account in account_details %}
+                                    <option value="{{ account }}">{{ account }}</option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <table id="employeeTable">
                                 <!-- <input type="search" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search by name"> -->
                                 <thead>
                                     <tr>
@@ -746,15 +770,14 @@ input[type="submit"] {
                                         <th>Transaction No</th>
                                         <th>Transaction type</th>
                                         <th>Amount</th>
-                                        <th>Date</th>
-                                        
-    
-                
+                                        <th>balance</th>
+                                        <th>account number</th>
+                                        <th>Date</th>                                    
                                     </tr>
                                 </thead>
                                 <tbody>
                                   {% for transaction in transaction %} 
-                                    <tr> 
+                                    <tr data-account="{{ transaction[5] }}"> 
                                       <td>{{ transaction[0] }}</td>
     
                                       
@@ -774,6 +797,10 @@ input[type="submit"] {
                                   {% endif %}
                                   <td>{{ transaction[2] }}</td>
                                       <td>{{ transaction[3] }}</td>
+                                      <td>{{ transaction[5] }}</td>
+
+                                      <td>{{ transaction[4] }}</td>
+
                                      
                                       <td>
                                         <span class="expand-icon" onclick="toggleDetails(this)">
@@ -787,20 +814,20 @@ input[type="submit"] {
                                                         
                                                         {% if transaction[1] == 'deposit' %}
                                                         <p>
-                                                    its a fixed deposit transaction where you have deposited &#8377; {{ transaction[2] }} on {{ transaction[3] }} by using payment slip on to your bank account</p>
+                                                    its a fixed deposit transaction where you have deposited &#8377; {{ transaction[2] }} on {{ transaction[4] }} by using payment slip on to your bank account</p>
                                                     {% elif transaction[1] == 'online' %}
                                                         <p>
-                                                        its a online transaction done by you on &#8377; {{ transaction[2] }} on {{ transaction[3] }} </p>
+                                                        its a online transaction done by you on &#8377; {{ transaction[2] }} on {{ transaction[4] }} </p>
                                                     {% elif transaction[1] == 'fixed deposit' %}
                                                         <p>
-                                                            its a fixed fixed deposit transaction where you have recieve your interest &#8377; {{ transaction[2] }} on {{ transaction[3] }} </p>
+                                                            its a fixed fixed deposit transaction where you have recieve your interest &#8377; {{ transaction[2] }} on {{ transaction[4] }} </p>
                                                     {% elif transaction[1] == 'cheque withdrawl' %}
                                                         <p>{{ transaction[1] }}
-                                                           its a withdrawl transaction where you have withdrawn &#8377; {{ transaction[2] }} on {{ transaction[3] }} by your cheque
+                                                           its a withdrawl transaction where you have withdrawn &#8377; {{ transaction[2] }} on {{ transaction[4] }} by your cheque
                                                         </p>
                                                     {% elif transaction[1] == 'loan_payment' %}
                                                         <p>
-                                                          its a loan transaction where you have paid your loan Emi &#8377; {{ transaction[4] }} on {{ transaction[5] }}</p>
+                                                          its a loan transaction where you have paid your loan Emi &#8377; {{ transaction[2] }} on {{ transaction[4] }}</p>
                                                     {% else %}
                                                         <p style="color: red;">{{ transaction[1] }}</p>
                                                     {% endif %}
@@ -978,6 +1005,24 @@ input[type="submit"] {
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/js/customer.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Function to filter the table based on user type
+        document.getElementById('userTypeFilter').addEventListener('change', function() {
+  var searchKeyword = document.getElementById('searchInput').value.toLowerCase();
+  var userType = this.value;
+  var rows = document.querySelectorAll('#employeeTable tbody tr');
+  
+  rows.forEach(function(row) {
+    var employeeName = row.children[1].textContent.toLowerCase() + ' ' + row.children[2].textContent.toLowerCase();
+    var userRole = row.getAttribute('data-usertype');
+    if ((searchKeyword === '' || employeeName.includes(searchKeyword)) && (userType === 'all' || userRole === userType)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+});
+    </script>
     <script>
         var submenuIcons = document.querySelectorAll('.submenu-icon');
       // Loop through each submenu icon

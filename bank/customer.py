@@ -51,8 +51,11 @@ def customerhome():
             labels.append(month)
             values.append(0)
    
-    cursor.execute("SELECT t_no,t_type,amount,date_time from transaction where customer_id='%s'"%(session['cust_id']))
+    cursor.execute("SELECT t.t_no,t.t_type,t.amount,t.balance,t.date_time,s.acc_no from transaction t,savingsacc s where t.acc_id=s.savings_id and t.customer_id='%s'"%(session['cust_id']))
     transaction = cursor.fetchall()
+    cursor.execute("select acc_no from savingsacc where customer_id='%s'"%(session['cust_id']))
+    account_details = [row[0] for row in cursor.fetchall()]
+    cursor.fetchall()
     cursor.execute("select fname,lname,email from customers where loginid='%s'"%(session['logid']))
     name = cursor.fetchall()
     cursor.execute("select cid,branch_id from customers where cid='%s'"%(session['cust_id']))
@@ -125,7 +128,7 @@ def customerhome():
             flash('success')
         else:
             print('send after 1 hoursuccess')
-    return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,count=count,labels=labels, values=values,transaction_details=transaction_details,details=details,details1=details1,logged_in_user_id=logged_in_user_id,bank_messages=bank_messages)
+    return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,count=count,labels=labels, values=values,transaction_details=transaction_details,details=details,details1=details1,logged_in_user_id=logged_in_user_id,bank_messages=bank_messages,account_details=account_details)
 
 
 
