@@ -411,6 +411,11 @@ input[type="submit"] {
 
 .messages {
     margin-bottom: 10px;
+    
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    
+ 
 }
 
 .messages h1 {
@@ -422,7 +427,14 @@ input[type="submit"] {
     margin: 0;
     padding: 5px 0;
 }
-
+.message-count1 {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+padding-bottom: 13px;
+  border-bottom:1px solid rgb(209, 196, 196);
+}
 .message-count {
     position: absolute;
     top: -10px;
@@ -529,18 +541,29 @@ input[type="submit"] {
             
             <div class="profile-area">
               <span class="message-count" id="messageCount">{{ count }}</span>
-<span class="material-icons-sharp active" onclick="toggleMessageContainer()" onmouseover="showMessageContainer(); setCountToZero();" onmouseout="hideMessageContainer()">notifications</span>
-
-<div id="messages-container" class="messages-container" onmouseover="showMessageContainer()" onmouseout="hideMessageContainer()">
-                <div class="messages">
-                 
-                  <h1>From Bank</h1>
-                  <p>Welcome to our banking platform!</p>
-                  <p>We have some exciting offers for you.</p>
-                  <p>Don't miss out on our latest promotions.</p>
+                <span class="material-icons-sharp active" onclick="toggleMessageContainer()" onmouseover="showMessageContainer(); setCountToZero();" onmouseout="hideMessageContainer()">notifications</span>
+                
+                <div id="messages-container" class="messages-container" onmouseover="showMessageContainer()" onmouseout="hideMessageContainer()">
+                    <span class="message-count1" style="color: rgb(3, 87, 87);">you have two new notification</span>
+                    <div class="messages">
+                    
+                    <h3>From Bank</h3>
+                    <p>Welcome to our banking platform!</p>
+                    <p>We have some exciting offers for you.</p>
+                    <p>Don't miss out on our latest promotions.</p>
+                    <p style="border-bottom:1px solid rgb(178, 170, 170); padding-bottom:10px"></p><br>
+                    <h3>From Bank</h3>
+                    <p>Welcome to our banking platform!</p>
+                    <p>We have some exciting offers for you.</p>
+                    <p>Don't miss out on our latest promotions.</p>
+                    <p style="border-bottom:1px solid rgb(178, 170, 170); padding-bottom:10px"></p><br>
+                    <h3>From Bank</h3>
+                    <p>Welcome to our banking platform!</p>
+                    <p>We have some exciting offers for you.</p>
+                    <p>Don't miss out on our latest promotions.</p>
+                    </div>
+                    <a href="view-all-messages">View All</a>
                 </div>
-                <a href="view-all-messages">View All</a>
-            </div>
                 <div class="theme-btn">
                     <span class="material-icons-sharp active">light_mode</span>
                     <span class="material-icons-sharp">dark_mode</span>
@@ -597,10 +620,10 @@ input[type="submit"] {
               
               
               
-            <button id="menu-btn">
-                <span class="material-icons-sharp">menu</span>
-            </button>
-                </div>
+                <button id="menu-btn">
+                    <span class="material-icons-sharp">menu</span>
+                </button>
+            </div>
         </div>
     </nav>
   
@@ -615,10 +638,7 @@ input[type="submit"] {
                         <span class="material-icons-sharp">dashboard</span>
                         <h4>Dashboard</h4>
                     </a>
-                    <!-- <a href="customerviewaccount" class="menu-link" style="text-decoration: none;">
-                        <span class="material-icons-sharp">manage_accounts</span>
-                        <h4>Accounts</h4>
-                    </a> -->
+                    
                     <a href="#" style="text-decoration: none;">
                       
                         <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
@@ -633,7 +653,10 @@ input[type="submit"] {
                         <span class="material-symbols-outlined">real_estate_agent</span>
                         <h4>loan</h4>
                     </a>
-                    
+                    <a href="customerviewtransaction" class="menu-link" style="text-decoration: none;">
+                        <span class="material-symbols-outlined">real_estate_agent</span>
+                        <h4>Transaction</h4>
+                    </a>
      
                     <a href="differentcreditcard" style="text-decoration: none;">
                         
@@ -755,15 +778,15 @@ input[type="submit"] {
                             
                                 
                                     
-                                <select id="userTypeFilter" class="filter">
-                                    <option value="">Account Number</option>
-                                    {% for account in account_details %}
-                                    <option value="{{ account }}">{{ account }}</option>
-                                    {% endfor %}
-                                </select>
+                            <!-- <select id="account" class="filter">
+                                <option value="">Account Number</option>
+                                {% for account in account_details %}
+                                <option value="{{ account }}">{{ account }}</option>
+                                {% endfor %}
+                            </select> -->
                                 
                                 <table id="employeeTable">
-                                <!-- <input type="search" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search by name"> -->
+                                    
                                 <thead>
                                     <tr>
                                        
@@ -1005,24 +1028,35 @@ input[type="submit"] {
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/js/customer.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        // Function to filter the table based on user type
-        document.getElementById('userTypeFilter').addEventListener('change', function() {
-  var searchKeyword = document.getElementById('searchInput').value.toLowerCase();
-  var userType = this.value;
-  var rows = document.querySelectorAll('#employeeTable tbody tr');
+    <!-- <script>
+ // Get the account dropdown element
+var accountDropdown = document.getElementById("account");
+
+// Get the transaction table element
+var transactionTable = document.getElementById("employeeTable");
+
+// Attach an event listener to the account dropdown
+accountDropdown.addEventListener("change", function() {
+  // Get the selected account number
+  var selectedAccount = accountDropdown.value;
   
-  rows.forEach(function(row) {
-    var employeeName = row.children[1].textContent.toLowerCase() + ' ' + row.children[2].textContent.toLowerCase();
-    var userRole = row.getAttribute('data-usertype');
-    if ((searchKeyword === '' || employeeName.includes(searchKeyword)) && (userType === 'all' || userRole === userType)) {
-      row.style.display = '';
+  // Get all the table rows from the transaction table
+  var rows = transactionTable.getElementsByTagName("tr");
+  
+  // Loop through the rows and hide/show based on the selected account number
+  for (var i = 0; i < rows.length; i++) {
+    var accountNumber = rows[i].getAttribute("data-account");
+    
+    // Check if the row's account number matches the selected account
+    if (selectedAccount === "" || accountNumber === selectedAccount) {
+      rows[i].style.display = "";
     } else {
-      row.style.display = 'none';
+      rows[i].style.display = "none";
     }
-  });
+  }
 });
-    </script>
+
+    </script> -->
     <script>
         var submenuIcons = document.querySelectorAll('.submenu-icon');
       // Loop through each submenu icon

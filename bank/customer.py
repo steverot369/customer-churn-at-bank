@@ -137,9 +137,11 @@ def customerviewtransaction():
     # data={}
     cursor = db.cursor()
 
-    cursor.execute("SELECT t_no,t_type,amount,date_time,customer_id from transaction where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
+    cursor.execute("SELECT t.t_no,t.t_type,t.amount,t.balance,t.date_time,s.acc_no from transaction t,savingsacc s where t.acc_id=s.savings_id and t.customer_id='%s' order by t.transaction_id DESC"%(session['cust_id']))
     transaction = cursor.fetchall()
-    return render_template('customerviewtransaction.html',transaction=transaction)
+    cursor.execute("select acc_no from savingsacc where customer_id='%s'"%(session['cust_id']))
+    account_details = [row[0] for row in cursor.fetchall()]
+    return render_template('customerviewtransaction.html',transaction=transaction,account_details=account_details)
 
 
 @customer.route('/customerviewaccount')
@@ -658,6 +660,8 @@ def accountstatement():
 
             # Send the response as a download
         flash("mail send successfully to your email")
+        return redirect(url_for('customer.accountstatement'))
+
         
 
 

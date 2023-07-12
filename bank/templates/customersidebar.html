@@ -619,9 +619,7 @@ label{
         margin: 0 auto;
     }
 
-    /* #row {
-        margin-top: 1px;
-    } */
+   
 
     #account-number-header,
     #balance-header,
@@ -824,14 +822,14 @@ label{
 }
 
 /* Style the labels */
-label {
+#label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
 }
 input[type="radio"],
     input[type="range"],
-    select {
+    #interest {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
@@ -866,24 +864,12 @@ input[type="range"] {
 }
 
 /* Style the select dropdown */
-select {
+#interest {
   width: 100%;
   margin-bottom: 10px;
 }
 
-/* Style the submit button */
-/* input[type="submit"] {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin-top: 10px;
-  cursor: pointer;
-} */
+
 #show{
  
       margin-left: 420px;
@@ -1714,55 +1700,66 @@ font-size: 16px;
   
     <!-- end of navbar     -->
             <main>
-                <aside >
-                   <button id="close-btn">
-                        <span class="material-icons-sharp">close</span>
-                   </button>
-                   <div class="sidebar" class="active">
-                    <a href="customerhome" style="text-decoration: none;">
-                        <span class="material-icons-sharp">dashboard</span>
-                        <h4>Dashboard</h4>
-                    </a>
-                    <a href="#" class="menu-link" style="text-decoration: none;">
-                      <span class="material-icons-sharp">manage_accounts</span>
-                      <h4>View Account</h4>
-                  </a>
-                  
-                    <a href="customerviewloanpayments" class="menu-link" style="text-decoration: none;">
-                      <span class="material-symbols-outlined">
-                        real_estate_agent
-                        </span>
-                      <h4>loan</h4>
-            
-                  </a>
-                  
-   
-                  <a href="differentcreditcard" style="text-decoration: none;">
-                      
-                    <span class="material-symbols-outlined">credit_score</span>
-                    <h4>credit card</h4>
-                </a>
-               
-
-              <a href="customertransferfund" style="text-decoration: none;">
-                      
-                <span class="material-icons-sharp">stacked_bar_chart</span>
-                <h4>Transfer money</h4>
-            </a>
-            
-                
-                 </div>
-                
+              <aside>
+                <button id="close-btn">
+                     <span class="material-icons-sharp">close</span>
+                </button>
+                <div class="sidebar" class="active">
+                 <a href="customerhome" style="text-decoration: none;">
+                     <span class="material-icons-sharp">dashboard</span>
+                     <h4>Dashboard</h4>
+                 </a>
+                 
+                 <a href="#" style="text-decoration: none;">
+                   
+                     <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
+                     <h4>Accounts</h4>
+                 </a>
+                 <div class="submenu">
+                   <a href="customerviewaccount" style="text-decoration: none;">Accounts</a>
+                   <a href="accountstatement" style="text-decoration: none;">Account Statement</a>
+                   
+               </div>
+                   <a href="customerviewloanpayments" class="menu-link" style="text-decoration: none;">
+                     <span class="material-symbols-outlined">real_estate_agent</span>
+                     <h4>loan</h4>
+                 </a>
+                 <a href="customerviewtransaction" class="menu-link" style="text-decoration: none;">
+                     <span class="material-symbols-outlined">real_estate_agent</span>
+                     <h4>Transaction</h4>
+                 </a>
+  
+                 <a href="differentcreditcard" style="text-decoration: none;">
+                     
+                   <span class="material-symbols-outlined">credit_score</span>
+                   <h4>credit card</h4>
+               </a>
               
-                   <!---------end of side bar--- -->
-                   <div class="updates">
-                        <span class="material-icons-sharp">keyboard_return</span>
-                            <h4>Go back</h4>
-                            <p>to home page</p>
-                          
-                            <a href="javascript:history.back()" style="text-decoration: none;">Go Back</a>
-                    </div>
-                </aside>
+
+             <a href="customertransferfund" style="text-decoration: none;">
+                     
+               <span class="material-icons-sharp">stacked_bar_chart</span>
+               <h4>Transfer money</h4>
+           </a>
+                 
+                 
+                 
+                 <!-- <a href="customersendfeedback">
+                     <span class="material-icons-sharp">help_center</span>
+                     <h4>feedback</h4>
+                 </a> -->
+                
+                 
+                </div>
+                <!---------end of side bar--- -->
+                <div class="updates">
+                 <span class="material-icons-sharp">update</span>
+                     <h4>Updates available</h4>
+                     <p>Security updates</p>
+                     <p>General updates updates</p>
+                     <a href="#">Update now</a>
+             </div>
+             </aside>
                  <!-- end of aside----- -->
 
                  
