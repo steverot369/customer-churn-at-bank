@@ -193,10 +193,27 @@ def adminviewcomplaints():
     return render_template('adminviewcomplaints.html', messages=messages)
 
 
-@admin.route('/adminsendmessage')
+@admin.route('/adminsendmessage',methods=['post','get'])
 def adminsendmessage():
+    cursor=db.cursor()
+    cursor.execute("select branch_name from branch")
+    branch_names = [row[0] for row in cursor.fetchall()]
+    if 'add' in request.form:
+        messages=request.form['messages']
+        usertype=request.form['usertype']
+        branchname=request.form['branch']
+        date=datetime.now()
+        cursor.execute("select branch_id from branch where branch_name='%s'"%(branchname))
+        branch_id=cursor.fetchone()[0]
+        bank_messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,user_type,date) VALUES ('0', %s, %s,%s,%s)"
+        bank_messages_values = (branch_id,messages,usertype,date)
+        cursor.execute(bank_messages, bank_messages_values)
+        flash("success message send")
+        return redirect(url_for('admin.adminsendmessage'))
+
+
     
-    return render_template('adminsendmessage.html')
+    return render_template('adminsendmessage.html',branch_names=branch_names)
 
 @admin.route('/adminaddemployee', methods=['post', 'get'])
 def adminaddemployee():

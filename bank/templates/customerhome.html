@@ -546,21 +546,13 @@ padding-bottom: 13px;
                 <div id="messages-container" class="messages-container" onmouseover="showMessageContainer()" onmouseout="hideMessageContainer()">
                     <span class="message-count1" style="color: rgb(3, 87, 87);">you have two new notification</span>
                     <div class="messages">
+                        {% for message in bank_messages1 %}
+                    <h3>From Bank</h3>
+                    <p>{{ message[0] }}</p>
+                    <p>{{ message[1] }}</p>
                     
-                    <h3>From Bank</h3>
-                    <p>Welcome to our banking platform!</p>
-                    <p>We have some exciting offers for you.</p>
-                    <p>Don't miss out on our latest promotions.</p>
                     <p style="border-bottom:1px solid rgb(178, 170, 170); padding-bottom:10px"></p><br>
-                    <h3>From Bank</h3>
-                    <p>Welcome to our banking platform!</p>
-                    <p>We have some exciting offers for you.</p>
-                    <p>Don't miss out on our latest promotions.</p>
-                    <p style="border-bottom:1px solid rgb(178, 170, 170); padding-bottom:10px"></p><br>
-                    <h3>From Bank</h3>
-                    <p>Welcome to our banking platform!</p>
-                    <p>We have some exciting offers for you.</p>
-                    <p>Don't miss out on our latest promotions.</p>
+                    {% endfor %}
                     </div>
                     <a href="view-all-messages">View All</a>
                 </div>
@@ -905,7 +897,7 @@ padding-bottom: 13px;
                                 </div>
                                 <div class="message">
                                     <p><b>{{transaction[6]}}</b></p>
-                                    <p>You have reveive &#8377;{{ transaction[2]}} from {{ transaction[6] }}</p>
+                                    <p>You have receive &#8377;{{ transaction[2]}} from {{ transaction[6] }}</p>
                                     <small class="text-muted">{{ transaction[3] }}</small>
                                 </div>
                             </div>
@@ -919,7 +911,7 @@ padding-bottom: 13px;
                                     <img src="/static//images/profile-2.jpg">
                                 </div>
                                 <div class="message">
-                                    <p><b>loan payment</b> {{ message[0] }}</p>
+                                    <p><b>from bank</b><br> {{ message[0] }}</p>
                                     <small class="text-muted">{{ message[1] }}</small>
                                 </div>
                             </div>

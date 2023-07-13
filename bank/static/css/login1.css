@@ -1,0 +1,77 @@
+
+footer {
+	background-color: #f8efe3;
+	color: #444;
+	font-family: Arial, sans-serif;
+	padding: 50px;
+	text-align: center;
+  }
+  
+  .footer-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+  }
+  
+  .footer-section {
+	flex-basis: 30%;
+  }
+  
+  .footer-section h3 {
+	color: #222;
+	font-size: 1.2rem;
+	margin-bottom: 20px;
+	text-transform: uppercase;
+  }
+  
+  .footer-section p {
+	font-size: 0.9rem;
+	line-height: 1.5;
+	margin-bottom: 20px;
+  }
+  
+  .footer-section ul {
+	list-style: none;
+	padding: 0;
+  }
+  
+  .footer-section ul li {
+	margin-bottom: 10px;
+  }
+  
+  .footer-section a {
+	color: #444;
+	text-decoration: none;
+  }
+  
+  .footer-section a:hover {
+	text-decoration: underline;
+  }
+  
+  .social-media-icons a {
+	color: #444;
+	font-size: 1.5rem;
+	margin-right: 10px;
+  }
+  
+  .social-media-icons a:hover {
+	color: #222;
+  }
+  
+  .fab {
+	font-family: "Font Awesome 5 Brands";
+  }
+  
+  .footer-bottom {
+	background-color: #ddd;
+	color: #777;
+	font-size: 0.8rem;
+	padding: 10px 0;
+  }
+  
+  .footer-bottom p {
+	margin: 0;
+  }
+  
+  
+	

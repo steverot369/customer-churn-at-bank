@@ -86,8 +86,11 @@ def customerhome():
 
     details1 = cursor.fetchall()
 
-    cursor.execute("SELECT messages,date FROM bank_messages where customer_id=%s ORDER BY date DESC LIMIT 3"%(session['cust_id']))
+    cursor.execute("SELECT messages,date FROM bank_messages where customer_id='%s' AND DATE(date) = '%s' AND user_type='customer' ORDER BY date DESC LIMIT 3"%(session['cust_id'],current_date))
     bank_messages = cursor.fetchall()
+
+    cursor.execute("SELECT messages,date FROM bank_messages where customer_id='0' AND DATE(date) = '%s' AND user_type='customer' ORDER BY date DESC LIMIT 3"%(current_date))
+    bank_messages1 = cursor.fetchall()
    
 
    
@@ -128,7 +131,9 @@ def customerhome():
             flash('success')
         else:
             print('send after 1 hoursuccess')
-    return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,count=count,labels=labels, values=values,transaction_details=transaction_details,details=details,details1=details1,logged_in_user_id=logged_in_user_id,bank_messages=bank_messages,account_details=account_details)
+    return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,count=count,labels=labels, values=values,transaction_details=transaction_details,
+    details=details,details1=details1,logged_in_user_id=logged_in_user_id,
+    bank_messages=bank_messages,account_details=account_details,bank_messages1=bank_messages1)
 
 
 

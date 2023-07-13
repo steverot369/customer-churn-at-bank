@@ -1,221 +1,137 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale">
-<title>Responsive Dashboard using HTML CSS and JavaScript </title>
-<!-- MATERIAL CDN  -->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
-rel="stylesheet">
-<!-- google font -->
+{% include 'adminsidebar.html' %}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;1,700&display=swap" rel="stylesheet">
-<!-- STYLESHEET -->
-<script src="https://kit.fontawesome.com/c7705f70af.js" crossorigin="anonymous"></script>
+<section class="middle">
+    <div class="header">
+        
+        <input type="date" id="todayDateInput">
+    </div>
 
-<link rel="stylesheet" href="/static/css/customer.css">
-<style>
-  
-  .container1 {
-   
-            max-width: 600px;
-            height: 60%;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .message-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            resize: none;
-            margin-bottom: 10px;
-        }
-        textarea{
-            font-size: 15px;
-        }
-        .user-type {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        
-        .send-button {
-            background-color: #38d240e0;
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .send-button:hover {
-            
-            background-color: #3498db;
-        }
-        /* Animation */
-        @keyframes slideInFromBottom {
-            0% {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        .container1 {
-            animation: slideInFromBottom 0.5s ease-in-out;
-        }
-        .success-message {
-            color: green;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-        .send-icon {
-            margin-right: 5px;
-        }
-</style>
-<script>
-    function sendMessage(button) {
-        var textarea = button.parentElement.querySelector('.message-input');
-        var message = textarea.value.trim();
-        
-        // Perform the necessary logic to send the message
-        
-        textarea.value = '';  // Clear the textarea after sending the message
-        
-        // Display success message
-        var successMessage = button.parentElement.querySelector('.success-message');
-        successMessage.style.display = 'block';
-        successMessage.textContent = 'Message sent successfully!';
-        
-        // Hide success message after 3 seconds
-        setTimeout(function() {
-            successMessage.style.display = 'none';
-        }, 2000);
-        
-        // Change button color to red for 5 seconds
-        button.style.backgroundColor = 'red';
-        
-        setTimeout(function() {
-            // Revert button color to original after 5 seconds
-            button.style.backgroundColor = ''; // or provide the original color value
-        }, 2000);
-    }
-</script>
-</head>
-
-<body>
-    <nav>
-        <div class="container" style="right:14%">
-            <img src="/static/images/logo3.png" class="logo">
-            <div class="search-bar">
-                <span class="material-icons-sharp">search</span>
-                <input type="search" placeholder="search">
-            </div>
-            <div class="profile-area" style="padding-left: 117%;">
-                <div class="theme-btn">
-                    <span class="material-icons-sharp active">light_mode</span>
-                    <span class="material-icons-sharp">dark_mode</span>
-
-                </div>
-                <div class="profile">
-                    <div class="profile-photo">
-                        <img src="/static/images/profile-2.jpg" style="width: 100%;">
-                    </div>
-                
-                    <h5>{{ name3 }}</h5>
-                <span class="material-icons-sharp">expand_more</span>
-            </div>
-            <button id="menu-btn">
-                <span class="material-icons-sharp">menu</span>
-            </button>
-                </div>
-        </div>
-    </nav>
-  
-    <!-- end of navbar     -->
-            <main>
-                <aside >
-                   <button id="close-btn">
-                        <span class="material-icons-sharp">close</span>
-                   </button>
-                   <div class="sidebar" class="active">
-                    <a href="adminhome" style="text-decoration: none;">
-                        <span class="material-icons-sharp">dashboard</span>
-                        <h4>Dashboard</h4>
-                    </a>
-                    <a href="adminaddemployee" style="text-decoration: none;">
-                        <span class="material-icons-sharp">account_balance_wallet</span>
-                        <h4>employes</h4>
-                    </a>
-                    <a href="adminaddbranch" style="text-decoration: none;">
-                        <span class="material-icons-sharp">payment</span>
-                        <h4>branch</h4>
-                    </a>
-                    <a href="#" style="text-decoration: none;">
-                        <span class="material-icons-sharp">pie_chart</span>
-                        <h4>Analytics</h4>
-                    </a>
-                    <a href="#" style="text-decoration: none;">
-                        <span class="material-icons-sharp">message</span>
-                        <h4>Messages</h4>
-                    </a>
-                    <a href="#" style="text-decoration: none;">
-                        <span class="material-icons-sharp">help_center</span>
-                        <h4>Help center</h4>
-                    </a>
-                    <a href="#" style="text-decoration: none;">
-                        <span class="material-icons-sharp">settings</span>
-                        <h4>Settings</h4>
-                    </a>
-                   </div>
-                   <!---------end of side bar--- -->
-                   <div class="updates">
-                        <span class="material-icons-sharp">keyboard_return</span>
-                            <h4>Go back</h4>
-                            <p>to home page</p>
-                          
-                            <a href="adminhome" style="text-decoration: none;">Go Back</a>
-                    </div>
-                </aside>
-                 <!-- end of aside----- -->
-
-                 <div class="container1">
+<br><br><br><br><br><br>
+                 <div class="container67">
                     <section>
-                        <h1>Send Messages</h1>
-                        <textarea class="message-input" placeholder="Type your message..."></textarea>
-                        <select class="user-type">
+                        <h1>Send Notification</h1>
+
+                    <form method="post">
+                        <div class="mb-4 pb-3">
+                            <div class="dropdown dropdown-l">
+                              <input type="text" name="branch" id="dropdown-input" class="form-control form-control-lg" placeholder="Search...">
+                              <span class="dropdown-icon">&#9662;</span> <!-- Add a dropdown icon here -->
+                          
+                              <ul class="dropdown-list" style="display: block;">
+                                <li>All</li>
+
+                                {% for row in branch_names %}
+                                <li>{{ row }}</li>
+                                {% endfor %}
+                              </ul>
+                            </div>
+                            <label class="form-label" for="form3Examplev4">branch names</label>
+
+                          </div>
+                        <label class="form-label" for="form3Examplev4">Message</label>
+                        <input name="messages" class="message-input1" placeholder="Type your message...">
+                        
+                        <label class="form-label" for="form3Examplev4">user type</label>
+                        <select class="user-type" name="usertype">
                             <option value="All">All</option>
-                            <option value="clerk">Clerk</option>
-                            <option value="manager">Manager</option>
+                            <option value="employee">employee</option>
+                          
                             <option value="customer">Customer</option>
                         </select>
-                        <button class="send-button" onclick="sendMessage(this)">
+                       
+
+                        <button name="add" class="send-button">
                             <span class="send-icon">&#x27A4;</span>Send</button>
                         <span class="success-message"></span>
+                    </form>
                     </section>
                 </div>
-
+            </section>
             </main>  
- 
+            <script>
+
+
+                // Get all the submenu icons
+                var submenuIcons = document.querySelectorAll('.submenu-icon');
+               // Loop through each submenu icon
+               submenuIcons.forEach(function(icon) {
+                  // Add a click event listener to each submenu icon
+                  icon.addEventListener('click', function() {
+                      // Get the corresponding submenu for this icon
+                      var submenu = icon.parentElement.nextElementSibling; 
+                      // Toggle the visibility of the submenu
+                      submenu.classList.toggle('show');
+                  });
+               });
+               </script>
+            <script>
+                const input = document.querySelector('#dropdown-input');
+                const dropdownList = document.querySelector('.dropdown-list');
+                const options = Array.from(dropdownList.getElementsByTagName('li'));
+                const dropdownIcon = document.querySelector('.dropdown-icon'); // Get the dropdown icon element
+                
+                input.addEventListener('input', function() {
+                  const searchText = input.value.toLowerCase();
+                
+                  options.forEach(option => {
+                    const text = option.textContent.toLowerCase();
+                    if (text.includes(searchText)) {
+                      option.style.display = 'block';
+                    } else {
+                      option.style.display = 'none';
+                    }
+                  });
+                
+                  dropdownList.style.display = 'block'; // Show the list while searching
+                });
+                
+                dropdownIcon.addEventListener('click', function() {
+                  dropdownList.style.display = dropdownList.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                dropdownList.addEventListener('click', function(event) {
+                  const selectedOption = event.target;
+                  if (selectedOption.tagName === 'LI') {
+                    input.value = selectedOption.textContent;
+                    dropdownList.style.display = 'none';
+                  }
+                });
+                
+                input.addEventListener('click', function() {
+                  dropdownList.style.display = 'none';
+                });
+                
+                // Hide the list initially when the page loads
+                dropdownList.style.display = 'none';
+                
+                </script>
+            <!-- <script>
+                function sendMessage(button) {
+                    var textarea = button.parentElement.querySelector('.message-input');
+                    var message = textarea.value.trim();
+                    
+                    // Perform the necessary logic to send the message
+                    
+                    textarea.value = '';  // Clear the textarea after sending the message
+                    
+                    // Display success message
+                    var successMessage = button.parentElement.querySelector('.success-message');
+                    successMessage.style.display = 'block';
+                    successMessage.textContent = 'Message sent successfully!';
+                    
+                    // Hide success message after 3 seconds
+                    setTimeout(function() {
+                        successMessage.style.display = 'none';
+                    }, 2000);
+                    
+                    // Change button color to red for 5 seconds
+                    button.style.backgroundColor = 'red';
+                    
+                    setTimeout(function() {
+                        // Revert button color to original after 5 seconds
+                        button.style.backgroundColor = ''; // or provide the original color value
+                    }, 2000);
+                }
+            </script> -->
 </body>
 </html>
