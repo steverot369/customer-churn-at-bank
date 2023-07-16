@@ -220,12 +220,23 @@ def publichome():
     return redirect(url_for('public.publichome'))
 
 
-@manager.route('/setusername')
+@manager.route('/setusername',methods=['POST','GET'])
 def setusername():
     cursor=db.cursor()
     cursor.execute("select uname from login")
     uname=[row[0] for row in cursor.fetchall()]
-    return render_template('setusername.html',uname=uname)
+    cursor.execute("select count from login where loginid='%s'"%(session['logid']))
+    count=cursor.fetchone()[0]
+
+    if 'add' in request.form:
+        username=request.form['username']
+        password=request.form['password']
+        cursor.execute("UPDATE login SET uname='%s', password='%s', count='yes' WHERE loginid='%s'" % (username, password, session['logid']))
+
+        flash("successfuly change username and password")
+        return redirect(url_for('public.login'))
+
+    return render_template('setusername.html',uname=uname,count=count)
 
 @manager.route('/managermanagehome')
 def managermanagehome():

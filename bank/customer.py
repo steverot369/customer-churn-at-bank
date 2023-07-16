@@ -91,6 +91,11 @@ def customerhome():
 
     cursor.execute("SELECT messages,date FROM bank_messages where customer_id='0' AND DATE(date) = '%s' AND user_type='customer' ORDER BY date DESC LIMIT 3"%(current_date))
     bank_messages1 = cursor.fetchall()
+
+    cursor.execute("select count from login where loginid='%s'"%(session['logid']))
+    logindetails=cursor.fetchone()
+    newusername=logindetails[0]
+    
    
 
    
@@ -133,7 +138,7 @@ def customerhome():
             print('send after 1 hoursuccess')
     return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,count=count,labels=labels, values=values,transaction_details=transaction_details,
     details=details,details1=details1,logged_in_user_id=logged_in_user_id,
-    bank_messages=bank_messages,account_details=account_details,bank_messages1=bank_messages1)
+    bank_messages=bank_messages,account_details=account_details,bank_messages1=bank_messages1,newusername=newusername)
 
 
 
@@ -671,3 +676,27 @@ def accountstatement():
 
 
     return render_template('accountstatement.html', transactions=transactions,account_details=account_details)
+
+
+
+@customer.route('/setusername',methods=['POST','GET'])
+def setusername():
+    cursor=db.cursor()
+    cursor.execute("select uname from login")
+    uname=[row[0] for row in cursor.fetchall()]
+    cursor.execute("select count,login_type from login where loginid='%s'"%(session['logid']))
+    logindetails=cursor.fetchone()
+    count=logindetails[0]
+    logintype=logindetails[1]
+    print(logintype)
+    cursor.fetchall()
+
+
+    if 'add' in request.form:
+        username=request.form['username']
+        password=request.form['password']
+        cursor.execute("UPDATE login SET uname='%s', password='%s', count='yes' WHERE loginid='%s'" % (username, password, session['logid']))
+        flash("successfuly change username and password")
+        return redirect(url_for('public.login'))
+
+    return render_template('setusername.html',uname=uname,count=count,logintype=logintype)

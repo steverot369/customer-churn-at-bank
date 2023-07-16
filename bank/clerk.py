@@ -875,3 +875,28 @@ def userprofile():
             return redirect(url_for('clerk.userprofile'))
 
     return render_template('userprofile.html',details=details,password=password)
+
+
+
+
+@clerk.route('/setusername',methods=['POST','GET'])
+def setusername():
+    cursor=db.cursor()
+    cursor.execute("select uname from login")
+    uname=[row[0] for row in cursor.fetchall()]
+    cursor.execute("select count,login_type from login where loginid='%s'"%(session['logid']))
+    logindetails=cursor.fetchone()
+    count=logindetails[0]
+    logintype=logindetails[1]
+    print(logintype)
+    cursor.fetchall()
+
+
+    if 'add' in request.form:
+        username=request.form['username']
+        password=request.form['password']
+        cursor.execute("UPDATE login SET uname='%s', password='%s', count='yes' WHERE loginid='%s'" % (username, password, session['logid']))
+        flash("successfuly change username and password")
+        return redirect(url_for('public.login'))
+
+    return render_template('setusername.html',uname=uname,count=count,logintype=logintype)

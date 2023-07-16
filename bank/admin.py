@@ -247,7 +247,7 @@ def adminaddemployee():
 
         sender_email = "mltalerts.mlt.co.in@gmail.com"
         subject = "registration"
-        message = f"Welcome, {fname} {lname}! Thank you for registering with us."
+        message = f"Welcome, {fname} {lname}! Thank you for registering with us.\n your temporary username: {email} and password : {phone} \n you can change it after sime time!!"
         
         # Create a MIME message
         msg = MIMEMultipart()
@@ -279,7 +279,7 @@ def adminaddemployee():
             server.quit()
         
         
-        q = "INSERT INTO login VALUES(null,'%s', '%s', '%s')" % (username, password, employee_type)
+        q = "INSERT INTO login VALUES(null,'%s', '%s', '%s','no')" % (email, phone, employee_type)
         id=insert(q)
         q = "INSERT INTO employee VALUES(null,'%s','%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s', '%s', '%s', '%s','%s ','%s','active')" % (id, branch_id,fname, lname, age,img,status,gender,branch,employee_type,address,zipcode,place,district, phone, email)
         insert(q)

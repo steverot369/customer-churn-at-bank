@@ -1,10 +1,22 @@
-{% include 'managersidebar.html' %}
+{% if 'manager' == logintype %}
+    {% include 'managersidebar.html' %}
+{% elif 'clerk' == logintype %}
+    {% include 'clerksidebar.html' %}
+{% else %}
+    {% include 'customersidebar.html' %}
+{% endif %}
 
                 <section class="middle">
                     <div class="header">
                         
                         <input type="date">
                     </div>
+                  
+                  {% if count == 'yes' %}
+                  <h1>you have already set your username and password</h1>
+                    {% else %}
+                        
+                    
                     <div class="container54">
 	
                         <div class="form-container sign-in-container">
@@ -18,9 +30,9 @@
                                
                                 <div class="mb-4 pb-2">
                                     <div class="form-outline form-white">
-                                      <input type="text" id="usernameInput" name="username" class="form-control form-control-lg" />
+                                      <input type="text" id="usernameInput" name="username" class="form-control form-control-lg" pattern="[A-Za-z0-9]{6,}" required/>
                                       <label class="form-label" for="form3Examplea2">username</label>
-                                      <div id="usernameMessage" style="color: green;"></div>
+                                      <div id="usernameMessage" style="font-size:15px; font-weight:600;"></div>
                                       <span id="message" style="font-size: 14px; font-weight:600;"></span>
                                     </div>
                                   </div>
@@ -35,24 +47,26 @@
                                               
                         
                                     <div class="input-group">  
-                                      <input type="password" id="passwordInput" name="password" class="form-control form-control-lg" />
+                                      <input type="password" id="passwordInput" name="password" class="form-control form-control-lg" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required/>
+                                      
+
                                       <div class="input-group-append">
                                         <span class="input-group-text">
                                           <i id="togglePassword" class="fa fa-eye"></i>
                                         </span>
                                       </div>
                                     </div>
-                                    
-                                    <div id="passwordMessage" class="password-message"></div>
+                                    <label class="form-label" for="form3Examplea2">password</label>
+                                    <div id="passwordMessage" class="password-message" style="font-size: 15px; font-weight:600;"></div>
                                   
                                 </div>
                                
-                          <input type="submit" name="submit" name="submit" value="Login" class="button "/>
+                          <input type="submit" name="add"  value="change" class="button"/>
                             </form>
                         </div>
                        
                     </div>
-                   
+                    {% endif %}
              </section>
                 
             </main>  
@@ -99,98 +113,78 @@
         function showValidationMessage(message, className) {
           usernameMessage.textContent = message;
           usernameMessage.className = className;
+          usernameMessage.style.color = className === 'valid' ? 'green' : 'red';
         }
       </script>
       
         
       <script>
-         const togglePassword = document.querySelector('#togglePassword');
-      const passwordInput1 = document.querySelector('#passwordInput1');
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput1 = document.querySelector('#passwordInput1');
       
-      togglePassword.addEventListener('click', function (e) {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.classList.toggle('fa-eye-slash');
-        this.classList.toggle('fa-eye');
-      });
-      
-      
-      
-      
-      //end
-      
-      const passwordInput = document.getElementById('passwordInput');
-      const passwordMessage = document.getElementById('passwordMessage');
-      
-      const passwordCriteria = {
-        minLength: 8,
-        hasNumber: /\d/,
-        hasUppercase: /[A-Z]/,
-        hasLowercase: /[a-z]/,
-        hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
-      };
-      
-      passwordInput.addEventListener('input', () => {
-        const password = passwordInput.value;
-        let valid = true;
-        let message = '';
-      
-        if (password.length < passwordCriteria.minLength) {
-          message += `Password must be at least ${passwordCriteria.minLength} characters long. `;
-          valid = false;
-        } else {
-          valid = true; // Update valid to true if the length criteria is met
-        }
-      
-        if (!passwordCriteria.hasNumber.test(password)) {
-          message += 'Password must contain at least one number. ';
-          valid = false;
-        }
-      
-        if (!passwordCriteria.hasUppercase.test(password)) {
-          message += 'Password must contain at least one uppercase letter. ';
-          valid = false;
-        }
-      
-        if (!passwordCriteria.hasLowercase.test(password)) {
-          message += 'Password must contain at least one lowercase letter. ';
-          valid = false;
-        }
-      
-        if (!passwordCriteria.hasSpecialChar.test(password)) {
-          message += 'Password must contain at least one special character. ';
-          valid = false;
-        }
-      
-        if (valid) {
-          message = 'Password is valid';
-          passwordMessage.classList.add('valid-password');
-        } else {
-          passwordMessage.classList.remove('valid-password');
-        }
-      
-        passwordMessage.textContent = message;
-      });
-      
-      
-      
-      
-      let arrow = document.querySelectorAll(".arrow");
-      for (var i = 0; i < arrow.length; i++) {
-        arrow[i].addEventListener("click", (e)=>{
-       let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
-       arrowParent.classList.toggle("showMenu");
+        togglePassword.addEventListener('click', function (e) {
+          const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+          passwordInput.setAttribute('type', type);
+          this.classList.toggle('fa-eye-slash');
+          this.classList.toggle('fa-eye');
         });
-      }
       
-      let sidebar = document.querySelector(".sidebar");
-      let sidebarBtn = document.querySelector(".bx-menu");
-      console.log(sidebarBtn);
-      sidebarBtn.addEventListener("click", ()=>{
-        sidebar.classList.toggle("close");
-      });
-
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordMessage = document.getElementById('passwordMessage');
+      
+        const passwordCriteria = {
+          minLength: 8,
+          hasNumber: /\d/,
+          hasUppercase: /[A-Z]/,
+          hasLowercase: /[a-z]/,
+          hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
+        };
+      
+        passwordInput.addEventListener('input', () => {
+          const password = passwordInput.value;
+          let valid = true;
+          let message = '';
+      
+          if (password.length < passwordCriteria.minLength) {
+            message += `Password must be at least ${passwordCriteria.minLength} characters long. `;
+            valid = false;
+          } else {
+            valid = true; // Update valid to true if the length criteria is met
+          }
+      
+          if (!passwordCriteria.hasNumber.test(password)) {
+            message += 'Password must contain at least one number. ';
+            valid = false;
+          }
+      
+          if (!passwordCriteria.hasUppercase.test(password)) {
+            message += 'Password must contain at least one uppercase letter. ';
+            valid = false;
+          }
+      
+          if (!passwordCriteria.hasLowercase.test(password)) {
+            message += 'Password must contain at least one lowercase letter. ';
+            valid = false;
+          }
+      
+          if (!passwordCriteria.hasSpecialChar.test(password)) {
+            message += 'Password must contain at least one special character. ';
+            valid = false;
+          }
+      
+          if (valid) {
+            message = 'Password is valid';
+            passwordMessage.style.color = 'green';
+          } else {
+            
+            passwordMessage.style.color = 'red';
+          }
+      
+          passwordMessage.textContent = message;
+        });
       </script>
+      
+      
 </body>
 
 </html>

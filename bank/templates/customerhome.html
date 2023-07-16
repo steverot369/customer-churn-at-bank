@@ -970,8 +970,11 @@ padding-bottom: 13px;
                             <div class="item add-product">
                                 <div>
                                 <span class="material-icons-sharp">pin</span>
-                                <a href="customersetpin"><h3>Set MPI pin</h3></a>
-                        
+                                {% if newusername == 'yes' %}
+                                <a href="customersetpin"><h3>SET MPI PIN</h3></a>
+                                  {% else %}
+                                  <a href="setusername"><h3>Set username & password</h3></a>
+                        {% endif %}
                                 </div>
                             </div>
                     </div>
