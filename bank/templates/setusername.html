@@ -1,0 +1,196 @@
+{% include 'managersidebar.html' %}
+
+                <section class="middle">
+                    <div class="header">
+                        
+                        <input type="date">
+                    </div>
+                    <div class="container54">
+	
+                        <div class="form-container sign-in-container">
+                        <form  method="post">
+                                <h1>change username & password</h1>
+                                <div class="social-container">
+                                    <a href="#" class="social" style="text-decoration: none;"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#" class="social"style="text-decoration: none;"><i class="fab fa-google-plus-g"></i></a>
+                                    <a href="#" class="social" style="text-decoration: none;"><i class="fab fa-linkedin-in"></i></a>
+                                </div>
+                               
+                                <div class="mb-4 pb-2">
+                                    <div class="form-outline form-white">
+                                      <input type="text" id="usernameInput" name="username" class="form-control form-control-lg" />
+                                      <label class="form-label" for="form3Examplea2">username</label>
+                                      <div id="usernameMessage" style="color: green;"></div>
+                                      <span id="message" style="font-size: 14px; font-weight:600;"></span>
+                                    </div>
+                                  </div>
+                                <ul id="usernameList">
+                                  {% for uname in uname %}
+                                  <li style="display: none;">{{ uname }}</li>
+                                  {% endfor %}
+                                </ul>
+                                
+                                <div class="mb-4 pb-2">
+                                                 
+                                              
+                        
+                                    <div class="input-group">  
+                                      <input type="password" id="passwordInput" name="password" class="form-control form-control-lg" />
+                                      <div class="input-group-append">
+                                        <span class="input-group-text">
+                                          <i id="togglePassword" class="fa fa-eye"></i>
+                                        </span>
+                                      </div>
+                                    </div>
+                                    
+                                    <div id="passwordMessage" class="password-message"></div>
+                                  
+                                </div>
+                               
+                          <input type="submit" name="submit" name="submit" value="Login" class="button "/>
+                            </form>
+                        </div>
+                       
+                    </div>
+                   
+             </section>
+                
+            </main>  
+    <!-- ====================end of aside==========================   -->
+    <script>
+        var usernameInput = document.getElementById('usernameInput');
+        var usernameList = document.getElementById('usernameList').getElementsByTagName('li');
+        var message = document.getElementById('message');
+        var usernameMessage = document.getElementById('usernameMessage');
+        var isUsernameTaken = false;
+      
+        // Add event listener to input field
+        usernameInput.addEventListener('input', function() {
+          var inputValue = usernameInput.value.trim().toLowerCase();
+      
+          // Check if the input value matches any username
+          isUsernameTaken = Array.from(usernameList).some(function(username) {
+            return username.textContent.trim().toLowerCase() === inputValue;
+          });
+      
+          // Display appropriate message based on the result
+          if (isUsernameTaken) {
+            message.textContent = 'Username already in use.';
+            message.style.color = 'red';
+            usernameMessage.textContent = '';
+          } else {
+            message.textContent = '';
+            validateUsername();
+          }
+        });
+      
+        function validateUsername() {
+          const username = usernameInput.value.trim();
+      
+          if (username.length >= 5 && /^[a-zA-Z0-9_]+$/.test(username)) {
+            showValidationMessage('Valid username', 'valid');
+          } else if (/[^a-zA-Z0-9_]/.test(username)) {
+            showValidationMessage('Username must not contain special characters', 'invalid');
+          } else {
+            showValidationMessage('Username must contain at least 5 characters', 'invalid');
+          }
+        }
+      
+        function showValidationMessage(message, className) {
+          usernameMessage.textContent = message;
+          usernameMessage.className = className;
+        }
+      </script>
+      
+        
+      <script>
+         const togglePassword = document.querySelector('#togglePassword');
+      const passwordInput1 = document.querySelector('#passwordInput1');
+      
+      togglePassword.addEventListener('click', function (e) {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+        this.classList.toggle('fa-eye');
+      });
+      
+      
+      
+      
+      //end
+      
+      const passwordInput = document.getElementById('passwordInput');
+      const passwordMessage = document.getElementById('passwordMessage');
+      
+      const passwordCriteria = {
+        minLength: 8,
+        hasNumber: /\d/,
+        hasUppercase: /[A-Z]/,
+        hasLowercase: /[a-z]/,
+        hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
+      };
+      
+      passwordInput.addEventListener('input', () => {
+        const password = passwordInput.value;
+        let valid = true;
+        let message = '';
+      
+        if (password.length < passwordCriteria.minLength) {
+          message += `Password must be at least ${passwordCriteria.minLength} characters long. `;
+          valid = false;
+        } else {
+          valid = true; // Update valid to true if the length criteria is met
+        }
+      
+        if (!passwordCriteria.hasNumber.test(password)) {
+          message += 'Password must contain at least one number. ';
+          valid = false;
+        }
+      
+        if (!passwordCriteria.hasUppercase.test(password)) {
+          message += 'Password must contain at least one uppercase letter. ';
+          valid = false;
+        }
+      
+        if (!passwordCriteria.hasLowercase.test(password)) {
+          message += 'Password must contain at least one lowercase letter. ';
+          valid = false;
+        }
+      
+        if (!passwordCriteria.hasSpecialChar.test(password)) {
+          message += 'Password must contain at least one special character. ';
+          valid = false;
+        }
+      
+        if (valid) {
+          message = 'Password is valid';
+          passwordMessage.classList.add('valid-password');
+        } else {
+          passwordMessage.classList.remove('valid-password');
+        }
+      
+        passwordMessage.textContent = message;
+      });
+      
+      
+      
+      
+      let arrow = document.querySelectorAll(".arrow");
+      for (var i = 0; i < arrow.length; i++) {
+        arrow[i].addEventListener("click", (e)=>{
+       let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
+       arrowParent.classList.toggle("showMenu");
+        });
+      }
+      
+      let sidebar = document.querySelector(".sidebar");
+      let sidebarBtn = document.querySelector(".bx-menu");
+      console.log(sidebarBtn);
+      sidebarBtn.addEventListener("click", ()=>{
+        sidebar.classList.toggle("close");
+      });
+
+      </script>
+</body>
+
+</html>

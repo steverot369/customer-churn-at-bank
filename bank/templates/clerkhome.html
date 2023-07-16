@@ -16,9 +16,9 @@ rel="stylesheet">
 <!-- STYLESHEET -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+
 <link rel="stylesheet" href="/static/css/customer.css">
 <script src="https://kit.fontawesome.com/c7705f70af.js" crossorigin="anonymous"></script>
-
 
 <script>
     function removeCount() {
@@ -37,59 +37,9 @@ rel="stylesheet">
         }
     };
 </script> -->
-<script>
-
-// document.addEventListener('DOMContentLoaded', function() {
-//   var expandIcon = document.querySelector('.expand-icon');
-//   var profileContainer = document.querySelector('.profile-container');
-
-//   expandIcon.addEventListener('click', function() {
-//     profileContainer.classList.toggle('show');
-//   });
-// });
-
-
-function toggleProfilePhoto() {
-  var profilePhoto = document.querySelector('.profile-photo');
-  var profileContainer = document.querySelector('.profile-container');
-  
-  profilePhoto.classList.toggle('show');
-  
-  if (profileContainer.classList.contains('show')) {
-    profileContainer.classList.remove('show');
-  }
-}
-
-function toggleProfileContainer() {
-  var profileContainer = document.querySelector('.profile-container');
-  
-  profileContainer.classList.toggle('show');
-}
-
-
-
-
-</script>
-
 </head>
 <style>
-  
-
-/* .profile-container {
-    display: none; 
-    width: 300px;
-    padding: 20px;
-    background-color: #e3d4d4;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    top: 60px;
-    right: 0;
-    z-index: 999;
-    transition: transform 0.3s ease-in-out;
-    transform-origin: top right;
-    border-radius: 10px;
-} */
-
+    
 .profile {
   display: flex;
   align-items: center;
@@ -254,7 +204,55 @@ function toggleProfileContainer() {
   opacity: 1;
   visibility: visible;
 }
+.details-row {
+    display: none;
+}
 
+.details-row.show {
+    display: table-row;
+}
+.transaction-details {
+        background-color: #f3e7e7;
+        padding: 20px;
+    }
+
+    .transaction-details p {
+        margin: 0;
+        color: rgb(122, 104, 3);
+        font-size:14px ;
+        font-weight: 600;
+    }
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pagination button {
+    padding: 10px 20px;
+        margin: 0 5px;
+        border: none;
+        background: transparent;
+        color: rgb(0, 0, 0);
+        cursor: pointer;
+        font-size: 13px;
+        transition: color 0.3s ease;
+}
+
+.pagination button:hover {
+        color: rgb(102, 102, 102);
+    }
+    
+.search-input
+{
+  margin-bottom: 10px;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
 </style>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -363,11 +361,7 @@ function toggleProfileContainer() {
                         <span class="material-icons-sharp">pie_chart</span>
                         <h4>Analytics</h4>
                     </a>
-                    <a href="adminviewfeedback" onclick="removeCount()">
-                        <span class="material-icons-sharp">message</span>
-                        <h4>Messages</h4>
-                        <span id="message-count" class="message-count">23</span>
-                    </a>
+                    
                     
                        
                     <a href="#">
@@ -382,7 +376,7 @@ function toggleProfileContainer() {
                    <!---------end of side bar--- -->
                    <div class="updates">
                         <span class="material-icons-sharp">manage_accounts</span>
-                            <h4>Manage task</h4>
+                            <h4>Administartive task</h4>
                             <p>Here you can</p>
                             <p>Manage Users & other tasks</p>
                             <a href="clerkmanagehome">Manage</a>
@@ -397,60 +391,62 @@ function toggleProfileContainer() {
                         </div>
 
                         <div class="insights">
-                          <div class="sales">
-                              <span class="material-icons-sharp">account_balance_wallet</span>
-                              <div class="middle">
-                                  <div class="left">
-                                      <h3>Total bank balance</h3>
-                                      <h1>Rs {{ total_amount }}</h1>
-                                  </div>
-                                  <div class="progress">
-                                      <svg>
-                                          <circle cx='38' cy='38' r='36'></circle>
-                                      </svg>
-                                      <div class="number">
-                                          <p>81%</p>
-                                      </div>
-                                  </div>
-                              </div>
-                              <small class="text-muted">Last 24 hours</small>
-                          </div>
+                            <div class="sales">
+                                <span class="material-icons-sharp">group</span>
+                                <div class="middle">
+                                    <div class="left">
+                                        <h3>Total Customers</h3>
+                                        <h1>{{ customer_count }}</h1>
+                                    </div>
+                                    <div class="progress">
+                                        <svg>
+                                            <!-- <circle cx='38' cy='38' r='36'></circle> -->
+                                            <circle class="progress-bar" cx='38' cy='38' r='36'></circle>
+                                        </svg>
+                                        <div class="number">
+                                            <p>{{ customer_percentage }}%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted">Last 24 hours</small>
+                            </div>
+                            
                           <!------------ END OF SALES -------------->
                           <div class="expenses">
-                              <span class="material-icons-sharp">bar_chart</span>
-                              <div class="middle">
-                                  <div class="left">
-                                      <h3>Total Expenses</h3>
-                                      <h1>$85,758</h1>
-                                  </div>
-                                  <div class="progress">
-                                      <svg>
-                                          <circle cx='38' cy='38' r='36'></circle>
-                                      </svg>
-                                      <div class="number">
-                                          <p>41%</p>
-                                      </div>
-                                  </div>
-                              </div>
-                              <small class="text-muted">Last 24 hours</small>
-                          </div>
+                            <span class="material-icons-sharp">support_agent</span>
+                            <div class="middle">
+                                <div class="left">
+                                    <h3>Total Employee</h3>
+                                    <h1>{{ employee_count }}</h1>
+                                </div>
+                                <div class="progress">
+                                    <svg>
+                                        <circle id="progress-bar" cx='38' cy='38' r='36'></circle>
+                                    </svg>
+                                    <div class="number" id="number">
+                                        <p id="value">41%</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <small class="text-muted">Last 24 hours</small>
+                        </div>
                           <!------------ END OF expense -------------->
                           <div class="income">
-                              <span class="material-icons-sharp">stacked_line_chart</span>
+                              <span class="material-icons-sharp">inventory_2</span>
                               <div class="middle">
                                   <div class="left">
-                                      <h3>Total income</h3>
+                                      <h3>Total Bank Product</h3>
                                 
                                         
                                      
-                                      <h1>$85,7557</h1>
+                                      <h1>12</h1>
                                   </div>
                                   <div class="progress">
                                       <svg>
-                                          <circle cx='38' cy='38' r='36'></circle>
+                                          <circle id="progress-bar1" cx='38' cy='38' r='36'></circle>
                                       </svg>
-                                      <div class="number">
-                                          <p>44%</p>
+                                      <div class="number" id="number1">
+                                          <p id="value1">44%</p>
                                       </div>
                                   </div>
                               </div>
@@ -458,74 +454,177 @@ function toggleProfileContainer() {
                           </div>
                           <!------------ END OF INCOME -------------->
                       </div>
-                        
-                        <!-- <canvas id="chart"></canvas> -->
-                        <div class="recent-orders">
-                            <h2>Recent order</h2>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Prodct name</th>
-                                        <th>Prodct number</th>
-                                        <th>Prodct payment</th>
-                                        <th>Prodct status</th>
-                
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td class="warning">Pending</td>
-                                    <td class="primary">Details</td>
-                                </tr>
-                                <tr>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td class="warning">Pending</td>
-                                    <td class="primary">Details</td>
-                                </tr>
-                                <tr>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td class="warning">Pending</td>
-                                    <td class="primary">Details</td>
-                                </tr>
-                                <tr>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td class="warning">Pending</td>
-                                    <td class="primary">Details</td>
-                                </tr>
-                                <tr>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td class="warning">Pending</td>
-                                    <td class="primary">Details</td>
-                                </tr>
-                                <tr>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td class="warning">Pending</td>
-                                    <td class="primary">Details</td>
-                                </tr>
-                                <tr>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td>Floadabs dhsdh</td>
-                                    <td class="warning">Pending</td>
-                                    <td class="primary">Details</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <a href="#">show all</a>
+                        <!-- ----end of cards------ -->
+                        <div class="monthly-report">
+                            <div class="report">
+                                <h3>Transaction Rate</h3>
+                                <div>
+                                    <details>
+                                        <h1>&#8377; {{ current_month_amount }}</h1>
+                                        {% if previous_month_amount > current_month_amount %}
+                                            <h6 class="danger">{{ percentage_change }}%</h6>
+                                        {% else %}
+                                            <h6 class="success">{{ percentage_change }}%</h6>
+                                        {% endif %}
+                                    </details>
+                                    <p class="text-muted">Compared to ${{ previous_month_amount }} last 30 days</p>
+                                </div>
+                            </div>
+                            <!-- end of income report -->
+                            <div class="report">
+                                <h3>Customer Rate</h3>
+                                <div>
+                                    <details>
+                                        <h1>count {{ current_year_count }}</h1>
+                                        {% if previous_year_count > current_year_count %}
+                                            <h6 class="danger">-{{ customer_percentage_change }}%</h6>
+                                        {% else %}
+                                            <h6 class="success">+{{ customer_percentage_change }}%</h6>
+                                        {% endif %}
+                                    </details>
+                                    <p class="text-muted">Compared to ${{ previous_year_count }} last year</p>
+                                </div>
+                            </div>
+                            
+                            <!-- end of expenses report -->
+                            <div class="report">
+                                <h3>Account Rate</h3>
+                                <div>
+                                    <details>
+                                        <h1>${{ current_month_balance }}</h1>
+                                        {% if previous_month_balance > current_month_balance %}
+                                            <h6 class="danger">-{{ account_percentage_change }}%</h6>
+                                        {% else %}
+                                            <h6 class="success">+{{ account_percentage_change }}%</h6>
+                                        {% endif %}
+                                    </details>
+                                    <p class="text-muted">Compared to ${{ previous_month_balance }} last month</p>
+                                </div>
+                            </div>
+                            
+                            <!-- end of cashback report -->
+                            <div class="report">
+                                <h3>loan Users</h3>
+                                <div>
+                                    <details>
+                                        <h1>${{ current_month_balance1 }}</h1>
+                                        {% if previous_month_balance1 > current_month_balance1 %}
+                                            <h6 class="danger">-{{ loan_account_percentage_change }}%</h6>
+                                        {% else %}
+                                            <h6 class="success">+{{ loan_account_percentage_change }}%</h6>
+                                        {% endif %}
+                                    </details>
+                                    <p class="text-muted">Compared to ${{ previous_month_balance1 }} last month</p>
+                                </div>
+                            </div>
+                            <!-- end of turnover report -->
                         </div>
+                        <!-- ---end of monthly reports----- -->
+                        <div class="fast-payment">
+                            <h2>Bank Notes count</h2>
+                            <div class="badges">
+                              <div class="badge">
+                                <span class="material-icons-sharp">add</span>
+                              </div>
+                              {% for row in notes %}
+                              <div class="badge">
+                                <span class="bg-primary" id="random-{{ loop.index }}"></span>
+                                <div>
+                                  <h5>{{ row[0] }}</h5>
+                                  <h4 id="result-{{ loop.index }}">count {{ row[1] }}</h4>
+                                </div> 
+                              </div>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        <!----------- end of payment----- -->
+                        <button style="color:rebeccapurple; background: none;" onclick="moveChart()">Move Chart</button>
+
+                        <canvas id="chart"  style="display: block;"></canvas>
+                    <div class="recent-orders" style="display: none;">
+                        <h2>Recent Transaction</h2>
+               
+
+                        <table id="employeeTable">
+                            <!-- <input type="search" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search by name"> -->
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Transaction No</th>
+                                    <th>Transaction type</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    
+
+            
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for transaction in transaction %} 
+                                <tr> 
+                                  <td>{{ transaction[0] }} {{ transaction[1] }}</td>
+
+                                  <td>{{ transaction[2] }}</td>
+
+                              {% if transaction[3] == 'deposit' %}
+                                  <td style="color: rgb(128, 122, 0);">{{ transaction[3] }}</td>
+                              {% elif transaction[3] == 'online' %}
+                                  <td style="color: blue;">{{ transaction[3] }}</td>
+                              {% elif transaction[3] == 'fixed deposit' %}
+                                  <td style="color: rgb(9, 9, 225);">{{ transaction[3] }}</td>
+                              {% elif transaction[3] == 'cheque withdrawl' %}
+                                  <td style="color: rgb(45, 175, 115);">{{ transaction[3] }}</td>
+                              {% elif transaction[3] == 'loan_payment' %}
+                                  <td style="color: purple;">{{ transaction[3] }}</td>
+                              {% else %}
+                                  <td style="color: red;">{{ transaction[3] }}</td>
+                              {% endif %}
+
+                                  <td>{{ transaction[4] }}</td>
+                                  <td class="warning">{{ transaction[5] }}</td>
+                                  <td>
+                                    <span class="expand-icon" onclick="toggleDetails(this)">
+                                        <i class="material-icons" style="cursor: pointer;">add</i>
+                                    </span>
+                                </td>
+                                </tr>
+                                <tr class="details-row">
+                                    <td colspan="6">
+                                        <div class="transaction-details">
+                                                    
+                                                    {% if transaction[3] == 'deposit' %}
+                                                    <p>
+                                                its a fixed deposit transaction where customer deposit &#8377; {{ transaction[4] }} on {{ transaction[5] }} by using payment slip</p>
+                                                {% elif transaction[3] == 'online' %}
+                                                    <p>
+                                                    its a online transaction done by customer &#8377; {{ transaction[4] }} on {{ transaction[5] }} </p>
+                                                {% elif transaction[3] == 'fixed deposit' %}
+                                                    <p>
+                                                        its a fixed fixed deposit transaction where customer recieve his interest &#8377; {{ transaction[4] }} on {{ transaction[5] }} </p>
+                                                {% elif transaction[3] == 'cheque withdrawl' %}
+                                                    <p>{{ transaction[3] }}
+                                                       its a withdrawl transaction where  customer has withdrawn &#8377; {{ transaction[4] }} on {{ transaction[5] }} by using his cheque
+                                                    </p>
+                                                {% elif transaction[3] == 'loan_payment' %}
+                                                    <p>
+                                                        customer pays he loan Emi &#8377; {{ transaction[4] }} on {{ transaction[5] }}</p>
+                                                {% else %}
+                                                    <p style="color: red;">{{ transaction[3] }}</p>
+                                                {% endif %}
+                                                </div>
+                                            </td>
+                                </tr>
+                              {% endfor %}
+                            
+                            </tbody>
+                            
+                        </table>
+                        <div class="pagination">
+                            <button id="btn" onclick="previousPage()">Previous</button>
+                            <button id="btn" onclick="nextPage()">Next</button>
+                        </div>
+                        <!-- <a href="customerviewtransaction">show all</a> -->
+                    </div> 
                  </section>
                  <!-- --------end of middle------ -->
                  <div class="right">
@@ -533,92 +632,54 @@ function toggleProfileContainer() {
                    
 
                     <div class="recent-updates">
-                        <h2>Recent updates</h2>
+                        <h2>Recent feedbacks</h2>
+                        <a href="#">More<span class="material-icons-sharp">chevron_right</span>
+                        </a>
                         <div class="updates">
-                            <div class="update">
-                                <div class="profile-photo">
-                                    <img src="/static/images/profile-2.jpg">
-                                </div>
-                                <div class="message">
-                                    <p><b>mike tyson</b>
-                                    recyeyy is hehe of yegfegge.</p>
-                                    <small class="text-muted">2minutes ago</small>
-                                </div>
-                            </div>
-                            <div class="update">
-                                <div class="profile-photo">
-                                    <img src="/static//images/profile-2.jpg">
-                                </div>
-                                <div class="message">
-                                    <p><b>mike tyson</b>
-                                    recyeyy is hehe of yegfegge.</p>
-                                    <small class="text-muted">2minutes ago</small>
-                                </div>
-                            </div>
-                            <div class="update">
-                                <div class="profile-photo">
-                                    <img src="/static//images/profile-4.jpg">
-                                </div>
-                                <div class="message">
-                                    <p><b>mike tyson</b>
-                                    recyeyy is hehe of yegfegge.</p>
-                                    <small class="text-muted">2minutes ago</small>
-                                </div>
-                            </div>
-                            <div class="update">
-                                <div class="profile-photo">
-                                    <img src="/static//images/profile-4.jpg">
-                                </div>
-                                <div class="message">
-                                    <p><b>mike tyson</b>
-                                    recyeyy is hehe of yegfegge.</p>
-                                    <small class="text-muted">2minutes ago</small>
-                                </div>
-                            </div>
                             
+                            {% for feedback in feedback_messages %}
+                            <div class="update">
+                                <div class="profile-photo">
+                                    <!-- <img src="/static/images/profile-1.jpg"> -->
+                                    <img src="{{url_for('static', filename=feedback[2])}}" style="height: 50px; width:50px;">
+
+                                </div>
+                                <div class="message">
+                                    <p><b>{{ feedback[3] }} {{ feedback[4] }}</b> {{ feedback[0] }}</p>
+                                    <small class="text-muted">{{ feedback[1] }}</small>
+                                </div>
+                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="sales-analytics">
-                        <h2>Recent Transactions</h2>
+                        <h2>Recent Online Transactions</h2>
+                        <a href="#" style="color: rgb(0, 42, 110); margin-left:300px;">More &#8594;
+                        </a>
+                        <br><br>
+                        {% for online_transaction in online_transaction %}
                         <div class="item online">
+                            
                             <div class="icon">
-                                <span class="material-icons-sharp">shopping_cart</span>
+                                <!-- <span class="material-icons-sharp">shopping_cart</span> -->
+                                <img src="{{url_for('static', filename=online_transaction[2])}}" style="height: 40px; width:40px; border-radius: 50%;">
+
                             </div>
                             <div class="right">
                                 <div class="info">
-                                    <h4>Online orders</h4>
-                                    <small class="text-muted">Last 24 hours</small>
+                                    <h4>{{ online_transaction[0] }} {{ online_transaction[1] }}</h4>
+                                    <small class="text-muted">{{ online_transaction[4] }}</small>
                                 </div>
-                                <h5 class="success">+39%</h5>
-                                <h4>432</h4>
+                                <h5 class="success">+ &#8377;{{ online_transaction[3] }}</h5>
+                                
+                                    <h4 style="color: rgb(0, 128, 111);">{{ online_transaction[5] }}</h4>
+                                
+
                             </div>
                         </div>
-                        <div class="item offline">
-                            <div class="icon">
-                                <span class="material-icons-sharp">local_mall</span>
-                            </div>
-                            <div class="right">
-                                <div class="info">
-                                    <h4>Online orders</h4>
-                                    <small class="text-muted">Last 24 hours</small>
-                                </div>
-                                <h5 class="success">+39%</h5>
-                                <h4>4332</h4>
-                            </div>
-                        </div>
-                        <div class="item customers">
-                            <div class="icon">
-                                <span class="material-icons-sharp">person</span>
-                            </div>
-                            <div class="right">
-                                <div class="info">
-                                    <h4>customers</h4>
-                                    <small class="text-muted">Last 24 hours</small>
-                                </div>
-                                <h5 class="success">+22%</h5>
-                                <h4>132</h4>
-                            </div>
-                        </div>
+                        {% endfor %}
+
+                        
                             <div class="item add-product">
                                 <div>
                                 <span class="material-icons-sharp">send</span>
@@ -638,8 +699,294 @@ function toggleProfileContainer() {
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/js/customer.js"></script>
     <script>
-   
+        function toggleDetails(icon) {
+            var row = icon.closest('tr');
+            var detailsRow = row.nextElementSibling;
+            detailsRow.classList.toggle('show');
+            icon.querySelector('i').textContent = detailsRow.classList.contains('show') ? 'remove' : 'add';
+        }
+    </script>
+    <script>
+        const rowsPerPage = 18; // Number of rows to display per page
+        let currentPage = 1;
+        
+        function showRows() {
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            const rows = employeeTable.getElementsByTagName('tr');
+        
+            for (let i = 1; i < rows.length; i++) {
+                if (i >= startIndex && i < endIndex) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }  
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                showRows();
+            }
+        }
+        
+        function nextPage() {
+            const rows = employeeTable.getElementsByTagName('tr');
+            const totalRows = rows.length - 1;
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+        
+            if (currentPage < totalPages) {
+                currentPage++;
+                showRows();
+            }
+        }
+        
+        // Add this code after the existing JavaScript code within the <script> tags
+        document.addEventListener('DOMContentLoaded', () => {
+            showRows();
+        });
+        
+        </script>
+          <script>
+            var employeeCount = 12;
+            var totalEmployees = 15;  // Set the maximum value for the progress bar
+        
+            // Calculate the employee percentage
+            var employeePercentage = (employeeCount / totalEmployees) * 100;
+            employeePercentage = Math.min(employeePercentage, 100);  // Limit the percentage to 100
+        
+            // Update the progress bar
+            var progressBar = document.getElementById('progress-bar1');
+            var circumference = 2 * Math.PI * 36;  // Calculate the circumference of the circle
+            var offset = circumference - (circumference * employeePercentage) / 100;
+            progressBar.style.strokeDasharray = circumference;
+            progressBar.style.strokeDashoffset = offset;
+        
+            // Update the employee percentage text
+            var valueElement = document.getElementById('value1');
+            valueElement.textContent = employeePercentage.toFixed(1) + '%';
+        </script>
+        <script>
+            var employeeCount = {{ employee_count }};
+            var totalEmployees = 500;  // Set the maximum value for the progress bar
+        
+            // Calculate the employee percentage
+            var employeePercentage = (employeeCount / totalEmployees) * 100;
+            employeePercentage = Math.min(employeePercentage, 100);  // Limit the percentage to 100
+        
+            // Update the progress bar
+            var progressBar = document.getElementById('progress-bar');
+            var circumference = 2 * Math.PI * 36;  // Calculate the circumference of the circle
+            var offset = circumference - (circumference * employeePercentage) / 100;
+            progressBar.style.strokeDasharray = circumference;
+            progressBar.style.strokeDashoffset = offset;
+        
+            // Update the employee percentage text
+            var valueElement = document.getElementById('value');
+            valueElement.textContent = employeePercentage.toFixed(1) + '%';
+        </script>
+         <script>
+            var customerCount = {{ customer_count }};
+            var totalCustomers = 1000;  // Set the maximum value for the progress bar
+        
+            // Calculate the customer percentage
+            var customerPercentage = (customerCount / totalCustomers) * 100;
+            customerPercentage = Math.min(customerPercentage, 100);  // Limit the percentage to 100
+        
+            // Update the progress bar
+            var progressBar = document.querySelector('.progress-bar');
+            var circumference = 2 * Math.PI * 36;  // Calculate the circumference of the circle
+            var offset = circumference - (circumference * customerPercentage) / 100;
+            progressBar.style.strokeDasharray = circumference;
+            progressBar.style.strokeDashoffset = offset;
+        
+            // Update the customer percentage text
+            var numberText = document.querySelector('.number p');
+            numberText.textContent = customerPercentage.toFixed(1) + '%';
+        </script>
+        <script>
+            {% for row in notes %}
+              (function() {
+                var result{{ loop.index }} = document.getElementById("result-{{ loop.index }}");
+                var row1 = parseInt("{{ row[0] }}");
+                var row2 = parseInt("{{ row[1] }}");
+                var multiplicationResult = row1 * row2;
+                var originalValue = row2;
+                var toggle = true;
+          
+                setInterval(function() {
+                  if (toggle) {
+                    result{{ loop.index }}.innerText = "₹"+" "+multiplicationResult;
+                  } else {
+                    result{{ loop.index }}.innerText ="count"+ originalValue;
+                  }
+          
+                  toggle = !toggle; // Toggle the value
+          
+                }, 15000);
+              })();
+            {% endfor %}
+          </script>
+           <script>
+            // Generate random background colors for each bg-primary element
+            var bgPrimaryElements = document.querySelectorAll('.bg-primary');
+            bgPrimaryElements.forEach(function(element) {
+              var randomColor = getRandomColor();
+              element.style.backgroundColor = randomColor;
+            });
+          
+            // Function to generate a random color
+            function getRandomColor() {
+              var letters = '0123456789ABCDEF';
+              var color = '#';
+              for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+              }
+              return color;
+            }
+          </script>
+          <script>
+            var currentChartType = 'line';
+            var ctx = document.getElementById('chart').getContext('2d');
+            var myChart;
+        
+            function createLineChart() {
+                destroyChart();
+                myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: {{ labels|tojson }},
+                        datasets: [{
+                            label: 'Customer Transactions',
+                            data: {{ values|tojson }},
+                            backgroundColor: 'red',
+                            borderColor: 'blue',
+                            borderWidth: 2,
+                            pointRadius: 4,
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Customer Transactions',
+                                fontSize: 16
+                            },
+                            legend: {
+                                display: true,
+                                labels: {
+                                    fontSize: 12
+                                }
+                            },
+                            tooltip: {
+                                titleFontSize: 16, // Increase the font size of the tooltip title
+                                bodyFontSize: 12, // Increase the font size of the tooltip body
+                            }
+                        }
+                    }
+                });
+            }
+        
+            function createBarChart() {
+                destroyChart();
+                myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: {{ labels|tojson }},
+                        datasets: [{
+                            label: 'Customer Transactions',
+                            data: {{ values|tojson }},
+                            backgroundColor: 'blue',
+                            borderColor: 'red',
+                            borderWidth: 2,
+                            barThickness: 10,
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Customer Transactions',
+                                fontSize: 16
+                            },
+                            legend: {
+                                display: true,
+                                labels: {
+                                    fontSize: 12
+                                }
+                            },
+                            tooltip: {
+                                titleFontSize: 16, // Increase the font size of the tooltip title
+                                bodyFontSize: 12, // Increase the font size of the tooltip body
+                            }
+                        }
+                    }
+                });
+            }
+        
+            function destroyChart() {
+                if (myChart) {
+                    myChart.destroy();
+                }
+            }
+        
+            function moveChart() {
+            var chart = document.getElementById('chart');
+            var recentOrders = document.getElementsByClassName('recent-orders')[0];
+        
+            if (currentChartType === 'line') {
+                destroyChart();
+                createBarChart();
+                chart.style.display = 'none';
+                recentOrders.style.display = 'block';
+                currentChartType = 'bar';
+            } else if (currentChartType === 'bar') {
+                destroyChart();
+                recentOrders.style.display = 'none';
+                chart.style.display = 'block';
+                createLineChart();
+                currentChartType = 'line';
+            }
+        }
+        
+        
+            // Initial chart creation
+            createLineChart();
+        </script>
+    <script>
+        
+function toggleProfilePhoto() {
+  var profilePhoto = document.querySelector('.profile-photo');
+  var profileContainer = document.querySelector('.profile-container');
   
+  profilePhoto.classList.toggle('show');
+  
+  if (profileContainer.classList.contains('show')) {
+    profileContainer.classList.remove('show');
+  }
+}
+
+function toggleProfileContainer() {
+  var profileContainer = document.querySelector('.profile-container');
+  
+  profileContainer.classList.toggle('show');
+}
+    </script>
+  <script>
     // Get today's date
   var today = new Date();
 
@@ -659,7 +1006,55 @@ document.getElementById("todayDateInput").value = formattedDate;
   messageCountElement.style.display = 'none';
 }
   </script>
- 
+ <script>
+    var ctx = document.getElementById('chart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ labels|tojson|safe }},
+            datasets: [{
+                label: 'Customer Transactions',
+                data: {{ values|tojson|safe }},
+                backgroundColor: 'red',
+                borderColor: 'blue',
+                borderWidth: 2,
+                pointRadius: 4,
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Customer Transactions',
+                    font: {
+                        size: 16
+                    }
+                },
+                legend: {
+                    display: true,
+                    labels: {
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    titleFontSize: 16,
+                    bodyFontSize: 12
+                }
+            }
+        }
+    });
+</script>
+
+
+
+  </script>
 
 </body>
 </html>

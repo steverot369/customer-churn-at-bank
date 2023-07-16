@@ -23,6 +23,7 @@ def login():
 				return redirect(url_for("admin.adminhome"))
 				
 			elif res[0]['login_type']=="manager":
+				
 				q="select * from employee where loginid='%s'"%(session['logid'])
 				res=select(q)
 				
