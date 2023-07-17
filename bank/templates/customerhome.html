@@ -412,7 +412,7 @@ input[type="submit"] {
 .messages {
     margin-bottom: 10px;
     
-    border-bottom: 1px solid #ccc;
+    /* border-bottom: 1px solid #ccc; */
     padding: 10px;
     
  
@@ -426,6 +426,7 @@ input[type="submit"] {
 .messages p {
     margin: 0;
     padding: 5px 0;
+    font-size: 14px;
 }
 .message-count1 {
   display: block;
@@ -540,21 +541,30 @@ padding-bottom: 13px;
             </div>
             
             <div class="profile-area">
-              <span class="message-count" id="messageCount">{{ count }}</span>
+              <span class="message-count" id="messageCount">{{ messages_count }}</span>
                 <span class="material-icons-sharp active" onclick="toggleMessageContainer()" onmouseover="showMessageContainer(); setCountToZero();" onmouseout="hideMessageContainer()">notifications</span>
                 
                 <div id="messages-container" class="messages-container" onmouseover="showMessageContainer()" onmouseout="hideMessageContainer()">
-                    <span class="message-count1" style="color: rgb(3, 87, 87);">you have two new notification</span>
+                    {% if messages_count == 0 %}
+                    <h3>no new notification</h3>
+                    {% else %}
+                    <span class="message-count1" style="color: rgb(3, 87, 87);">you have {{ messages_count }} new notification</span>
                     <div class="messages">
-                        {% for message in bank_messages1 %}
-                    <h3>From Bank</h3>
+                    {% for message in bank_messages %}
+                        
+
+                  <!-- <h3>From Bank</h3> -->
+                  <img src="/static/images/logo3.png" style="height: 30%; width:30%; border-radius:20px;">
                     <p>{{ message[0] }}</p>
-                    <p>{{ message[1] }}</p>
+                    <p><b>{{ message[1] }}</b></p>
                     
                     <p style="border-bottom:1px solid rgb(178, 170, 170); padding-bottom:10px"></p><br>
                     {% endfor %}
+                   
                     </div>
+                   
                     <a href="view-all-messages">View All</a>
+                    {% endif %}
                 </div>
                 <div class="theme-btn">
                     <span class="material-icons-sharp active">light_mode</span>
@@ -905,7 +915,7 @@ padding-bottom: 13px;
                             {% endif %}
                        
                             {% endfor %}
-                            {% for message in bank_messages %}
+                            <!-- {% for message in bank_messages %}
                             <div class="update">
                                 <div class="profile-photo">
                                     <img src="/static//images/profile-2.jpg">
@@ -915,7 +925,7 @@ padding-bottom: 13px;
                                     <small class="text-muted">{{ message[1] }}</small>
                                 </div>
                             </div>
-                            {% endfor %}
+                            {% endfor %} -->
                         </div>
                         
                     </div>
@@ -1008,7 +1018,7 @@ padding-bottom: 13px;
                 <div class="animated-person"></div>
                 <h1>Hi Steve, send your Enquiry</h1>
                 <form method="post">
-                    <input type="text" name="messages" placeholder="Type your feedback message" required>
+                    <input type="text" name="comments" placeholder="Type your feedback message" required>
                     <br>
                     <textarea name="comments" placeholder="Additional comments"></textarea>
                     <br>

@@ -82,7 +82,7 @@ def customerhome():
 
 # Extract the date portion from the current date and time
     current_date = current_datetime.date()
-    cursor.execute("SELECT customer_id, reciever_id, amount, date, name, photo, from_name, from_photo FROM o_transaction WHERE (customer_id = %s OR reciever_id = %s) AND DATE(date) = %s ORDER BY date DESC LIMIT 3", (logged_in_user_id, logged_in_user_id, current_date))
+    cursor.execute("SELECT customer_id, reciever_id, amount, date, name, photo, from_name, from_photo FROM o_transaction WHERE (customer_id = %s OR reciever_id = %s) ORDER BY date DESC LIMIT 3", (logged_in_user_id, logged_in_user_id))
 
     details1 = cursor.fetchall()
 
@@ -91,6 +91,12 @@ def customerhome():
 
     cursor.execute("SELECT messages,date FROM bank_messages where customer_id='0' AND DATE(date) = '%s' AND user_type='customer' ORDER BY date DESC LIMIT 3"%(current_date))
     bank_messages1 = cursor.fetchall()
+
+    cursor.execute("SELECT messages,reply FROM complaints where customer_id='%s' AND DATE(date_time)='%s'"%(session['cust_id'],current_date))
+    bank_messages2 = cursor.fetchall()
+
+    cursor.execute("select count(*) from bank_messages where customer_id='%s' AND DATE(date)='%s'"%(session['cust_id'],current_date))
+    messages_count=cursor.fetchone()[0]
 
     cursor.execute("select count from login where loginid='%s'"%(session['logid']))
     logindetails=cursor.fetchone()
@@ -138,7 +144,8 @@ def customerhome():
             print('send after 1 hoursuccess')
     return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,count=count,labels=labels, values=values,transaction_details=transaction_details,
     details=details,details1=details1,logged_in_user_id=logged_in_user_id,
-    bank_messages=bank_messages,account_details=account_details,bank_messages1=bank_messages1,newusername=newusername)
+    bank_messages=bank_messages,account_details=account_details,bank_messages1=bank_messages1,
+    newusername=newusername,bank_messages2=bank_messages2,messages_count=messages_count)
 
 
 
@@ -267,9 +274,13 @@ def customerpayloan():
 def customerviewloanpayments():
     # data={}
     cursor=db.cursor()
+    date = datetime.now().date()
+    formatted_date = date.strftime("%d-%m-%y")
+    print("date=======",formatted_date)
     cursor.execute("select acc_no,ifsccode,loan_type,maturity_date,interest_rate,interst_amt,issued_amount,remaing_amount,date_interest from loanacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
     loan=cursor.fetchall()
-    return render_template('customerviewloanpayments.html',loan=loan)
+    
+    return render_template('customerviewloanpayments.html',loan=loan,formatted_date=formatted_date)
 
 
 
@@ -351,7 +362,7 @@ def customersendcomplaint():
 
     if 'add' in request.form:
         messages=request.form['messages']
-        complaint="insert into feedbacks(customer_id,branch_id,nessage,reply,date_time) values(%s,%s,%s,'0',%s)"
+        complaint="insert into complaints(customer_id,branch_id,message,reply,date_time) values(%s,%s,%s,'0',%s)"
         complaint_values=(cid,bid,messages,formatted_datetime)
         cursor.execute(complaint,complaint_values)
     return render_template('customersendcomplaint.html')

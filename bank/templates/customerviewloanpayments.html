@@ -8,21 +8,17 @@
     </div>
                   <br>
                   <br>
-        <div class="container1" style="margin-left:130px;">
+        <div class="container1" style="margin-left:130px; height: 430px;">
 
                   
         <section >
-            <h1>loan details</h1>
+            <h1>Your loan details</h1>
             
           <form method="post" style="padding:20px;">  
             <table id="employeeTable" class="table">
                 <thead class="thead-light">
                     <tr>
-                        <th style="font-size: 16px;">Transaction No</th>
-                        
                        
-  
-
                         <th style="font-size: 16px;">Account No</th>
                         <th style="font-size: 16px;">ifsc code</th>
                         <th style="font-size: 16px;">loan type</th>
@@ -32,6 +28,8 @@
                         <th style="font-size: 16px;">loan amount</th> 
                         <th style="font-size: 16px;">Remaining Amount</th> 
                         <th style="font-size: 16px;">Emi Date</th> 
+                        <th style="font-size: 16px;">Manage</th> 
+
 
 
                         
@@ -50,15 +48,23 @@
                         <td>{{ loan[5] }}</td> 
                         <td>{{ loan[6] }}</td> 
                         <td>{{ loan[7] }}</td> 
+                        <td>{{ loan[8] }}</td> 
+
                         
                         
 
                        
                         <!-- 07-09-23 -->
                        
-                    
+                    {% if loan[8] == formatted_date %}
                         <td>
                           <a href="customerpaysloan" class="btn btn-info view-details-btn">pay amount</a>
+                        </td>
+                    {% else %}
+                    <h3 style="color: red;">payment option will be avaiable on the emi date {{ formatted_date }}</h3>
+                    {% endif %}
+                        <td>
+                          <a href="#" class="btn btn-info view-details-btn" data-toggle="modal" data-target="#employeeDetailsModal" data-employee-details="{{ loan }}">View Details</a>
                         </td>
                        
                       </tr>
@@ -90,7 +96,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title" id="employeeDetailsModalLabel">Employee Details</h3>
+        <h3 class="modal-title" id="employeeDetailsModalLabel">loan account details</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -98,23 +104,23 @@
       <div class="modal-body">
         <table>
           <tr>
-            <td>Account number:</td>
+            <td>IFSC CODE:</td>
             <td id="modalAccountNumber"></td>
           </tr>
           <tr>
-            <td>Account holder name:</td>
+            <td>Account Number</td>
             <td id="modalAccountHolderName"></td>
           </tr>
           <tr>
-            <td>IFSC Code:</td>
+            <td>Loan Type:</td>
             <td id="modalIFSCCode"></td>
           </tr>
           <tr>
-            <td>Loan Type:</td>
+            <td>Date issued</td>
             <td id="modalLoanType"></td>
           </tr>
           <tr>
-            <td>Loan Amount:</td>
+            <td>interest percent</td>
             <td id="modalLoanAmount"></td>
           </tr>
           <tr>
@@ -122,7 +128,7 @@
             <td style="color: rgb(230, 55, 55);" id="modalInterestAmount"></td>
           </tr>
           <tr>
-            <td>Interest Rate:</td>
+            <td>Loan amount</td>
             <td id="modalInterestRate"></td>
           </tr>
           <tr>

@@ -180,12 +180,22 @@ def adminviewcomplaints():
     query = "SELECT c.messages, c.date_time, cu.fname, cu.lname, cu.photo, c.reply, c.complaint_id FROM complaints c INNER JOIN customers cu ON c.customer_id = cu.cid WHERE c.reply = '0'"
     cursor.execute(query)
     messages = cursor.fetchall()
+    date=datetime.now()
 
     if "add" in request.form:
         id=request.form['complaint_id']
         reply = request.form['reply']
         print("reply===",reply)
+        usertype='customer'
+        cursor.execute("select customer_id,branch_id from complaints where complaint_id='%s'"%(id))
+        customer_details=cursor.fetchone()
+        cid=customer_details[0]
+        bid=customer_details[1]
         cursor.execute("UPDATE complaints SET reply = %s WHERE complaint_id = %s", (reply, id))
+        bank_messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,user_type,date) VALUES ('%s', %s, %s,%s,%s)"
+        bank_messages_values = (cid,bid,reply,usertype,date)
+        cursor.execute(bank_messages, bank_messages_values)
+
         flash("Send reply successfully")
         return redirect(url_for('admin.adminviewcomplaints'))
     
