@@ -406,7 +406,7 @@ input[type="submit"] {
     border-radius: 5px;
     z-index: 9999;
     animation: slide-in 0.3s ease-in;
-
+/* overflow: scroll; */
 }
 
 .messages {
@@ -426,7 +426,7 @@ input[type="submit"] {
 .messages p {
     margin: 0;
     padding: 5px 0;
-    font-size: 14px;
+    font-size: 13px;
 }
 .message-count1 {
   display: block;
@@ -560,7 +560,16 @@ padding-bottom: 13px;
                     
                     <p style="border-bottom:1px solid rgb(178, 170, 170); padding-bottom:10px"></p><br>
                     {% endfor %}
-                   
+                    {% for message in bank_messages1 %}
+                        
+
+                    
+                    <img src="/static/images/logo3.png" style="height: 30%; width:30%; border-radius:20px;">
+                      <p>{{ message[0] }}</p>
+                      <p><b>{{ message[1] }}</b></p>
+                      
+                      <p style="border-bottom:1px solid rgb(178, 170, 170); padding-bottom:10px"></p><br>
+                      {% endfor %}
                     </div>
                    
                     <a href="view-all-messages">View All</a>
@@ -649,6 +658,7 @@ padding-bottom: 13px;
                     <div class="submenu">
                       <a href="customerviewaccount" style="text-decoration: none;">Accounts</a>
                       <a href="accountstatement" style="text-decoration: none;">Account Statement</a>
+                      <a href="customeviewfixedpayments" style="text-decoration: none;">view interest fixed</a>
                       
                   </div>
                       <a href="customerviewloanpayments" class="menu-link" style="text-decoration: none;">
@@ -915,7 +925,7 @@ padding-bottom: 13px;
                             {% endif %}
                        
                             {% endfor %}
-                            <!-- {% for message in bank_messages %}
+                            {% for message in bank_messages2 %}
                             <div class="update">
                                 <div class="profile-photo">
                                     <img src="/static//images/profile-2.jpg">
@@ -925,7 +935,7 @@ padding-bottom: 13px;
                                     <small class="text-muted">{{ message[1] }}</small>
                                 </div>
                             </div>
-                            {% endfor %} -->
+                            {% endfor %}
                         </div>
                         
                     </div>

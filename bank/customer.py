@@ -86,16 +86,16 @@ def customerhome():
 
     details1 = cursor.fetchall()
 
-    cursor.execute("SELECT messages,date FROM bank_messages where customer_id='%s' AND DATE(date) = '%s' AND user_type='customer' ORDER BY date DESC LIMIT 3"%(session['cust_id'],current_date))
+    cursor.execute("SELECT messages,date FROM bank_messages where customer_id='%s' AND DATE(date) = '%s' AND user_type='customer' AND message_type='bank' ORDER BY date DESC LIMIT 3"%(session['cust_id'],current_date))
     bank_messages = cursor.fetchall()
 
     cursor.execute("SELECT messages,date FROM bank_messages where customer_id='0' AND DATE(date) = '%s' AND user_type='customer' ORDER BY date DESC LIMIT 3"%(current_date))
     bank_messages1 = cursor.fetchall()
 
-    cursor.execute("SELECT messages,reply FROM complaints where customer_id='%s' AND DATE(date_time)='%s'"%(session['cust_id'],current_date))
+    cursor.execute("SELECT messages,date FROM bank_messages where customer_id='%s' AND DATE(date) = '%s' AND user_type='customer' and message_type='loan' ORDER BY date DESC LIMIT 3"%(session['cust_id'],current_date))
     bank_messages2 = cursor.fetchall()
 
-    cursor.execute("select count(*) from bank_messages where customer_id='%s' AND DATE(date)='%s'"%(session['cust_id'],current_date))
+    cursor.execute("select count(message_id) from bank_messages where user_type='customer' and message_type='bank' and customer_id='%s' AND DATE(date)='%s'"%(session['cust_id'],current_date))
     messages_count=cursor.fetchone()[0]
 
     cursor.execute("select count from login where loginid='%s'"%(session['logid']))
@@ -264,10 +264,7 @@ def customersetpin():
     return render_template('customersetpin.html',acc_no=acc_no)
 
 
-@customer.route('/customerpayloan')
-def customerpayloan():
-    # data={}
-    return render_template('customerpayloan.html')
+
 
 
 @customer.route('/customerviewloanpayments')
@@ -495,7 +492,7 @@ def customerpaysloan():
             cursor.execute("UPDATE savingsacc SET balance = balance - %s WHERE acc_no = %s",(emi_amount, savings_acc))
             bank_messages=f"you have paid your loan Emi Rs.{emi_amount}"
 
-            messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,date) VALUES (%s, %s, %s,%s)"
+            messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,user_type,message_type,date) VALUES (%s, %s, %s,'customer','loan',%s)"
             messages_values = (cid,bid,bank_messages,date1)
             cursor.execute(messages, messages_values)
             
@@ -517,7 +514,7 @@ def customerpaysloan():
             cursor.execute("UPDATE savingsacc SET balance = balance - %s WHERE acc_no = %s",(emi_amount, savings_acc))
             bank_messages=f"you have paid your loan Emi Rs.{emi_amount}"
 
-            messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,date) VALUES (%s, %s, %s,%s)"
+            messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,user_type,message_type,date) VALUES (%s, %s, %s,'customer','loan',%s)"
             messages_values = (cid,bid,bank_messages,date1)
             cursor.execute(messages, messages_values)
 
@@ -711,3 +708,13 @@ def setusername():
         return redirect(url_for('public.login'))
 
     return render_template('setusername.html',uname=uname,count=count,logintype=logintype)
+
+
+@customer.route('/customeviewfixedpayments')
+def customeviewfixedpayments():
+    # data={}
+    cursor=db.cursor()
+    cursor.execute("select * from transaction where customer_id='%s' and t_type='fixed deposit'"%(session['cust_id']))
+    interest=cursor.fetchall()
+
+    return render_template('customeviewfixedpayments.html',interest=interest)
