@@ -363,7 +363,7 @@ def managercustomerchurn(customer_id):
     balances = customer_balances[1]
     # balances = [balance[1] for balance in customer_balances]
     IsActiveMember = customer_details3[0]
-    IsActiveMembervalue = 1 if IsActiveMember >= 5 else 0
+    IsActiveMembervalue = 1 if IsActiveMember >= 20 else 0
     credit_score = 0
 
         # Age factor
@@ -488,7 +488,7 @@ def managercustomerchurn(customer_id):
         # balances = [balance[1] for balance in customer_balances]
         IsActiveMember = customer_details3[0]
         print("transaction=================",IsActiveMember)
-        IsActiveMembervalue = 1 if IsActiveMember >= 15 else 0
+        IsActiveMembervalue = 1 if IsActiveMember >= 20 else 0
         credit_score = 0
 
         # Age factor
@@ -571,7 +571,7 @@ def managercustomerchurn(customer_id):
                 reason2 = "Low Credit Score"
             if IsActiveMembervalue == 0:
                 reason3 = "Inactive Customer"
-            if NumOfProducts > NumOfProducts:
+            if NumOfProducts < 4:
                 reason4 = "High Number of Bank Products"
             if HasCrCard == 0:
                 reason5 = "No Credit Card"
@@ -650,7 +650,7 @@ def clerkviewloanacc():
     name = cursor.fetchall()
     cursor.execute("SELECT c.fname,c.lname,l.acc_no,l.ifsccode,l.interst_amt,l.interest_rate,l.issued_amount,l.remaing_amount,l.acc_status,l.date_interest,l.loan_type FROM customers c,loanacc l where c.cid=l.customer_id and l.branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
     employees = cursor.fetchall()
-    date = datetime.now().date()
+    date = datetime.datetime.now()
     formatted_date = date.strftime("%d-%m-%y")
     return render_template('managerviewloanacc.html',employees=employees,name=name,formatted_date=formatted_date)
     

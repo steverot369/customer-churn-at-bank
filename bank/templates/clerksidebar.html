@@ -798,10 +798,13 @@ input[type="password"] {
                 </div>
                 <div class="profile">
                     <div class="profile-photo">
-                        <img src="/static/images/profile-2.jpg" style="width: 100%;">
-                    </div>
+
+                       {% for row in name1 %}
+                  <img src="{{url_for('static', filename=row[2])}}">
+                </div>
                 
-                <h5>Steve Rodrigues</h5>
+                <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
+                {% endfor %}
                 <span class="material-icons-sharp">expand_more</span>
             </div>
             <button id="menu-btn">
@@ -901,7 +904,8 @@ input[type="password"] {
                             <h4>Go back</h4>
                             <p>to home page</p>
                           
-                            <a href="clerkhome" style="text-decoration: none;">Go Back</a>
+                            <a href="javascript:history.back()" style="text-decoration: none;">Go Back</a>
+
                     </div>
                 </aside>
                  <!-- end of aside----- -->

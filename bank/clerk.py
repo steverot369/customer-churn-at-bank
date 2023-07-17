@@ -62,7 +62,7 @@ def clerkhome():
     
     cursor.execute("select sum(transaction_amount) from transactions")
     total_amount = cursor.fetchone()[0]
-    cursor.execute("select employe_fname,employee_lname,email from employee where loginid='%s'"%(session['logid']))
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
     name = cursor.fetchall()
     cursor.fetchall()
     cursor.execute("select branch_id from employee where employe_id='%s'"%(session['clid']))
@@ -192,12 +192,17 @@ def clerkhome():
 
 @clerk.route('/clerkmanagehome')
 def clerkmanagehome():
-    return render_template('clerkmanagehome.html')
+    cursor=db.cursor()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
+    return render_template('clerkmanagehome.html',name1=name1)
     
 
 @clerk.route('/clerkadduser', methods=['post', 'get'])
 def clerkadduser():
     cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
     # cursor.execute("SELECT e.branch,e.employe_fname from employee e,branch b where e.branch_id=b.branch_id and e.branch_id=(select branch_id from employee where employe_id='%s'%(session['logid'])) and employee='clerk'")
     cursor.execute("SELECT branch from employee where employe_id='%s'" % session['clid'])
     # cursor.execute("SELECT e.branch, e.employe_fname FROM employee e, branch b WHERE e.branch_id = b.branch_id AND e.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '{}') AND employe_id='{}'".format(session['clid'], session['logid']))
@@ -276,13 +281,15 @@ def clerkadduser():
 
     
         return redirect(url_for('clerk.clerkadduser'))
-    return render_template('clerkadduser.html',branch_names=branch_names)
+    return render_template('clerkadduser.html',branch_names=branch_names,name1=name1)
 
 
 
 @clerk.route('/clerksavingsaccount',methods=['post', 'get'])
 def clerksavingsaccount():
     cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
     cursor.execute("select fname,lname from customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
     fname=cursor.fetchall()
     print(fname)
@@ -338,7 +345,7 @@ def clerksavingsaccount():
         flash("Registration successful...")
         return redirect(url_for('clerk.clerksavingsaccount'))
 
-    return render_template('clerksavingsaccount.html',fname=fname,branch_id=branch_id)
+    return render_template('clerksavingsaccount.html',fname=fname,branch_id=branch_id,name1=name1)
 
 
 
@@ -347,6 +354,8 @@ def clerksavingsaccount():
 @clerk.route('/clerkdepositaccount',methods=['get','post'])
 def clerkdepositaccount():
     cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
     cursor.execute("select fname,lname from customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
     fname=cursor.fetchall()
     print(fname)
@@ -395,7 +404,7 @@ def clerkdepositaccount():
         return redirect(url_for('clerk.clerkdepositaccount'))
         
         
-    return render_template('clerkdepositaccount.html',fname=fname,branch_id=branch_id,accno=accno)
+    return render_template('clerkdepositaccount.html',fname=fname,branch_id=branch_id,accno=accno,name1=name1)
 
 
 
@@ -407,6 +416,8 @@ def clerkdepositaccount():
 @clerk.route('/clerkloanaccount',methods=['post','get'])
 def clerkloanaccount():
     cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
     cursor.execute("select fname,lname from customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
     fname=cursor.fetchall()
     print(fname)
@@ -471,15 +482,15 @@ def clerkloanaccount():
                 cursor.execute("INSERT INTO bankproducts (customer_id, count) VALUES (%s, %s)", (cid, 1))   
             flash("loan account registered  successfully...")
             return redirect(url_for('clerk.clerkloanaccount'))
-    return render_template('clerkloanaccount.html',fname=fname,branch_id=branch_id,accno=accno)
+    return render_template('clerkloanaccount.html',fname=fname,branch_id=branch_id,accno=accno,name1=name1)
 
 
 
 @clerk.route('/clerkloancash',methods=['post','get'])
 def clerkloancash():
     cursor = db.cursor()
-    cursor.execute("select employe_fname, employee_lname, email from employee where loginid='%s'" % (session['logid']))
-    name = cursor.fetchall()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
     cursor.execute("select c.fname,c.lname,s.acc_no from loanacc s,customers c where c.cid=s.customer_id and s.branch_id=(select branch_id from employee where employe_id='%s') and s.acc_type='loanaccount'" % (session['clid']))
     accno = cursor.fetchall()
     accountDetails = []  # Initialize accountDetails with a default value
@@ -571,7 +582,7 @@ def clerkloancash():
             db.commit()  # Commit the changes to the database
             flash("emi paid successfully...also a penality")
             return redirect(url_for('clerk.clerkloancash'))
-    return render_template('clerkloancash.html', name=name, accno=accno, accountDetails=accountDetails)
+    return render_template('clerkloancash.html', name=name, accno=accno, accountDetails=accountDetails,name1=name1)
 
 
 
@@ -580,36 +591,36 @@ def clerkloancash():
 def clerkmanagecustomers():
 
     cursor = db.cursor()
-    cursor.execute("select employe_fname,employee_lname,email from employee where loginid='%s'"%(session['logid']))
-    name = cursor.fetchall()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
     cursor.execute("SELECT * FROM customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
     employees = cursor.fetchall()
     
-    return render_template('clerkmanagecustomers.html',employees=employees,name=name)
+    return render_template('clerkmanagecustomers.html',employees=employees,name1=name1)
 
 
 @clerk.route('/clerkviewaccdetails')
 def clerkviewaccdetails():
     cursor = db.cursor()
-    cursor.execute("select employe_fname,employee_lname,email from employee where loginid='%s'"%(session['logid']))
-    name = cursor.fetchall()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
     cursor.execute("SELECT c.fname,c.lname,c.phone,c.photo,s.acc_no,s.ifsccode,s.acc_no,s.balance,s.acc_started_date,s.acc_status FROM customers c,savingsacc s where c.cid=s.customer_id")
     employees = cursor.fetchall()
     print(employees)
-    return render_template('clerkviewaccdetails.html',name=name,employees=employees)
+    return render_template('clerkviewaccdetails.html',name1=name1,employees=employees)
 
 
 @clerk.route('/clerkviewloanacc',methods=['post','get'])
 def clerkviewloanacc():
 
     cursor = db.cursor()
-    cursor.execute("select employe_fname,employee_lname,email from employee where loginid='%s'"%(session['logid']))
-    name = cursor.fetchall()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
     cursor.execute("SELECT c.fname,c.lname,l.acc_no,l.ifsccode,l.interst_amt,l.interest_rate,l.issued_amount,l.remaing_amount,l.acc_status,l.date_interest,l.loan_type FROM customers c,loanacc l where c.cid=l.customer_id and l.branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
     employees = cursor.fetchall()
     date = datetime.now().date()
     formatted_date = date.strftime("%d-%m-%y")
-    return render_template('clerkviewloanacc.html',employees=employees,name=name,formatted_date=formatted_date)
+    return render_template('clerkviewloanacc.html',employees=employees,name1=name1,formatted_date=formatted_date)
 
 
 
@@ -618,8 +629,8 @@ def clerkdepositcash():
     cursor = db.cursor()
     
     
-    cursor.execute("select employe_fname, employee_lname, email from employee where loginid='%s'" % (session['logid']))
-    name = cursor.fetchall()
+    cursor.execute("select employe_fname, employee_lname, image from employee where loginid='%s'" % (session['logid']))
+    name1 = cursor.fetchall()
     cursor.execute("SELECT c.fname, c.lname, c.phone, c.photo, s.acc_no, s.ifsccode, s.acc_no, s.balance, s.acc_started_date, s.acc_status FROM customers c, savingsacc s where c.cid=s.customer_id")
     employees = cursor.fetchall()
     print(employees)
@@ -738,7 +749,7 @@ def clerkdepositcash():
         
         flash("withdraw successfully...")
         return redirect(url_for('clerk.clerkdepositcash'))
-    return render_template('clerkdepositcash.html', name=name, employees=employees, accno=accno, accountDetails=accountDetails)
+    return render_template('clerkdepositcash.html', name1=name1, employees=employees, accno=accno, accountDetails=accountDetails)
 
 
 
@@ -748,8 +759,8 @@ def clerkcheckdeposit():
     cursor = db.cursor()
     
     
-    cursor.execute("select employe_fname, employee_lname, email from employee where loginid='%s'" % (session['logid']))
-    name = cursor.fetchall()
+    cursor.execute("select employe_fname, employee_lname, image from employee where loginid='%s'" % (session['logid']))
+    name1 = cursor.fetchall()
     cursor.execute("SELECT c.fname, c.lname, c.phone, c.photo, s.acc_no, s.ifsccode, s.acc_no, s.balance, s.acc_started_date, s.acc_status FROM customers c, savingsacc s where c.cid=s.customer_id")
     employees = cursor.fetchall()
     print(employees)
@@ -831,7 +842,7 @@ def clerkcheckdeposit():
         
         flash("depsoited successfully...")
         return redirect(url_for('clerk.clerkdepositcash'))
-    return render_template('clerkdepositcash.html', name=name, employees=employees, accno=accno, accountDetails=accountDetails)
+    return render_template('clerkdepositcash.html', name1=name1, employees=employees, accno=accno, accountDetails=accountDetails)
 
 
 @clerk.route('/publichome')
@@ -845,6 +856,8 @@ def publichome():
 @clerk.route('/userprofile', methods=['POST', 'GET'])
 def userprofile():
     cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
     cursor.execute("SELECT * FROM employee WHERE employe_id = %s" % (session['clid']))
     details = cursor.fetchall()
     cursor.execute("SELECT password FROM login WHERE loginid = %s" % (session['logid']))
@@ -874,7 +887,7 @@ def userprofile():
                 flash("No password selected")
             return redirect(url_for('clerk.userprofile'))
 
-    return render_template('userprofile.html',details=details,password=password)
+    return render_template('userprofile.html',details=details,password=password,name1=name1)
 
 
 
@@ -882,6 +895,8 @@ def userprofile():
 @clerk.route('/setusername',methods=['POST','GET'])
 def setusername():
     cursor=db.cursor()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
     cursor.execute("select uname from login")
     uname=[row[0] for row in cursor.fetchall()]
     cursor.execute("select count,login_type from login where loginid='%s'"%(session['logid']))
@@ -899,4 +914,4 @@ def setusername():
         flash("successfuly change username and password")
         return redirect(url_for('public.login'))
 
-    return render_template('setusername.html',uname=uname,count=count,logintype=logintype)
+    return render_template('setusername.html',uname=uname,count=count,logintype=logintype,name1=name1)

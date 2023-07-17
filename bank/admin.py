@@ -233,7 +233,7 @@ def adminaddemployee():
     if 'add' in request.form:
         fname = request.form['fname']
         lname = request.form['lname']
-        age = request.form['age']
+        dob = request.form['dob']
         i=request.files['image']
         img="uploads/"+str(uuid.uuid4())+i.filename
         i.save('bank/static/'+img)
@@ -247,8 +247,8 @@ def adminaddemployee():
         district = request.form['district']
         phone = request.form['phone']
         email = request.form['email']
-        username = request.form['username']
-        password = request.form['password']
+        # username = request.form['username']
+        # password = request.form['password']
         recipient_email = request.form['email']
         cursor.execute("select branch_id from branch  where branch_name='%s'"%(branch))
         branch_id=cursor.fetchone()[0]
@@ -291,7 +291,7 @@ def adminaddemployee():
         
         q = "INSERT INTO login VALUES(null,'%s', '%s', '%s','no')" % (email, phone, employee_type)
         id=insert(q)
-        q = "INSERT INTO employee VALUES(null,'%s','%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s', '%s', '%s', '%s','%s ','%s','active')" % (id, branch_id,fname, lname, age,img,status,gender,branch,employee_type,address,zipcode,place,district, phone, email)
+        q = "INSERT INTO employee VALUES(null,'%s','%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s', '%s', '%s', '%s','%s ','%s','active')" % (id, branch_id,fname, lname, dob,img,status,gender,branch,employee_type,address,zipcode,place,district, phone, email)
         insert(q)
         cursor.execute("select * from branch")
         branch=cursor.fetchall()

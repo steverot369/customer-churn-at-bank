@@ -281,9 +281,11 @@ rel="stylesheet">
           
                <div class="profile">
                 <div class="profile-photo" onclick="toggleProfilePhoto()">
-                  <img src="/static/images/profile-1.jpg">
+                  <!-- <img src="/static/images/profile-1.jpg"> -->
+                  {% for row in name %}
+                  <img src="{{url_for('static', filename=row[3])}}">
                 </div>
-                {% for row in name %}
+                
                 <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
                 {% endfor %}
                 <span class="material-icons-sharp expand-icon" onclick="toggleProfileContainer()">expand_more</span>
@@ -292,12 +294,15 @@ rel="stylesheet">
               <div class="profile-container">
                 <div class="profile-content">
                   <div class="profile-details">
+                    {% for row in name %}
                     <div class="profile-photo1">
-                      <img src="/static/images/profile-1.jpg">
+                      <!-- <img src="/static/images/profile-1.jpg"> -->
+                      <img src="{{url_for('static', filename=row[3])}}">
+
                     </div>
                 <!--  <b><h5>Steve Rodrigues</h5></b> -->
                 
-                {% for row in name %}
+                
                 <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
                 
                 <p><h5>{{row[2]}}</h5></p>
@@ -455,72 +460,9 @@ rel="stylesheet">
                           <!------------ END OF INCOME -------------->
                       </div>
                         <!-- ----end of cards------ -->
-                        <div class="monthly-report">
-                            <div class="report">
-                                <h3>Transaction Rate</h3>
-                                <div>
-                                    <details>
-                                        <h1>&#8377; {{ current_month_amount }}</h1>
-                                        {% if previous_month_amount > current_month_amount %}
-                                            <h6 class="danger">{{ percentage_change }}%</h6>
-                                        {% else %}
-                                            <h6 class="success">{{ percentage_change }}%</h6>
-                                        {% endif %}
-                                    </details>
-                                    <p class="text-muted">Compared to ${{ previous_month_amount }} last 30 days</p>
-                                </div>
-                            </div>
-                            <!-- end of income report -->
-                            <div class="report">
-                                <h3>Customer Rate</h3>
-                                <div>
-                                    <details>
-                                        <h1>count {{ current_year_count }}</h1>
-                                        {% if previous_year_count > current_year_count %}
-                                            <h6 class="danger">-{{ customer_percentage_change }}%</h6>
-                                        {% else %}
-                                            <h6 class="success">+{{ customer_percentage_change }}%</h6>
-                                        {% endif %}
-                                    </details>
-                                    <p class="text-muted">Compared to ${{ previous_year_count }} last year</p>
-                                </div>
-                            </div>
-                            
-                            <!-- end of expenses report -->
-                            <div class="report">
-                                <h3>Account Rate</h3>
-                                <div>
-                                    <details>
-                                        <h1>${{ current_month_balance }}</h1>
-                                        {% if previous_month_balance > current_month_balance %}
-                                            <h6 class="danger">-{{ account_percentage_change }}%</h6>
-                                        {% else %}
-                                            <h6 class="success">+{{ account_percentage_change }}%</h6>
-                                        {% endif %}
-                                    </details>
-                                    <p class="text-muted">Compared to ${{ previous_month_balance }} last month</p>
-                                </div>
-                            </div>
-                            
-                            <!-- end of cashback report -->
-                            <div class="report">
-                                <h3>loan Users</h3>
-                                <div>
-                                    <details>
-                                        <h1>${{ current_month_balance1 }}</h1>
-                                        {% if previous_month_balance1 > current_month_balance1 %}
-                                            <h6 class="danger">-{{ loan_account_percentage_change }}%</h6>
-                                        {% else %}
-                                            <h6 class="success">+{{ loan_account_percentage_change }}%</h6>
-                                        {% endif %}
-                                    </details>
-                                    <p class="text-muted">Compared to ${{ previous_month_balance1 }} last month</p>
-                                </div>
-                            </div>
-                            <!-- end of turnover report -->
-                        </div>
+                        
                         <!-- ---end of monthly reports----- -->
-                        <div class="fast-payment">
+                        <!-- <div class="fast-payment">
                             <h2>Bank Notes count</h2>
                             <div class="badges">
                               <div class="badge">
@@ -536,7 +478,7 @@ rel="stylesheet">
                               </div>
                               {% endfor %}
                             </div>
-                          </div>
+                          </div> -->
                         <!----------- end of payment----- -->
                         <button style="color:rebeccapurple; background: none;" onclick="moveChart()">Move Chart</button>
 

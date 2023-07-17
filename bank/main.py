@@ -4,7 +4,7 @@ from admin import admin
 from manager import manager
 from clerk import clerk
 from customer import customer
-from scheduler import scheduler
+# from scheduler import scheduler
 from update_interest_earn import update_interest_earn
 
 

@@ -86,7 +86,7 @@ def customerhome():
 
     details1 = cursor.fetchall()
 
-    cursor.execute("SELECT messages,date FROM bank_messages where customer_id='%s' AND DATE(date) = '%s' AND user_type='customer' AND message_type='bank' ORDER BY date DESC LIMIT 3"%(session['cust_id'],current_date))
+    cursor.execute("SELECT messages,date FROM bank_messages where message_type='bank' AND DATE(date) = '%s' AND customer_id='%s' or customer_id='0'  AND user_type='customer'  ORDER BY date DESC LIMIT 3"%(current_date,session['cust_id']))
     bank_messages = cursor.fetchall()
 
     cursor.execute("SELECT messages,date FROM bank_messages where customer_id='0' AND DATE(date) = '%s' AND user_type='customer' ORDER BY date DESC LIMIT 3"%(current_date))
@@ -95,7 +95,7 @@ def customerhome():
     cursor.execute("SELECT messages,date FROM bank_messages where customer_id='%s' AND DATE(date) = '%s' AND user_type='customer' and message_type='loan' ORDER BY date DESC LIMIT 3"%(session['cust_id'],current_date))
     bank_messages2 = cursor.fetchall()
 
-    cursor.execute("select count(message_id) from bank_messages where user_type='customer' and message_type='bank' and customer_id='%s' AND DATE(date)='%s'"%(session['cust_id'],current_date))
+    cursor.execute("select count(message_id) FROM bank_messages where message_type='bank' AND DATE(date) = '%s' AND customer_id='%s' or customer_id='0'  AND user_type='customer'"%(current_date,session['cust_id']))
     messages_count=cursor.fetchone()[0]
 
     cursor.execute("select count from login where loginid='%s'"%(session['logid']))

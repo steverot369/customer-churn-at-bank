@@ -19,10 +19,10 @@
                         <p class="has-cr-card">HasCrCard: <span>{{ credit_status }}</span></p>
                         <p class="is-active-member">IsActiveMember: (1: active, 0: not active): <span>{{ IsActiveMembervalue }}</span></p>
                         <p class="estimated-salary">EstimatedSalary: <span>{{ msalary }}</span></p>
-                        <p class="geography-germany">Geography_Germany: <span>{{ Geography_Germany }}</span></p>
+                        <!-- <p class="geography-germany">Geography_Germany: <span>{{ Geography_Germany }}</span></p>
                         <p class="geography-germany">Geography_Spain: <span>{{ Geography_Spain }}</span></p>
 
-                        <p class="gender">Gender_Male: (1: male, 0: female): <span>{{ gender_value }}</span></p>
+                        <p class="gender">Gender_Male: (1: male, 0: female): <span>{{ gender_value }}</span></p> -->
                         <br><br>
 
                         <div class="result">
@@ -91,15 +91,7 @@
                                     <li>5. Offer loyalty rewards for continued engagement</li>
                                   {% endif %}
                                   
-                                  {% if reason4 == "High Number of Bank Products" %}
-                                  <h2 style="font-size: 15px; font-weight: 700;">Bank Products</h2>
-
-                                    <li>1. Offer personalized product recommendations based on individual needs</li>
-                                    <li>2. Provide streamlined account management for multiple products</li>
-                                    <li>3. Simplify the user interface and navigation for easy access to all products</li>
-                                    <li>4. Offer bundled pricing or discounts for customers with multiple products</li>
-                                    <li>5. Provide dedicated support for customers with multiple products</li>
-                                  {% endif %}
+                                 
                                   
                                   {% if reason5 == "No Credit Card" %}
                                   <h2 style="font-size: 15px; font-weight: 700;">Credit Card</h2>
@@ -120,7 +112,16 @@
                                 <div class="chart-container">
                                     <canvas id="churnProbabilityChart"></canvas>
                                 </div>
-                                {% if reason3 == "Inactive Customer" %}
+                                {% if reason4 == "High Number of Bank Products" %}
+                                <h2 style="font-size: 15px; font-weight: 700;">Bank Products</h2>
+
+                                  <li>1. Offer personalized product recommendations based on individual needs</li>
+                                  <li>2. Provide streamlined account management for multiple products</li>
+                                  <li>3. Simplify the user interface and navigation for easy access to all products</li>
+                                  <li>4. Offer bundled pricing or discounts for customers with multiple products</li>
+                                  <li>5. Provide dedicated support for customers with multiple products</li>
+                                {% endif %}
+                                <!-- {% if reason3 == "Inactive Customer" %}
                                   <h2 style="font-size: 15px; font-weight: 700;">Inactive Customer</h2>
 
                                   <li>1. Send personalized and targeted re-engagement campaigns</li>
@@ -128,7 +129,7 @@
                                     <li>3. Provide tailored product recommendations based on past interactions</li>
                                     <li>4. Send reminders or notifications to encourage activity</li>
                                     <li>5. Offer loyalty rewards for continued engagement</li>
-                                  {% endif %}
+                                  {% endif %} -->
                             </div>
                         
 <!-- ... -->            </div>
