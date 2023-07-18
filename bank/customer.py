@@ -65,8 +65,116 @@ def customerhome():
     date = datetime.now()
     cursor.execute("select balance,acc_no,ifsccode from savingsacc where customer_id='%s'"%(session['cust_id']))
     customer_details=cursor.fetchall()
-    cursor.execute("select count from bankproducts where customer_id='%s'"%(session['cust_id']))
-    count=cursor.fetchone()[0]
+# begining
+
+
+    # cursor.execute("select count from bankproducts where customer_id='%s'"%(session['cust_id']))
+    # count=cursor.fetchone()[0]
+
+
+
+    cursor.execute("SELECT dob FROM customers WHERE cid='%s'" % session['cust_id'])
+    customer_detail = cursor.fetchone()
+    dob = customer_detail[0]
+
+    cursor.execute("SELECT count FROM bankproducts WHERE customer_id='%s'" % session['cust_id'])
+    customer_details1 = cursor.fetchone()
+    NumOfProducts = customer_details1[0]
+ 
+        
+    cursor.execute("SELECT COUNT(customer_id) FROM transaction WHERE customer_id='%s'" % session['cust_id'])
+    customer_details3 = cursor.fetchone()
+    IsActiveMember = customer_details3[0]
+
+
+
+    # cursor.execute("SELECT status FROM credit_card WHERE customer_id='%s'" % session['cust_id'])
+    # customer_details4 = cursor.fetchone()
+
+    # try:
+    #     credit_status = customer_details4[0]
+    #     credit_status = 1 if credit_status == "approve" else 0
+    # except TypeError:
+    #     credit_status = 0  
+
+    # print("credit==================", credit_status)
+
+
+    cursor.execute("SELECT sum(penality_count) FROM loanacc WHERE customer_id='%s'" % (session['cust_id']))
+    penality_result = cursor.fetchone()
+
+    if penality_result:
+        penality = penality_result[0]
+    else:
+        penality = 0
+
+    
+    
+
+    current_date = datetime.now().date()
+    dob_date = datetime.strptime(dob, "%Y-%m-%d").date()
+    age = (current_date - dob_date).days // 365
+    
+    
+    
+    
+  
+    
+    
+    credit_score = 0
+
+            # Age factor
+    if age >= 18 and age < 21:
+        credit_score += 120
+    elif age >= 21 and age < 25:
+        credit_score += 150
+    elif age >= 25 and age < 30:
+        credit_score += 175
+    elif age >= 30:
+        credit_score += 300
+    print("credit score on age=",credit_score)
+
+            # Loan penalty factor
+    if penality is not None and penality > 0:
+            
+        credit_score -= 100
+    print("credit score on penality=",credit_score)
+
+            # Loan penalty factor
+
+
+            # Active member factor
+    if NumOfProducts >= 1:
+        credit_score += 20
+        if NumOfProducts >= 2:
+            credit_score += 50
+        if NumOfProducts >= 3:
+            credit_score += 75
+        if NumOfProducts >= 4:
+            credit_score += 100
+        print("credit score on number of preoducts=",credit_score)
+
+            # NumOfProducts factor
+            # Active member factor
+    if IsActiveMember > 1:
+        credit_score += 50
+        if IsActiveMember > 10:
+            credit_score += 100
+        if IsActiveMember > 20:
+            credit_score += 150
+        print("credit score on transaction=",credit_score)
+
+            # Limit credit score to a maximum of 1000
+    credit_score = min(credit_score, 1000)
+
+            # Print the credit score
+    print("Credit Score:", credit_score)
+
+
+# end
+
+
+
     cursor.execute("SELECT from_acc, to_acc, amount,t_type, date FROM o_transaction WHERE customer_id = '%s' LIMIT 4" % (session['cust_id']))
 
     transaction_details=cursor.fetchall()
@@ -86,7 +194,7 @@ def customerhome():
 
     details1 = cursor.fetchall()
 
-    cursor.execute("SELECT messages,date FROM bank_messages where message_type='bank' AND DATE(date) = '%s' AND customer_id='%s' or customer_id='0'  AND user_type='customer'  ORDER BY date DESC LIMIT 3"%(current_date,session['cust_id']))
+    cursor.execute("SELECT messages,date FROM bank_messages where message_type='bank' AND DATE(date) = '%s' AND (customer_id='%s' OR customer_id='0') AND user_type='customer'  ORDER BY date DESC LIMIT 3"%(current_date,session['cust_id']))
     bank_messages = cursor.fetchall()
 
     cursor.execute("SELECT messages,date FROM bank_messages where customer_id='0' AND DATE(date) = '%s' AND user_type='customer' ORDER BY date DESC LIMIT 3"%(current_date))
@@ -95,8 +203,9 @@ def customerhome():
     cursor.execute("SELECT messages,date FROM bank_messages where customer_id='%s' AND DATE(date) = '%s' AND user_type='customer' and message_type='loan' ORDER BY date DESC LIMIT 3"%(session['cust_id'],current_date))
     bank_messages2 = cursor.fetchall()
 
-    cursor.execute("select count(message_id) FROM bank_messages where message_type='bank' AND DATE(date) = '%s' AND customer_id='%s' or customer_id='0'  AND user_type='customer'"%(current_date,session['cust_id']))
-    messages_count=cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM bank_messages WHERE message_type='bank' AND DATE(date) = '%s' AND (customer_id='%s' OR customer_id='0') AND user_type='customer'" % (current_date, session['cust_id']))
+    messages_count = cursor.fetchone()[0]
+
 
     cursor.execute("select count from login where loginid='%s'"%(session['logid']))
     logindetails=cursor.fetchone()
@@ -142,7 +251,7 @@ def customerhome():
             flash('success')
         else:
             print('send after 1 hoursuccess')
-    return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,count=count,labels=labels, values=values,transaction_details=transaction_details,
+    return render_template('customerhome.html',transaction=transaction,name=name,customer_details=customer_details,credit_score=credit_score,labels=labels, values=values,transaction_details=transaction_details,
     details=details,details1=details1,logged_in_user_id=logged_in_user_id,
     bank_messages=bank_messages,account_details=account_details,bank_messages1=bank_messages1,
     newusername=newusername,bank_messages2=bank_messages2,messages_count=messages_count)

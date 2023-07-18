@@ -14,7 +14,7 @@
                             <input type="radio" id="self-employed" name="employment" value="self-employed">
                             <label for="self-employed">Self-Employed</label>
                           
-                            <label id="label" for="income">Credit Card limit:</label>
+                            <label id="label" for="income">select your salary</label>
                            
 
                             <input type="range" id="income" name="income" min="10000" max="100000" step="1000" value="50000">
@@ -90,10 +90,10 @@
     
                             <!-- card 2 -->
                                   
-                            <div class="credit-card" id="credit2" style="display: none;">
-                              <h3><b>Millennia Credit Card</h3></b></h3>       
+                            <div class="credit-card" id="credit2" style="display: none;" >
+                              <h3><b>IndianOil HDFC Bank Credit Card</h3></b></h3>       
                                     <h4>Best CashBack Credit Card</h4>
-                                <div class="card1">
+                                <div class="card1" style="background-image: linear-gradient(rgb(152, 48, 0),rgb(142, 142, 60));">
                                     <div class="bank-name" title="BestBank">BestBank</div>
                                     <div class="chip">
                                         <img src="/static/images/tesla.png" alt="Card Logo">
@@ -115,16 +115,16 @@
                                 </div>
                                 <div class="card-features-1">
                                     <ul>
-                                        <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
-                                      <li>&#127873; 2.5% CashBack on all online spends</li>
-                                      <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
-                                      <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                        <li>&#x1F4B0; Earn up to 50 Liters of Free fuel annually</li>
+                                      <li>&#127873;Earn 5% of your spends as Fuel Points at IndianOil outlets, Groceries and Bill Payments.</li>
+                                      <li>&#128176; Earn 1 Fuel Point for every Rs. 150 spent on all other purchases</li>
+                                      <li>&#x1F3C6;  Enjoy 1% Fuel Surcharge waiver</li>
                                       
                                     </ul>
                                   </div>
                                   <div class="card-actions-1">
-                                    <button class="request-online-1">Request Online</button>
-                                    <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                                    <a href="{{ url_for('customer.customerrequestcreditcard', card_name='IndianOil HDFC Bank Credit Card',salary=salary[0]) }}" style="text-decoration: none;" class="request-online">Request Online</a>
+                                        <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
                                   </div>
                                 </div> 
                                   <!-- end 2 -->
@@ -133,10 +133,12 @@
                             <!-- card 3 -->
     
                             <div class="credit-card" id="credit3" style="display: none;">
-                              <div class="card-front">
+                              <h3><b>Paytm HDFC Bank Digital Credit Card</h3></b></h3>       
+                              <h4>Best CashBack Credit Card</h4>
+                              <div class="card-front" style="background-image: linear-gradient(rgb(8, 251, 210),rgb(30, 32, 37));">
                                 <div class="card-logo">
                                   <img src="/static/images/tesla.png" alt="Card Logo">
-                                  <span class="bank-name">Millennia Credit Card</span>
+                                  <span class="bank-name">Paytm HDFC Bank Digital Credit Card</span>
                                 </div>
                                 <div class="card-number">
                                   1234 5678 9012 3456
@@ -154,14 +156,14 @@
                              
                               <div class="card-features">
                                   <ul>
-                                      <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
-                                    <li>&#127873; 2.5% CashBack on all online spends</li>
-                                    <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
-                                    <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                      <li>&#x1F4B0; Upto 2% Accelerated Cashback on Scan & Pay</li>
+                                    <li>&#127873;Upto 2% Cashback on Swiggy & Uber spends</li>
+                                    <li>&#128176; Customize your card the way you like</li>
+                                    <li>&#x1F3C6;  Instant issuance/ virtual credit card</li>
                                   </ul>
                                 </div>
                                 <div class="card-actions">
-                                  <button class="request-online">Request Online</button>
+                                  <a href="{{ url_for('customer.customerrequestcreditcard', card_name='Paytm HDFC Bank Digital Credit Card',salary=salary[0]) }}" style="text-decoration: none;" class="request-online">Request Online</a>
                                   <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
                                 </div>
                               </div>
@@ -173,12 +175,14 @@
                             <!-- card 4 -->
     
                           <div class="credit-card" id="credit4" style="display: none;">
-                            <div class="card-front">
+                            <h3><b>MoneyBack Credit Card</h3></b></h3>       
+                            <h4>Best CashBack Credit Card</h4>
+                            <div class="card-front" style="background: url(/static/img/bg-tarjeta/bg-tarjeta-02.jpg);">
                               <div class="card-logo">
                                 <img src="/static/images/tesla.png" alt="Card Logo">
-                                <span class="bank-name">Millennia Credit Card</span>
+                                <span class="bank-name">MoneyBack Credit Card</span>
                               </div>
-                              <div class="card-number">
+                              <div class="card-number" style="color: #fff;">
                                 1234 5678 9012 3456
                               </div>
                               <div class="card-details">
@@ -194,15 +198,15 @@
                            
                             <div class="card-features">
                                 <ul>
-                                    <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
-                                  <li>&#127873; 2.5% CashBack on all online spends</li>
+                                    <li>&#x1F4B0;Two reward points for every ₹ 150 spent; 2x reward points for shopping online</li>
+                                  <li>&#127873; png Reward points redemption as cashback against credit card dues, exclusive gifts, or air miles</li>
                                   <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
-                                  <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                  
                                 </ul>
                               </div>
                               <div class="card-actions">
-                                <button class="request-online">Request Online</button>
-                                <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
+                                <a href="{{ url_for('customer.customerrequestcreditcard', card_name='Millennia Credit Card',salary=salary[0]) }}" style="text-decoration: none;" class="request-online">Request Online</a>
+                                        <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
                               </div>
                             </div>
                         </div>
@@ -212,8 +216,10 @@
                         <!-- card 5 -->
     
                         <div class="credit-card" id="credit5" style="display: none;">
+                          <h3><b>6E Rewards - IndiGo HDFC Bank Credit Card</h3></b></h3>       
+                          <h4>Best CashBack Credit Card</h4>
                           <div class="card1">
-                              <div class="bank-name" title="BestBank">BestBank</div>
+                              <div class="bank-name" title="BestBank">IndiGo HDFC Bank Credit Card</div>
                               <div class="chip">
                                   <img src="/static/images/tesla.png" alt="Card Logo">
                                   
@@ -234,24 +240,28 @@
                           </div>
                           <div class="card-features-1">
                               <ul>
-                                  <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
-                                <li>&#127873; 2.5% CashBack on all online spends</li>
-                                <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
-                                <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                  <li>&#x1F4B0; 2.5% 6E Rewards on IndiGo</li>
+                                <li>&#127873; 2% 6E Rewards on Grocery, Dining & Entertainment</li>
+                                <li>&#128176; 1% 6E Rewards on all other spends*</li>
+                                <li>&#x1F3C6;  Up to 10% 6E Rewards on Indigo featured partners</li>
+                                <li>&#x1F3C6;  Discounted Convenience Fee on IndiGo tickets-Rs.150 per pax (current - Rs.300)</li>
+
                                 
                               </ul>
                             </div>
                             <div class="card-actions-1">
-                              <button class="request-online-1">Request Online</button>
-                              <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                              <a href="{{ url_for('customer.customerrequestcreditcard', card_name='Millennia Credit Card',salary=salary[0]) }}" style="text-decoration: none;" class="request-online">Request Online</a>
+                              <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
                             </div>
                           </div> 
                               <!-- end 5-->
     
                             <!-- card 6 -->
                               <div class="credit-card" id="credit6" style="display: none;">
+                                <h3><b>6E Rewards XL- IndiGo HDFC Bank Credit Card</h3></b></h3>       
+                                <h4>Best CashBack Credit Card</h4>
                                 <div class="card1">
-                                    <div class="bank-name" title="BestBank">BestBank</div>
+                                    <div class="bank-name" title="BestBank">6E Rewards XL- IndiGo HDFC Bank Credit Card</div>
                                     <div class="chip">
                                         <img src="/static/images/tesla.png" alt="Card Logo">
                                         
@@ -272,16 +282,18 @@
                                 </div>
                                 <div class="card-features-1">
                                     <ul>
-                                        <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
-                                      <li>&#127873; 2.5% CashBack on all online spends</li>
-                                      <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
-                                      <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                        <li>&#x1F4B0; 5% 6E Rewards on IndiGo</li>
+                                      <li>&#127873;3% 6E Rewards on Grocery, Dining & Entertainment</li>
+                                      <li>&#128176; 2% 6E Rewards on all other spends*</li>
+                                      <li>&#x1F3C6;  Up to 15% 6E Rewards on Indigo featured partners</li>
+                                      <li>&#x1F3C6; Discounted Convenience Fee on IndiGo tickets-Rs.150 per pax (current - Rs.300)</li>
+
                                       
                                     </ul>
                                   </div>
                                   <div class="card-actions-1">
-                                    <button class="request-online-1">Request Online</button>
-                                    <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                                    <a href="{{ url_for('customer.customerrequestcreditcard', card_name='IndiGo HDFC Bank Credit Card',salary=salary[0]) }}" style="text-decoration: none;" class="request-online">Request Online</a>
+                              <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
                                   </div>
                                 </div>
                                <!-- end 6-->
@@ -318,8 +330,8 @@
                                     </ul>
                                   </div>
                                   <div class="card-actions-1">
-                                    <button class="request-online-1">Request Online</button>
-                                    <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                                    <a href="{{ url_for('customer.customerrequestcreditcard', card_name='2% 6E Rewards on all other spends*',salary=salary[0]) }}" style="text-decoration: none;" class="request-online">Request Online</a>
+                                    <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
                                   </div>
                                 </div>
                                <!-- end 7-->
@@ -327,8 +339,10 @@
     
                                <!-- card 7 -->
                               <div class="credit-card" id="credit7" style="display: none;">
-                                <div class="card1">
-                                    <div class="bank-name" title="BestBank">BestBank</div>
+                                <h3><b>InterMiles HDFC Bank Platinum Credit Card</h3></b></h3>       
+                                <h4>Best CashBack Credit Card</h4>
+                                <div class="card1" style="background: url(/static/img/bg-tarjeta/bg-tarjeta-02.jpg);">
+                                    <div class="bank-name" title="BestBank">InterMiles HDFC Bank Platinum Credit CardCo</div>
                                     <div class="chip">
                                         <img src="/static/images/tesla.png" alt="Card Logo">
                                         
@@ -349,10 +363,11 @@
                                 </div>
                                 <div class="card-features-1">
                                     <ul>
-                                        <li>&#x1F4B0; 5% CashBack on Amazon, Flipkart, Flight & Hotel bookings on shopping via PayZapp and SmartBuy</li>
-                                      <li>&#127873; 2.5% CashBack on all online spends</li>
-                                      <li>&#128176; 1% CashBack on all offline spends and wallet reloads</li>
-                                      <li>&#x1F3C6;  8 Complimentary Domestic Airport Lounge access annually</li>
+                                        <li>&#x1F4B0; Welcome benefit of up to 3,000 InterMiles and earn 4 InterMiles per every Rs.150 spent</li>
+                                      <li>&#127873; 2X InterMiles for flights booked on www.intermiles.com & Hotel booked via Interbook.intermiles.com</li>
+                                      <li>&#128176; Rs. 1500 Worth flight & hotel discount vouchers*</li>
+                                      <li>&#x1F3C6;  8 Complimentary Domestic Lounge Access*
+                                      </li>
                                       
                                     </ul>
                                   </div>
@@ -367,7 +382,9 @@
                               <!-- card 8 -->
                                                             
                               <div class="credit-card" id="credit8" style="display: none;">
-                                <div class="card1">
+                                <h3><b>6E Rewards XL- IndiGo HDFC Bank Credit Card</h3></b></h3>       
+                                <h4>Best CashBack Credit Card</h4>
+                                <div class="card1" style="background: url(/static/img/bg-tarjeta/bg-tarjeta-02.jpg);">
                                     <div class="bank-name" title="BestBank">BestBank</div>
                                     <div class="chip">
                                         <img src="/static/images/tesla.png" alt="Card Logo">
@@ -397,8 +414,8 @@
                                     </ul>
                                   </div>
                                   <div class="card-actions-1">
-                                    <button class="request-online-1">Request Online</button>
-                                    <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                                    <a href="{{ url_for('customer.customerrequestcreditcard', card_name='InterMiles HDFC Bank Platinum Credit CardCo',salary=salary[0]) }}" style="text-decoration: none;" class="request-online">Request Online</a>
+                                    <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
                                   </div>
                                 </div> 
                                   <!-- end 8 -->
@@ -407,8 +424,10 @@
                                     <!-- card 9 -->
                                                             
                               <div class="credit-card" id="credit9" style="display: none;">
-                                <div class="card1">
-                                    <div class="bank-name" title="BestBank">BestBank</div>
+                                <h3><b>IndiGoGo G HDFC Bank Credit Card</h3></b></h3>       
+                                <h4>Best CashBack Credit Card</h4>
+                                <div class="card1" style="background: url(/static/img/bg-tarjeta/bg-tarjeta-01.jpg);">
+                                    <div class="bank-name" title="BestBank">IndiGoGo G</div>
                                     <div class="chip">
                                         <img src="/static/images/tesla.png" alt="Card Logo">
                                         
@@ -437,8 +456,8 @@
                                     </ul>
                                   </div>
                                   <div class="card-actions-1">
-                                    <button class="request-online-1">Request Online</button>
-                                    <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                                    <a href="{{ url_for('customer.customerrequestcreditcard', card_name='IndiGoGo G HDFC Bank Credit Card',salary=salary[0]) }}" style="text-decoration: none;" class="request-online">Request Online</a>
+                                    <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
                                   </div>
                                 </div> 
                                   <!-- end 9 -->
@@ -446,7 +465,9 @@
                             <!-- card 10 -->
                                                                                   
                             <div class="credit-card" id="credit10" style="display: none;">
-                              <div class="card1">
+                              <h3><b>IndiGoGo HDFC Bank Credit Card</h3></b></h3>       
+                                <h4>Best CashBack Credit Card</h4>
+                              <div class="card1" style="background: url(/static/img/bg-tarjeta/bg-tarjeta-01.jpg);">
                                   <div class="bank-name" title="BestBank">BestBank</div>
                                   <div class="chip">
                                       <img src="/static/images/tesla.png" alt="Card Logo">
@@ -476,8 +497,8 @@
                                   </ul>
                                 </div>
                                 <div class="card-actions-1">
-                                  <button class="request-online-1">Request Online</button>
-                                  <a href="#" style="text-decoration: none;"class="read-more-1">Read More</a>
+                                  <a href="{{ url_for('customer.customerrequestcreditcard', card_name='IndiGoGo HDFC Bank Credit Card',salary=salary[0]) }}" style="text-decoration: none;" class="request-online">Request Online</a>
+                                  <a href="#" style="text-decoration: none;" class="read-more">Read More</a>
                                 </div>
                               </div> 
                                 <!-- end 10 -->
@@ -529,12 +550,12 @@
         document.getElementById('credit1').style.display = 'block';
         document.getElementById('credit2').style.display = 'block';
         document.getElementById('credit10').style.display = 'block';
-        document.getElementById('credit3').style.display = 'block';
+        
 
         // Show other relevant credit cards
   
         // Update match count and clear button
-        document.getElementById('matchCount').textContent = "Showing 4 match card from 10";
+        document.getElementById('matchCount').textContent = "Showing 3 match card from 10";
         document.getElementById('matchCount').style.display = 'block';
         document.getElementById('clearButton').style.display = 'block';
       } else if (employmentType === 'self-employed' && annualIncome >= 70000 && selectedInterest === 'lifestyle') {
@@ -547,13 +568,56 @@
         document.getElementById('matchCount').textContent = "Showing 3 match card from 10";
         document.getElementById('matchCount').style.display = 'block';
         document.getElementById('clearButton').style.display = 'block';
-      } else if (employmentType === 'employee' && annualIncome >= 60000 && selectedInterest === 'travel') {
+      } 
+      else if (employmentType === 'employee' && annualIncome >= 40000 && selectedInterest === 'lifestyle') {
+        // Show relevant credit cards
+        document.getElementById('credit2').style.display = 'block';
+        document.getElementById('credit10').style.display = 'block';
+        document.getElementById('credit3').style.display = 'block';
+  
+        // Update match count and clear button
+        document.getElementById('matchCount').textContent = "Showing 3 match card from 10";
+        document.getElementById('matchCount').style.display = 'block';
+        document.getElementById('clearButton').style.display = 'block';
+      }
+      
+      else if (employmentType === 'employee' && annualIncome >= 60000 && selectedInterest === 'travel') {
         // Show relevant credit cards
         document.getElementById('credit4').style.display = 'block';
         document.getElementById('credit6').style.display = 'block';
         document.getElementById('credit8').style.display = 'block';
         // Update match count and clear button
         document.getElementById('matchCount').textContent = "There are 2 matches out of 10";
+        document.getElementById('matchCount').style.display = 'block';
+        document.getElementById('clearButton').style.display = 'block';
+      }
+      else if (employmentType === 'self-employee' && annualIncome >= 50000 && selectedInterest === 'travel') {
+        // Show relevant credit cards
+        document.getElementById('credit4').style.display = 'block';
+        document.getElementById('credit2').style.display = 'block';
+        document.getElementById('credit7').style.display = 'block';
+        // Update match count and clear button
+        document.getElementById('matchCount').textContent = "There are 3 matches out of 10";
+        document.getElementById('matchCount').style.display = 'block';
+        document.getElementById('clearButton').style.display = 'block';
+      }
+      else if (employmentType === 'self-employee' && annualIncome >= 30000 && selectedInterest === 'fuel') {
+        // Show relevant credit cards
+        document.getElementById('credit4').style.display = 'block';
+        document.getElementById('credit2').style.display = 'block';
+        document.getElementById('credit7').style.display = 'block';
+        // Update match count and clear button
+        document.getElementById('matchCount').textContent = "There are 3 matches out of 10";
+        document.getElementById('matchCount').style.display = 'block';
+        document.getElementById('clearButton').style.display = 'block';
+      }
+      else if (employmentType === 'self-employee' && annualIncome >= 30000 && selectedInterest === 'lifestyle') {
+        // Show relevant credit cards
+        document.getElementById('credit4').style.display = 'block';
+        document.getElementById('credit2').style.display = 'block';
+        document.getElementById('credit7').style.display = 'block';
+        // Update match count and clear button
+        document.getElementById('matchCount').textContent = "There are 3 matches out of 10";
         document.getElementById('matchCount').style.display = 'block';
         document.getElementById('clearButton').style.display = 'block';
       }

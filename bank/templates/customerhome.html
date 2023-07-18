@@ -761,18 +761,29 @@ padding-bottom: 13px;
                           </div>
                           <!------------ END OF expense -------------->
                           <div class="income">
-                            <span class="material-icons-sharp">inventory_2</span>
+                            <span class="material-icons-sharp">credit_score</span>
                             <div class="middle">
                                 <div class="left">
-                                    <h3>Bank products</h3>
-                                    <h1>{{ count }} No</h1>
+                                    <h3>credit score</h3>
+                                    {% if credit_score > 400 and credit_score < 600 %}
+                                        <h1>{{ credit_score }}</h1>
+                                    {% elif credit_score >= 600 and credit_score < 700 %}
+                                        <h1>{{ credit_score }}</h1>
+                                    {% elif credit_score >= 700 and credit_score < 800 %}
+                                        <h1>{{ credit_score }}</h1>
+                                    {% elif credit_score >= 800 %}
+                                        <h1>{{ credit_score }} excellent</h1>
+                                    {% endif %}
                                 </div>
                                 <div class="progress">
                                     <svg>
                                         <circle id="progressCircle2" cx='38' cy='38' r='36'></circle>
                                     </svg>
                                     <div class="number">
-                                        <p id="progressValue2">44%</p>
+                                        <!-- <p id="progressValue2">44%</p><br> -->
+                                        <p id="progressValue2" style="display: none;">44%</p>
+
+                                        <p id="creditScoreLabel" style="font-size: 11px; color: #000;"></p>
                                     </div>
                                 </div>
                             </div>
@@ -1344,23 +1355,35 @@ accountDropdown.addEventListener("change", function() {
 </script>
   
 <script>
-    var initialProductCount = 10; // Initial bank product count
-    var count = {{ count }}; // Count retrieved from the database
+    var initialProductCount = 950; // Initial bank product count
+    var count = {{ credit_score }}; // Count retrieved from the database
     var progressCircle3 = document.getElementById('progressCircle2');
     var progressValue3 = document.getElementById('progressValue2');
+    var creditScoreLabel = document.getElementById('creditScoreLabel');
 
     function updateProgress() {
         var progress3 = (count / initialProductCount) * 100;
         progressCircle3.style.strokeDashoffset = 226 - (progress3 * 226) / 100;
         progressValue3.textContent = progress3.toFixed(0) + '%';
+
+        // Add labels based on the progress percentage
+        if (progress3 >= 0 && progress3 < 20) {
+            creditScoreLabel.textContent = 'Bad';
+        } else if (progress3 >= 20 && progress3 < 40) {
+            creditScoreLabel.textContent = 'Fair';
+        } else if (progress3 >= 40 && progress3 < 60) {
+            creditScoreLabel.textContent = 'Good';
+        } else if (progress3 >= 60 && progress3 <= 100) {
+            creditScoreLabel.textContent = 'Excellent';
+        }
     }
 
     updateProgress(); // Call the function initially
 
     // Optionally, call the function whenever the 'count' value changes
     // and update the progress dynamically
-
 </script>
+
 
 
 
