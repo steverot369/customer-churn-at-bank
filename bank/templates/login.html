@@ -40,6 +40,8 @@
 			<span>or use your account</span>
       <input type="username" name="username" placeholder="username" />
 			<input type="password" name="password" placeholder="Password" id="password"/>
+			<span style="font-size: 15px;" id="password-match"></span>
+
 			<a href="#">Forgot your password?</a>
       <input type="submit" name="submit" name="submit" value="Login" class="button "/>
 		</form>
@@ -95,7 +97,26 @@
   
 
 
-
+  <script>
+	const passwordInput = document.getElementById('form3Examplev4');
+	const passwordMatchSpan = document.getElementById('password-match');
+	const forgotPasswordLink = document.getElementById('forgot-password-link');
+  
+	passwordInput.addEventListener('input', function () {
+	  const enteredPassword = passwordInput.value;
+	  const originalPassword = "{{ password }}"; // Replace with the actual value of the password
+  
+	  if (enteredPassword === originalPassword) {
+		passwordMatchSpan.textContent = "Passwords match!";
+		passwordMatchSpan.style.color = "green";
+		forgotPasswordLink.innerHTML = "";
+	  } else {
+		passwordMatchSpan.textContent = "Passwords do not match.";
+		passwordMatchSpan.style.color = "red";
+		// forgotPasswordLink.innerHTML = '<a href="/forgot-password">Forgot Password?</a>';
+	  }
+	});
+  </script>
 
 
 </body>

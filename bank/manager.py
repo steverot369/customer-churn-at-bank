@@ -85,7 +85,7 @@ def managerhome():
     
     cursor.execute("select sum(transaction_amount) from transactions")
     total_amount = cursor.fetchone()[0]
-    cursor.execute("select employe_fname,employee_lname,email from employee where loginid='%s'"%(session['logid']))
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
     name = cursor.fetchall()
     cursor.fetchall()
     cursor.execute("select branch_id from employee where employe_id='%s'"%(session['mid']))
@@ -200,6 +200,18 @@ def managerhome():
     cursor.execute(query)
     count = cursor.fetchone()[0]
     print("max date=",query)
+
+    current_datetime=datetime.datetime.now()
+    current_date = current_datetime.date()
+
+    print('cureetn date',current_date)
+    cursor.execute("SELECT messages,date FROM bank_messages WHERE message_type='bank' AND DATE(date) = '%s' AND (user_type='employee' OR user_type='manager') AND branch_id='%s' ORDER BY date DESC LIMIT 3"% (current_date,branch_id))
+    bank_messages = cursor.fetchall()
+
+    cursor.execute("SELECT COUNT(*) FROM bank_messages WHERE message_type='bank' AND DATE(date) = '%s' AND (user_type='employee' OR user_type='manager') AND branch_id='%s'" % (current_date,branch_id))
+    messages_count = cursor.fetchone()[0]
+
+
     if 'count_removed' in session:
         session.pop('count_removed')  # Remove the 'count_removed' flag from session
     
@@ -210,7 +222,7 @@ def managerhome():
      current_year_count=current_year_count, previous_year_count=previous_year_count, customer_percentage_change=customer_percentage_change, 
      current_month_balance=current_month_balance, previous_month_balance=previous_month_balance, account_percentage_change=account_percentage_change,
      current_month_balance1=current_month_balance1, previous_month_balance1=previous_month_balance1, loan_account_percentage_change=loan_account_percentage_change,
-     customer_count=customer_count,employee_count=employee_count)
+     customer_count=customer_count,employee_count=employee_count,bank_messages=bank_messages,messages_count=messages_count)
     
       
 @manager.route('/publichome')
@@ -223,6 +235,8 @@ def publichome():
 @manager.route('/setusername',methods=['POST','GET'])
 def setusername():
     cursor=db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
     cursor.execute("select uname from login")
     uname=[row[0] for row in cursor.fetchall()]
     cursor.execute("select count from login where loginid='%s'"%(session['logid']))
@@ -236,11 +250,14 @@ def setusername():
         flash("successfuly change username and password")
         return redirect(url_for('public.login'))
 
-    return render_template('setusername.html',uname=uname,count=count)
+    return render_template('setusername.html',uname=uname,count=count,name12=name12)
 
 @manager.route('/managermanagehome')
 def managermanagehome():
-    return render_template('managermanagehome.html')
+    cursor=db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
+    return render_template('managermanagehome.html',name12=name12)
 
 
 
@@ -250,8 +267,8 @@ def managermanagehome():
 def managermanagecustomers():
 
     cursor = db.cursor()
-    cursor.execute("select employe_fname,employee_lname,email from employee where loginid='%s'"%(session['logid']))
-    name = cursor.fetchall()
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
     cursor.execute("SELECT * FROM customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
     employees = cursor.fetchall()
     date=datetime.datetime.now()
@@ -268,7 +285,7 @@ def managermanagecustomers():
         branch_id=details[0]
         
         if last_submission_time is None or last_submission_time < min_allowed_time:
-            bank_messages="INSERT INTO bank_messages(customer_id,branch_id,messages,date)  VALUES ( %s, %s, %s,%s)"
+            bank_messages="INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,messsage_type,date)  VALUES ( %s, %s, %s,'customer','bank',%s)"
             bank_messages_values = (customer_id, branch_id,messages,date)
             cursor.execute(bank_messages, bank_messages_values)
             # cursor.execute("SELECT * FROM customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
@@ -279,7 +296,7 @@ def managermanagecustomers():
         
     
 
-    return render_template('managermanagecustomers.html',employees=employees,name=name)
+    return render_template('managermanagecustomers.html',employees=employees,name12=name12)
 
 
 
@@ -294,6 +311,8 @@ def managermanagecustomers():
 @manager.route('/managercustomerchurn/<customer_id>', methods=['GET', 'POST'])
 def managercustomerchurn(customer_id):
     cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
     cursor.execute("SELECT dob, msalary, state, date,gender,active,fname,lname FROM customers WHERE cid='%s'" % customer_id)
     customer_details = cursor.fetchone()
     cursor.execute("SELECT count FROM bankproducts WHERE customer_id='%s'" % customer_id)
@@ -556,9 +575,18 @@ def managercustomerchurn(customer_id):
 
         credit=CreditScore
         if prediction == 1:
-            # churn = "INSERT INTO churn_customers(customer_id, branch_id, leave_or_not) VALUES (%s, %s, 'will leave')"
-            # churn_values = (customer_id, branch_id)
-            # cursor.execute(churn, churn_values)
+            check_existing_customer = "SELECT customer_id FROM churn_customers WHERE customer_id = %s"
+            cursor.execute(check_existing_customer, (customer_id,))
+            existing_customer = cursor.fetchone()
+
+            if existing_customer is None:
+                churn = "INSERT INTO churn_customers (customer_id, branch_id, leave_or_not) VALUES (%s, %s, 'will leave')"
+                churn_values = (customer_id, branch_id)
+                cursor.execute(churn, churn_values)
+                # Add code for further processing if the insert was successful
+            else:
+                # Add code to handle the case when a customer with the same ID already exists
+                print("no value is fetch")
             reason1 = "no data"
             reason2 = "no data"
             reason3 = "no data"
@@ -584,7 +612,7 @@ def managercustomerchurn(customer_id):
                                 tenure=tenure, msalary=msalary, NumOfProducts=NumOfProducts, balances=balances,
                                 gender_value=gender_value, IsActiveMembervalue=IsActiveMembervalue,
                                 credit_score=credit_score, f_name=f_name, l_name=l_name, state=state,
-                                credit_status=credit_status, reason1=reason1,reason2=reason2,reason3=reason3,reason4=reason4,reason5=reason5)
+                                credit_status=credit_status, reason1=reason1,reason2=reason2,reason3=reason3,reason4=reason4,reason5=reason5,name12=name12)
         else:
             return render_template('predictionresult.html', prediction_text="The Customer will not leave the bank",
                                 probability=stay_probability, stay_probability=probability,
@@ -593,7 +621,7 @@ def managercustomerchurn(customer_id):
                                 tenure=tenure, msalary=msalary, NumOfProducts=NumOfProducts, balances=balances,
                                 gender_value=gender_value, IsActiveMembervalue=IsActiveMembervalue,
                                 credit_score=credit_score, f_name=f_name, l_name=l_name, state=state,
-                                credit_status=credit_status)
+                                credit_status=credit_status,name12=name12)
 
 
     # Pass date and tenure to the template
@@ -601,6 +629,9 @@ def managercustomerchurn(customer_id):
 
 @manager.route('/customerchurnprediction', methods=['POST'])
 def customerchurnprediction():
+    cursor=db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
     if 'add' in request.form:
         creditscore=request.form['credit_score']
         age = request.form['age']
@@ -632,10 +663,10 @@ def customerchurnprediction():
         stay_probability = 100 - probability
         if prediction == 1:
             return render_template('predictionresult.html', prediction_text="The Customer will leave the bank",
-                                   probability=probability, stay_probability=stay_probability)
+                                   probability=probability, stay_probability=stay_probability,name12=name12)
         else:
             return render_template('predictionresult.html', prediction_text="The Customer will not leave the bank",
-                                   probability=stay_probability, stay_probability=probability)
+                                   probability=stay_probability, stay_probability=probability,name12=name12)
     return render_template('customerchurnprediction.html')
 
 
@@ -647,12 +678,12 @@ def clerkviewloanacc():
 
     cursor = db.cursor()
     cursor.execute("select employe_fname,employee_lname,email from employee where loginid='%s'"%(session['logid']))
-    name = cursor.fetchall()
+    name12 = cursor.fetchall()
     cursor.execute("SELECT c.fname,c.lname,l.acc_no,l.ifsccode,l.interst_amt,l.interest_rate,l.issued_amount,l.remaing_amount,l.acc_status,l.date_interest,l.loan_type FROM customers c,loanacc l where c.cid=l.customer_id and l.branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
     employees = cursor.fetchall()
     date = datetime.datetime.now()
     formatted_date = date.strftime("%d-%m-%y")
-    return render_template('managerviewloanacc.html',employees=employees,name=name,formatted_date=formatted_date)
+    return render_template('managerviewloanacc.html',employees=employees,name12=name12,formatted_date=formatted_date)
     
 
 @manager.route('/managerviewtransaction',methods=['post','get'])
@@ -660,20 +691,23 @@ def managerviewtransaction():
 
     cursor = db.cursor()
     cursor.execute("select employe_fname,employee_lname,email from employee where loginid='%s'"%(session['logid']))
-    name = cursor.fetchall()
+    name12 = cursor.fetchall()
     cursor.execute("SELECT t.t_no,t.t_type,t.amount,t.date_time,c.fname,c.lname,s.acc_no from transaction t,customers c,savingsacc s where t.customer_id=c.cid AND t.customer_id=s.customer_id AND t.branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
     employees = cursor.fetchall()
     date = datetime.datetime.now().date()
     formatted_date = datetime.datetime.strftime(date,"%d-%m-%y")
-    return render_template('managerviewtransaction.html',employees=employees,name=name,formatted_date=formatted_date)
+    return render_template('managerviewtransaction.html',employees=employees,name12=name12,formatted_date=formatted_date)
         
           
 @manager.route('/managerviewcreditcard')
 def managerviewcreditcard():
     cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
     # cursor.execute("SELECT card_name, job_type, c_name, c_location, m_salary, file1, file2, file3, date, status FROM o_credit_card_request WHERE branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')" % (session['mid']))
     cursor.execute("SELECT c.card_name, c.job_type, c.c_name, c.c_location, c.m_salary, c.file1, c.file2, c.file3, c.date, c.status, cu.fname, cu.lname, cu.phone,c.o_request_id FROM o_credit_card_request c INNER JOIN customers cu ON c.customer_id = cu.cid WHERE c.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')"% (session['mid']))
     credit_card = cursor.fetchall()
+
 
     if "action" in request.args:
         action=request.args['action']
@@ -689,10 +723,12 @@ def managerviewcreditcard():
         card_name = credit_request[2]
 
         cursor.fetchall()
-
-        cursor.execute("SELECT cid, branch_id, dob FROM customers WHERE branch_id=(SELECT branch_id FROM employee WHERE employe_id='%s')" % (session['mid']))
+        cursor.execute("SELECT customer_id FROM o_credit_card_request WHERE branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s') AND o_request_id='%s'"% (session['mid'],id))
+        customer_details = cursor.fetchone()
+        cid=customer_details[0]
+        cursor.execute("SELECT cid, branch_id, dob FROM customers WHERE branch_id=(SELECT branch_id FROM employee WHERE employe_id='%s') AND cid='%s'" % (session['mid'],cid))
         result = cursor.fetchone()
-        cid = result[0]
+        # cid = result[0]
         branch_id = result[1]
         dob = result[2]
 
@@ -700,6 +736,8 @@ def managerviewcreditcard():
         cursor.fetchall()
 
         date = datetime.datetime.now().date()
+        date1 = datetime.datetime.now()
+
         dob_date = datetime.datetime.strptime(dob, "%Y-%m-%d").date()
         age = (date - dob_date).days // 365
 
@@ -709,6 +747,8 @@ def managerviewcreditcard():
         transaction = cursor.fetchone()[0]
         cursor.execute("SELECT sum(penality_count) FROM loanacc WHERE customer_id='%s'" % (cid))
         penality_result = cursor.fetchone()
+
+        
 
         if penality_result:
             penality = penality_result[0]
@@ -771,8 +811,13 @@ def managerviewcreditcard():
         credit_card="INSERT INTO credit_card(customer_id,branch_id,card_name,card_no,card_limit,cv,expiry_date,j_date,status)  VALUES (%s, %s, %s, %s,%s, %s,%s,%s,'approve')"
         credit_card_values = (cid, branch_id,card_name, debit_card_no, total_limit,cv, expiry_date,date)
         cursor.execute(credit_card, credit_card_values)
+        messages_bank=f"the request for your credit card name {card_name} has been approved by the branch manager"
+        messages = "INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,message_type,date) VALUES (%s, %s, %s,'customer','bank',%s)"
+        messages_values = (cid, branch_id,messages_bank,date1)
+        cursor.execute(messages, messages_values)
         cursor.execute("SELECT count FROM bankproducts WHERE customer_id = %s", (cid,))
         existing_record = cursor.fetchone()
+        cursor.execute("delete from bank_messages where user_type='manager' and branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')"% (session['mid']))
         if existing_record:  
             count = existing_record[0] + 1
             cursor.fetchall()
@@ -783,42 +828,88 @@ def managerviewcreditcard():
         return redirect(url_for('manager.managerviewcreditcard'))
         
     if action=="reject":
+        date = datetime.datetime.now()
+        cursor.execute("SELECT customer_id,card_name FROM o_credit_card_request WHERE branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s') AND o_request_id='%s'"% (session['mid'],id))
+        customer_details = cursor.fetchone()
+        cid=customer_details[0]
+        card_name = customer_details[1]
+
+        cursor.execute("SELECT cid, branch_id, dob FROM customers WHERE branch_id=(SELECT branch_id FROM employee WHERE employe_id='%s') AND cid='%s'" % (session['mid'],cid))
+        result = cursor.fetchone()
+        # cid = result[0]
+        branch_id = result[1]
+        dob = result[2]
+
+        cursor.fetchall()
         cursor.execute("update o_credit_card_request set status='reject' where o_request_id='%s'"%(id))
+        messages_bank1=f"the request for your credit card name {card_name} has been decined by the branch manager for any assist call the branch"
+        messages1 = "INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,message_type,date) VALUES (%s, %s, %s,'customer','bank',%s)"
+        messages_values1 = (cid, branch_id,messages_bank1,date)
+        cursor.execute(messages1, messages_values1)
+        cursor.execute("delete from bank_messages where user_type='manager' and branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')"% (session['mid']))
         flash('Rejected successfully !')
         return redirect(url_for('manager.managerviewcreditcard'))
 
-    return render_template('managerviewcreditcard.html',credit_card=credit_card)       
+    return render_template('managerviewcreditcard.html',credit_card=credit_card,name12=name12)       
 
 
 @manager.route('/managerviewcreditcardholders')
 def managerviewcreditcardholders():
     cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
     # cursor.execute("SELECT card_name, job_type, c_name, c_location, m_salary, file1, file2, file3, date, status FROM o_credit_card_request WHERE branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')" % (session['mid']))
     cursor.execute("SELECT c.fname, c.lname,c.photo,c.phone,c.email,cu.card_name,cu.card_limit,cu.status FROM customers c INNER JOIN credit_card cu ON c.cid = cu.customer_id WHERE c.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')"% (session['mid']))
     credit_card_holders = cursor.fetchall()
 
    
 
-    return render_template('managerviewcreditcardholders.html',credit_card_holders=credit_card_holders)
+    return render_template('managerviewcreditcardholders.html',credit_card_holders=credit_card_holders,name12=name12)
 
 
 
-@manager.route('/managerviewchurncustomer')
+@manager.route('/managerviewchurncustomer',methods=['POST' ,'GET'])
 def managerviewchurncustomer():
     cursor = db.cursor()
-   
-    cursor.execute("SELECT c.fname, c.lname,c.photo,c.phone,c.email,cu.leave_or_not FROM customers c INNER JOIN churn_customers cu ON c.cid = cu.customer_id WHERE c.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')"% (session['mid']))
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
+    cursor.execute("SELECT c.cid,c.fname, c.lname,c.photo,c.phone,c.email,cu.leave_or_not FROM customers c INNER JOIN churn_customers cu ON c.cid = cu.customer_id WHERE c.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')"% (session['mid']))
     churn_cutomers = cursor.fetchall()
+    date=datetime.datetime.now()
+
+    if 'add' in request.form:
+       
+        messages=request.form['messages']
+        customer_id=request.form['customer_id']
+        min_allowed_time =  date - timedelta(hours=1)
+        cursor.execute("SELECT MAX(date) FROM bank_messages WHERE customer_id = %s", (customer_id,))
+        last_submission_time = cursor.fetchone()[0]
+        cursor.execute("select branch_id from customers where cid='%s'" % customer_id)
+        details=cursor.fetchone()
+        print(details)
+        branch_id=details[0]
+        
+        if last_submission_time is None or last_submission_time < min_allowed_time:
+            bank_messages="INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,message_type,date)  VALUES ( %s, %s, %s,'customer','bank',%s)"
+            bank_messages_values = (customer_id, branch_id,messages,date)
+            cursor.execute(bank_messages, bank_messages_values)
+            # cursor.execute("SELECT * FROM customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
+            # employees = cursor.fetchall()
+            flash("successfully send notification")
+        else:
+            print('send after 1 hoursuccess')
 
    
 
-    return render_template('managerviewchurncustomer.html',churn_cutomers=churn_cutomers)
+    return render_template('managerviewchurncustomer.html',churn_cutomers=churn_cutomers,name12=name12)
 
 
 
 @manager.route('/userprofile', methods=['POST', 'GET'])
 def userprofile():
     cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
     cursor.execute("SELECT * FROM employee WHERE employe_id = %s" % (session['mid']))
     details = cursor.fetchall()
     cursor.execute("SELECT password FROM login WHERE loginid = %s" % (session['logid']))
@@ -848,4 +939,4 @@ def userprofile():
                 flash("No password selected")
             return redirect(url_for('manager.userprofile'))
 
-    return render_template('userprofile.html',details=details,password=password,logged_in_user_id=logged_in_user_id)
+    return render_template('userprofile.html',details=details,password=password,logged_in_user_id=logged_in_user_id,name12=name12)

@@ -34,7 +34,7 @@
                                         <h4 style="color: blue;">
                                             {{ details[10] }} of branch {{ details[9] }}
                                         </h4>
-                                        <p class="proile-rating">RANKINGS : <span>8/10</span></p>
+                                        <p class="proile-rating">Date join : <span>{{ details[22] }}</span></p>
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
@@ -53,7 +53,7 @@
                 </form>  
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="profile-work">
+                            <!-- <div class="profile-work">
                                 <p>WORK LINK</p>
                                 <a href="">Website Link</a><br/>
                                 <a href="">Bootsnipp Profile</a><br/>
@@ -64,7 +64,7 @@
                                 <a href="">WordPress</a><br/>
                                 <a href="">WooCommerce</a><br/>
                                 <a href="">PHP, .Net</a><br/>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="col-md-8">
                            
@@ -142,15 +142,15 @@
                                            
                                             <div class="form-outline">
                                                 <label class="form-label" for="form3Examplev4">Password</label>
-                                                <input type="password" id="form3Examplev4" name="oldpassword" class="form-control form-control-lg" />
+                                                <input type="password" id="form3Examplev4" name="oldpassword" class="form-control form-control-lg" required/>
                                                 <span style="font-size: 15px;" id="password-match"></span>
                                               </div>
-                                              <div style="font-size: 15px;" id="forgot-password-link"></div>
+                                              <!-- <div style="font-size: 15px;" id="forgot-password-link"></div> -->
 
                                           <div class="mb-4 pb-2">
                                             <label class="form-label" for="form3Examplev4">New Password</label>
                                             <div class="form-outline">
-                                              <input type="password" id="form3Examplev4" name="newpassword" class="form-control form-control-lg" />
+                                              <input type="password" id="form3Examplev4" name="newpassword" class="form-control form-control-lg" required/>
                                               
                                             </div>
                                           </div>
@@ -199,7 +199,7 @@
           } else {
             passwordMatchSpan.textContent = "Passwords do not match.";
             passwordMatchSpan.style.color = "red";
-            forgotPasswordLink.innerHTML = '<a href="/forgot-password">Forgot Password?</a>';
+            // forgotPasswordLink.innerHTML = '<a href="/forgot-password">Forgot Password?</a>';
           }
         });
       </script>

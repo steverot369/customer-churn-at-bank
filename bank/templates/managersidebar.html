@@ -1174,10 +1174,13 @@ input[type="password"] {
                 </div>
                 <div class="profile">
                     <div class="profile-photo">
-                        <img src="/static/images/profile-2.jpg" style="width: 100%;">
-                    </div>
-                
-                <h5>Steve Rodrigues</h5>
+                      {% for row in name12 %}
+                      <img src="{{url_for('static', filename=row[3])}}">
+  
+                  </div>
+                 
+                  <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
+                  {% endfor %}
                 <span class="material-icons-sharp">expand_more</span>
             </div>
             <button id="menu-btn">

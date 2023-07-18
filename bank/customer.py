@@ -397,6 +397,14 @@ def customerrequestcreditcard():
     cursor=db.cursor()
     cursor.execute("select fname,lname,dob,gender,phone,email,city,state,zipcode,country,msalary,idnumber,address from customers where cid='%s'"%(session['cust_id']))
     customer=cursor.fetchall()
+
+    cursor.execute("select fname,lname from customers where cid='%s'"%(session['cust_id']))
+    customer_details=cursor.fetchone()
+    fname=customer_details[0]
+    lname=customer_details[1]
+    full_name=fname + ' ' + lname
+
+
     card_name = request.args.get('card_name')
     salary = request.args.get('salary')
     if 'add' in request.form:
@@ -427,6 +435,12 @@ def customerrequestcreditcard():
         credit_card = "INSERT INTO o_credit_card_request(customer_id,branch_id,card_name,job_type,c_name,c_location,m_salary,file1,file2,file3,date,status) VALUES (%s, %s, %s, %s, %s, %s, %s,%s, %s, %s,%s,'pending')"
         credit_card_values = (cid, bid, card_name, jobname,company_name, company_location, m_salary, img1, img2,img3,request_date)
         cursor.execute(credit_card, credit_card_values)
+        date=datetime.now()
+        messages_bank=f"you have a new credit card request from {full_name}"
+        messages = "INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,message_type,date) VALUES (%s, %s, %s,'manager','bank',%s)"
+        messages_values = (cid, bid,messages_bank,date)
+        cursor.execute(messages, messages_values)
+
 
         
         flash("request successful...")

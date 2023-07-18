@@ -31,13 +31,13 @@
             <table id="employeeTable" class="table">
                 <thead class="thead-light">
                     <tr>
+                      <th style="font-size: 16px;">customer id</th>
                         <th style="font-size: 16px;">Name</th>
- 
-                        <th style="font-size: 16px;">Image</th>
+                         <th style="font-size: 16px;">Image</th>
                         <th style="font-size: 16px;">phone</th>
                         <th style="font-size: 16px;">Email</th>
-                        <th style="font-size: 16px;">customer leave</th> 
-
+                        <th style="font-size: 16px;">customer status</th> 
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -46,36 +46,21 @@
                     <tr style="font-size: 15px;">  
                        
                         
-                        
-                        <td>{{ credit_card[0] }} {{ credit_card[1] }}</td>
-                        <td><img src="{{url_for('static', filename=credit_card[2])}}" style="width: 60px;height: 60px;border-radius: 50%;"></td>
-
-
-                        <td>{{ credit_card[3] }}</td>
+                        <td>{{ credit_card[0] }}</td>
+                        <td>{{ credit_card[1] }} {{ credit_card[2] }}</td>
+                        <td><img src="{{url_for('static', filename=credit_card[3])}}" style="width: 60px;height: 60px;border-radius: 50%;"></td>
                         <td>{{ credit_card[4] }}</td>
                         <td>{{ credit_card[5] }}</td>
                         <td>{{ credit_card[6] }}</td>
-                        
-                          
-                       
-                        
-
-                        <!-- 07-09-23 -->
-                        
-                        {% if credit_card[7] == 'approve' %}
-                        <td style="color: green;">{{ credit_card[7] }}</td>
-                        
-                        {% endif %}
-                        
-                        
-                
-                    
+                        <td>{{ credit_card[7] }}</td>
+ 
                         <td>
                           <a href="#" class="btn btn-info view-details-btn" data-toggle="modal" data-target="#employeeDetailsModal" data-employee-details="{{ employee }}">View Details</a>
                         </td>
                        <!-- Add a container to display the file content -->
                        <td>
-                        <a href="#" class="btn btn-info view-details-btn" >message</a>
+                        <a href="#" class="btn btn-info complaint-link">Send Notification <i class="fa fa-bell" style="font-size:12px"></i></a>
+
                       </td>
                       </tr>
                      
@@ -85,9 +70,21 @@
                 </tbody>
             </table>
           </form>
-          <!-- Modal -->
-<!-- Modal -->
-
+          <!-- Modal -->{% for credit_card in churn_cutomers %}
+<!-- Modal --><div id="container-99" class="additional-buttons" style="top: 30px;">
+            <span class="close-btn">&times;</span>
+            <div class="animated-person"></div>
+            <h1>Hi Steve, send any Notification</h1>
+            <form method="post">
+              <input type="text" name="customer_id" id="cid" required>
+              <input type="text" name="messages" placeholder="Type your feedback message" required>
+              <br>
+              <textarea name="messages" placeholder="Additional comments"></textarea>
+              <br>
+              <input type="submit" value="Submit" name="add">
+            </form>
+          </div>
+          {% endfor %}
             <div class="pagination">
                 <button onclick="previousPage()">Previous</button>
                 <button onclick="nextPage()">Next</button>
@@ -100,21 +97,7 @@
     </div>
 </section>
      </main> 
-     <div id="file-popup-container" class="hidden">
-        <div class="file-popup-content">
-          <div id="file-container"></div>
-          
-          
-      </div>
-      <div class="zoom-buttons">
-        <button id="zoom-in"><i class="fas fa-plus"></i>Zoom In</button>
-        <button id="zoom-out"><i class="fas fa-minus"></i>Zoom Out</button>
-        <button id="download-button"><i class="fas fa-download"></i></button>
-      </div>
-      <span id="close-icon">&times;</span>
-      
-
-    </div>
+     
     <!-- ====================end of aside==========================   -->
     <!-- Modal -->
 <!-- Modal -->
@@ -175,185 +158,63 @@
   </div>
 </div>
 
+<script>
+  $(document).ready(function() {
+    $('.complaint-link').click(function() {
+      var customerID = $(this).closest('tr').find('td:eq(0)').text();
+      $('#cid').val(customerID);
+      $('#container-99').addClass('show');
+    });
 
+    $('.close-btn').click(function() {
+      $('#container-99').removeClass('show');
+    });
+  });
+</script>
 
     
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
    
+    <script>
+      // Get the send notification link elements
+      var sendNotificationLinks = document.querySelectorAll('.complaint-link');
+   
+   // Get the complaint popup container element
+   var complaintContainer = document.getElementById('container-99');
+   
+   
+   
+   // Get the close button element
+   var closeButton = complaintContainer.querySelector('.close-btn');
+   
+   // Add event listener to open the complaint popup when the link is clicked
+   sendNotificationLinks.forEach(function(link) {
+     link.addEventListener('click', function(event) {
+       event.preventDefault();
+       complaintContainer.classList.add('show');
+     });
+   });
+   
+   // Add event listener to close the complaint popup when the close button is clicked
+   closeButton.addEventListener('click', function() {
+     complaintContainer.classList.remove('show');
+   });
+   
+       </script>  
+    <script>
+      var submenuIcons = document.querySelectorAll('.submenu-icon');
+    // Loop through each submenu icon
+    submenuIcons.forEach(function(icon) {
+       // Add a click event listener to each submenu icon
+       icon.addEventListener('click', function() {
+           // Get the corresponding submenu for this icon
+           var submenu = icon.parentElement.nextElementSibling; 
+           // Toggle the visibility of the submenu
+           submenu.classList.toggle('show');
+       });
+    });
+    </script> 
       
-      <!-- <script>
-        var viewButtons = document.querySelectorAll('.view-btn');
-        var fileContainer = document.getElementById('file-container');
-      
-        viewButtons.forEach(function(button) {
-          button.addEventListener('click', function() {
-            var file = this.dataset.file;
-      
-            // Clear any previous content
-            fileContainer.innerHTML = '';
-      
-            // Get the file extension
-            var fileExtension = file.split('.').pop().toLowerCase();
-      
-            // Create appropriate element to display the file
-            if (fileExtension === 'pdf') {
-              var embed = document.createElement('embed');
-              embed.src = file;
-              embed.type = 'application/pdf';
-              embed.width = '100%';
-              embed.height = '1000px';
-              fileContainer.appendChild(embed);
-            } else if (fileExtension === 'doc' || fileExtension === 'docx') {
-              var iframe = document.createElement('iframe');
-              iframe.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(file);
-              iframe.width = '100%';
-              iframe.height = '1000px';
-              fileContainer.appendChild(iframe);
-            } else if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png') {
-              var img = document.createElement('img');
-              img.src = file;
-              img.style.maxWidth = '100%';
-              img.style.height = '100px';
-              fileContainer.appendChild(img);
-            } else {
-              // Handle other file types or display an error message
-              fileContainer.textContent = 'Unsupported file type.';
-            }
-          });
-        });
-      </script> -->
-      
-      <script>
-        var viewButtons = document.querySelectorAll('.view-btn');
-        var filePopupContainer = document.getElementById('file-popup-container');
-        var fileContainer = document.getElementById('file-container');
-        var closeIcon = document.getElementById('close-icon');
-        var zoomInButton = document.getElementById('zoom-in');
-        var zoomOutButton = document.getElementById('zoom-out');
-        
-        var currentZoom = 1;
-        var downloadButton = document.getElementById('download-button');
-
-        // Function to handle download button click
-        downloadButton.addEventListener('click', function() {
-        var fileUrl = fileContainer.querySelector('img, embed, iframe').src;
-        var downloadLink = document.createElement('a');
-        downloadLink.href = fileUrl;
-        downloadLink.download = 'file';
-        downloadLink.click();
-        });
-
-
-        
-        viewButtons.forEach(function(button) {
-          button.addEventListener('click', function() {
-            var file = this.dataset.file;
-        
-            // Clear any previous content
-            fileContainer.innerHTML = '';
-        
-            // Get the file extension
-            var fileExtension = file.split('.').pop().toLowerCase();
-        
-            // Create appropriate element to display the file
-            if (fileExtension === 'pdf') {
-              var embed = document.createElement('embed');
-              embed.src = file;
-              embed.type = 'application/pdf';
-              embed.width = '100%';
-              embed.height = '1000px';
-              fileContainer.appendChild(embed);
-            } else if (fileExtension === 'doc' || fileExtension === 'docx') {
-              var iframe = document.createElement('iframe');
-              iframe.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(file);
-              iframe.width = '100%';
-              iframe.height = '1000px';
-              fileContainer.appendChild(iframe);
-            } else if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png') {
-              var img = document.createElement('img');
-              img.src = file;
-              img.style.maxWidth = '100%';
-              img.style.height = '100%';
-              fileContainer.appendChild(img);
-            } else {
-              // Handle other file types or display an error message
-              fileContainer.textContent = 'Unsupported file type.';
-            }
-        
-            // Show the file popup container
-            filePopupContainer.classList.remove('hidden');
-          });
-        });
-        
-        // Close the file popup container when the close icon is clicked
-        closeIcon.addEventListener('click', function() {
-          filePopupContainer.classList.add('hidden');
-        });
-        
-        // Zoom in functionality
-        zoomInButton.addEventListener('click', function() {
-          currentZoom += 0.1;
-          fileContainer.style.transform = 'scale(' + currentZoom + ')';
-        });
-        
-        // Zoom out functionality
-        zoomOutButton.addEventListener('click', function() {
-          currentZoom -= 0.1;
-          fileContainer.style.transform = 'scale(' + currentZoom + ')';
-        });
-
-        var zoomedIn = false;
-var startX = 0;
-var startY = 0;
-var offsetX = 0;
-var offsetY = 0;
-
-// Zoom in functionality
-zoomInButton.addEventListener('click', function() {
-  if (!zoomedIn) {
-    zoomedIn = true;
-    fileContainer.style.cursor = 'grab';
-    fileContainer.addEventListener('mousedown', startDragging);
-    fileContainer.addEventListener('mousemove', dragImage);
-    fileContainer.addEventListener('mouseup', stopDragging);
-    fileContainer.addEventListener('mouseleave', stopDragging);
-  }
-
-  currentZoom += 0.1;
-  fileContainer.style.transform = 'scale(' + currentZoom + ')';
-});
-
-// Zoom out functionality
-zoomOutButton.addEventListener('click', function() {
-  currentZoom -= 0.1;
-  fileContainer.style.transform = 'scale(' + currentZoom + ')';
-});
-
-function startDragging(event) {
-  startX = event.clientX;
-  startY = event.clientY;
-  offsetX = 0;
-  offsetY = 0;
-  fileContainer.style.cursor = 'grabbing';
-}
-
-function dragImage(event) {
-  if (event.buttons !== 1) return; // Only drag when holding the left mouse button
-
-  offsetX = event.clientX - startX;
-  offsetY = event.clientY - startY;
-
-  fileContainer.style.transform = 'scale(' + currentZoom + ') translate(' + offsetX + 'px, ' + offsetY + 'px)';
-}
-
-function stopDragging() {
-  fileContainer.style.cursor = 'grab';
-}
-
-      </script>
-      
-      
-       
         
       
       
@@ -389,7 +250,6 @@ function stopDragging() {
     </script>
 
 
-    </script>
     <script>
         var submenuIcons = document.querySelectorAll('.submenu-icon');
       // Loop through each submenu icon
@@ -406,17 +266,6 @@ function stopDragging() {
     <script>
     
  // Get all the submenu icons
- var submenuIcons = document.querySelectorAll('.submenu-icon');
-// Loop through each submenu icon
-submenuIcons.forEach(function(icon) {
-   // Add a click event listener to each submenu icon
-   icon.addEventListener('click', function() {
-       // Get the corresponding submenu for this icon
-       var submenu = icon.parentElement.nextElementSibling; 
-       // Toggle the visibility of the submenu
-       submenu.classList.toggle('show');
-   });
-});
 
 
     function showDetails(event) {

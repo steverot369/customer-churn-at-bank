@@ -765,7 +765,7 @@ padding-bottom: 13px;
                             <div class="middle">
                                 <div class="left">
                                     <h3>credit score</h3>
-                                    {% if credit_score > 400 and credit_score < 600 %}
+                                    {% if credit_score > 300 and credit_score < 600 %}
                                         <h1>{{ credit_score }}</h1>
                                     {% elif credit_score >= 600 and credit_score < 700 %}
                                         <h1>{{ credit_score }}</h1>
@@ -1367,14 +1367,17 @@ accountDropdown.addEventListener("change", function() {
         progressValue3.textContent = progress3.toFixed(0) + '%';
 
         // Add labels based on the progress percentage
-        if (progress3 >= 0 && progress3 < 20) {
+        if (progress3 >= 0 && progress3 < 30) {
             creditScoreLabel.textContent = 'Bad';
-        } else if (progress3 >= 20 && progress3 < 40) {
+        } else if (progress3 >= 30 && progress3 < 40) {
             creditScoreLabel.textContent = 'Fair';
-        } else if (progress3 >= 40 && progress3 < 60) {
+        } else if (progress3 >= 40 && progress3 < 50) {
             creditScoreLabel.textContent = 'Good';
-        } else if (progress3 >= 60 && progress3 <= 100) {
+        } else if (progress3 >= 50 && progress3 <= 70) {
             creditScoreLabel.textContent = 'Excellent';
+        }
+        else if (progress3 >= 70 && progress3 <= 100) {
+            creditScoreLabel.textContent = 'marvelous';
         }
     }
 
@@ -1422,7 +1425,7 @@ closeButton.addEventListener('click', function() {
       window.onload = function() {
           setTimeout(function() {
               document.getElementById('container-90').style.display = 'block';
-          }, 500000); // Display the container after 5 seconds
+          }, 5000); // Display the container after 5 seconds
       }
       
       function closePopup() {
