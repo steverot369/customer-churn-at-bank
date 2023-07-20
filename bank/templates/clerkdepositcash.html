@@ -156,12 +156,12 @@
                                                             <label for="chequeNumber">Cheque Number:</label>
                                                           </div>
                                                           <div class="form-outline">
-                                                            <input type="number" id="words" name="amounts" class="form-control form-control-lg" required/>
+                                                            <input type="number" id="words" name="amounts" class="form-control form-control-lg"/>
                                                             <label for="words">Withdraw Amount</label>
                                                           </div>
                                                         
                                                           <div class="form-outline mt-3">
-                                                            <input type="text" id="wordsInText" name="amountsInText" class="form-control form-control-lg" readonly />
+                                                            <input type="text" id="wordsInText" name="amountsInText" class="form-control form-control-lg" readonly/>
                                                             <label for="wordsInText">Withdraw Amount in Words</label>
                                                           </div>
                                                           <!-- <span id="words"></span>
@@ -169,7 +169,7 @@
                                                           
                                                           <div class="d-flex justify-content-center">
                                                
-                                                            <input type="submit"  name="add2" value="withdrawal" class="btn btn-danger btn-lg gradient-custom-4 text-body">
+                                                            <input type="submit"  name="add2" value="withdrawal" class="btn btn-danger btn-lg gradient-custom-4 text-body" onclick="checkWithdrawalField()">
                                                           </div>
                                                       </div>
                                                       
@@ -385,7 +385,28 @@
                 
             </main>  
     <!-- ====================end of aside==========================   -->
+    <script>
+      function checkWithdrawalField() {
+        const withdrawAmountInput = document.getElementById('words');
+        const withdrawAmountValue = withdrawAmountInput.value.trim();
+    
+        if (withdrawAmountValue === '') {
+          alert('Withdraw Amount field is empty. Please enter a valid amount.');
+          withdrawAmountInput.focus(); 
+          event.preventDefault(); // Set focus to the input field
+        } else {
+          // If the input field is not empty, proceed with the form submission
+          // (You can remove this 'else' block if you want the form to always submit regardless of the field value)
+        }
+      }
+    </script>
    
+    
+    
+    
+    
+    
+    
       <script>
       
   function validateWithdrawal() {
@@ -393,7 +414,7 @@
     var currentBalance = parseInt(document.getElementById("current").value);
 
     if (withdrawAmount > (currentBalance - 1000)) {
-  alert("The withdrawal amount is greater");
+  alert("The withdrawal amount is greater and there must be a min balance of 1000");
   document.getElementById("words").value = ""; // Clear the withdrawal amount input field
 }
   }

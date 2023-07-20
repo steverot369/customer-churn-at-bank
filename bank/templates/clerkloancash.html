@@ -25,16 +25,24 @@
                                                   <span class="dropdown-custom-icon">&#9662;</span>
                                                   <ul class="dropdown-custom-list" style="display: block;">
                                                     {% for row in accno %}
-                                                    <li>{{ row[0] }} {{ row[1] }} {{ row[2] }}</li>
+                                                    <li>{{ row[0] }} {{ row[1] }} {{ row[2] }} {{ row[3]}}</li>
                                                     {% endfor %}
                                                   </ul>
                                                 </div>
                                                 
         
                                               </div>
+
+                                              
                                               
                                               {% if accountDetails %}
                                                 {% for account in accountDetails %}
+                                                <div class="mb-4">
+                                                  <div class="form-outline">
+                                                    <input type="text" id="customer_id" name="cid"  value="{{ account[8] }}" class="form-control form-control-lg" readonly>
+                                                    <label id="10-label" class="form-label" for="10">customers unique ID</label>
+                                                  </div>
+                                                </div>
                                                 <div class="mb-4 pb-2">
                                                     <div class="form-outline">
                                                       <input type="text" id="form3Examplev4" name="name" value="{{ account[2]}} {{ account[3]}}" class="form-control form-control-lg" readonly/>
@@ -569,6 +577,7 @@
   const newDropdownList = document.querySelector('.dropdown-custom-list');
   const newOptions = Array.from(newDropdownList.getElementsByTagName('li'));
   const newDropdownIcon = document.querySelector('.dropdown-custom-icon');
+  // const customerIdInput = document.getElementById('customer_id');
   
   newInput.addEventListener('input', function() {
     const searchText = newInput.value.toLowerCase();
@@ -593,7 +602,12 @@
     const selectedOption = event.target;
     if (selectedOption.tagName === 'LI') {
       const optionValues = selectedOption.textContent.trim().split(' ');
-      newInput.value = optionValues[optionValues.length - 1];
+      
+      // const name = optionValues.slice(0, -1).join(' ');
+      // const numberPart = optionValues[optionValues.length - 1];
+      newInput.value = optionValues[optionValues.length - 2];
+      // customerIdInput.value = numberPart; // Set the number part in the customer_id input field
+
       newDropdownList.style.display = 'none';
     }
   });

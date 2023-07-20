@@ -23,7 +23,7 @@
                                                   <div class="col-md-6 mb-4 pb-2">
                               
                                                     <div class="form-outline">
-                                                      <input type="text" id="form3Examplev2" name="fname" class="form-control form-control-lg" />
+                                                      <input type="text" id="fname" name="fname" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplev2">First name</label>
                                                     </div>
                               
@@ -31,7 +31,7 @@
                                                   <div class="col-md-6 mb-4 pb-2">
                               
                                                     <div class="form-outline">
-                                                      <input type="text" id="form3Examplev3" name="lname" class="form-control form-control-lg" />
+                                                      <input type="text" id="lname" name="lname" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplev3">Last name</label>
                                                     </div>
                               
@@ -42,7 +42,7 @@
                               
                                                 <div class="mb-4 pb-2">
                                                   <div class="form-outline">
-                                                    <input type="date" id="form3Examplev4" name="dob" class="form-control form-control-lg" />
+                                                    <input type="date" id="form3Examplev4" name="dob" class="form-control form-control-lg" required/>
                                                     <label class="form-label" for="form3Examplev4">Date of Birth</label>
                                                   </div>
                                                 </div>
@@ -50,7 +50,7 @@
                                                   <div class="mb-4 pb-2">
                                                     
                                                     <div class="form-outline">
-                                                      <input type="file" name="image" class="form-control form-control-lg" id="inputGroupFile01" onchange="previewImage(event)">
+                                                      <input type="file" name="image" class="form-control form-control-lg" id="inputGroupFile01" onchange="previewImage(event)" required>
                                                       <label for="inputGroupFile01" class="form-label">Choose photo</label>
                                                       
                                                     </div>
@@ -60,7 +60,7 @@
                                                   </div>
                                                   
                                                       <div class="mb-4 pb-3">
-                                                        <select name="status" class="form-control form-control-lg p-2">
+                                                        <select name="status" class="form-control form-control-lg p-2" required>
                                                           <option disabled selected value>Select martial status</option>
                                                           <option value="single">single</option>
                                                           <option value="married">married</option>
@@ -69,7 +69,7 @@
                                                       </div>
                         
                                                       <div class="mb-4 pb-3">
-                                                        <select name="gender" class="form-control form-control-lg p-2">
+                                                        <select name="gender" class="form-control form-control-lg p-2" required>
                                                           <option disabled selected value>Select gender</option>
                                                           <option value="male">male</option>
                                                           <option value="female">female</option>
@@ -80,7 +80,7 @@
                                                         <div class="col-md-5 mb-4 pb-2">
                                     
                                                           <div class="form-outline form-white">
-                                                            <input type="text" id="form3Examplea7" class="form-control form-control-lg" value="91" readonly/>
+                                                            <input type="text" id="form3Examplea7" class="form-control form-control-lg" value="91" required readonly/>
                                                             <label class="form-label" for="form3Examplea7">Code +</label>
                                                           </div>
                                     
@@ -89,7 +89,7 @@
                                                         <div class="col-md-7 mb-4 pb-2">
                                     
                                                           <div class="form-outline form-white">
-                                                            <input type="text" id="form3Examplea8" name="phone" class="form-control form-control-lg" />
+                                                            <input type="text" id="form3Examplea8" name="phone" class="form-control form-control-lg" required/>
                                                             <label class="form-label" for="form3Examplea8">Phone Number</label>
                                                           </div>
                                     
@@ -98,14 +98,14 @@
                                                      
                                                       <div class="mb-4 pb-2">
                                                         <div class="form-outline">
-                                                          <input type="email" id="form3Examplev4" name="email" class="form-control form-control-lg" />
+                                                          <input type="email" id="form3Examplev4" name="email" class="form-control form-control-lg" required/>
                                                           <label class="form-label" for="form3Examplev4">Email</label>
                                                         </div>
                                                       </div>
                                                       <div class="mb-4 pb-2">
                                                         <div class="form-outline">
                                                           {% for branch in branch_names %}
-                                                          <input type="text" id="form3Examplev4" name="branch" value="{{ branch }}" class="form-control form-control-lg" readonly/>
+                                                          <input type="text" id="form3Examplev4" name="branch" value="{{ branch }}" class="form-control form-control-lg" required readonly/>
                                                           <label class="form-label" for="form3Examplev4">branch</label>
                                                           {% endfor %}
                                                         </div>
@@ -120,7 +120,7 @@
                                                 
                                                 <div class="mb-4 pb-2">
                                                     <div class="form-outline form-white">
-                                                      <textarea name="address" id="form3Examplea2" class="form-control form-control-lg"></textarea>
+                                                      <textarea name="address" id="form3Examplea2" class="form-control form-control-lg" required></textarea>
                                                       <label class="form-label" for="form3Examplea2">Address</label>
                                                     </div>
                                                   </div>
@@ -130,7 +130,7 @@
                                                   <div class="col-md-5 mb-4 pb-2">
                               
                                                     <div class="form-outline form-white">
-                                                      <input type="text" id="form3Examplea4" name="city" class="form-control form-control-lg" />
+                                                      <input type="text" id="city" name="city" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplea4">city</label>
                                                     </div>
                               
@@ -138,7 +138,7 @@
                                                   <div class="col-md-7 mb-4 pb-2">
                               
                                                     <div class="form-outline form-white">
-                                                      <input type="text" id="form3Examplea5" name="state" class="form-control form-control-lg" />
+                                                      <input type="text" id="state" name="state" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplea5">state</label>
                                                     </div>
                               
@@ -149,7 +149,7 @@
                                                   <div class="col-md-5 mb-4 pb-2">
                               
                                                     <div class="form-outline form-white">
-                                                      <input type="text" id="form3Examplea4" name="zipcode" class="form-control form-control-lg" />
+                                                      <input type="number" id="zipcode" name="zipcode" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplea4">zipcode</label>
                                                     </div>
                               
@@ -157,7 +157,7 @@
                                                   <div class="col-md-7 mb-4 pb-2">
                               
                                                     <div class="form-outline form-white">
-                                                      <input type="text" id="form3Examplea5" name="country" class="form-control form-control-lg" />
+                                                      <input type="text" id="country" name="country" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplea5">country</label>
                                                     </div>
                               
@@ -166,7 +166,7 @@
                               
                                                 
                                                 <div class="mb-4 pb-3">
-                                                  <select name="education" class="form-control form-control-lg p-2">
+                                                  <select name="education" class="form-control form-control-lg p-2" required>
                                                     <option disabled selected value>Select your education</option>
                                                     <option value="high school">high school</option>
                                                     <option value="under graduate">under graduate</option>
@@ -179,13 +179,13 @@
                                                 
                                                 <div class="mb-4 pb-2">
                                                   <div class="form-outline">
-                                                    <input type="number" id="form3Examplev4" name="msalary" class="form-control form-control-lg" />
+                                                    <input type="number" id="salary" name="msalary" class="form-control form-control-lg" required/>
                                                     <label class="form-label" for="form3Examplev4">monthly salary</label>
                                                   </div>
                                                 </div>
                                                 
                                                 <div class="mb-4 pb-3">
-                                                  <select name="idproof" class="form-control form-control-lg p-2">
+                                                  <select name="idproof" class="form-control form-control-lg p-2" required>
                                                     <option disabled selected value>Select your id</option>
                                                     <option value="adhar card">adhar card</option>
                                                     <option value="voter id">voter id</option>
@@ -199,7 +199,7 @@
                                               
                                                 <div class="mb-4 pb-2">
                                                   <div class="form-outline">
-                                                    <input type="number" id="form3Examplev4" name="idnumber" class="form-control form-control-lg" />
+                                                    <input type="number" id="id" name="idnumber" class="form-control form-control-lg" required/>
                                                     <label class="form-label" for="form3Examplev4">ID NUMBER</label>
                                                   </div>
                                                 </div>
@@ -257,7 +257,90 @@
                 
             </main>  
     <!-- ====================end of aside==========================   -->
+    <script>
+      const firstNameInput = document.getElementById('fname');
+      const lastNameInput = document.getElementById('lname');
+      const cityNameInput = document.getElementById('city');
+      const stateNameInput = document.getElementById('state');
+      const countryNameInput = document.getElementById('country');
+      const salaryNameInput = document.getElementById('salary');
+      const idNameInput = document.getElementById('id');
     
+      firstNameInput.addEventListener('input', function() {
+        const firstNameValue = firstNameInput.value;
+        const containsNumber = /\d/.test(firstNameValue);
+    
+        if (containsNumber) {
+          alert('No numbers allowed in the first name field.');
+          firstNameInput.value = '';
+        }
+      });
+    
+      lastNameInput.addEventListener('input', function() {
+        const lastNameValue = lastNameInput.value;
+        const containsNumber = /\d/.test(lastNameValue);
+    
+        if (containsNumber) {
+          alert('No numbers allowed in the last name field.');
+          lastNameInput.value = '';
+        }
+      });
+    
+      cityNameInput.addEventListener('input', function() {
+        const cityNameValue = cityNameInput.value;
+        const containsNumber = /\d/.test(cityNameValue);
+    
+        if (containsNumber) {
+          alert('No numbers allowed in the city field.');
+          cityNameInput.value = '';
+        }
+      });
+    
+      stateNameInput.addEventListener('input', function() {
+        // Add validation for the state field if needed
+        const stateNameValue = stateNameInput.value;
+        const containsNumber = /\d/.test(stateNameValue);
+    
+        if (containsNumber) {
+          alert('No numbers allowed in the city field.');
+          stateNameInput.value = '';
+        }
+
+
+
+      });
+    
+      countryNameInput.addEventListener('input', function() {
+        // Add validation for the country field if needed
+        const countryNameValue = countryNameInput.value;
+        const containsNumber = /\d/.test(countryNameValue);
+    
+        if (containsNumber) {
+          alert('No numbers allowed in the country field.');
+          countryNameInput.value = '';
+        }
+      });
+    
+      salaryNameInput.addEventListener('input', function() {
+        const salaryValue = parseFloat(salaryNameInput.value);
+    
+        if (isNaN(salaryValue) || salaryValue < 0) {
+          alert('Invalid salary. Please enter a valid positive number.');
+          salaryNameInput.value = '';
+        }
+      });
+    
+      idNameInput.addEventListener('input', function() {
+        // Add validation for the ID field if needed
+        const idNameValue = idNameInput.value;
+        const containsNumber = /\d/.test(idNameValue);
+    
+        if (isNaN(idNameValue) || idNameValue < 0) {
+          alert('Invalid salary. Please enter a valid positive number.');
+          idNameInput.value = '';
+        }
+      });
+    </script> 
     <script>
     function previewImage(event) {
         var reader = new FileReader();

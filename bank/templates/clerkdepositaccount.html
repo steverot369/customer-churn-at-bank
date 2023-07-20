@@ -16,21 +16,27 @@
                       
                                       <div class="mb-4 pb-3">
                                         <div class="dropdown dropdown-l">
-                                          <input type="text" name="name" id="dropdown-input" class="form-control form-control-lg" placeholder="Search...">
+                                          <input type="text" name="name" id="dropdown-input" class="form-control form-control-lg" placeholder="Search..." required>
                                           <span class="dropdown-icon">&#9662;</span> <!-- Add a dropdown icon here -->
                                       
                                           <ul class="dropdown-list" style="display: block;">
                                             {% for row in fname %}
-                                            <li>{{ row[0] }} {{ row[1] }}</li>
+                                            <li>{{ row[0] }} {{ row[1] }} {{ row[2] }}</li>
                                             {% endfor %}
                                           </ul>
                                         </div>
                                       </div>
+                                      
 
-
+                                      <div class="mb-4">
+                                        <div class="form-outline">
+                                          <input type="text" id="customer_id" name="cid" class="form-control form-control-lg" readonly required>
+                                          <label id="10-label" class="form-label" for="10">customers unique ID</label>
+                                        </div>
+                                      </div>
                                       <div class="mb-4 pb-2">
                                         <div class="input-group">
-                                          <input type="number" id="accountNumber" name="accno" class="form-control form-control-lg" readonly>
+                                          <input type="number" id="accountNumber" name="accno" class="form-control form-control-lg" readonly required>
                                           <button type="button" onclick="refreshAccountNumber()" class="btn btn-secondary input-group-text" style="cursor: pointer;">
                                             <span class="material-symbols-outlined">refresh </span>
                                           </button>
@@ -40,7 +46,7 @@
                       
                                       <div class="form-outline mb-4 pb-2">
                                         
-                                        <input type="text" name="ifsccode" value="{{ branch_id }}" id="form3Example3cg" class="form-control form-control-lg" readonly/>
+                                        <input type="text" name="ifsccode" value="{{ branch_id }}" id="form3Example3cg" class="form-control form-control-lg" readonly required/>
                                         <label class="form-label" for="form3Example3cg">IfscCode</label>
                                         
                                       </div> 
@@ -59,193 +65,235 @@
                                       <label class="form-label" for="amount">Deposit Amount</label>
                                     </div>
 
- <div id="container-4" style="display: none;">
-  <div class="mb-4 pb-2">
-    <div class="form-outline">
-      <input type="text" id="5" name="5" class="form-control form-control-lg" readonly/>
-      <label id="5-label" class="form-label" for="5">Rs 5</label>
-    </div>
-  </div>
-  <div class="mb-4">
-    <div class="form-outline">
-      <input type="text" id="10" name="10" class="form-control form-control-lg" readonly/>
-      <label id="10-label" class="form-label" for="10">Rs 10</label>
-    </div>
-  </div>
-  <div class="mb-4">
-    <div class="form-outline">
-      <input type="text" id="20" name="20" class="form-control form-control-lg" readonly/>
-      <label id="20-label" class="form-label" for="20">Rs 20</label>
-    </div>
-  </div>
-  <div class="mb-4">
-    <div class="form-outline">
-      <input type="text" id="50" name="50" class="form-control form-control-lg" readonly/>
-      <label id="50-label" class="form-label" for="50">Rs 50</label>
-    </div>
-  </div>
-  <div class="mb-4">
-    <div class="form-outline">
-      <input type="text" id="100" name="100" class="form-control form-control-lg" readonly/>
-      <label id="100-label" class="form-label" for="100">Rs 100</label>
-    </div>
-  </div>
-  <div class="mb-4">
-    <div class="form-outline">
-      <input type="text" id="200" name="200" class="form-control form-control-lg" readonly />
-      <label id="200-label" class="form-label" for="200">Rs 200</label>
-    </div>
-  </div>
-  <div class="mb-4">
-    <div class="form-outline">
-      <input type="text" id="500" name="500" class="form-control form-control-lg" readonly/>
-      <label id="500-label" class="form-label" for="500">Rs 500</label>
-    </div>
-  </div>
-  <div class="mb-4">
-    <div class="form-outline">
-      <input type="text" id="1000" name="1000" class="form-control form-control-lg" readonly/>
-      <label id="1000-label" class="form-label" for="1000">Rs 1000</label>
-    </div>
-  </div>
-</div>
+                                    <div id="container-4" style="display: none;">
+                                      <div class="mb-4">
+                                          <div class="form-outline">
+                                            <input type="text" id="1" name="1" class="form-control form-control-lg" readonly/>
+                                            <label id="1-label" class="form-label" for="5">Rs 1</label>
+                                          </div>
+                                        </div>
+                                        <div class="mb-4">
+                                          <div class="form-outline">
+                                            <input type="text" id="2" name="2" class="form-control form-control-lg" readonly/>
+                                            <label id="2-label" class="form-label" for="5">Rs 2</label>
+                                          </div>
+                                        </div>
+                                    <div class="mb-4">
+                                      <div class="form-outline">
+                                        <input type="text" id="5" name="5" class="form-control form-control-lg" readonly/>
+                                        <label id="5-label" class="form-label" for="5">Rs 5</label>
+                                      </div>
+                                    </div>
+                                    <div class="mb-4">
+                                      <div class="form-outline">
+                                        <input type="text" id="10" name="10" class="form-control form-control-lg" readonly/>
+                                        <!-- <label id="10-label" class="form-label" for="10">Rs 10</label> -->
+                                      </div>
+                                    </div>
+                                    <div class="mb-4">
+                                      <div class="form-outline">
+                                        <input type="text" id="20" name="20" class="form-control form-control-lg" readonly/>
+                                        <label id="20-label" class="form-label" for="20">Rs 20</label>
+                                      </div>
+                                    </div>
+                                    <div class="mb-4">
+                                      <div class="form-outline">
+                                        <input type="text" id="50" name="50" class="form-control form-control-lg" readonly/>
+                                        <label id="50-label" class="form-label" for="50">Rs 50</label>
+                                      </div>
+                                    </div>
+                                    <div class="mb-4">
+                                      <div class="form-outline">
+                                        <input type="text" id="100" name="100" class="form-control form-control-lg" readonly/>
+                                        <label id="100-label" class="form-label" for="100">Rs 100</label>
+                                      </div>
+                                    </div>
+                                    <div class="mb-4">
+                                      <div class="form-outline">
+                                        <input type="text" id="200" name="200" class="form-control form-control-lg" readonly />
+                                        <label id="200-label" class="form-label" for="200">Rs 200</label>
+                                      </div>
+                                    </div>
+                                    <div class="mb-4">
+                                      <div class="form-outline">
+                                        <input type="text" id="500" name="500" class="form-control form-control-lg" readonly/>
+                                        <label id="500-label" class="form-label" for="500">Rs 500</label>
+                                      </div>
+                                    </div>
+                                    <div class="mb-4">
+                                      <div class="form-outline">
+                                        <input type="text" id="1000" name="1000" class="form-control form-control-lg" readonly/>
+                                        <label id="1000-label" class="form-label" for="1000">Rs 1000</label>
+                                      </div>
+                                    </div>
+                                  </div>
 
-                                    <div class="modal fade" id="myModal">
-                                      <div class="modal-dialog">
-                                        <div class="modal-content">
-                                    
-                                          <!-- Modal header -->
-                                          <div class="modal-header">
-                                            <h5 class="modal-title">Select Money Count</h5>
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                          </div>
-                                    
-                                          <!-- Modal body -->
-                                          <div class="modal-body">
-                                            <div class="row">
-                                              <div class="col-md-4">
-                                                <span class="money-label"><i class="fa fa-rupee"></i> 5</span>
-                                                <div class="money-count-container">
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(5)">
-                                                    <i class="fas fa-minus"></i>
-                                                  </button>
-                                                  <span id="count5" class="money-count">0</span>
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(5)">
-                                                    <i class="fas fa-plus"></i>
-                                                  </button>
-                                                </div>
-                                              </div>
-                                              <div class="col-md-4">
-                                                <span class="money-label"><i class="fa fa-rupee"></i> 10</span>
-                                                <div class="money-count-container">
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(10)">
-                                                    <i class="fas fa-minus"></i>
-                                                  </button>
-                                                  <span id="count10" class="money-count">0</span>
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(10)">
-                                                    <i class="fas fa-plus"></i>
-                                                  </button>
-                                                </div>
-                                              </div>
-                                              <div class="col-md-4">
-                                                <span class="money-label"><i class="fa fa-rupee"></i> 20</span>
-                                                <div class="money-count-container">
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(20)">
-                                                    <i class="fas fa-minus"></i>
-                                                  </button>
-                                                  <span id="count20" class="money-count">0</span>
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(20)">
-                                                    <i class="fas fa-plus"></i>
-                                                  </button>
-                                                </div>
+                                  <div class="modal fade" id="myModal">
+                                    <div class="modal-dialog" >
+                                      <div class="modal-content">
+                                  
+                                        <!-- Modal header -->
+                                        <div class="modal-header" style=" background:rgb(213, 230, 236);">
+                                          <h3 class="modal-title">Select Money Count</h3>
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                  
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                          <div class="row">
+                                            <div class="col-md-4">
+                                              <span class="money-label"><i class="fa fa-rupee"></i> 1</span>
+                                              <div class="money-count-container">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(1)">
+                                                  <i class="fas fa-minus"></i>
+                                                </button>
+                                                <span id="count1" class="money-count">0</span>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(1)">
+                                                  <i class="fas fa-plus"></i>
+                                                </button>
+                                                <input type="number" id="manualCount1" placeholder="Enter count" class="form-control" style="margin-top: 12px;"onchange="updateCount(1)">
                                               </div>
                                             </div>
-                                            <div class="row mt-3">
-                                              <div class="col-md-4">
-                                                <span class="money-label"><i class="fa fa-rupee"></i> 50</span>
-                                                <div class="money-count-container">
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(50)">
-                                                    <i class="fas fa-minus"></i>
-                                                  </button>
-                                                  <span id="count50" class="money-count">0</span>
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(50)">
-                                                    <i class="fas fa-plus"></i>
-                                                  </button>
-                                                </div>
-                                              </div>
-                                              <div class="col-md-4">
-                                                <span class="money-label"><i class="fa fa-rupee"></i> 100</span>
-                                                <div class="money-count-container">
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(100)">
-                                                    <i class="fas fa-minus"></i>
-                                                  </button>
-                                                  <span id="count100" class="money-count">0</span>
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(100)">
-                                                    <i class="fas fa-plus"></i>
-                                                  </button>
-                                                </div>
-                                              </div>
-                                              <div class="col-md-4">
-                                                <span class="money-label"><i class="fa fa-rupee"></i> 200</span>
-                                                <div class="money-count-container">
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(200)">
-                                                    <i class="fas fa-minus"></i>
-                                                  </button>
-                                                  <span id="count200" class="money-count">0</span>
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(200)">
-                                                    <i class="fas fa-plus"></i>
-                                                  </button>
-                                                </div>
-                                              </div>
-                                              <div class="col-md-4">
-                                                <span class="money-label"><i class="fa fa-rupee"></i> 500</span>
-                                                <div class="money-count-container">
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(500)">
-                                                    <i class="fas fa-minus"></i>
-                                                  </button>
-                                                  <span id="count500" class="money-count">0</span>
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(500)">
-                                                    <i class="fas fa-plus"></i>
-                                                  </button>
-                                                </div>
+                                            <div class="col-md-4">
+                                              <span class="money-label"><i class="fa fa-rupee"></i> 2</span>
+                                              <div class="money-count-container">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(2)">
+                                                  <i class="fas fa-minus"></i>
+                                                </button>
+                                                <span id="count2" class="money-count">0</span>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(2)">
+                                                  <i class="fas fa-plus"></i>
+                                                </button>
+                                                <input type="number" id="manualCount2" placeholder="Enter count" class="form-control"  style="margin-top: 12px;" onchange="updateCount(2)">
                                               </div>
                                             </div>
-                                            <div class="row mt-3">
-                                              <div class="col-md-4">
-                                                <span class="money-label"><i class="fa fa-rupee"></i> 1000</span>
-                                                <div class="money-count-container">
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(1000)">
-                                                    <i class="fas fa-minus"></i>
-                                                  </button>
-                                                  <span id="count1000" class="money-count">0</span>
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(1000)">
-                                                    <i class="fas fa-plus"></i>
-                                                  </button>
-                                                </div>
+                                            <div class="col-md-4">
+                                              <span class="money-label"><i class="fa fa-rupee"></i> 5</span>
+                                              <div class="money-count-container">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(5)">
+                                                  <i class="fas fa-minus"></i>
+                                                </button>
+                                                <span id="count5" class="money-count">0</span>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(5)">
+                                                  <i class="fas fa-plus"></i>
+                                                </button>
+                                                <input type="number" id="manualCount5" placeholder="Enter count" class="form-control"  style="margin-top: 12px;"onchange="updateCount(5)">
                                               </div>
-                                              
-                                              <div class="col-md-8">
-                                                <div class="total-amount-container">
-                                                  <h5>Total Amount:</h5>
-                                                  <span class="amount-label"></span>
-                                                  <span id="totalAmount" class="amount-value">0</span>
-                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                              <span class="money-label"><i class="fa fa-rupee"></i> 10</span>
+                                              <div class="money-count-container">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(10)">
+                                                  <i class="fas fa-minus"></i>
+                                                </button>
+                                                <span id="count10" class="money-count">0</span>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(10)">
+                                                  <i class="fas fa-plus"></i>
+                                                </button>
+                                                <input type="number" id="manualCount10" placeholder="Enter count" class="form-control"  style="margin-top: 12px;"onchange="updateCount(10)">
+                                              </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                              <span class="money-label"><i class="fa fa-rupee"></i> 20</span>
+                                              <div class="money-count-container">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(20)">
+                                                  <i class="fas fa-minus"></i>
+                                                </button>
+                                                <span id="count20" class="money-count">0</span>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(20)">
+                                                  <i class="fas fa-plus"></i>
+                                                </button>
+                                                <input type="number" id="manualCount20" placeholder="Enter count" class="form-control" style="margin-top: 12px;" onchange="updateCount(20)">
                                               </div>
                                             </div>
                                           </div>
-                                    
-                                          <!-- Modal footer -->
-                                          <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" onclick="saveCounts()">Save</button>
-                                            <button type="button" class="btn btn-danger" onclick="clearCounts()">Clear</button>
+                                          <div class="row mt-3">
+                                            <div class="col-md-4">
+                                              <span class="money-label"><i class="fa fa-rupee"></i> 50</span>
+                                              <div class="money-count-container">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(50)">
+                                                  <i class="fas fa-minus"></i>
+                                                </button>
+                                                <span id="count50" class="money-count">0</span>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(50)">
+                                                  <i class="fas fa-plus"></i>
+                                                </button>
+                                                <input type="number" id="manualCount50" placeholder="Enter count" class="form-control"  style="margin-top: 12px;"onchange="updateCount(50)">
+                                              </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                              <span class="money-label"><i class="fa fa-rupee"></i> 100</span>
+                                              <div class="money-count-container">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(100)">
+                                                  <i class="fas fa-minus"></i>
+                                                </button>
+                                                <span id="count100" class="money-count">0</span>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(100)">
+                                                  <i class="fas fa-plus"></i>
+                                                </button>
+                                                <input type="number" id="manualCount100" placeholder="Enter count" class="form-control"  style="margin-top: 12px;"onchange="updateCount(100)">
+                                              </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                              <span class="money-label"><i class="fa fa-rupee"></i> 200</span>
+                                              <div class="money-count-container">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(200)">
+                                                  <i class="fas fa-minus"></i>
+                                                </button>
+                                                <span id="count200" class="money-count">0</span>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(200)">
+                                                  <i class="fas fa-plus"></i>
+                                                </button>
+                                                <input type="number" id="manualCount200" placeholder="Enter count" class="form-control" style="margin-top: 12px;" onchange="updateCount(200)">
+                                              </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                              <span class="money-label"><i class="fa fa-rupee"></i> 500</span>
+                                              <div class="money-count-container">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(500)">
+                                                  <i class="fas fa-minus"></i>
+                                                </button>
+                                                <span id="count500" class="money-count">0</span>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(500)">
+                                                  <i class="fas fa-plus"></i>
+                                                </button>
+                                                <input type="number" id="manualCount500" placeholder="Enter count" class="form-control" style="margin-top: 12px;" onchange="updateCount(500)">
+                                              </div>
+                                            </div>
                                           </div>
-                                    
+                                          <div class="row mt-3">
+                                            <div class="col-md-4">
+                                              <span class="money-label"><i class="fa fa-rupee"></i> 1000</span>
+                                              <div class="money-count-container">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decreaseCount(1000)">
+                                                  <i class="fas fa-minus"></i>
+                                                </button>
+                                                <span id="count1000" class="money-count">0</span>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="increaseCount(1000)">
+                                                  <i class="fas fa-plus"></i>
+                                                </button>
+                                                <input type="number" id="manualCount1000" placeholder="Enter count" class="form-control"  style="margin-top: 12px;" onchange="updateCount(1000)" required>
+                                              </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                              <div class="total-amount-container">
+                                                <h3>Total Amount:</h3>
+                                                <span class="amount-label"></span>
+                                                <span id="totalAmount" class="amount-value">0</span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          <button type="button" class="btn btn-primary" onclick="saveCounts()">Save</button>
+                                          <button type="button" class="btn btn-danger" onclick="clearCounts()">Clear</button>
                                         </div>
                                       </div>
                                     </div>
+                                  </div>
                                       <div class="form-group">      
-                                        <select id="tenure" name="tenure" class="form-control form-control-lg">
+                                        <select id="tenure" name="tenure" class="form-control form-control-lg" required>
                                           <option disabled selected value>choose month</option>
 
                                           <option value="12">12 months(1 year)</option>
@@ -258,7 +306,7 @@
                                         <label for="depositType" for="form3Example3cg">Tenure (in months)</label>
                                       </div>
                                       <div class="form-group">      
-                                        <select id="depositType" name="depositType" class="form-control form-control-lg">
+                                        <select id="depositType" name="depositType" class="form-control form-control-lg" required>
                                           <option disabled selected value>choose your type</option>
 
                                           <option value="quarterly">Quarterly payout</option>
@@ -293,11 +341,11 @@
                                       <div id="interestCalculationsContainer"></div>
                                       <div class="mb-4 pb-3">
                                         <div class="dropdown dropdown-custom">
-                                          <input type="text" name="addaccno" id="new-dropdown-input" class="form-control form-control-lg" placeholder="Search by accno or customer name....">
+                                          <input type="text" name="addaccno" id="new-dropdown-input" class="form-control form-control-lg" placeholder="Search by accno or customer name...." required>
                                           <span class="dropdown-custom-icon">&#9662;</span>
                                           <ul class="dropdown-custom-list" style="display: block;">
                                             {% for row in accno %}
-                                            <li>{{ row[0] }} {{ row[1] }} {{ row[2] }}</li>
+                                            <li>{{ row[0] }} {{ row[1] }} {{ row[2] }} <b>{{ row[3] }}</b></li>
                                             {% endfor %}
                                           </ul>
                                         </div>
@@ -322,306 +370,173 @@
                 
             </main>  
     <!-- ====================end of aside==========================   -->
-    <!-- <script>
-      const newInput = document.querySelector('#new-dropdown-input');
-      const newDropdownList = document.querySelector('.dropdown-custom-list');
-      const newOptions = Array.from(newDropdownList.getElementsByTagName('li'));
-      const newDropdownIcon = document.querySelector('.dropdown-custom-icon');
-      
-      newInput.addEventListener('input', function() {
-        const searchText = newInput.value.toLowerCase();
-      
-        newOptions.forEach(option => {
-          const text = option.textContent.toLowerCase();
-          if (text.includes(searchText)) {
-            option.style.display = 'block';
-          } else {
-            option.style.display = 'none';
-          }
-        });
-      
-        newDropdownList.style.display = 'block';
-      });
-      
-      newDropdownIcon.addEventListener('click', function() {
-        newDropdownList.style.display = newDropdownList.style.display === 'block' ? 'none' : 'block';
-      });
-      
-      newDropdownList.addEventListener('click', function(event) {
-        const selectedOption = event.target;
-        if (selectedOption.tagName === 'LI') {
-          const optionValues = selectedOption.textContent.trim().split(' ');
-          newInput.value = optionValues[optionValues.length - 1];
-          newDropdownList.style.display = 'none';
-        }
-      });
-      
-      newInput.addEventListener('click', function() {
-        newDropdownList.style.display = 'none';
-      });
-      
-      newDropdownList.style.display = 'none';
-    </script>  -->
-   
-    <!-- <script>
-      const input = document.querySelector('#dropdown-input');
-      const dropdownList = document.querySelector('.dropdown-list');
-      const options = Array.from(dropdownList.getElementsByTagName('li'));
-      const dropdownIcon = document.querySelector('.dropdown-icon'); // Get the dropdown icon element
-      
-      input.addEventListener('input', function() {
-        const searchText = input.value.toLowerCase();
-      
-        options.forEach(option => {
-          const text = option.textContent.toLowerCase();
-          if (text.includes(searchText)) {
-            option.style.display = 'block';
-          } else {
-            option.style.display = 'none';
-          }
-        });
-      
-        dropdownList.style.display = 'block'; // Show the list while searching
-      });
-      
-      dropdownIcon.addEventListener('click', function() {
-        dropdownList.style.display = dropdownList.style.display === 'block' ? 'none' : 'block';
-      });
-      
-      dropdownList.addEventListener('click', function(event) {
-        const selectedOption = event.target;
-        if (selectedOption.tagName === 'LI') {
-          input.value = selectedOption.textContent;
-          dropdownList.style.display = 'none';
-        }
-      });
-      
-      input.addEventListener('click', function() {
-        dropdownList.style.display = 'none';
-      });
-      
-      // Hide the list initially when the page loads
-      dropdownList.style.display = 'none';
-      
-      </script> -->
-   
-      <!-- <script>
-        const dropdownInput = document.querySelector('#dropdown-input');
-        const dropdownList = document.querySelector('.dropdown-list');
-        const options = Array.from(dropdownList.getElementsByTagName('li'));
-        const dropdownIcon = document.querySelector('.dropdown-icon');
-      
-        const newDropdownInput = document.querySelector('#new-dropdown-input');
-        const newDropdownList = document.querySelector('.dropdown-custom-list');
-        const newOptions = Array.from(newDropdownList.getElementsByTagName('li'));
-        const newDropdownIcon = document.querySelector('.dropdown-custom-icon');
-      
-        dropdownInput.addEventListener('input', function() {
-          const searchText = dropdownInput.value.toLowerCase();
-      
-          options.forEach(option => {
-            const text = option.textContent.toLowerCase();
-            if (text.includes(searchText)) {
-              option.style.display = 'block';
-            } else {
-              option.style.display = 'none';
-            }
-          });
-      
-          dropdownList.style.display = 'block';
-        });
-      
-        dropdownIcon.addEventListener('click', function() {
-          dropdownList.style.display = dropdownList.style.display === 'block' ? 'none' : 'block';
-        });
-      
-        dropdownList.addEventListener('click', function(event) {
-          const selectedOption = event.target;
-          if (selectedOption.tagName === 'LI') {
-            const optionValues = selectedOption.textContent.trim().split(' ');
-            dropdownInput.value = optionValues.slice(0, 2).join(' '); // Set the value of form field 1 to the selected option
-            dropdownList.style.display = 'none';
-          }
-        });
-      
-        dropdownInput.addEventListener('click', function() {
-          dropdownList.style.display = 'none';
-        });
-      
-        dropdownList.style.display = 'none';
-      
-        newDropdownInput.addEventListener('input', function() {
-          const searchText = newDropdownInput.value.toLowerCase();
-      
-          newOptions.forEach(option => {
-            const text = option.textContent.toLowerCase();
-            if (text.includes(searchText)) {
-              option.style.display = 'block';
-            } else {
-              option.style.display = 'none';
-            }
-          });
-      
-          newDropdownList.style.display = 'block';
-        });
-      
-        newDropdownIcon.addEventListener('click', function() {
-          newDropdownList.style.display = newDropdownList.style.display === 'block' ? 'none' : 'block';
-        });
-      
-        newDropdownList.addEventListener('click', function(event) {
-          const selectedOption = event.target;
-          if (selectedOption.tagName === 'LI') {
-            const optionValues = selectedOption.textContent.trim().split(' ');
-            newDropdownInput.value = optionValues.slice(2, 4).join(' '); // Set the value of form field 2 to the selected option
-            newDropdownList.style.display = 'none';
-          }
-        });
-      
-        newDropdownInput.addEventListener('click', function() {
-          newDropdownList.style.display = 'none';
-        });
-      
-        newDropdownList.style.display = 'none';
-      </script> -->
    
      
-     <script>
-       
-  function decreaseCount(money) {
-    const countElement = document.getElementById('count' + money);
-    let count = parseInt(countElement.innerText);
-    if (count > 0) {
-      count--;
-      countElement.innerText = count;
-      updateAmount(money, count);
-      updateTotalAmount();
-    }
-  }
-
-  function increaseCount(money) {
-    const countElement = document.getElementById('count' + money);
-    let count = parseInt(countElement.innerText);
-    count++;
-    countElement.innerText = count;
-    updateAmount(money, count);
-    updateTotalAmount();
-  }
-
-  function updateAmount(money, count) {
-    const amountElement = document.getElementById('depositAmount' + money);
-    const amount = money * count;
-    amountElement.innerText = 'Rs ' + amount;
-  }
-
-  function updateTotalAmount() {
-    const count5 = parseInt(document.getElementById('count5').innerText);
-    const count10 = parseInt(document.getElementById('count10').innerText);
-    const count20 = parseInt(document.getElementById('count20').innerText);
-    const count50 = parseInt(document.getElementById('count50').innerText);
-    const count100 = parseInt(document.getElementById('count100').innerText);
-    const count200 = parseInt(document.getElementById('count200').innerText);
-    const count500 = parseInt(document.getElementById('count500').innerText);
-    const count1000 = parseInt(document.getElementById('count1000').innerText);
-
-    const totalAmount =
-      count5 * 5 +
-      count10 * 10 +
-      count20 * 20 +
-      count50 * 50 +
-      count100 * 100 +
-      count200 * 200 +
-      count500 * 500 +
-      count1000 * 1000;
-    document.getElementById('totalAmount').innerText = 'Rs ' + totalAmount;
-  }
-
-  function saveCounts() {
-    const count5 = parseInt(document.getElementById('count5').innerText);
-    const count10 = parseInt(document.getElementById('count10').innerText);
-    const count20 = parseInt(document.getElementById('count20').innerText);
-    const count50 = parseInt(document.getElementById('count50').innerText);
-    const count100 = parseInt(document.getElementById('count100').innerText);
-    const count200 = parseInt(document.getElementById('count200').innerText);
-    const count500 = parseInt(document.getElementById('count500').innerText);
-    const count1000 = parseInt(document.getElementById('count1000').innerText);
-
-    const totalAmount =
-      count5 * 5 +
-      count10 * 10 +
-      count20 * 20 +
-      count50 * 50 +
-      count100 * 100 +
-      count200 * 200 +
-      count500 * 500 +
-      count1000 * 1000;
-    document.getElementById('totalAmount').innerText = 'Rs ' + totalAmount;
-
-    document.getElementById('depositAmount').value = totalAmount;
-
-    // Show container-4 and fill the counts
-    document.getElementById('container-4').style.display = 'block';
-
-    // Show or hide form fields based on count
-    toggleFormField('5', count5);
-    toggleFormField('10', count10);
-    toggleFormField('20', count20);
-    toggleFormField('50', count50);
-    toggleFormField('100', count100);
-    toggleFormField('200', count200);
-    toggleFormField('500', count500);
-    toggleFormField('1000', count1000);
-
-
-    document.getElementById('5').value = count5;
-  document.getElementById('10').value = count10;
-  document.getElementById('20').value = count20;
-  document.getElementById('50').value = count50;
-  document.getElementById('100').value = count100;
-  document.getElementById('200').value = count200;
-  document.getElementById('500').value = count500;
-  document.getElementById('1000').value = count1000;
-  }
-
-  function toggleFormField(id, count) {
-    const formField = document.getElementById(id);
-    const label = document.getElementById(id + '-label');
-    if (count > 0) {
-      formField.style.display = 'block';
-      label.style.display = 'block';
-    } else {
-      formField.style.display = 'none';
-      label.style.display = 'none';
-    }
-  }
-
-  function clearCounts() {
-    const countElements = document.getElementsByClassName('money-count');
-    Array.from(countElements).forEach((element) => {
-      element.innerText = '0';
-    });
-
-    const amountElements = document.getElementsByClassName('money-amount');
-    Array.from(amountElements).forEach((element) => {
-      element.innerText = 'Rs 0';
-    });
-
-    // Hide container-4 and form fields
-    document.getElementById('container-4').style.display = 'none';
-    document.getElementById('5').style.display = 'none';
-    document.getElementById('10').style.display = 'none';
-    document.getElementById('20').style.display = 'none';
-    document.getElementById('50').style.display = 'none';
-    document.getElementById('100').style.display = 'none';
-    document.getElementById('200').style.display = 'none';
-    document.getElementById('500').style.display = 'none';
-    document.getElementById('1000').style.display = 'none';
-
-    updateTotalAmount();
-  }
-  </script>
+   
      
-     
+  <script>
+    function updateCount(denomination) {
+ const countElement = document.getElementById('count' + denomination);
+ const manualCountElement = document.getElementById('manualCount' + denomination);
+ const count = parseInt(manualCountElement.value) || 0;
+ countElement.innerText = count;
+ updateAmount(denomination, count);
+ updateTotalAmount();
+}
+
+// New function to update denomination for custom denomination
+function updateDenomination() {
+ const denominationElement = document.getElementById('customDenomination');
+ const denomination = parseInt(denominationElement.value) || 0;
+ updateAmount('custom', denomination);
+ updateTotalAmount();
+}
+   function decreaseCount(money) {
+     const countElement = document.getElementById('count' + money);
+     let count = parseInt(countElement.innerText);
+     if (count > 0) {
+       count--;
+       countElement.innerText = count;
+       updateAmount(money, count);
+       updateTotalAmount();
+     }
+   }
+ 
+   function increaseCount(money) {
+     const countElement = document.getElementById('count' + money);
+     let count = parseInt(countElement.innerText);
+     count++;
+     countElement.innerText = count;
+     updateAmount(money, count);
+     updateTotalAmount();
+   }
+ 
+   function updateAmount(money, count) {
+     const amountElement = document.getElementById('depositAmount' + money);
+     const amount = money * count;
+     amountElement.innerText = 'Rs ' + amount;
+   }
+ 
+   function updateTotalAmount() {
+     const count1 = parseInt(document.getElementById('count1').innerText);
+     const count2 = parseInt(document.getElementById('count2').innerText);
+     const count5 = parseInt(document.getElementById('count5').innerText);
+     const count10 = parseInt(document.getElementById('count10').innerText);
+     const count20 = parseInt(document.getElementById('count20').innerText);
+     const count50 = parseInt(document.getElementById('count50').innerText);
+     const count100 = parseInt(document.getElementById('count100').innerText);
+     const count200 = parseInt(document.getElementById('count200').innerText);
+     const count500 = parseInt(document.getElementById('count500').innerText);
+     const count1000 = parseInt(document.getElementById('count1000').innerText);
+ 
+     const totalAmount =
+     count1 * 1 +
+       count2 * 2 +
+       count5 * 5 +
+       count10 * 10 +
+       count20 * 20 +
+       count50 * 50 +
+       count100 * 100 +
+       count200 * 200 +
+       count500 * 500 +
+       count1000 * 1000;
+     document.getElementById('totalAmount').innerText = 'Rs ' + totalAmount;
+   }
+ 
+   function saveCounts() {
+     const count1 = parseInt(document.getElementById('count1').innerText);
+     const count2 = parseInt(document.getElementById('count2').innerText);
+     const count5 = parseInt(document.getElementById('count5').innerText);
+     const count10 = parseInt(document.getElementById('count10').innerText);
+     const count20 = parseInt(document.getElementById('count20').innerText);
+     const count50 = parseInt(document.getElementById('count50').innerText);
+     const count100 = parseInt(document.getElementById('count100').innerText);
+     const count200 = parseInt(document.getElementById('count200').innerText);
+     const count500 = parseInt(document.getElementById('count500').innerText);
+     const count1000 = parseInt(document.getElementById('count1000').innerText);
+ 
+     const totalAmount =
+     count1 * 1 +
+       count2 * 2 +
+       count5 * 5 +
+       count10 * 10 +
+       count20 * 20 +
+       count50 * 50 +
+       count100 * 100 +
+       count200 * 200 +
+       count500 * 500 +
+       count1000 * 1000;
+     document.getElementById('totalAmount').innerText = 'Rs ' + totalAmount;
+ 
+     document.getElementById('depositAmount').value = totalAmount;
+ 
+     // Show container-4 and fill the counts
+     document.getElementById('container-4').style.display = 'block';
+ 
+     // Show or hide form fields based on count
+     toggleFormField('1', count1);
+     toggleFormField('2', count2);
+     toggleFormField('5', count5);
+     toggleFormField('10', count10);
+     toggleFormField('20', count20);
+     toggleFormField('50', count50);
+     toggleFormField('100', count100);
+     toggleFormField('200', count200);
+     toggleFormField('500', count500);
+     toggleFormField('1000', count1000);
+ 
+ 
+     document.getElementById('1').value = count1;
+   document.getElementById('2').value = count2;
+     document.getElementById('5').value = count5;
+   document.getElementById('10').value = count10;
+   document.getElementById('20').value = count20;
+   document.getElementById('50').value = count50;
+   document.getElementById('100').value = count100;
+   document.getElementById('200').value = count200;
+   document.getElementById('500').value = count500;
+   document.getElementById('1000').value = count1000;
+   }
+ 
+   function toggleFormField(id, count) {
+     const formField = document.getElementById(id);
+     const label = document.getElementById(id + '-label');
+     if (count > 0) {
+       formField.style.display = 'block';
+       label.style.display = 'block';
+     } else {
+       formField.style.display = 'none';
+       label.style.display = 'none';
+     }
+   }
+ 
+   function clearCounts() {
+     const countElements = document.getElementsByClassName('money-count');
+     Array.from(countElements).forEach((element) => {
+       element.innerText = '0';
+     });
+ 
+     const amountElements = document.getElementsByClassName('money-amount');
+     Array.from(amountElements).forEach((element) => {
+       element.innerText = 'Rs 0';
+     });
+ 
+     // Hide container-4 and form fields
+     document.getElementById('container-4').style.display = 'none';
+     document.getElementById('1').style.display = 'none';
+     document.getElementById('2').style.display = 'none';
+     document.getElementById('5').style.display = 'none';
+     document.getElementById('10').style.display = 'none';
+     document.getElementById('20').style.display = 'none';
+     document.getElementById('50').style.display = 'none';
+     document.getElementById('100').style.display = 'none';
+     document.getElementById('200').style.display = 'none';
+     document.getElementById('500').style.display = 'none';
+     document.getElementById('1000').style.display = 'none';
+ 
+     updateTotalAmount();
+   }
+   </script>
      <script>
         const dropdownInput = document.querySelector('#dropdown-input');
         const dropdownList = document.querySelector('.dropdown-list');
@@ -632,6 +547,8 @@
         const newDropdownList = document.querySelector('.dropdown-custom-list');
         const newOptions = Array.from(newDropdownList.getElementsByTagName('li'));
         const newDropdownIcon = document.querySelector('.dropdown-custom-icon');
+  const customerIdInput = document.getElementById('customer_id');
+
       
         dropdownInput.addEventListener('input', function() {
           const searchText = dropdownInput.value.toLowerCase();
@@ -658,6 +575,9 @@
           if (selectedOption.tagName === 'LI') {
             const optionValues = selectedOption.textContent.trim().split(' ');
             dropdownInput.value = optionValues.slice(0, 2).join(' ');
+      const numberPart = optionValues[optionValues.length - 1]; // Extract the number part
+      customerIdInput.value = numberPart; // Set the number part in the customer_id input field
+
             dropdownList.style.display = 'none';
             filterFormTwoValues(); // Call the function to filter form 2 values
           }
@@ -692,7 +612,7 @@
           const selectedOption = event.target;
           if (selectedOption.tagName === 'LI') {
             const optionValues = selectedOption.textContent.trim().split(' ');
-            newDropdownInput.value = optionValues.slice(2, 4).join(' ');
+            newDropdownInput.value = optionValues.slice(2,-1).join(' ');
             newDropdownList.style.display = 'none';
           }
         });
@@ -729,12 +649,15 @@
   let totalInterestEarned = 0;
   let totalamt=0
   const currentDate = new Date();
-  const options = { year: '2-digit', month: '2-digit', day: '2-digit' };
- 
-
-
+  // const options = { year: '2-digit', month: '2-digit', day: '2-digit' };
   maturityDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + tenure, currentDate.getDate());
-  const formattedDate = maturityDate.toLocaleDateString('en-US', options);
+
+    // Manually format the maturity date as "dd-mm-yy"
+    const maturityDay = maturityDate.getDate().toString().padStart(2, '0');
+    const maturityMonth = (maturityDate.getMonth() + 1).toString().padStart(2, '0');
+    const maturityYear = maturityDate.getFullYear().toString().slice(-2);
+    const formattedDate = `${maturityDay}-${maturityMonth}-${maturityYear}`;
+
   // Set the interest rate and calculate the corresponding interest earned based on the deposit type
   if (depositType === 'quarterly') {
     interestRate = 7.1; // Example: Quarterly interest rate is 5%
@@ -750,6 +673,8 @@
     interestRate = 4; // Example: Short-term interest rate is 4%
     interestEarned = (depositAmount * interestRate * 6) / 100;
     totalInterestEarned = interestEarned *tenure;
+    totalamt=depositAmount+totalInterestEarned
+
   } else if (depositType === 'maturity') {
     interestRate = 9; // Example: Maturity interest rate is 7%
     interestEarned = (depositAmount * interestRate) / 1000;
@@ -769,6 +694,8 @@
     interestRate = 3; // Example: Default interest rate is 3%
     interestEarned = (depositAmount * interestRate * 12) / 100;
     totalInterestEarned = interestEarned *tenure;
+    totalamt=depositAmount+totalInterestEarned
+
   }
 
   // Create the HTML to display the interest calculations

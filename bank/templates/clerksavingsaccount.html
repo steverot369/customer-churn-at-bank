@@ -16,21 +16,29 @@
                               
                                               <div class="mb-4 pb-3">
                                                 <div class="dropdown dropdown-l">
-                                                  <input type="text" name="name" id="dropdown-input" class="form-control form-control-lg" placeholder="Search...">
+                                                  <input type="text" name="name" id="dropdown-input" class="form-control form-control-lg" placeholder="Search..." required>
                                                   <span class="dropdown-icon">&#9662;</span> <!-- Add a dropdown icon here -->
                                               
                                                   <ul class="dropdown-list" style="display: block;">
                                                     {% for row in fname %}
-                                                    <li>{{ row[0] }} {{ row[1] }}</li>
+                                                    <li>{{ row[0] }} {{ row[1] }} {{ row[2] }}</li>
                                                     {% endfor %}
                                                   </ul>
                                                 </div>
                                               </div>
+                                             
+                                              <div class="mb-4">
+                                                <div class="form-outline">
+                                                  <input type="text" id="customer_id" name="cid" class="form-control form-control-lg" readonly required>
+                                                  <label  class="form-label" for="10">customers unique ID</label>
+                                                </div>
+                                              </div>
+
 
 
                                               <div class="mb-4 pb-2">
                                                 <div class="input-group">
-                                                  <input type="number" id="accountNumber" name="accno" class="form-control form-control-lg" readonly>
+                                                  <input type="number" id="accountNumber" name="accno" class="form-control form-control-lg" readonly required>
                                                   <button type="button" onclick="refreshAccountNumber()" class="btn btn-secondary input-group-text" style="cursor: pointer;">
                                                     <span class="material-symbols-outlined">refresh </span>
                                                   </button>
@@ -40,7 +48,7 @@
                               
                                               <div class="form-outline mb-4 pb-2">
                                                 
-                                                <input type="text" name="ifsccode" value="{{ branch_id }}" id="form3Example3cg" class="form-control form-control-lg" readonly/>
+                                                <input type="text" name="ifsccode" value="{{ branch_id }}" id="form3Example3cg" class="form-control form-control-lg" readonly required/>
                                                 <label class="form-label" for="form3Example3cg">IfscCode</label>
                                                 
                                               </div>
@@ -74,7 +82,7 @@
                 
             </main>  
     <!-- ====================end of aside==========================   -->
-    <script>
+    <!-- <script>
 const input = document.querySelector('#dropdown-input');
 const dropdownList = document.querySelector('.dropdown-list');
 const options = Array.from(dropdownList.getElementsByTagName('li'));
@@ -102,6 +110,7 @@ dropdownIcon.addEventListener('click', function() {
 dropdownList.addEventListener('click', function(event) {
   const selectedOption = event.target;
   if (selectedOption.tagName === 'LI') {
+    
     input.value = selectedOption.textContent;
     dropdownList.style.display = 'none';
   }
@@ -114,7 +123,53 @@ input.addEventListener('click', function() {
 // Hide the list initially when the page loads
 dropdownList.style.display = 'none';
 
+</script> -->
+
+<script>
+  const newInput = document.querySelector('#dropdown-input');
+  const newDropdownList = document.querySelector('.dropdown-list');
+  const newOptions = Array.from(newDropdownList.getElementsByTagName('li'));
+  const newDropdownIcon = document.querySelector('.dropdown-icon');
+  const customerIdInput = document.getElementById('customer_id');
+  newInput.addEventListener('input', function() {
+    const searchText = newInput.value.toLowerCase();
+  
+    newOptions.forEach(option => {
+      const text = option.textContent.toLowerCase();
+      if (text.includes(searchText)) {
+        option.style.display = 'block';
+      } else {
+        option.style.display = 'none';
+      }
+    });
+  
+    newDropdownList.style.display = 'block';
+  });
+  
+  newDropdownIcon.addEventListener('click', function() {
+    newDropdownList.style.display = newDropdownList.style.display === 'block' ? 'none' : 'block';
+  });
+  
+  newDropdownList.addEventListener('click', function(event) {
+    const selectedOption = event.target;
+    if (selectedOption.tagName === 'LI') {
+      const optionValues = selectedOption.textContent.trim().split(' ');
+      const name = optionValues.slice(0, -1).join(' '); // Extract only the name
+      const numberPart = optionValues[optionValues.length - 1]; // Extract the number part
+      newInput.value = name; // Set the name in the input field
+      customerIdInput.value = numberPart; // Set the number part in the customer_id input field
+      newDropdownList.style.display = 'none';
+    }
+  });
+  
+  newInput.addEventListener('click', function() {
+    newDropdownList.style.display = 'none';
+  });
+  
+  newDropdownList.style.display = 'none';
 </script>
+
+
 <script>
   
   window.addEventListener('DOMContentLoaded', function() {

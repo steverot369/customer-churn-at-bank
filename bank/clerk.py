@@ -290,7 +290,7 @@ def clerksavingsaccount():
     cursor = db.cursor()
     cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
     name1 = cursor.fetchall()
-    cursor.execute("select fname,lname from customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
+    cursor.execute("select fname,lname,cid from customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
     fname=cursor.fetchall()
     print(fname)
     cursor.execute("select ifsc_code from branch where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
@@ -301,18 +301,20 @@ def clerksavingsaccount():
     print("branch id =======",branch_id)
     if 'add' in request.form:
         name = request.form['name']
+        customer_id = request.form['cid']
+
         accno = request.form['accno']
         ifsccode = request.form['ifsccode']
         balance='0'
         acc_started_date = datetime.now().date()
-        name_parts = name.split(" ")
-        first_name = name_parts[0]
-        last_name = name_parts[1] if len(name_parts) > 1 else ""
-        query = "SELECT cid FROM customers WHERE fname = %s AND lname = %s"
-        cursor.execute(query, (first_name, last_name))
-        cid = cursor.fetchone()[0]
+        # name_parts = name.split(" ")
+        # first_name = name_parts[0]
+        # last_name = name_parts[1] if len(name_parts) > 1 else ""
+        # query = "SELECT cid FROM customers WHERE fname = %s AND lname = %s"
+        # cursor.execute(query, (first_name, last_name))
+        # cid = cursor.fetchone()[0]
         q = "INSERT INTO savingsacc (customer_id, branch_id, acc_no, ifsccode, balance,acc_started_date,pin_no,acc_status) VALUES (%s, %s, %s, %s, %s, %s,'1', 'active')"
-        values = (cid, bid, accno, ifsccode, balance, acc_started_date)
+        values = (customer_id, bid, accno, ifsccode, balance, acc_started_date)
         cursor.execute(q, values)
                 # Generate random cheque number
         cursor.execute("select savings_id from savingsacc where acc_no='%s'"%(accno))
@@ -322,7 +324,7 @@ def clerksavingsaccount():
         
         # Insert cheque details into Cheque table
         cheque_query = "INSERT INTO cheque (customer_id,savings_id,cheque_no,issued_date, status) VALUES (%s,%s, %s,%s, 'active')"
-        cheque_values = (cid, acc_id,cheque_no,acc_started_date)
+        cheque_values = (customer_id, acc_id,cheque_no,acc_started_date)
         cursor.execute(cheque_query, cheque_values)
         
         # Generate random debit card details
@@ -332,16 +334,16 @@ def clerksavingsaccount():
         
         # Insert debit card details into Debit Card table
         debit_card_query = "INSERT INTO debitcard (customer_id,savings_id,debit_no,cv,expiry_date, status) VALUES (%s, %s,%s, %s, %s,'active')"
-        debit_card_values = (cid,acc_id,debit_card_no, cv, expiry_date)
+        debit_card_values = (customer_id,acc_id,debit_card_no, cv, expiry_date)
         cursor.execute(debit_card_query, debit_card_values)
-        cursor.execute("SELECT count FROM bankproducts WHERE customer_id = %s", (cid,))
+        cursor.execute("SELECT count FROM bankproducts WHERE customer_id = %s", (customer_id,))
         existing_record = cursor.fetchone()
         if existing_record:  
             count = existing_record[0] + 2
             cursor.fetchall()
-            cursor.execute("UPDATE bankproducts SET count = %s WHERE customer_id = %s", (count, cid))
+            cursor.execute("UPDATE bankproducts SET count = %s WHERE customer_id = %s", (count, customer_id))
         else:
-            cursor.execute("INSERT INTO bankproducts (customer_id, count) VALUES (%s, %s)", (cid, 2))   
+            cursor.execute("INSERT INTO bankproducts (customer_id, count) VALUES (%s, %s)", (customer_id, 2))   
         flash("Registration successful...")
         return redirect(url_for('clerk.clerksavingsaccount'))
 
@@ -356,7 +358,7 @@ def clerkdepositaccount():
     cursor = db.cursor()
     cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
     name1 = cursor.fetchall()
-    cursor.execute("select fname,lname from customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
+    cursor.execute("select fname,lname,cid from customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
     fname=cursor.fetchall()
     print(fname)
     cursor.fetchall()
@@ -364,10 +366,12 @@ def clerkdepositaccount():
     bid=cursor.fetchone()[0]
     cursor.execute("select ifsc_code from branch where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
     branch_id=cursor.fetchone()[0]
-    cursor.execute("select c.fname,c.lname,s.acc_no from savingsacc s,customers c where c.cid=s.customer_id and c.branch_id=(select branch_id from employee where employe_id='%s')" % (session['clid']))
+    cursor.execute("select c.fname,c.lname,s.acc_no,s.customer_id from savingsacc s,customers c where c.cid=s.customer_id and c.branch_id=(select branch_id from employee where employe_id='%s')" % (session['clid']))
     accno = cursor.fetchall()
     if 'add' in request.form:
         name = request.form['name']
+        cid = request.form['cid']
+
 
         depositamt = request.form['depositAmount']
         newaccno = request.form['accno']
@@ -379,19 +383,61 @@ def clerkdepositaccount():
         maturityDate = request.form['maturityDate']
         toaccno = request.form['addaccno']
         interestRate = request.form['interestRate']
+        fivers = int(request.form['5'])
+        tenrs = int(request.form['10'])
+        twentyrs = int(request.form['20'])
+        fiftyrs = int(request.form['50'])
+        hundredrs = int(request.form['100'])
+        twohundredrs = int(request.form['200'])
+        fivehundredrs = int(request.form['500'])
+        thousandrs = int(request.form['1000'])
         
         print(toaccno)
-        name_parts = name.split(" ")
-        first_name = name_parts[0]
-        last_name = name_parts[1] if len(name_parts) > 1 else ""
-        query = "SELECT cid FROM customers WHERE fname = %s AND lname = %s"
-        cursor.execute(query, (first_name, last_name))
-        cid = cursor.fetchone()[0]
+        # name_parts = name.split(" ")
+        # first_name = name_parts[0]
+        # last_name = name_parts[1] if len(name_parts) > 1 else ""
+        # query = "SELECT cid FROM customers WHERE fname = %s AND lname = %s"
+        # cursor.execute(query, (first_name, last_name))
+        # cid = cursor.fetchone()[0]
         date = datetime.now().date()
         formatted_date = date.strftime("%d-%m-%y")
         fixeddeposit = "INSERT INTO depositacc (customer_id, acc_no, ifsccode, deposit_amt, tenure, deposit_date, deposit_type, maturity_date, interest_rate, interest_amt, interest_earn,acc_to, last_transaction_date,acc_type, acc_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,'0',%s,%s, 'deposit', 'active')"
         fixeddeposit_values = (cid, newaccno, ifsccode, depositamt, tenure, formatted_date, depositType, maturityDate, interestRate,interestEarned,toaccno,formatted_date)
         cursor.execute(fixeddeposit, fixeddeposit_values)
+       
+        if fivers > 0:
+            transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '5',%s)"
+            transaction_values = (bid,fivers)
+            cursor.execute(transaction, transaction_values)
+        if tenrs > 0:
+            transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '10',%s)"
+            transaction_values = (bid,tenrs)
+            cursor.execute(transaction, transaction_values)
+        if twentyrs > 0:
+            transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '20',%s)"
+            transaction_values = (bid,twentyrs)
+            cursor.execute(transaction, transaction_values)
+        if fiftyrs > 0:
+            transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '50',%s)"
+            transaction_values = (bid,fivers)
+            cursor.execute(transaction, transaction_values)
+        if hundredrs > 0:
+            transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '100',%s)"
+            transaction_values = (bid,hundredrs)
+            cursor.execute(transaction, transaction_values)
+        if twohundredrs > 0:
+            transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '200',%s)"
+            transaction_values = (bid,twohundredrs)
+            cursor.execute(transaction, transaction_values)
+        if fivehundredrs > 0:
+            transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '500',%s)"
+            transaction_values = (bid,fivehundredrs)
+            cursor.execute(transaction, transaction_values)
+        if thousandrs > 0:
+            transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '1000',%s)"
+            transaction_values = (bid,thousandrs)
+            cursor.execute(transaction, transaction_values)
+        
         cursor.execute("SELECT count FROM bankproducts WHERE customer_id = %s", (cid,))
         existing_record = cursor.fetchone()
         if existing_record:  
@@ -418,7 +464,7 @@ def clerkloanaccount():
     cursor = db.cursor()
     cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
     name1 = cursor.fetchall()
-    cursor.execute("select fname,lname from customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
+    cursor.execute("select fname,lname,cid from customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
     fname=cursor.fetchall()
     print(fname)
     cursor.fetchall()
@@ -426,14 +472,15 @@ def clerkloanaccount():
     bid=cursor.fetchone()[0]
     cursor.execute("select ifsc_code from branch where branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
     branch_id=cursor.fetchone()[0]
-    cursor.execute("select c.fname,c.lname,s.acc_no from savingsacc s,customers c where c.cid=s.customer_id and c.branch_id=(select branch_id from employee where employe_id='%s')" % (session['clid']))
+    cursor.execute("select c.fname,c.lname,s.acc_no,s.customer_id from savingsacc s,customers c where c.cid=s.customer_id and c.branch_id=(select branch_id from employee where employe_id='%s')" % (session['clid']))
     accno = cursor.fetchall()
     
     if 'add' in request.form:
-        name = request.form['name']
-
+        # name = request.form['name']
+        
         
         newaccno = request.form['accno']
+        cid=request.form['cid']
         ifsccode = request.form['ifsccode']
         toaccno = request.form['addaccno']
         loanType=request.form['loanType']
@@ -446,12 +493,13 @@ def clerkloanaccount():
         maturityDate = request.form['maturityDate']
    
         interestRate = request.form['interestRate']
-        name_parts = name.split(" ")
-        first_name = name_parts[0]
-        last_name = name_parts[1] if len(name_parts) > 1 else ""
-        query = "SELECT cid FROM customers WHERE fname = %s AND lname = %s"
-        cursor.execute(query, (first_name, last_name))
-        cid = cursor.fetchone()[0]
+        
+        # name_parts = name.split(" ")
+        # first_name = name_parts[0]
+        # last_name = name_parts[1] if len(name_parts) > 1 else ""
+        # query = "SELECT cid FROM customers WHERE fname = %s AND lname = %s"
+        # cursor.execute(query, (first_name, last_name))
+        # cid = cursor.fetchone()[0]
         cursor.fetchall()
         cursor.execute("select acc_status from loanacc where customer_id='%s'"%(cid))
         result = cursor.fetchone()
@@ -460,7 +508,7 @@ def clerkloanaccount():
         else:
             
             acc_status = None
-        date = datetime.datetime.now().date()
+        date = datetime.now().date()
         formatted_date = date.strftime("%d-%m-%y")
         remaining_loanAmount='0'
         
@@ -473,6 +521,7 @@ def clerkloanaccount():
             loan_values = (cid,bid, newaccno, ifsccode,loanType,toaccno,maturityDate,tenure,interestRate,emiPayment, loanAmount,loanAmount,formatted_date,interestPayableDate)
             cursor.execute(loan, loan_values)
             cursor.execute("SELECT count FROM bankproducts WHERE customer_id = %s", (cid,))
+
             existing_record = cursor.fetchone()
             if existing_record:  
                 count = existing_record[0] + 1
@@ -491,24 +540,34 @@ def clerkloancash():
     cursor = db.cursor()
     cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
     name1 = cursor.fetchall()
-    cursor.execute("select c.fname,c.lname,s.acc_no from loanacc s,customers c where c.cid=s.customer_id and s.branch_id=(select branch_id from employee where employe_id='%s') and s.acc_type='loanaccount'" % (session['clid']))
+    cursor.execute("select c.fname,c.lname,s.acc_no,s.customer_id from loanacc s,customers c where c.cid=s.customer_id and s.branch_id=(select branch_id from employee where employe_id='%s') and s.acc_type='loanaccount'" % (session['clid']))
     accno = cursor.fetchall()
     accountDetails = []  # Initialize accountDetails with a default value
     if 'add' in request.form:
         accno = request.form['accno']
         # cursor.execute("SELECT s.acc_no,s.ifsccode,s.balance,c.fname,c.lname from customers c,savingsacc s where c.cid=s.customer_id and s.acc_no = %s", (accno,))
-        cursor.execute("SELECT s.acc_no,s.ifsccode,c.fname,c.lname,s.issued_amount,s.remaing_amount,s.interst_amt,s.interest_rate from customers c,loanacc s where c.cid=s.customer_id and s.acc_no =%s",(accno,))
+        cursor.execute("SELECT s.acc_no,s.ifsccode,c.fname,c.lname,s.issued_amount,s.remaing_amount,s.interst_amt,s.interest_rate,s.customer_id from customers c,loanacc s where c.cid=s.customer_id and s.acc_no =%s",(accno,))
         accountDetails = cursor.fetchall()
-        cursor.execute("select c.fname,c.lname,s.acc_no from loanacc s,customers c where c.cid=s.customer_id and s.branch_id=(select branch_id from employee where employe_id='%s') and s.acc_type='loanaccount'" % (session['clid']))
+        cursor.execute("select c.fname,c.lname,s.acc_no,s.customer_id from loanacc s,customers c where c.cid=s.customer_id and s.branch_id=(select branch_id from employee where employe_id='%s') and s.acc_type='loanaccount'" % (session['clid']))
         accno = cursor.fetchall()
 
     if 'add1' in request.form:
         # Retrieve form data
         accno1 = request.form['accno1']
+        customer_id = request.form['cid']
+
         loanEmi=request.form['emi']
         name = request.form['name']
         loanAmount = float(request.form['remaining'])
         interestRate = float(request.form['interestRate'])
+        fivers = int(request.form['5'])
+        tenrs = int(request.form['10'])
+        twentyrs = int(request.form['20'])
+        fiftyrs = int(request.form['50'])
+        hundredrs = int(request.form['100'])
+        twohundredrs = int(request.form['200'])
+        fivehundredrs = int(request.form['500'])
+        thousandrs = int(request.form['1000'])
         date = datetime.now().date()
         formatted_date = date.strftime("%d-%m-%y")
         interest_date = date + timedelta(days=30)
@@ -516,11 +575,11 @@ def clerkloancash():
         print(interest_date)
         trans_no = str(random.randint(1000000000000000, 9999999999999999))
         
-        name_parts = name.split(" ")
-        first_name = name_parts[0]
-        last_name = name_parts[1] if len(name_parts) > 1 else ""
-        query = "SELECT cid, branch_id FROM customers WHERE fname = %s AND lname = %s"
-        cursor.execute(query, (first_name, last_name))
+        # name_parts = name.split(" ")
+        # first_name = name_parts[0]
+        # last_name = name_parts[1] if len(name_parts) > 1 else ""
+        
+        cursor.execute("select cid,branch_id from customers where cid='%s'"%(customer_id))
         result = cursor.fetchone()
         if result is not None:
             cid = result[0]
@@ -561,9 +620,41 @@ def clerkloancash():
             loan="INSERT INTO loan_payment(customer_id,branch_id,loan_id,emi_paid,date_paid)  VALUES ( %s, %s,%s,%s,%s)"
             loan_values = (cid, bid, loan_id, loanEmi,formatted_date)
             cursor.execute(loan,loan_values)
-            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance,date_time) VALUES (%s, %s,%s, %s, 'loan_payment',%s,%s,%s)"
+            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance,date_time) VALUES (%s, %s,%s, %s, 'loan payment',%s,%s,%s)"
             transaction_values = (cid,loan_id,bid,trans_no,loanEmi,outstandingBalance,formatted_date)
             cursor.execute(transaction,transaction_values)
+            if fivers > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '5',%s)"
+                transaction_values = (bid,fivers)
+                cursor.execute(transaction, transaction_values)
+            if tenrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '10',%s)"
+                transaction_values = (bid,tenrs)
+                cursor.execute(transaction, transaction_values)
+            if twentyrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '20',%s)"
+                transaction_values = (bid,twentyrs)
+                cursor.execute(transaction, transaction_values)
+            if fiftyrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '50',%s)"
+                transaction_values = (bid,fivers)
+                cursor.execute(transaction, transaction_values)
+            if hundredrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '100',%s)"
+                transaction_values = (bid,hundredrs)
+                cursor.execute(transaction, transaction_values)
+            if twohundredrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '200',%s)"
+                transaction_values = (bid,twohundredrs)
+                cursor.execute(transaction, transaction_values)
+            if fivehundredrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '500',%s)"
+                transaction_values = (bid,fivehundredrs)
+                cursor.execute(transaction, transaction_values)
+            if thousandrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '1000',%s)"
+                transaction_values = (bid,thousandrs)
+                cursor.execute(transaction, transaction_values)
 
             db.commit()  # Commit the changes to the database
             flash("emi paid successfully")
@@ -575,14 +666,46 @@ def clerkloancash():
             loan="INSERT INTO loan_payment(customer_id,branch_id,loan_id,emi_paid,date_paid)  VALUES ( %s, %s,%s,%s,%s)"
             loan_values = (cid, bid, loan_id, loanEmi,formatted_date)
             cursor.execute(loan,loan_values)
-            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance,date_time) VALUES (%s, %s,%s, %s, 'loan_payment',%s,%s,%s)"
+            transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance,date_time) VALUES (%s, %s,%s, %s, 'loan payment',%s,%s,%s)"
             transaction_values = (cid,loan_id,bid,trans_no,loanEmi,outstandingBalance,formatted_date)
             cursor.execute(transaction,transaction_values)
+            if fivers > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '5',%s)"
+                transaction_values = (bid,fivers)
+                cursor.execute(transaction, transaction_values)
+            if tenrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '10',%s)"
+                transaction_values = (bid,tenrs)
+                cursor.execute(transaction, transaction_values)
+            if twentyrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '20',%s)"
+                transaction_values = (bid,twentyrs)
+                cursor.execute(transaction, transaction_values)
+            if fiftyrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '50',%s)"
+                transaction_values = (bid,fivers)
+                cursor.execute(transaction, transaction_values)
+            if hundredrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '100',%s)"
+                transaction_values = (bid,hundredrs)
+                cursor.execute(transaction, transaction_values)
+            if twohundredrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '200',%s)"
+                transaction_values = (bid,twohundredrs)
+                cursor.execute(transaction, transaction_values)
+            if fivehundredrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '500',%s)"
+                transaction_values = (bid,fivehundredrs)
+                cursor.execute(transaction, transaction_values)
+            if thousandrs > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '1000',%s)"
+                transaction_values = (bid,thousandrs)
+                cursor.execute(transaction, transaction_values)
 
             db.commit()  # Commit the changes to the database
             flash("emi paid successfully...also a penality")
             return redirect(url_for('clerk.clerkloancash'))
-    return render_template('clerkloancash.html', name=name, accno=accno, accountDetails=accountDetails,name1=name1)
+    return render_template('clerkloancash.html',accno=accno, accountDetails=accountDetails,name1=name1)
 
 
 

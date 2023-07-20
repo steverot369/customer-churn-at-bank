@@ -15,18 +15,24 @@
                               
                                               <div class="mb-4 pb-3">
                                                 <div class="dropdown dropdown-l">
-                                                  <input type="text" name="name" id="dropdown-input" class="form-control form-control-lg" placeholder="Search...">
+                                                  <input type="text" name="name" id="dropdown-input" class="form-control form-control-lg" placeholder="Search..." required>
                                                   <span class="dropdown-icon">&#9662;</span> <!-- Add a dropdown icon here -->
                                               
                                                   <ul class="dropdown-list" style="display: block;">
                                                     {% for row in fname %}
-                                                    <li>{{ row[0] }} {{ row[1] }}</li>
+                                                    <li>{{ row[0] }} {{ row[1] }} {{ row[2] }}</li>
                                                     {% endfor %}
                                                   </ul>
                                                 </div>
                                               </div>
 
-
+                      
+                                              <div class="mb-4">
+                                                <div class="form-outline">
+                                                  <input type="text" id="customer_id" name="cid" class="form-control form-control-lg" readonly>
+                                                  <label id="10-label" class="form-label" for="10">customers unique ID</label>
+                                                </div>
+                                              </div>
                                               <div class="mb-4 pb-2">
                                                 <div class="input-group">
                                                   <input type="number" id="accountNumber" name="accno" class="form-control form-control-lg" readonly>
@@ -45,11 +51,11 @@
                                               </div>
                                               <div class="mb-4 pb-3">
                                                 <div class="dropdown dropdown-custom">
-                                                  <input type="text" name="addaccno" id="new-dropdown-input" class="form-control form-control-lg" placeholder="Search by accno or customer name....">
+                                                  <input type="text" name="addaccno" id="new-dropdown-input" class="form-control form-control-lg" placeholder="Search by accno or customer name...." required>
                                                   <span class="dropdown-custom-icon">&#9662;</span>
                                                   <ul class="dropdown-custom-list" style="display: block;">
                                                     {% for row in accno %}
-                                                    <li>{{ row[0] }} {{ row[1] }} {{ row[2] }}</li>
+                                                    <li>{{ row[0] }} {{ row[1] }} {{ row[2] }} {{ row[3] }}</li>
                                                     {% endfor %}
                                                   </ul>
                                                 </div>
@@ -64,7 +70,7 @@
                                     <div id="show-container" style="display: none;">
                                               <div class="form-group">
                                                 <label for="loanType">Loan Type:</label>
-                                                <select id="loanType" class="form-control form-control-lg" name="loanType">
+                                                <select id="loanType" class="form-control form-control-lg" name="loanType" required>
                                                     <option value="personal">Personal Loan</option>
                                                     <option value="home">Home Loan</option>
                                                     <option value="car">Car Loan</option>
@@ -77,7 +83,7 @@
                                             </div>
                                             <div class="form-group">
                                               <label for="wordsInText">Withdraw Amount in Words</label>
-                                              <input type="text" id="wordsInText" name="amountsInText" class="form-control form-control-lg" readonly />
+                                              <input type="text" id="wordsInText" name="amountsInText" class="form-control form-control-lg" readonly required/>
                                               
                                             </div>
                                             <div class="form-group">
@@ -95,24 +101,24 @@
                                             
                                             <div class="form-group">
                                                 <label for="interestRate">Interest Rate (%):</label>
-                                                <input type="number" id="interestRate" name="interestRate" class="form-control form-control-lg">
+                                                <input type="number" id="interestRate" name="interestRate" class="form-control form-control-lg" required disabled>
                                             </div>
                                             
                                             <div class="form-group">
                                                 <label for="totalAmount">Total Amount:</label>
-                                                <input type="text" id="totalAmount" class="form-control form-control-lg">
+                                                <input type="text" id="totalAmount" class="form-control form-control-lg" disabled required>
                                             </div>
                                             <div class="form-group">
                                               <label for="emiPayment">Emi payment/month:</label>
-                                              <input type="number" id="emiPayment" name="emiPayment" class="form-control form-control-lg">
+                                              <input type="number" id="emiPayment" name="emiPayment" class="form-control form-control-lg" disabled required>
                                           </div>
                                             <div class="form-group">
                                                 <label for="maturityDate">Maturity Date:</label>
-                                                <input type="text" id="maturityDate" name="maturityDate" class="form-control form-control-lg">
+                                                <input type="text" id="maturityDate" name="maturityDate" class="form-control form-control-lg" disabled required>
                                             </div>
                                             <div class="form-group">
                                               <label for="interestPayableDate">First interest Payable Date:</label>
-                                              <input type="text" id="interestPayableDate" name="interestPayableDate" class="form-control form-control-lg">
+                                              <input type="text" id="interestPayableDate" name="interestPayableDate" class="form-control form-control-lg" disabled required>
                                             </div>
                                             <button type="button" id="calculateBtn" class="btn btn-primary">Calculate</button>
                                     </div>
@@ -413,6 +419,8 @@ showBtn.addEventListener('click', function() {
               const newDropdownList = document.querySelector('.dropdown-custom-list');
               const newOptions = Array.from(newDropdownList.getElementsByTagName('li'));
               const newDropdownIcon = document.querySelector('.dropdown-custom-icon');
+        const customerIdInput = document.getElementById('customer_id');
+      
             
               dropdownInput.addEventListener('input', function() {
                 const searchText = dropdownInput.value.toLowerCase();
@@ -439,6 +447,9 @@ showBtn.addEventListener('click', function() {
                 if (selectedOption.tagName === 'LI') {
                   const optionValues = selectedOption.textContent.trim().split(' ');
                   dropdownInput.value = optionValues.slice(0, 2).join(' ');
+            const numberPart = optionValues[optionValues.length - 1]; // Extract the number part
+            customerIdInput.value = numberPart; // Set the number part in the customer_id input field
+      
                   dropdownList.style.display = 'none';
                   filterFormTwoValues(); // Call the function to filter form 2 values
                 }
@@ -473,7 +484,7 @@ showBtn.addEventListener('click', function() {
                 const selectedOption = event.target;
                 if (selectedOption.tagName === 'LI') {
                   const optionValues = selectedOption.textContent.trim().split(' ');
-                  newDropdownInput.value = optionValues.slice(2, 4).join(' ');
+                  newDropdownInput.value = optionValues.slice(2,-1).join(' ');
                   newDropdownList.style.display = 'none';
                 }
               });
