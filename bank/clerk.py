@@ -218,6 +218,11 @@ def clerkadduser():
     # cursor.execute("SELECT e.branch, e.employe_fname FROM employee e, branch b WHERE e.branch_id = b.branch_id AND e.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '{}') AND employe_id='{}'".format(session['clid'], session['logid']))
 
     phoneno = [row[0] for row in cursor.fetchall()]
+
+    cursor.execute("SELECT idnumber FROM customers")
+    # cursor.execute("SELECT e.branch, e.employe_fname FROM employee e, branch b WHERE e.branch_id = b.branch_id AND e.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '{}') AND employe_id='{}'".format(session['clid'], session['logid']))
+
+    idnumber = [row[0] for row in cursor.fetchall()]
     if 'add' in request.form:
         fname = request.form['fname']
         lname = request.form['lname']
@@ -243,7 +248,7 @@ def clerkadduser():
         idupload = request.files['image1']
         img1="uploads/"+str(uuid.uuid4())+idupload.filename
         idupload.save('bank/static/'+img1)
-        join_date = datetime.datetime.now().date()  # Get current date
+        join_date = datetime.now().date()  # Get current date
         recipient_email = request.form['email']
         sender_email = "mltalerts.mlt.co.in@gmail.com"
         subject = "registration"
@@ -280,7 +285,7 @@ def clerkadduser():
         cursor.execute("select branch_id from branch  where branch_name='%s'"%(branch))
         branch_id=cursor.fetchone()[0]
         
-        q = "INSERT INTO login VALUES(null,'%s', '%s', 'customer')" % (email, phone)
+        q = "INSERT INTO login VALUES(null,'%s', '%s', 'customer','no')" % (email, phone)
         id=insert(q)
         q = "INSERT INTO customers VALUES(null,'%s','%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s', '%s', '%s', '%s','%s','%s','%s','%s','%s','%s','%s','%s','1')" % (id, branch_id,fname, lname, dob,img,status,gender,phone,email,branch,address,city,state,zipcode,country,education,msalary,idproof,idnumber,img1,join_date)
         insert(q)
@@ -290,7 +295,7 @@ def clerkadduser():
 
     
         return redirect(url_for('clerk.clerkadduser'))
-    return render_template('clerkadduser.html',branch_names=branch_names,name1=name1,emails=emails,phoneno=phoneno)
+    return render_template('clerkadduser.html',branch_names=branch_names,name1=name1,emails=emails,phoneno=phoneno,idnumber=idnumber)
 
 
 

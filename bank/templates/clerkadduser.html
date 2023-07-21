@@ -5,7 +5,7 @@
                             <h1>Dashboard</h1>
                             <input type="date">
                         </div>
-                        <form method="post" enctype="multipart/form-data">
+                        <form method="post" enctype="multipart/form-data" id="myForm">
                             <section class="h-100 h-custom gradient-custom-2" style="width: 125%;">
                                 <div class="container py-5 h-100">
                                   <div class="row d-flex justify-content-center align-items-center h-100">
@@ -89,7 +89,7 @@
                                                         <div class="col-md-7 mb-4 pb-2">
                                     
                                                           <div class="form-outline form-white">
-                                                            <input type="text" id="phone" name="phone" class="form-control form-control-lg" required/>
+                                                            <input type="number" id="phone" name="phone" class="form-control form-control-lg"required/>
                                                             <label class="form-label" for="form3Examplea8">Phone Number</label>
                                                           </div>
                                                             <ul id="phoneNumberList">
@@ -197,23 +197,29 @@
                                                 </div>
                                                 
                                                 <div class="mb-4 pb-3">
-                                                  <select name="idproof" class="form-control form-control-lg p-2" required>
-                                                    <option disabled selected value>Select your id</option>
-                                                    <option value="adhar card">adhar card</option>
-                                                    <option value="voter id">voter id</option>
-                                                    <option value="driving lisence">driving lisence</option>
-                                                    <option value="passport">passport</option>
-                                                    <option value="student id">student id</option>
-
+                                                  <select name="idproof" class="form-control form-control-lg p-2" required id="idproofSelect">
+                                                    <option disabled selected value>Select your ID</option>
+                                                    <option value="adhar card">Aadhar Card</option>
+                                                    <option value="voter id">Voter ID</option>
+                                                    <option value="driving license">Driving License</option>
+                                                    <option value="passport">Passport</option>
+                                                    <option value="student id">Student ID</option>
                                                   </select>
-                                                  <label class="form-label" for="form3Examplev4">form of identification</label>
+                                                  <label class="form-label" for="idproofSelect">Form of Identification</label>
                                                 </div>
-                                              
+                                                
                                                 <div class="mb-4 pb-2">
                                                   <div class="form-outline">
-                                                    <input type="number" id="id" name="idnumber" class="form-control form-control-lg" required/>
-                                                    <label class="form-label" for="form3Examplev4">ID NUMBER</label>
+                                                    <input type="number" id="id" name="idnumber" class="form-control form-control-lg" title="please match the required format" pattern="" required/>
+                                                    <label class="form-label" for="id">ID NUMBER</label>
+                                                    <p id="idnumbervalidate" style="color: red; font-size:17px;"></p>
                                                   </div>
+                                                  <ul id="idList">
+
+                                                    {% for row in idnumber %}
+                                                      <li style="display: none;">{{ row }}</li>
+                                                    {% endfor %}
+                                                  </ul>
                                                 </div>
                                                 
                                                 <!-- <div class="mb-4 pb-2">
@@ -247,7 +253,13 @@
                                               </div>  -->
                                                 
                                                     
-                                                 
+                                              <!-- SELECT customers.fname,customers.lname, savingsacc.customer_id
+                                              FROM savingsacc
+                                              INNER JOIN loanacc ON savingsacc.customer_id = loanacc.customer_id
+                                              INNER JOIN depositacc ON savingsacc.customer_id = depositacc.customer_id
+                                              INNER JOIN customers ON savingsacc.customer_id = customers.cid
+                                              WHERE savingsacc.branch_id = '1'
+                                              GROUP BY savingsacc.customer_id -->
                                                 
                                                 
                                                 
@@ -269,67 +281,254 @@
                 
             </main>  
     <!-- ====================end of aside==========================   -->
-    <script>
-    const phoneNumberInput = document.getElementById('phone');
-  const phoneNumberList = document.querySelectorAll('#phoneNumberList li');
-
-  phoneNumberInput.addEventListener('input', function() {
-    const phoneNumberValue = phoneNumberInput.value.trim();
-    let numberInUse = false;
-
-    phoneNumberList.forEach(function(listItem) {
-      if (listItem.textContent.trim() === phoneNumberValue) {
-        numberInUse = true;
-        return;
-      }
-    });
-
-    if (numberInUse) {
-      showAlert('The phone number is already in use. Please enter a different number.');
-      phoneNumberInput.value = '';
-    }
-  });
-  
-
-
-  const emailInput = document.getElementById('email');
-  const emailList = document.querySelectorAll('#emailList li');
-
-  emailInput.addEventListener('input', function() {
-    const emailValue = emailInput.value.trim();
-    let emailInUse = false;
-
-    emailList.forEach(function(listItem) {
-      if (listItem.textContent.trim() === emailValue) {
-        emailInUse = true;
-        return;
-      }
-    });
-
-    if (emailInUse) {
-      showAlert('The email is already in use. Please enter a different email.');
-      emailInput.value = '';
-    }
-  });
-  
-
-
-      // ... Rest of the JavaScript code ...
-      function showAlert(message) {
-    const alertElement = document.createElement('div');
-    alertElement.classList.add('alert-message');
-    alertElement.textContent = message;
-
-    // Insert the alert message before the form
-    const formElement = document.querySelector('form');
-    formElement.parentNode.insertBefore(alertElement, formElement);
     
-    // Remove the alert message after a delay (5 seconds in this example)
-    setTimeout(function() {
-      alertElement.remove();
-    }, 4500);
-  }
+    <script>
+      const phoneNumberInput = document.getElementById('phone');
+    const phoneNumberList = document.querySelectorAll('#phoneNumberList li');
+  
+    phoneNumberInput.addEventListener('input', function() {
+      const phoneNumberValue = phoneNumberInput.value.trim();
+      let numberInUse = false;
+  
+      phoneNumberList.forEach(function(listItem) {
+        if (listItem.textContent.trim() === phoneNumberValue) {
+          numberInUse = true;
+          return;
+        }
+      });
+  
+      if (numberInUse) {
+        showAlert('The phone number is already in use. Please enter a different number.');
+        phoneNumberInput.value = '';
+      }
+    });
+    
+  
+  
+    const emailInput = document.getElementById('email');
+    const emailList = document.querySelectorAll('#emailList li');
+  
+    emailInput.addEventListener('input', function() {
+      const emailValue = emailInput.value.trim();
+      let emailInUse = false;
+  
+      emailList.forEach(function(listItem) {
+        if (listItem.textContent.trim() === emailValue) {
+          emailInUse = true;
+          return;
+        }
+      });
+  
+      if (emailInUse) {
+        showAlert('The email is already in use. Please enter a different email.');
+        emailInput.value = '';
+      }
+    });
+    
+    const idInput = document.getElementById('id');
+    const idList = document.querySelectorAll('#idList li');
+  
+    idInput.addEventListener('input', function() {
+      const idValue = idInput.value.trim();
+      let idInUse = false;
+  
+      idList.forEach(function(listItem) {
+        if (listItem.textContent.trim() === idValue) {
+          idInUse = true;
+          return;
+        }
+      });
+  
+      if (idInUse) {
+        showAlert('The id number is already in use. Please enter a different email.');
+        idInput.value = '';
+      }
+    });
+  
+        // ... Rest of the JavaScript code ...
+        function showAlert(message) {
+      const alertElement = document.createElement('div');
+      alertElement.classList.add('alert-message');
+      alertElement.textContent = message;
+  
+      // Insert the alert message before the form
+      const formElement = document.querySelector('form');
+      formElement.parentNode.insertBefore(alertElement, formElement);
+      
+      // Remove the alert message after a delay (5 seconds in this example)
+      setTimeout(function() {
+        alertElement.remove();
+      }, 4500);
+    }
+      </script>
+    <script>
+      const myForm = document.getElementById('myForm');
+      const idProofSelect = document.getElementById('idproofSelect');
+      const idNumberInput = document.getElementById('id');
+    
+      // Set the pattern based on the selected option
+      idProofSelect.addEventListener('change', function() {
+        const selectedOption = idProofSelect.value;
+    
+        switch (selectedOption) {
+          case 'adhar card':
+            idNumberInput.pattern = '\\d{12}';
+            break;
+    
+          case 'voter id':
+            idNumberInput.pattern = '\\d{10}';
+            break;
+    
+          case 'driving license':
+            idNumberInput.pattern = '\\d{8}';
+            break;
+    
+          case 'passport':
+            idNumberInput.pattern = '\\d{9}';
+            break;
+    
+          case 'student id':
+            idNumberInput.pattern = '\\d{7}';
+            break;
+    
+          default:
+            idNumberInput.pattern = '.*'; // Any other value, no specific pattern
+            break;
+        }
+      });
+    
+      idNumberInput.addEventListener('input', validateIDNumber);
+    
+      function validateIDNumber() {
+        const selectedOption = idProofSelect.value;
+        const idNumberValue = idNumberInput.value.trim();
+    
+        let isValid = true;
+        let errorMessage = '';
+    
+        switch (selectedOption) {
+          case 'adhar card':
+            if (idNumberValue.length !== 12) {
+              isValid = false;
+              errorMessage = 'Aadhar number must be a 12-digit number.\neg: 12345555553';
+            }
+            break;
+    
+          case 'voter id':
+            if (idNumberValue.length !== 10) {
+              isValid = false;
+              errorMessage = 'Voter ID must be a 10-digit number.\neg: 1234567890';
+            }
+            break;
+    
+          case 'driving license':
+            if (idNumberValue.length !== 8) {
+              isValid = false;
+              errorMessage = 'Driving license must be an 8-digit number.\neg: 12345678';
+            }
+            break;
+    
+          case 'passport':
+            if (idNumberValue.length !== 9) {
+              isValid = false;
+              errorMessage = 'Passport must be a 9-digit number.\neg: 123456789';
+            }
+            break;
+    
+          case 'student id':
+            if (idNumberValue.length !== 7) {
+              isValid = false;
+              errorMessage = 'Student ID must be a 7-digit number.\neg: 1234567';
+            }
+            break;
+    
+          default:
+            // No specific validation for the selected option
+            // Assume all other options are valid for now
+            break;
+        }
+    
+        // Display the validation result
+        if (isValid) {
+          idNumberInput.classList.remove('invalid');
+          idNumberInput.classList.add('valid');
+          errorMessage = '<h2 style="color:green;">Valid</h2>';
+        } else {
+          idNumberInput.classList.remove('valid');
+          idNumberInput.classList.add('invalid');
+        }
+    
+        document.getElementById('idnumbervalidate').innerHTML = errorMessage;
+      }
+    
+      myForm.addEventListener('submit', function(event) {
+        const selectedOption = idProofSelect.value;
+        const idNumberValue = idNumberInput.value.trim();
+    
+        // Perform validation based on the selected option
+        let isValid = true;
+        switch (selectedOption) {
+          case 'adhar card':
+            if (idNumberValue.length !== 12) {
+              isValid = false;
+            }
+            break;
+    
+          case 'voter id':
+            if (idNumberValue.length !== 10) {
+              isValid = false;
+            }
+            break;
+    
+          case 'driving license':
+            if (idNumberValue.length !== 8) {
+              isValid = false;
+            }
+            break;
+    
+          case 'passport':
+            if (idNumberValue.length !== 9) {
+              isValid = false;
+            }
+            break;
+    
+          case 'student id':
+            if (idNumberValue.length !== 7) {
+              isValid = false;
+            }
+            break;
+    
+          default:
+            // No specific validation for the selected option
+            // Assume all other options are valid for now
+            break;
+        }
+    
+        // Display the validation result
+        if (isValid) {
+          idNumberInput.classList.remove('invalid');
+          idNumberInput.classList.add('valid');
+          errorMessage = '<h2 style="color:green;">Valid</h2>';
+        } else {
+          idNumberInput.classList.remove('valid');
+          idNumberInput.classList.add('invalid');
+          errorMessage = '<h2 style="color:red;">Invalid</h2>';
+          document.getElementById('idnumbervalidate').innerHTML = errorMessage;
+          event.preventDefault(); // Prevent form submission if validation fails
+          showAlert('Please enter a valid ID number.'); // Show alert message
+        }
+      });
+    
+      function showAlert(message) {
+        // ... Your existing showAlert function ...
+      }
     </script>
+    
+    
+    
+    
+    
+    
     
     
     <script>
@@ -340,6 +539,8 @@
       const countryNameInput = document.getElementById('country');
       const salaryNameInput = document.getElementById('salary');
       const idNameInput = document.getElementById('id');
+      const phoneInput = document.getElementById('phone');
+
     
       firstNameInput.addEventListener('input', function() {
     const firstNameValue = firstNameInput.value;
@@ -408,14 +609,26 @@
     
       idNameInput.addEventListener('input', function() {
         // Add validation for the ID field if needed
-        const idNameValue = idNameInput.value;
-        const containsNumber = /\d/.test(idNameValue);
+        const idNameValue =  parseFloat(idNameInput.value);
+      
     
         if (isNaN(idNameValue) || idNameValue < 0) {
-          showalert('Invalid salary. Please enter a valid positive number.');
+          showAlert('Invalid id. Please enter a valid positive number.');
           idNameInput.value = '';
         }
       });
+      phoneInput.addEventListener('input', function() {
+      var phoneno = /^\d{11}$/;
+    const phoneValue =  parseFloat(phoneInput.value);
+    
+    if (phoneInput.value.match(phoneno) || phoneValue < 0 ) {
+      showAlert('Phone number must be exactly 10 digits long and should not contain special symbols.');
+      phoneInput.value = '';
+    }
+  });
+
+  
+
       function showAlert(message) {
     const alertElement = document.createElement('div');
     alertElement.classList.add('alert-message');
@@ -428,7 +641,7 @@
     // Remove the alert message after a delay (5 seconds in this example)
     setTimeout(function() {
       alertElement.remove();
-    }, 2500);
+    }, 3500);
   }
     </script> 
     <script>

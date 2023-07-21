@@ -193,8 +193,13 @@ def managerhome():
 
     cursor.execute("select count(*) from customers where branch_id='%s'"%(branch_id))
     customer_count=cursor.fetchone()[0]
-    cursor.execute("select count(*) from employee where branch_id='%s'"%(branch_id))
+    cursor.execute("select count(*) from employee where branch_id='%s' and employee='clerk'"%(branch_id))
     employee_count=cursor.fetchone()[0]
+
+
+    cursor.execute("SELECT COUNT(*) FROM savingsacc INNER JOIN loanacc ON savingsacc.customer_id = loanacc.customer_id INNER JOIN depositacc ON savingsacc.customer_id = depositacc.customer_id WHERE savingsacc.branch_id = '%s'"%(branch_id))
+    account_count=cursor.fetchone()[0]
+
     query = "SELECT COUNT(*) FROM complaints where reply='0'"
    
     cursor.execute(query)
@@ -222,7 +227,7 @@ def managerhome():
      current_year_count=current_year_count, previous_year_count=previous_year_count, customer_percentage_change=customer_percentage_change, 
      current_month_balance=current_month_balance, previous_month_balance=previous_month_balance, account_percentage_change=account_percentage_change,
      current_month_balance1=current_month_balance1, previous_month_balance1=previous_month_balance1, loan_account_percentage_change=loan_account_percentage_change,
-     customer_count=customer_count,employee_count=employee_count,bank_messages=bank_messages,messages_count=messages_count)
+     customer_count=customer_count,employee_count=employee_count,bank_messages=bank_messages,messages_count=messages_count,account_count=account_count)
     
       
 @manager.route('/publichome')
