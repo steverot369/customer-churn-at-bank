@@ -209,6 +209,15 @@ def clerkadduser():
 
     branch_names = [row[0] for row in cursor.fetchall()]
     print(branch_names)
+    cursor.execute("SELECT email FROM customers UNION ALL SELECT email FROM employee")
+    # cursor.execute("SELECT e.branch, e.employe_fname FROM employee e, branch b WHERE e.branch_id = b.branch_id AND e.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '{}') AND employe_id='{}'".format(session['clid'], session['logid']))
+
+    emails = [row[0] for row in cursor.fetchall()]
+
+    cursor.execute("SELECT phone from customers UNION ALL SELECT phone FROM employee")
+    # cursor.execute("SELECT e.branch, e.employe_fname FROM employee e, branch b WHERE e.branch_id = b.branch_id AND e.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '{}') AND employe_id='{}'".format(session['clid'], session['logid']))
+
+    phoneno = [row[0] for row in cursor.fetchall()]
     if 'add' in request.form:
         fname = request.form['fname']
         lname = request.form['lname']
@@ -281,7 +290,7 @@ def clerkadduser():
 
     
         return redirect(url_for('clerk.clerkadduser'))
-    return render_template('clerkadduser.html',branch_names=branch_names,name1=name1)
+    return render_template('clerkadduser.html',branch_names=branch_names,name1=name1,emails=emails,phoneno=phoneno)
 
 
 

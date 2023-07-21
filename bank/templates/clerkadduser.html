@@ -89,18 +89,30 @@
                                                         <div class="col-md-7 mb-4 pb-2">
                                     
                                                           <div class="form-outline form-white">
-                                                            <input type="text" id="form3Examplea8" name="phone" class="form-control form-control-lg" required/>
+                                                            <input type="text" id="phone" name="phone" class="form-control form-control-lg" required/>
                                                             <label class="form-label" for="form3Examplea8">Phone Number</label>
                                                           </div>
-                                    
+                                                            <ul id="phoneNumberList">
+
+                                                              {% for row in phoneno %}
+                                                                <li style="display:none;">{{ row }}</li>
+                                                              {% endfor %}
+                                                            </ul>
+
                                                         </div>
                                                       </div>
                                                      
                                                       <div class="mb-4 pb-2">
                                                         <div class="form-outline">
-                                                          <input type="email" id="form3Examplev4" name="email" class="form-control form-control-lg" required/>
+                                                          <input type="email" id="email" name="email" class="form-control form-control-lg" required/>
                                                           <label class="form-label" for="form3Examplev4">Email</label>
                                                         </div>
+                                                        <ul id="emailList">
+
+                                                          {% for row in emails %}
+                                                            <li style="display: none;">{{ row }}</li>
+                                                          {% endfor %}
+                                                        </ul>
                                                       </div>
                                                       <div class="mb-4 pb-2">
                                                         <div class="form-outline">
@@ -258,6 +270,69 @@
             </main>  
     <!-- ====================end of aside==========================   -->
     <script>
+    const phoneNumberInput = document.getElementById('phone');
+  const phoneNumberList = document.querySelectorAll('#phoneNumberList li');
+
+  phoneNumberInput.addEventListener('input', function() {
+    const phoneNumberValue = phoneNumberInput.value.trim();
+    let numberInUse = false;
+
+    phoneNumberList.forEach(function(listItem) {
+      if (listItem.textContent.trim() === phoneNumberValue) {
+        numberInUse = true;
+        return;
+      }
+    });
+
+    if (numberInUse) {
+      showAlert('The phone number is already in use. Please enter a different number.');
+      phoneNumberInput.value = '';
+    }
+  });
+  
+
+
+  const emailInput = document.getElementById('email');
+  const emailList = document.querySelectorAll('#emailList li');
+
+  emailInput.addEventListener('input', function() {
+    const emailValue = emailInput.value.trim();
+    let emailInUse = false;
+
+    emailList.forEach(function(listItem) {
+      if (listItem.textContent.trim() === emailValue) {
+        emailInUse = true;
+        return;
+      }
+    });
+
+    if (emailInUse) {
+      showAlert('The email is already in use. Please enter a different email.');
+      emailInput.value = '';
+    }
+  });
+  
+
+
+      // ... Rest of the JavaScript code ...
+      function showAlert(message) {
+    const alertElement = document.createElement('div');
+    alertElement.classList.add('alert-message');
+    alertElement.textContent = message;
+
+    // Insert the alert message before the form
+    const formElement = document.querySelector('form');
+    formElement.parentNode.insertBefore(alertElement, formElement);
+    
+    // Remove the alert message after a delay (5 seconds in this example)
+    setTimeout(function() {
+      alertElement.remove();
+    }, 4500);
+  }
+    </script>
+    
+    
+    <script>
       const firstNameInput = document.getElementById('fname');
       const lastNameInput = document.getElementById('lname');
       const cityNameInput = document.getElementById('city');
@@ -267,65 +342,66 @@
       const idNameInput = document.getElementById('id');
     
       firstNameInput.addEventListener('input', function() {
-        const firstNameValue = firstNameInput.value;
-        const containsNumber = /\d/.test(firstNameValue);
-    
-        if (containsNumber) {
-          alert('No numbers allowed in the first name field.');
-          firstNameInput.value = '';
-        }
-      });
-    
+    const firstNameValue = firstNameInput.value;
+    const containsNumber = /\d/.test(firstNameValue);
+    const containsSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(firstNameValue);
+
+    if (containsNumber || containsSymbol) {
+      showAlert('Invalid characters in the first name field. Please enter a valid first name.');
+      firstNameInput.value = '';
+    }
+  });
       lastNameInput.addEventListener('input', function() {
-        const lastNameValue = lastNameInput.value;
-        const containsNumber = /\d/.test(lastNameValue);
-    
-        if (containsNumber) {
-          alert('No numbers allowed in the last name field.');
-          lastNameInput.value = '';
-        }
-      });
+    const lastNameValue = lastNameInput.value;
+    const containsNumber = /\d/.test(lastNameValue);
+    const containsSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(lastNameValue);
+
+    if (containsNumber || containsSymbol) {
+      showAlert('Invalid characters in the last name field. Please enter a valid last name.');
+      lastNameInput.value = '';
+    }
+  });
     
       cityNameInput.addEventListener('input', function() {
-        const cityNameValue = cityNameInput.value;
-        const containsNumber = /\d/.test(cityNameValue);
-    
-        if (containsNumber) {
-          alert('No numbers allowed in the city field.');
-          cityNameInput.value = '';
-        }
-      });
+    const cityNameValue = cityNameInput.value;
+    const containsNumber = /\d/.test(cityNameValue);
+    const containsSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(cityNameValue);
+
+    if (containsNumber || containsSymbol) {
+      showAlert('Invalid characters in the city field. Please enter a valid city name.');
+      cityNameInput.value = '';
+    }
+  });
+
     
       stateNameInput.addEventListener('input', function() {
-        // Add validation for the state field if needed
-        const stateNameValue = stateNameInput.value;
-        const containsNumber = /\d/.test(stateNameValue);
-    
-        if (containsNumber) {
-          alert('No numbers allowed in the city field.');
-          stateNameInput.value = '';
-        }
+    // Add validation for the state field if needed
+    const stateNameValue = stateNameInput.value;
+    const containsNumber = /\d/.test(stateNameValue);
+    const containsSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(stateNameValue);
 
-
-
-      });
+    if (containsNumber || containsSymbol) {
+      showAlert('Invalid characters in the state field. Please enter a valid state name.');
+      stateNameInput.value = '';
+    }
+  });
     
-      countryNameInput.addEventListener('input', function() {
-        // Add validation for the country field if needed
-        const countryNameValue = countryNameInput.value;
-        const containsNumber = /\d/.test(countryNameValue);
-    
-        if (containsNumber) {
-          alert('No numbers allowed in the country field.');
-          countryNameInput.value = '';
-        }
-      });
+  countryNameInput.addEventListener('input', function() {
+    const countryNameValue = countryNameInput.value;
+    const containsNumber = /\d/.test(countryNameValue);
+    const containsSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(countryNameValue);
+
+    if (containsNumber || containsSymbol) {
+      showAlert('Invalid characters in the country field. Please enter a valid country name.');
+      countryNameInput.value = '';
+    }
+  });
     
       salaryNameInput.addEventListener('input', function() {
         const salaryValue = parseFloat(salaryNameInput.value);
     
         if (isNaN(salaryValue) || salaryValue < 0) {
-          alert('Invalid salary. Please enter a valid positive number.');
+          showAlert('Invalid salary. Please enter a valid positive number.');
           salaryNameInput.value = '';
         }
       });
@@ -336,10 +412,24 @@
         const containsNumber = /\d/.test(idNameValue);
     
         if (isNaN(idNameValue) || idNameValue < 0) {
-          alert('Invalid salary. Please enter a valid positive number.');
+          showalert('Invalid salary. Please enter a valid positive number.');
           idNameInput.value = '';
         }
       });
+      function showAlert(message) {
+    const alertElement = document.createElement('div');
+    alertElement.classList.add('alert-message');
+    alertElement.textContent = message;
+
+    // Insert the alert message before the form
+    const formElement = document.querySelector('form');
+    formElement.parentNode.insertBefore(alertElement, formElement);
+    
+    // Remove the alert message after a delay (5 seconds in this example)
+    setTimeout(function() {
+      alertElement.remove();
+    }, 2500);
+  }
     </script> 
     <script>
     function previewImage(event) {

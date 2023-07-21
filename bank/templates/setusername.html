@@ -41,7 +41,7 @@
                                   <li style="display: none;">{{ uname }}</li>
                                   {% endfor %}
                                 </ul>
-                                
+                                <div id="usernameSuggestionList"></div>
                                 <div class="mb-4 pb-2">
                                                  
                                               
@@ -72,49 +72,92 @@
             </main>  
     <!-- ====================end of aside==========================   -->
     <script>
-        var usernameInput = document.getElementById('usernameInput');
-        var usernameList = document.getElementById('usernameList').getElementsByTagName('li');
-        var message = document.getElementById('message');
-        var usernameMessage = document.getElementById('usernameMessage');
-        var isUsernameTaken = false;
-      
-        // Add event listener to input field
-        usernameInput.addEventListener('input', function() {
-          var inputValue = usernameInput.value.trim().toLowerCase();
-      
-          // Check if the input value matches any username
-          isUsernameTaken = Array.from(usernameList).some(function(username) {
-            return username.textContent.trim().toLowerCase() === inputValue;
-          });
-      
-          // Display appropriate message based on the result
-          if (isUsernameTaken) {
-            message.textContent = 'Username already in use.';
-            message.style.color = 'red';
-            usernameMessage.textContent = '';
-          } else {
-            message.textContent = '';
-            validateUsername();
-          }
-        });
-      
-        function validateUsername() {
-          const username = usernameInput.value.trim();
-      
-          if (username.length >= 5 && /^[a-zA-Z0-9_]+$/.test(username)) {
-            showValidationMessage('Valid username', 'valid');
-          } else if (/[^a-zA-Z0-9_]/.test(username)) {
-            showValidationMessage('Username must not contain special characters', 'invalid');
-          } else {
-            showValidationMessage('Username must contain at least 5 characters', 'invalid');
-          }
-        }
-      
-        function showValidationMessage(message, className) {
-          usernameMessage.textContent = message;
-          usernameMessage.className = className;
-          usernameMessage.style.color = className === 'valid' ? 'green' : 'red';
-        }
+        // JavaScript
+var usernameInput = document.getElementById('usernameInput');
+var usernameList = document.getElementById('usernameList').getElementsByTagName('li');
+var message = document.getElementById('message');
+var usernameMessage = document.getElementById('usernameMessage');
+var usernameSuggestionList = document.getElementById('usernameSuggestionList');
+var isUsernameTaken = false;
+
+// Add event listener to input field
+usernameInput.addEventListener('input', function() {
+  var inputValue = usernameInput.value.trim().toLowerCase();
+
+  // Check if the input value matches any username
+  isUsernameTaken = Array.from(usernameList).some(function(username) {
+    return username.textContent.trim().toLowerCase() === inputValue;
+  });
+
+  // Display appropriate message based on the result
+  if (isUsernameTaken) {
+    message.textContent = 'Username ' + inputValue + ' already in use.';
+    message.style.color = 'red';
+    usernameMessage.textContent = '';
+  } else {
+    message.textContent = '';
+    validateUsername();
+    showUsernameSuggestions(inputValue); // Call the function to show suggestions
+  }
+});
+
+function validateUsername() {
+  const username = usernameInput.value.trim();
+
+  if (username.length >= 5 && /^[a-zA-Z0-9_]+$/.test(username)) {
+    showValidationMessage('Valid username', 'valid');
+  } else if (/[^a-zA-Z0-9_]/.test(username)) {
+    showValidationMessage('Username must not contain special characters', 'invalid');
+  } else {
+    showValidationMessage('Username must contain at least 5 characters', 'invalid');
+  }
+}
+
+function showValidationMessage(message, className) {
+  usernameMessage.textContent = message;
+  usernameMessage.className = className;
+  usernameMessage.style.color = className === 'valid' ? 'green' : 'red';
+}
+
+function showUsernameSuggestions(inputValue) {
+  // Rest of the function remains the same
+  // ...
+  const maxRandomNumber = 9999; // Change this to set the maximum random number limit
+  const numberOfSuggestions = 3; // Change this to set the number of suggestions to display
+
+  // Clear the previous suggestions
+  usernameSuggestionList.innerHTML = '';
+
+  // Generate suggestions based on the input value
+  const filteredSuggestions = [];
+  for (let i = 0; i < numberOfSuggestions; i++) {
+    const randomNumber = Math.floor(Math.random() * maxRandomNumber);
+    const suggestedUsername = `${inputValue}${randomNumber}`;
+    filteredSuggestions.push(suggestedUsername);
+  }
+
+  // Display the generated suggestions
+  if (filteredSuggestions.length > 0) {
+    const suggestionList = document.createElement('ul');
+    filteredSuggestions.forEach(function(username) {
+      const suggestionItem = document.createElement('li');
+      suggestionItem.textContent = username;
+      suggestionList.appendChild(suggestionItem);
+    });
+    usernameSuggestionList.appendChild(suggestionList);
+  }
+  // Add event listener to suggested usernames
+usernameSuggestionList.addEventListener('click', function(event) {
+  // Check if a suggested username was clicked
+  if (event.target.tagName === 'LI') {
+    const suggestedUsername = event.target.textContent.trim();
+    usernameInput.value = suggestedUsername; // Fill the username form field with the suggested username
+  }
+});
+
+}
+
+
       </script>
       
         
