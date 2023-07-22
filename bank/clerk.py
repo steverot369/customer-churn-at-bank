@@ -741,7 +741,7 @@ def clerkviewaccdetails():
     cursor = db.cursor()
     cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
     name1 = cursor.fetchall()
-    cursor.execute("SELECT c.fname,c.lname,c.phone,c.photo,s.acc_no,s.ifsccode,s.acc_no,s.balance,s.acc_started_date,s.acc_status FROM customers c,savingsacc s where c.cid=s.customer_id")
+    cursor.execute("SELECT l.acc_type,l.acc_no,l.date_issued,c.fname,c.lname,c.photo,c.email,c.phone,l.acc_status FROM loanacc l,customers c where l.customer_id=c.cid UNION SELECT s.acc_type,s.acc_no,s.acc_started_date,c.fname,c.lname,c.photo,c.email,c.phone,s.acc_status FROM savingsacc s,customers c where s.customer_id=c.cid UNION SELECT d.acc_type,d.acc_no,d.deposit_date,c.fname,c.lname,c.photo,c.email,c.phone,d.acc_status FROM depositacc d,customers c where d.customer_id=c.cid")
     employees = cursor.fetchall()
     print(employees)
     return render_template('clerkviewaccdetails.html',name1=name1,employees=employees)

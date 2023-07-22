@@ -197,8 +197,9 @@ def managerhome():
     employee_count=cursor.fetchone()[0]
 
 
-    cursor.execute("SELECT COUNT(*) FROM savingsacc INNER JOIN loanacc ON savingsacc.customer_id = loanacc.customer_id INNER JOIN depositacc ON savingsacc.customer_id = depositacc.customer_id WHERE savingsacc.branch_id = '%s'"%(branch_id))
-    account_count=cursor.fetchone()[0]
+    cursor.execute("SELECT l.acc_type,l.acc_no,l.date_issued,c.fname,c.lname FROM loanacc l,customers c where l.customer_id=c.cid UNION SELECT s.acc_type,s.acc_no,s.acc_started_date,c.fname,c.lname FROM savingsacc s,customers c where s.customer_id=c.cid UNION SELECT d.acc_type,d.acc_no,d.deposit_date,c.fname,c.lname FROM depositacc d,customers c where d.customer_id=c.cid")
+    row_count=cursor.fetchall()
+    account_count = cursor.rowcount
 
     query = "SELECT COUNT(*) FROM complaints where reply='0'"
    

@@ -155,7 +155,7 @@
                                                           </div>
                                                         </div>
                                                         <div class="d-flex justify-content-center">
-                                                        <input type="submit" name="add1" value="Deposit" class="btn btn-primary btn-lg gradient-custom-4 text-body">
+                                                        <input type="submit" name="add1" value="Deposit" class="btn btn-primary btn-lg gradient-custom-4 text-body" onclick="checkdepositField()">
                                                         </div>
                                                       </div>
                                                       <div class="modal fade" id="myModal">
@@ -367,7 +367,23 @@
                 
             </main>  
     <!-- ====================end of aside==========================   -->
-   
+    <script>
+      function checkdepositField() {
+        const depositAmountInput = document.getElementById('depositAmount');
+        const depositAmountValue = depositAmountInput.value.trim();
+    
+        if (depositAmountValue === '') {
+          alert('depsoit Amount field is empty. Please enter a valid amount.');
+          depositAmountInput.focus(); 
+          event.preventDefault(); // Set focus to the input field
+        } else {
+          // If the input field is not empty, proceed with the form submission
+          // (You can remove this 'else' block if you want the form to always submit regardless of the field value)
+          
+
+        }
+      }
+    </script>
     <script>
         // Get today's date
       var today = new Date();

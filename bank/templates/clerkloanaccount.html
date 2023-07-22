@@ -89,36 +89,36 @@
                                             <div class="form-group">
                                                 <label for="tenure">Tenure (in months):</label>
                                                 <select id="tenure" class="form-control form-control-lg"name="tenure" required>
-                                                    <option value="12">12 months</option>
-                                                    <option value="24">24 months</option>
-                                                    <option value="36">36 months</option>
-                                                    <option value="48">48 months</option>
-                                                    <option value="60">60 months</option>
-                                                    <option value="120">120 months</option>
-                                                    <option value="180">180 months</option>
+                                                    <option value="12">12 months(1years)</option>
+                                                    <option value="24">24 months(2years)</option>
+                                                    <option value="36">36 months(3years)</option>
+                                                    <option value="48">48 months(4years)</option>
+                                                    <option value="60">60 months(5years)</option>
+                                                    <option value="120">120 months(10years)</option>
+                                                    <option value="180">180 months(15years)</option>
                                                 </select>
                                             </div>
                                             
                                             <div class="form-group">
                                                 <label for="interestRate">Interest Rate (%):</label>
-                                                <input type="number" id="interestRate" name="interestRate" class="form-control form-control-lg" required disabled>
+                                                <input type="number" id="interestRate" name="interestRate" class="form-control form-control-lg" readonly>
                                             </div>
                                             
                                             <div class="form-group">
                                                 <label for="totalAmount">Total Amount:</label>
-                                                <input type="text" id="totalAmount" class="form-control form-control-lg" disabled required>
+                                                <input type="text" id="totalAmount" class="form-control form-control-lg" readonly>
                                             </div>
                                             <div class="form-group">
                                               <label for="emiPayment">Emi payment/month:</label>
-                                              <input type="number" id="emiPayment" name="emiPayment" class="form-control form-control-lg" disabled required>
+                                              <input type="number" id="emiPayment" name="emiPayment" class="form-control form-control-lg" readonly>
                                           </div>
                                             <div class="form-group">
                                                 <label for="maturityDate">Maturity Date:</label>
-                                                <input type="text" id="maturityDate" name="maturityDate" class="form-control form-control-lg" disabled required>
+                                                <input type="text" id="maturityDate" name="maturityDate" class="form-control form-control-lg" readonly>
                                             </div>
                                             <div class="form-group">
                                               <label for="interestPayableDate">First interest Payable Date:</label>
-                                              <input type="text" id="interestPayableDate" name="interestPayableDate" class="form-control form-control-lg" disabled required>
+                                              <input type="text" id="interestPayableDate" name="interestPayableDate" class="form-control form-control-lg" readonly>
                                             </div>
                                             <button type="button" id="calculateBtn" class="btn btn-primary">Calculate</button>
                                     </div>
@@ -174,7 +174,7 @@
                                           </div> -->
                                           
                                           <div class="d-flex justify-content-center">
-                                            <input type="submit" name="add" value="create account" id="btn" class="btn btn-success btn-lg gradient-custom-4 text-body">
+                                            <input type="submit" name="add" value="create account" id="btn" class="btn btn-success btn-lg gradient-custom-4 text-body" onclick="checkdepositField()">
                                           </div>
                               
                                            
@@ -189,6 +189,29 @@
     
             <!-- ====================end of aside==========================   -->
             <script>
+              function checkdepositField() {
+                
+                
+                const interestRateInput = document.getElementById('interestRate');
+                const interestRatetValue = interestRateInput.value.trim();
+
+                // const totalAmountInput = document.getElementById('totalAmount');
+                // const totalAmountValue = totalAmountInput.value.trim();
+                if (interestRatetValue === '') {
+                  alert('field are empty.');
+                  interestRateInput.focus(); 
+                event.preventDefault(); // Set focus to the input field
+                } else {
+                  // If the input field is not empty, proceed with the form submission
+                  // (You can remove this 'else' block if you want the form to always submit regardless of the field value)
+                  
+        
+                }
+              }
+            </script>
+           
+           
+           <script>
               var a = [
                 '', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ',
                 'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '

@@ -406,7 +406,7 @@
         const depositAmountInput = document.getElementById('depositAmount');
         const depositAmountValue = depositAmountInput.value.trim();
     
-        if (depositAmountValue === ' ') {
+        if (depositAmountValue === '') {
           alert('depsoit Amount field is empty. Please enter a valid amount.');
           depositAmountInput.focus(); 
           event.preventDefault(); // Set focus to the input field

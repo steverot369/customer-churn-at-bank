@@ -355,7 +355,7 @@
                                       
                                       <div class="d-flex justify-content-center">
                                 
-                                          <input type="submit"  name="add" value="Create Account" class="btn btn-success btn-lg gradient-custom-4 text-body">
+                                          <input type="submit"  name="add" value="Create Account" class="btn btn-success btn-lg gradient-custom-4 text-body" onclick="checkdepositField()">
                                         </div>
                                     </form>
                       
@@ -371,7 +371,27 @@
             </main>  
     <!-- ====================end of aside==========================   -->
    
-     
+    <script>
+      function checkdepositField() {
+        const depositAmountInput = document.getElementById('depositAmount');
+        const depositAmountValue = depositAmountInput.value.trim();
+    
+        const interestRateInput = document.getElementById('interestRate');
+        const interestRatetValue = interestRateInput.value.trim();
+        if (depositAmountValue === '') {
+          alert('depsoit Amount field is empty. Please enter a valid amount.');
+          depositAmountInput.focus(); 
+          event.preventDefault(); // Set focus to the input field
+        } else if(interestRatetValue === '') {
+          // If the input field is not empty, proceed with the form submission
+          // (You can remove this 'else' block if you want the form to always submit regardless of the field value)
+          alert('Some other fields are  empty');
+          interestRateInput.focus(); 
+          event.preventDefault();
+
+        }
+      }
+    </script>   
    
      
   <script>

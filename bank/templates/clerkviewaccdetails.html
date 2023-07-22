@@ -8,7 +8,7 @@
     </div>
                  <div class="container1">
         <section>
-            <h1>customer Details</h1>
+            <h1>customer account details</h1>
             <div class="search-filter">
                 <input type="search" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search by name">
                
@@ -34,6 +34,8 @@
                         <th>IfscCode</th>
                         <th>Balanace</th>
                         <th>Account date</th>
+                        <th>Account type</th>
+
                         <th>status</th>
                          
 
@@ -52,7 +54,7 @@
                         <td>{{ employee[7] }}</td>
                         <td>{{ employee[8] }}</td>
 
-                        <td>{{ employee[9] }}</td>
+
                         
                       
                         
@@ -64,7 +66,7 @@
                         
                         <td>
                           <td>
-                            <a href="{{ url_for('admin.viewdetails', name1=employee[3],name2=employee[4], age=employee[5], image=employee[6], maritalStatus=employee[7], gender=employee[8], branch=employee[9], employeeType=employee[10], address=employee[11], place=employee[13], district=employee[14], phone=employee[15], email=employee[16]) }}" class="btn btn-info">View Details</a>
+                            <a href="#" class="btn btn-info view-details-btn" data-toggle="modal" data-target="#employeeDetailsModal" data-employee-details="{{ employee }}">View Details</a>
                           </td>
                           
                           
@@ -87,10 +89,94 @@
     </div>
 </section>
      </main>  
+     <div class="modal fade" id="employeeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="employeeDetailsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="employeeDetailsModalLabel">Employee Details</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table>
+              <tr>
+                <td>Name</td>
+                <td id="modalAccountHolderName"></td>
+                
+              </tr>
+              <tr>
+                <td>Phone No</td>
+                <td id="modalAccountNumber"></td>
+              </tr>
+              <!-- <tr>
+                <td>status</td>
+                <td id="modalIFSCCode"></td>
+              </tr> -->
+              <tr>
+                <td>Account No</td>
+                <td id="modalLoanType"></td>
+              </tr>
+              <tr>
+                <td>Ifsc code</td>
+                <td id="modalLoanAmount"></td>
+              </tr>
+              <tr>
+                <td>Balanace</td>
+                <td style="color: rgb(230, 55, 55);" id="modalInterestAmount"></td>
+              </tr>
+              <tr>
+                <td>Date of join</td>
+                <td id="modalInterestRate"></td>
+              </tr>
+              <tr>
+                <td>status</td>
+                <td id="modalRemainingBalance"></td>
+              </tr>
+              <tr>
+                <td>acc type</td>
+                <td id="modalRemainingBalance"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div> 
     <!-- ====================end of aside==========================   -->
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+      $(document).ready(function() {
+        $('.view-details-btn').click(function() {
+          var employeeRow = $(this).closest('tr');
+          var accountNumber = employeeRow.find('td:eq(1)').text();
+          var accountHolderName = employeeRow.find('td:eq(0)').text();
+          var ifscCode = employeeRow.find('td:eq(2)').text();
+          var loanType = employeeRow.find('td:eq(3)').text();
+          var loanAmount = employeeRow.find('td:eq(4)').text();
+          var interestAmount = employeeRow.find('td:eq(5)').text();
+          var interestRate = employeeRow.find('td:eq(6)').text();
+          var remainingBalance = employeeRow.find('td:eq(7)').text();
+          var emiduedate = employeeRow.find('td:eq(8)').text();
+          var status = employeeRow.find('td:eq(9)').text();
+    
+          $('#modalAccountNumber').text(accountNumber);
+          $('#modalAccountHolderName').text(accountHolderName);
+          $('#modalIFSCCode').text(ifscCode);
+          $('#modalLoanType').text(loanType);
+          $('#modalLoanAmount').text(loanAmount);
+          $('#modalInterestAmount').text(interestAmount);
+          $('#modalInterestRate').text(interestRate);
+          $('#modalRemainingBalance').text(remainingBalance);
+          $('#modalEmiduedate').text(emiduedate);
+          $('#modalStatus').text(status);
+    
+          $('#employeeDetailsModal').modal('show');
+        });
+      });
+    </script>
+   
+   <script>
         var submenuIcons = document.querySelectorAll('.submenu-icon');
       // Loop through each submenu icon
       submenuIcons.forEach(function(icon) {
