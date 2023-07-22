@@ -741,7 +741,7 @@ def clerkviewaccdetails():
     cursor = db.cursor()
     cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
     name1 = cursor.fetchall()
-    cursor.execute("SELECT l.acc_type,l.acc_no,l.date_issued,c.fname,c.lname,c.photo,c.email,c.phone,l.acc_status FROM loanacc l,customers c where l.customer_id=c.cid UNION SELECT s.acc_type,s.acc_no,s.acc_started_date,c.fname,c.lname,c.photo,c.email,c.phone,s.acc_status FROM savingsacc s,customers c where s.customer_id=c.cid UNION SELECT d.acc_type,d.acc_no,d.deposit_date,c.fname,c.lname,c.photo,c.email,c.phone,d.acc_status FROM depositacc d,customers c where d.customer_id=c.cid")
+    cursor.execute("SELECT l.acc_type,l.acc_no,l.date_issued,c.fname,c.lname,c.photo,c.email,c.phone,l.acc_status,l.ifsccode FROM loanacc l,customers c where l.customer_id=c.cid UNION SELECT s.acc_type,s.acc_no,s.acc_started_date,c.fname,c.lname,c.photo,c.email,c.phone,s.acc_status,s.ifsccode FROM savingsacc s,customers c where s.customer_id=c.cid UNION SELECT d.acc_type,d.acc_no,d.deposit_date,c.fname,c.lname,c.photo,c.email,c.phone,d.acc_status,d.ifsccode FROM depositacc d,customers c where d.customer_id=c.cid and acc_status='active'")
     employees = cursor.fetchall()
     print(employees)
     return render_template('clerkviewaccdetails.html',name1=name1,employees=employees)
@@ -1052,3 +1052,15 @@ def setusername():
         return redirect(url_for('public.login'))
 
     return render_template('setusername.html',uname=uname,count=count,logintype=logintype,name1=name1)
+
+
+@clerk.route('/clerkviewtransaction',methods=['POST','GET'])
+def clerkviewtransaction():
+    cursor=db.cursor()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
+   
+
+    cursor.execute("SELECT t.t_no,t.t_type,t.amount,t.date_time,c.fname,c.lname,s.acc_no from transaction t,customers c,savingsacc s where t.customer_id=c.cid AND t.customer_id=s.customer_id AND t.branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
+    employees = cursor.fetchall()
+    return render_template('clerkviewtransaction.html',name1=name1,employees=employees)

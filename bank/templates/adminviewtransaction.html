@@ -1,5 +1,5 @@
 
-{% include 'clerksidebar.html' %}
+{% include 'adminsidebar.html' %}
 
 <section class="middle">
     <div class="header">
@@ -12,7 +12,7 @@
 
                   
         <section >
-            <h1>Transaction details</h1>
+            <h1>Customer Transaction details</h1>
             <div class="search-filter">
                 <input type="search" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search by name">
                
@@ -110,7 +110,7 @@
       <div class="modal-body">
         <table>
           <tr>
-            <td>Account number:</td>
+            <td>Transaction No</td>
             <td id="modalAccountNumber"></td>
           </tr>
           <tr>
@@ -118,37 +118,22 @@
             <td id="modalAccountHolderName"></td>
           </tr>
           <tr>
-            <td>IFSC Code:</td>
+            <td>Acc No</td>
             <td id="modalIFSCCode"></td>
           </tr>
           <tr>
-            <td>Loan Type:</td>
+            <td>Acc Type:</td>
             <td id="modalLoanType"></td>
           </tr>
           <tr>
-            <td>Loan Amount:</td>
+            <td>Transaction Amount:</td>
             <td id="modalLoanAmount"></td>
           </tr>
           <tr>
-            <td>Interest(%):</td>
+            <td>Date</td>
             <td style="color: rgb(230, 55, 55);" id="modalInterestAmount"></td>
           </tr>
-          <tr>
-            <td>Interest Rate:</td>
-            <td id="modalInterestRate"></td>
-          </tr>
-          <tr>
-            <td>Remaining Balance:</td>
-            <td id="modalRemainingBalance"></td>
-          </tr>
-          <tr>
-            <td>EMI due date:</td>
-            <td id="modalEmiduedate"></td>
-          </tr>
-          <tr>
-            <td>Status:</td>
-            <td style="color: green;" id="modalStatus"></td>
-          </tr>
+          
         </table>
       </div>
     </div>
@@ -160,7 +145,7 @@
     
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
-  const rowsPerPage = 5; // Number of rows to display per page
+  const rowsPerPage = 8; // Number of rows to display per page
 let currentPage = 1;
 
 function showRows() {
@@ -247,20 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       </script>
     <script>
-    
- // Get all the submenu icons
- var submenuIcons = document.querySelectorAll('.submenu-icon');
-// Loop through each submenu icon
-submenuIcons.forEach(function(icon) {
-   // Add a click event listener to each submenu icon
-   icon.addEventListener('click', function() {
-       // Get the corresponding submenu for this icon
-       var submenu = icon.parentElement.nextElementSibling; 
-       // Toggle the visibility of the submenu
-       submenu.classList.toggle('show');
-   });
-});
-
+ 
 
     function showDetails(event) {
     event.preventDefault();
@@ -351,11 +323,6 @@ var employeeTable = document.getElementById("employeeTable");
     noUserFoundMessage.style.display = "none";
   }
 }
-
-
-
-
-
 
 
         // ------------------------

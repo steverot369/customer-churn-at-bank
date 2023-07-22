@@ -877,6 +877,30 @@ h1 {
 .send-icon {
    margin-right: 5px;
 }
+
+ /* Alert message */
+ .alert-message {
+    background-color: #df3b2c; /* Red background color */
+    color: white; /* Text color */
+    padding: 15px; /* Padding around the alert message */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a slight shadow */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Font weight */
+    max-width: 400px; /* Limit the maximum width of the alert */
+  }
+
+  #usernameSuggestionList {
+  margin-top: 10px;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+#usernameSuggestionList li {
+  cursor: pointer; /* Add cursor pointer to the suggested usernames */
+  text-decoration: underline; /* Add underline to the suggested usernames */
+  margin-bottom: 5px; /* Add some spacing between suggested usernames */
+}
   </style>
 <body>
     <nav>
@@ -942,11 +966,24 @@ h1 {
                  </div>
                  
                  <!-- Add more menu-link and submenu sections as needed -->
-                 <a href="adminviewcustomer" class="menu-link" style="text-decoration: none;">
+                 <!-- <a href="adminviewcustomer" class="menu-link" style="text-decoration: none;">
                    <span class="material-icons-sharp submenu-icon">group</span>
                    <h4>customers</h4>
                    
-               </a>
+               </a> -->
+               <a href="#" class="menu-link" style="text-decoration: none;">
+                <span class="material-icons-sharp submenu-icon">expand_circle_down</span>
+                <h4>customers</h4>
+              
+            </a>
+            <div class="submenu">
+                <a href="adminviewcustomer" style="text-decoration: none;">view cuistomers</a>
+                
+                <a href="adminviewacc" style="text-decoration: none;">view acc</a>
+                <a href="adminviewtransaction" style="text-decoration: none;">view transaction</a>
+                
+                
+            </div>
                
            
                   </div>

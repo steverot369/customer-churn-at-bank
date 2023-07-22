@@ -1,19 +1,17 @@
+
 {% include 'adminsidebar.html' %}
 
-
+<section class="middle">
+    <div class="header">
+        <h1>Dashboard</h1>
+        <input type="date">
+    </div>
                  <div class="container1">
         <section>
-            <h1>Employee Details</h1>
+            <h1>customer account details</h1>
             <div class="search-filter">
                 <input type="search" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search by name">
-                <select id="userTypeFilter" class="filter">
-                  <option disabled selected value="">Branch names</option>
-
-
-                  {% for branch in branch_names %}
-                  <option value="{{ branch }}">{{ branch }}</option>
-                  {% endfor %}
-                </select>
+               
                 
                 <label for="rowCount">Select number of rows:</label>
                 <select id="rowCount" onchange="changeRowCount()">
@@ -22,53 +20,56 @@
                     <option value="10">10</option>
                     <option value="15">15</option>
                 </select>
-                <select id="genderOption" class="filter">
-                  <option value="">Select employee type</option>
-                  <option value="clerk">clerk</option>
-                  <option value="manager">manager</option>
-              </select>
+                
             </div>
           <form method="post">  
             <table id="employeeTable" class="table">
                 <thead class="thead-light">
                     <tr>
-                        <th>Name</th>
-                        <th>Age</th>
-                        <th>Marital Status</th>
+                        <th>Account holder name</th>
                         
-                        <th id="genderHeader">Gender</th>
-                        <th>Branch</th>
+                        <th>Account number</th>
+                        <th>IfscCode</th>
+                        <th>phone</th>
+                        <th>email</th>
+                        <th>Account started date</th>
+                        <th>Account type</th>
+                        <th>Status</th>
+
+
+                       
+                         
+
                         
-                        <th> Employee Type</th>
-                        <th>Address</th>
-                        <th>Place</th>
-                        <th>District</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th colspan="2">Manage</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Employee details data -->
                     {% for employee in employees %}
-                    <tr data-usertype="{{ employee[9] }}">
-                        <td><img src="{{url_for('static', filename=employee[6])}}" style="width: 60px;height: 60px;border-radius: 50%;">{{ employee[3] }} {{ employee[4] }}</td>
-                        <td>{{ employee[5] }}</td>
-                        
-                        <td>{{ employee[7] }}</td>
-                        <td>{{ employee[8] }}</td>
+                    <tr>
+                        <td>{{ employee[3] }} {{ employee[4] }}</td>
+                        <td>{{ employee[1] }}</td>
+                        <td><img src="{{url_for('static', filename=employee[5])}}" style="width: 80px;height: 80px;border-radius: 80%;"></td>
                         <td>{{ employee[9] }}</td>
-                        <td>{{ employee[10] }}</td>
-                        <td>{{ employee[11] }}</td>
-                        <td>{{ employee[13] }}</td>
-                        <td>{{ employee[14] }}</td>
-                        <td>{{ employee[15] }}</td>
-                        <td>{{ employee[16] }}</td>
+                        <td>{{ employee[6] }}</td>
+                        <td>{{ employee[2] }}</td>
+                        <td>{{ employee[0] }}</td>
+
+                        <td>{{ employee[8] }}</td>
+
+
+                        
+                      
+                        
+
+                        
+                       
+
+                        
                         
                         <td>
                           <td>
                             <a href="#" class="btn btn-info view-details-btn" data-toggle="modal" data-target="#employeeDetailsModal" data-employee-details="{{ employee }}">View Details</a>
-
                           </td>
                           
                           
@@ -89,67 +90,106 @@
             </div>
         </section>
     </div>
-    
-            </main>  
-            <div class="modal fade" id="employeeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="employeeDetailsModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h3 class="modal-title" id="employeeDetailsModalLabel">Employee Details</h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <table>
-                      <tr>
-                        <td>Name:</td>
-                       
-                        <td id="modalAccountHolderName"></td>
-                      </tr>
-                      <tr>
-                        <td>Dob:</td>
-                        <td id="modalAccountNumber"></td>
-                      </tr>
-                      <tr>
-                        <td>mstatus</td>
-                        <td id="modalIFSCCode"></td>
-                      </tr>
-                      <tr>
-                        <td>Gender</td>
-                        <td id="modalLoanType"></td>
-                      </tr>
-                      <tr>
-                        <td>branch</td>
-                        <td id="modalLoanAmount"></td>
-                      </tr>
-                      <tr>
-                        <td>Employee Type</td>
-                        <td style="color: rgb(230, 55, 55);" id="modalInterestAmount"></td>
-                      </tr>
-                      <tr>
-                        <td>Address</td>
-                        <td id="modalInterestRate"></td>
-                      </tr>
-                      <!-- <tr>
-                        <td>Email:</td>
-                        <td id="modalRemainingBalance"></td>
-                      </tr>
-                      <tr>
-                        <td>Email:</td>
-                        <td id="#modalEmiduedate"></td>
-                      </tr> -->
-                     
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+</section>
+     </main>  
+     <div class="modal fade" id="employeeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="employeeDetailsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="employeeDetailsModalLabel">Customer Account Details</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table>
+              <tr>
+                <td>Name</td>
+                <td id="modalAccountHolderName"></td>
+                
+              </tr>
+              <tr>
+                <td>Account No</td>
+                <td id="modalAccountNumber"></td>
+              </tr>
+              <!-- <tr>
+                <td>status</td>
+                <td id="modalIFSCCode"></td>
+              </tr> -->
+              <tr>
+                <td>Ifsc code</td>
+                <td id="modalLoanType"></td>
+              </tr>
+              <tr>
+                <td>email</td>
+                <td id="modalLoanAmount"></td>
+              </tr>
+              <tr>
+                <td>Date of join</td>
+                <td style="color: rgb(230, 55, 55);" id="modalInterestAmount"></td>
+              </tr>
+              <tr>
+                <td>acc type</td>
+                <td id="modalInterestRate"></td>
+              </tr>
+              <tr>
+                <td>status</td>
+                <td id="modalRemainingBalance"></td>
+              </tr>
+              <!-- <tr>
+                <td>acc type</td>
+                <td id="modalRemainingBalance"></td>
+              </tr> -->
+            </table>
+          </div>
+        </div>
+      </div>
+    </div> 
     <!-- ====================end of aside==========================   -->
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   
-    <script>
+   <script>
+    const rowsPerPage = 5; // Number of rows to display per page
+let currentPage = 1;
+
+function showRows() {
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const rows = employeeTable.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        if (i >= startIndex && i < endIndex) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
+    }
+}
+
+function previousPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        showRows();
+    }
+}
+
+function nextPage() {
+    const rows = employeeTable.getElementsByTagName('tr');
+    const totalRows = rows.length - 1;
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+    if (currentPage < totalPages) {
+        currentPage++;
+        showRows();
+    }
+}
+
+// Add this code after the existing JavaScript code within the <script> tags
+document.addEventListener('DOMContentLoaded', () => {
+    showRows();
+});
+   </script>
+   <script>
       $(document).ready(function() {
         $('.view-details-btn').click(function() {
           var employeeRow = $(this).closest('tr');
@@ -179,22 +219,22 @@
         });
       });
     </script>
+   
    <script>
-    
- // Get all the submenu icons
- var submenuIcons = document.querySelectorAll('.submenu-icon');
-// Loop through each submenu icon
-submenuIcons.forEach(function(icon) {
-   // Add a click event listener to each submenu icon
-   icon.addEventListener('click', function() {
-       // Get the corresponding submenu for this icon
-       var submenu = icon.parentElement.nextElementSibling; 
-       // Toggle the visibility of the submenu
-       submenu.classList.toggle('show');
-   });
-});
-
-
+        var submenuIcons = document.querySelectorAll('.submenu-icon');
+      // Loop through each submenu icon
+      submenuIcons.forEach(function(icon) {
+         // Add a click event listener to each submenu icon
+         icon.addEventListener('click', function() {
+             // Get the corresponding submenu for this icon
+             var submenu = icon.parentElement.nextElementSibling; 
+             // Toggle the visibility of the submenu
+             submenu.classList.toggle('show');
+         });
+      });
+      </script>
+    <script>
+ 
     function showDetails(event) {
     event.preventDefault();
     var row = event.target.closest("tr");
@@ -316,45 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
-const rowsPerPage = 5; // Number of rows to display per page
-let currentPage = 1;
 
-function showRows() {
-    const startIndex = (currentPage - 1) * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
-    const rows = employeeTable.getElementsByTagName('tr');
-
-    for (let i = 1; i < rows.length; i++) {
-        if (i >= startIndex && i < endIndex) {
-            rows[i].style.display = '';
-        } else {
-            rows[i].style.display = 'none';
-        }
-    }
-}
-
-function previousPage() {
-    if (currentPage > 1) {
-        currentPage--;
-        showRows();
-    }
-}
-
-function nextPage() {
-    const rows = employeeTable.getElementsByTagName('tr');
-    const totalRows = rows.length - 1;
-    const totalPages = Math.ceil(totalRows / rowsPerPage);
-
-    if (currentPage < totalPages) {
-        currentPage++;
-        showRows();
-    }
-}
-
-// Add this code after the existing JavaScript code within the <script> tags
-document.addEventListener('DOMContentLoaded', () => {
-    showRows();
-});
 
     </script>
 </body>

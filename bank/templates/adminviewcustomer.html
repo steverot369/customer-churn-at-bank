@@ -89,7 +89,7 @@
                 <div class="modal-dialog modal-lg" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h3 class="modal-title" id="employeeDetailsModalLabel">Employee Details</h3>
+                      <h3 class="modal-title" id="employeeDetailsModalLabel">Customer Details</h3>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -206,25 +206,25 @@ submenuIcons.forEach(function(icon) {
 
 
 //gender
-var employeeTable = document.getElementById("employeeTable");
-    var genderSelect = document.getElementById("genderOption");
+// var employeeTable = document.getElementById("employeeTable");
+//     var genderSelect = document.getElementById("genderOption");
 
-    genderSelect.addEventListener("change", function() {
-        var selectedGender = genderSelect.value.toLowerCase();
-        var rows = employeeTable.getElementsByTagName("tr");
+//     genderSelect.addEventListener("change", function() {
+//         var selectedGender = genderSelect.value.toLowerCase();
+//         var rows = employeeTable.getElementsByTagName("tr");
 
-        for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the table header row
-            var row = rows[i];
-            var genderCell = row.getElementsByTagName("td")[11];
-            var gender = genderCell.textContent.toLowerCase();
+//         for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the table header row
+//             var row = rows[i];
+//             var genderCell = row.getElementsByTagName("td")[11];
+//             var gender = genderCell.textContent.toLowerCase();
 
-            if (selectedGender === "" || gender === selectedGender) {
-                row.style.display = ""; // Show the row
-            } else {
-                row.style.display = "none"; // Hide the row
-            }
-        }
-    });
+//             if (selectedGender === "" || gender === selectedGender) {
+//                 row.style.display = ""; // Show the row
+//             } else {
+//                 row.style.display = "none"; // Hide the row
+//             }
+//         }
+//     });
 
 
 // Add event listener to the "Employee Type" header

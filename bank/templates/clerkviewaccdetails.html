@@ -27,16 +27,17 @@
                 <thead class="thead-light">
                     <tr>
                         <th>Account holder name</th>
-                        <th>phone</th>
-                        <th>image</th>
-
+                        
                         <th>Account number</th>
                         <th>IfscCode</th>
-                        <th>Balanace</th>
-                        <th>Account date</th>
+                        <th>phone</th>
+                        <th>email</th>
+                        <th>Account started date</th>
                         <th>Account type</th>
+                        <th>Status</th>
 
-                        <th>status</th>
+
+                       
                          
 
                         
@@ -46,12 +47,14 @@
                     <!-- Employee details data -->
                     {% for employee in employees %}
                     <tr>
-                        <td>{{ employee[0] }} {{ employee[1] }}</td>
+                        <td>{{ employee[3] }} {{ employee[4] }}</td>
+                        <td>{{ employee[1] }}</td>
+                        <td><img src="{{url_for('static', filename=employee[5])}}" style="width: 80px;height: 80px;border-radius: 80%;"></td>
+                        <td>{{ employee[9] }}</td>
+                        <td>{{ employee[6] }}</td>
                         <td>{{ employee[2] }}</td>
-                        <td><img src="{{url_for('static', filename=employee[3])}}" style="width: 80px;height: 80px;border-radius: 80%;"></td>
-                        <td>{{ employee[4] }}</td>
-                        <td>{{ employee[5] }}</td>
-                        <td>{{ employee[7] }}</td>
+                        <td>{{ employee[0] }}</td>
+
                         <td>{{ employee[8] }}</td>
 
 
@@ -93,7 +96,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 class="modal-title" id="employeeDetailsModalLabel">Employee Details</h3>
+            <h3 class="modal-title" id="employeeDetailsModalLabel">Customer Account Details</h3>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -106,7 +109,7 @@
                 
               </tr>
               <tr>
-                <td>Phone No</td>
+                <td>Account No</td>
                 <td id="modalAccountNumber"></td>
               </tr>
               <!-- <tr>
@@ -114,29 +117,29 @@
                 <td id="modalIFSCCode"></td>
               </tr> -->
               <tr>
-                <td>Account No</td>
+                <td>Ifsc code</td>
                 <td id="modalLoanType"></td>
               </tr>
               <tr>
-                <td>Ifsc code</td>
+                <td>email</td>
                 <td id="modalLoanAmount"></td>
               </tr>
               <tr>
-                <td>Balanace</td>
+                <td>Date of join</td>
                 <td style="color: rgb(230, 55, 55);" id="modalInterestAmount"></td>
               </tr>
               <tr>
-                <td>Date of join</td>
+                <td>acc type</td>
                 <td id="modalInterestRate"></td>
               </tr>
               <tr>
                 <td>status</td>
                 <td id="modalRemainingBalance"></td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td>acc type</td>
                 <td id="modalRemainingBalance"></td>
-              </tr>
+              </tr> -->
             </table>
           </div>
         </div>
@@ -145,7 +148,48 @@
     <!-- ====================end of aside==========================   -->
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+   <script>
+    const rowsPerPage = 5; // Number of rows to display per page
+let currentPage = 1;
+
+function showRows() {
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const rows = employeeTable.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        if (i >= startIndex && i < endIndex) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
+    }
+}
+
+function previousPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        showRows();
+    }
+}
+
+function nextPage() {
+    const rows = employeeTable.getElementsByTagName('tr');
+    const totalRows = rows.length - 1;
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+    if (currentPage < totalPages) {
+        currentPage++;
+        showRows();
+    }
+}
+
+// Add this code after the existing JavaScript code within the <script> tags
+document.addEventListener('DOMContentLoaded', () => {
+    showRows();
+});
+   </script>
+   <script>
       $(document).ready(function() {
         $('.view-details-btn').click(function() {
           var employeeRow = $(this).closest('tr');
@@ -326,45 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
-const rowsPerPage = 5; // Number of rows to display per page
-let currentPage = 1;
 
-function showRows() {
-    const startIndex = (currentPage - 1) * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
-    const rows = employeeTable.getElementsByTagName('tr');
-
-    for (let i = 1; i < rows.length; i++) {
-        if (i >= startIndex && i < endIndex) {
-            rows[i].style.display = '';
-        } else {
-            rows[i].style.display = 'none';
-        }
-    }
-}
-
-function previousPage() {
-    if (currentPage > 1) {
-        currentPage--;
-        showRows();
-    }
-}
-
-function nextPage() {
-    const rows = employeeTable.getElementsByTagName('tr');
-    const totalRows = rows.length - 1;
-    const totalPages = Math.ceil(totalRows / rowsPerPage);
-
-    if (currentPage < totalPages) {
-        currentPage++;
-        showRows();
-    }
-}
-
-// Add this code after the existing JavaScript code within the <script> tags
-document.addEventListener('DOMContentLoaded', () => {
-    showRows();
-});
 
     </script>
 </body>

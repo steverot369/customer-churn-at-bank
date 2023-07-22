@@ -23,7 +23,7 @@
                                                   <div class="col-md-6 mb-4 pb-2">
                               
                                                     <div class="form-outline">
-                                                      <input type="text" id="form3Examplev2" name="fname" class="form-control form-control-lg" required/>
+                                                      <input type="text" id="fname" name="fname" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplev2">First name</label>
                                                     </div>
                               
@@ -31,7 +31,7 @@
                                                   <div class="col-md-6 mb-4 pb-2">
                               
                                                     <div class="form-outline">
-                                                      <input type="text" id="form3Examplev3" name="lname" class="form-control form-control-lg" required/>
+                                                      <input type="text" id="lname" name="lname" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplev3">Last name</label>
                                                     </div>
                               
@@ -59,7 +59,7 @@
                                                   </div>
                                                   
                                                       <div class="mb-4 pb-3">
-                                                        <select name="status" class="form-control form-control-lg p-2">
+                                                        <select name="status" class="form-control form-control-lg p-2" required>
                                                           <option disabled selected value>Select martial status</option>
                                                           <option value="single">single</option>
                                                           <option value="married">married</option>
@@ -68,7 +68,7 @@
                                                       </div>
                         
                                                       <div class="mb-4 pb-3">
-                                                        <select name="gender" class="form-control form-control-lg p-2">
+                                                        <select name="gender" class="form-control form-control-lg p-2" required>
                                                           <option disabled selected value>Select gender</option>
                                                           <option value="male">male</option>
                                                           <option value="female">female</option>
@@ -111,7 +111,7 @@
                                                   <div class="col-md-5 mb-4 pb-2">
                               
                                                     <div class="form-outline form-white">
-                                                      <input type="text" id="form3Examplea4" name="zipcode" class="form-control form-control-lg" required/>
+                                                      <input type="text" id="zipcode" name="zipcode" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplea4">Zip Code</label>
                                                     </div>
                               
@@ -119,7 +119,7 @@
                                                   <div class="col-md-7 mb-4 pb-2">
                               
                                                     <div class="form-outline form-white">
-                                                      <input type="text" id="form3Examplea5" name="place" class="form-control form-control-lg" required/>
+                                                      <input type="text" id="place" name="place" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplea5">Place</label>
                                                     </div>
                               
@@ -158,18 +158,30 @@
                                                   <div class="col-md-7 mb-4 pb-2">
                               
                                                     <div class="form-outline form-white">
-                                                      <input type="text" id="form3Examplea8" name="phone" class="form-control form-control-lg" required/>
+                                                      <input type="number" id="phone" name="phone" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplea8">Phone Number</label>
                                                     </div>
-                              
+                                                    <ul id="phoneNumberList">
+
+                                                      {% for row in phoneno %}
+                                                        <li style="display:none;">{{ row }}</li>
+                                                      {% endfor %}
+                                                    </ul>
                                                   </div>
+
                                                 </div>
                               
                                                 <div class="mb-4">
                                                   <div class="form-outline form-white">
-                                                    <input type="email" id="form3Examplea9" name="email" class="form-control form-control-lg" required/>
+                                                    <input type="email" id="email" name="email" class="form-control form-control-lg" required/>
                                                     <label class="form-label" for="form3Examplea9">Your Email</label>
                                                   </div>
+                                                  <ul id="emailList">
+
+                                                    {% for row in emails %}
+                                                      <li style="display: none;">{{ row }}</li>
+                                                    {% endfor %}
+                                                  </ul>
                                                 </div>
                                                 <!-- <div class="mb-4 pb-2">
                                                     <div class="form-outline form-white">
@@ -214,7 +226,140 @@
                 
             </main>  
     <!-- ====================end of aside==========================   -->
+    <script>
+      const phoneNumberInput = document.getElementById('phone');
+    const phoneNumberList = document.querySelectorAll('#phoneNumberList li');
+  
+    phoneNumberInput.addEventListener('input', function() {
+      const phoneNumberValue = phoneNumberInput.value.trim();
+      let numberInUse = false;
+  
+      phoneNumberList.forEach(function(listItem) {
+        if (listItem.textContent.trim() === phoneNumberValue) {
+          numberInUse = true;
+          return;
+        }
+      });
+  
+      if (numberInUse) {
+        showAlert('The phone number is already in use. Please enter a different number.');
+        phoneNumberInput.value = '';
+      }
+    });
     
+  
+  
+    const emailInput = document.getElementById('email');
+    const emailList = document.querySelectorAll('#emailList li');
+  
+    emailInput.addEventListener('input', function() {
+      const emailValue = emailInput.value.trim();
+      let emailInUse = false;
+  
+      emailList.forEach(function(listItem) {
+        if (listItem.textContent.trim() === emailValue) {
+          emailInUse = true;
+          return;
+        }
+      });
+  
+      if (emailInUse) {
+        showAlert('The email is already in use. Please enter a different email.');
+        emailInput.value = '';
+      }
+    });
+    
+   
+  
+        // ... Rest of the JavaScript code ...
+        function showAlert(message) {
+      const alertElement = document.createElement('div');
+      alertElement.classList.add('alert-message');
+      alertElement.textContent = message;
+  
+      // Insert the alert message before the form
+      const formElement = document.querySelector('form');
+      formElement.parentNode.insertBefore(alertElement, formElement);
+      
+      // Remove the alert message after a delay (5 seconds in this example)
+      setTimeout(function() {
+        alertElement.remove();
+      }, 4500);
+    }
+      </script>
+    <script>
+      const firstNameInput = document.getElementById('fname');
+      const lastNameInput = document.getElementById('lname');
+      const cityNameInput = document.getElementById('place');
+      
+     
+      
+      const phoneInput = document.getElementById('phone');
+
+    
+      firstNameInput.addEventListener('input', function() {
+    const firstNameValue = firstNameInput.value;
+    const containsNumber = /\d/.test(firstNameValue);
+    const containsSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(firstNameValue);
+
+    if (containsNumber || containsSymbol) {
+      showAlert('Invalid characters in the first name field. Please enter a valid first name.');
+      firstNameInput.value = '';
+    }
+  });
+      lastNameInput.addEventListener('input', function() {
+    const lastNameValue = lastNameInput.value;
+    const containsNumber = /\d/.test(lastNameValue);
+    const containsSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(lastNameValue);
+
+    if (containsNumber || containsSymbol) {
+      showAlert('Invalid characters in the last name field. Please enter a valid last name.');
+      lastNameInput.value = '';
+    }
+  });
+    
+      cityNameInput.addEventListener('input', function() {
+    const cityNameValue = cityNameInput.value;
+    const containsNumber = /\d/.test(cityNameValue);
+    const containsSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(cityNameValue);
+
+    if (containsNumber || containsSymbol) {
+      showAlert('Invalid characters in the city field. Please enter a valid city name.');
+      cityNameInput.value = '';
+    }
+  });
+
+
+      phoneInput.addEventListener('input', function() {
+      var phoneno = /^\d{11}$/;
+    
+
+    const phoneValue =  parseFloat(phoneInput.value);
+    const containsSymbol1 = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(phoneValue);
+    
+    if (phoneInput.value.match(phoneno) || phoneValue < 0 || containsSymbol1) {
+      showAlert('Phone number must be exactly 10 digits long and should not contain special symbols.');
+      phoneInput.value = '';
+    }
+  });
+
+  
+
+      function showAlert(message) {
+    const alertElement = document.createElement('div');
+    alertElement.classList.add('alert-message');
+    alertElement.textContent = message;
+
+    // Insert the alert message before the form
+    const formElement = document.querySelector('form');
+    formElement.parentNode.insertBefore(alertElement, formElement);
+    
+    // Remove the alert message after a delay (5 seconds in this example)
+    setTimeout(function() {
+      alertElement.remove();
+    }, 3500);
+  }
+    </script> 
     <script>
    
     function previewImage(event) {

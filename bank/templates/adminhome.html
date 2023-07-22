@@ -235,7 +235,7 @@ rel="stylesheet">
 
                         <div class="insights">
                             <div class="sales">
-                                <span class="material-icons-sharp">group</span>
+                                <a href="adminviewcustomer"><span class="material-icons-sharp">group</span></a>
                                 <div class="middle">
                                     <div class="left">
                                         <h3>Total Customers</h3>
@@ -256,7 +256,7 @@ rel="stylesheet">
                             
                           <!------------ END OF SALES -------------->
                           <div class="expenses">
-                            <span class="material-icons-sharp">support_agent</span>
+                            <a href="adminmanagemployee"><span class="material-icons-sharp">support_agent</span></a>
                             <div class="middle">
                                 <div class="left">
                                     <h3>Total Employee</h3>
@@ -275,14 +275,14 @@ rel="stylesheet">
                         </div>
                           <!------------ END OF expense -------------->
                           <div class="income">
-                              <span class="material-icons-sharp">inventory_2</span>
+                            <a href="adminviewacc"><span class="material-icons-sharp">inventory_2</span></a>
                               <div class="middle">
                                   <div class="left">
-                                      <h3>Total Bank Product</h3>
+                                      <h3>Total Accounts</h3>
                                 
                                         
                                      
-                                      <h1>12</h1>
+                                      <h1>{{ account_count }}</h1>
                                   </div>
                                   <div class="progress">
                                       <svg>
@@ -640,8 +640,8 @@ rel="stylesheet">
         }
     </script>
     <script>
-        var employeeCount = 12;
-        var totalEmployees = 15;  // Set the maximum value for the progress bar
+        var employeeCount = {{ account_count }};
+        var totalEmployees = 1500;  // Set the maximum value for the progress bar
     
         // Calculate the employee percentage
         var employeePercentage = (employeeCount / totalEmployees) * 100;
@@ -680,51 +680,7 @@ rel="stylesheet">
         var valueElement = document.getElementById('value');
         valueElement.textContent = employeePercentage.toFixed(1) + '%';
     </script>
-    <!-- <script>
-    var ctx = document.getElementById('chart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: {{ labels|tojson }},
-        datasets: [{
-            label: 'Customer Transactions',
-            data: {{ values|tojson }},
-            backgroundColor: 'red',
-            borderColor: 'blue',
-            borderWidth: 2,
-            pointRadius: 4,
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        },
-        plugins: {
-            title: {
-                display: true,
-                text: 'Customer Transactions',
-                fontSize: 16
-            },
-            legend: {
-                display: true,
-                labels: {
-                    fontSize: 12
-                }
-            },
-            tooltip: {
-                titleFontSize: 160, // Increase the font size of the tooltip title
-                bodyFontSize: 30, // Increase the font size of the tooltip body
-            }
-        }
-    }
-});
-
-
-  </script> -->
+    
   <script>
     var customerCount = {{ customer_count }};
     var totalCustomers = 1000;  // Set the maximum value for the progress bar

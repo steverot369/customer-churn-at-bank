@@ -76,6 +76,9 @@ def adminhome():
     feedback_messages = cursor.fetchall()
  
     cursor = db.cursor()
+    cursor.execute("SELECT l.acc_type,l.acc_no,l.date_issued,c.fname,c.lname FROM loanacc l,customers c where l.customer_id=c.cid UNION SELECT s.acc_type,s.acc_no,s.acc_started_date,c.fname,c.lname FROM savingsacc s,customers c where s.customer_id=c.cid UNION SELECT d.acc_type,d.acc_no,d.deposit_date,c.fname,c.lname FROM depositacc d,customers c where d.customer_id=c.cid")
+    row_count=cursor.fetchall()
+    account_count = cursor.rowcount
     cursor.execute("SELECT c.fname,c.lname,c.photo,tt.amount,tt.date_time,tt.t_type,tt.t_no FROM customers c,transaction tt where c.cid=tt.customer_id and tt.t_type='online' LIMIT 4")
     online_transaction=cursor.fetchall()
     cursor.execute("SELECT c.fname,c.lname,tt.t_no,tt.t_type,tt.amount,tt.date_time FROM customers c,transaction tt where c.cid=tt.customer_id")
@@ -169,7 +172,7 @@ def adminhome():
      current_year_count=current_year_count, previous_year_count=previous_year_count, customer_percentage_change=customer_percentage_change, 
      current_month_balance=current_month_balance, previous_month_balance=previous_month_balance, account_percentage_change=account_percentage_change,
      current_month_balance1=current_month_balance1, previous_month_balance1=previous_month_balance1, loan_account_percentage_change=loan_account_percentage_change,
-     customer_count=customer_count,employee_count=employee_count)
+     customer_count=customer_count,employee_count=employee_count,account_count=account_count)
 
 
 
@@ -230,6 +233,15 @@ def adminaddemployee():
     cursor = db.cursor()
     cursor.execute("SELECT branch_name FROM branch")
     branch_names = [row[0] for row in cursor.fetchall()]
+    cursor.execute("SELECT email FROM customers UNION ALL SELECT email FROM employee")
+    # cursor.execute("SELECT e.branch, e.employe_fname FROM employee e, branch b WHERE e.branch_id = b.branch_id AND e.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '{}') AND employe_id='{}'".format(session['clid'], session['logid']))
+
+    emails = [row[0] for row in cursor.fetchall()]
+
+    cursor.execute("SELECT phone from customers UNION ALL SELECT phone FROM employee")
+    # cursor.execute("SELECT e.branch, e.employe_fname FROM employee e, branch b WHERE e.branch_id = b.branch_id AND e.branch_id = (SELECT branch_id FROM employee WHERE employe_id = '{}') AND employe_id='{}'".format(session['clid'], session['logid']))
+
+    phoneno = [row[0] for row in cursor.fetchall()]
     if 'add' in request.form:
         fname = request.form['fname']
         lname = request.form['lname']
@@ -301,7 +313,7 @@ def adminaddemployee():
     
         return redirect(url_for('admin.adminaddemployee'))
     
-    return render_template('adminaddemployee.html',branch_names=branch_names)
+    return render_template('adminaddemployee.html',branch_names=branch_names, phoneno= phoneno,emails=emails)
 
 @admin.route('/adminaddbranch', methods=['post', 'get'])
 def adminaddbranch():
@@ -398,4 +410,28 @@ def adminviewcustomer():
     cursor.execute("SELECT branch_name FROM branch")
     branch_names = [row[0] for row in cursor.fetchall()]
     return render_template('adminviewcustomer.html',employees=employees,name=name,branch_names=branch_names)
+
+
+
+@admin.route('/adminviewtransaction',methods=['post','get'])
+def adminviewtransaction():
+
+    cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
+    cursor.execute("SELECT t.t_no,t.t_type,t.amount,t.date_time,c.fname,c.lname,s.acc_no from transaction t,customers c,savingsacc s where t.customer_id=c.cid AND t.customer_id=s.customer_id")
+    employees = cursor.fetchall()
+    date = datetime.now().date()
+    formatted_date = datetime.strftime(date,"%d-%m-%y")
+    return render_template('adminviewtransaction.html',employees=employees,name12=name12,formatted_date=formatted_date)
+
+
+@admin.route('/adminviewacc')
+def adminviewacc():
+    cursor = db.cursor()
+    
+    cursor.execute("SELECT l.acc_type,l.acc_no,l.date_issued,c.fname,c.lname,c.photo,c.email,c.phone,l.acc_status,l.ifsccode FROM loanacc l,customers c where l.customer_id=c.cid UNION SELECT s.acc_type,s.acc_no,s.acc_started_date,c.fname,c.lname,c.photo,c.email,c.phone,s.acc_status,s.ifsccode FROM savingsacc s,customers c where s.customer_id=c.cid UNION SELECT d.acc_type,d.acc_no,d.deposit_date,c.fname,c.lname,c.photo,c.email,c.phone,d.acc_status,d.ifsccode FROM depositacc d,customers c where d.customer_id=c.cid and acc_status='active'")
+    employees = cursor.fetchall()
+    print(employees)
+    return render_template('adminviewacc.html',employees=employees)
     
