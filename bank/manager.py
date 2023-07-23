@@ -275,7 +275,12 @@ def managermanagecustomers():
     cursor = db.cursor()
     cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
     name12 = cursor.fetchall()
-    cursor.execute("SELECT * FROM customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
+    current_date = datetime.datetime.now()
+
+# Calculate the date two years ago from the current date
+    two_years_ago = current_date - datetime.timedelta(days=365*2)
+    two_years_ago_str = two_years_ago.strftime('%Y-%m-%d')
+    cursor.execute("SELECT * FROM customers WHERE branch_id=(SELECT branch_id FROM employee WHERE employe_id='%s') AND date <= '%s'" % (session['mid'], two_years_ago_str))
     employees = cursor.fetchall()
     date=datetime.datetime.now()
     if 'add' in request.form:

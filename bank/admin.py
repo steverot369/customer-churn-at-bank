@@ -195,7 +195,7 @@ def adminviewcomplaints():
         cid=customer_details[0]
         bid=customer_details[1]
         cursor.execute("UPDATE complaints SET reply = %s WHERE complaint_id = %s", (reply, id))
-        bank_messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,user_type,date) VALUES ('%s', %s, %s,%s,%s)"
+        bank_messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,user_type,message_type,date) VALUES (%s, %s, %s,%s,'bank',%s)"
         bank_messages_values = (cid,bid,reply,usertype,date)
         cursor.execute(bank_messages, bank_messages_values)
 

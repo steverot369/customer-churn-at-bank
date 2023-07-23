@@ -72,7 +72,7 @@
                                                         <div class="col-md-7 mb-4 pb-2">
                                     
                                                           <div class="form-outline form-white">
-                                                            <input type="text" id="form3Examplea8" value="{{ customer[4] }}" name="phone" class="form-control form-control-lg" />
+                                                            <input type="text" id="form3Examplea8" value="{{ customer[4] }}" name="phone" class="form-control form-control-lg" readonly/>
                                                             <label class="form-label" for="form3Examplea8">Phone Number</label>
                                                           </div>
                                     
@@ -99,7 +99,7 @@
                                                       <div id="container-67" style="display: none;">
 
                                                         <div class="mb-4 pb-2">
-                                                          <select name="j_name" class="form-control form-control-lg p-2" id="jobTypeSelect">
+                                                          <select name="j_name" class="form-control form-control-lg p-2" id="jobTypeSelect" required>
                                                             <option disabled selected value>Select job type</option>
                                                             <option value="doctor">Doctor</option>
                                                             <option value="defence">Defence</option>
@@ -115,7 +115,7 @@
                                                           
                                                             <div class="mb-4 pb-2">
                                                               <div class="form-outline">
-                                                                <input type="text" name="j_name" id="form3Examplev4" name="email" class="form-control form-control-lg">
+                                                                <input type="text" name="j_name" id="form3Examplev4" name="email" class="form-control form-control-lg" required>
                                                                 <label class="form-label" for="form3Examplev4">Job Name</label>
                                                               </div>
                                                             </div>
@@ -124,13 +124,13 @@
 
                                                         <div class="mb-4 pb-2">
                                                           <div class="form-outline">
-                                                            <input type="text" name="c_name" id="form3Examplev4" name="email"  class="form-control form-control-lg">
+                                                            <input type="text" name="c_name" id="form3Examplev4" name="email"  class="form-control form-control-lg" required>
                                                             <label class="form-label" for="form3Examplev4">Company Name</label>
                                                           </div>
                                                         </div>
                                                         <div class="mb-4 pb-2">
                                                           <div class="form-outline">
-                                                            <input type="text" name="c_location" id="form3Examplev4" name="email"  class="form-control form-control-lg">
+                                                            <input type="text" name="c_location" id="form3Examplev4" name="email"  class="form-control form-control-lg" required>
                                                             <label class="form-label" for="form3Examplev4">Company Location</label>
                                                           </div>
                                                         </div>
@@ -149,7 +149,7 @@
                                                 
                                                 <div class="mb-4 pb-2">
                                                   <div class="form-outline form-white">
-                                                    <input name="address" id="form3Examplea2" class="form-control form-control-lg" value="{{ customer[12] }}">
+                                                    <input name="address" id="form3Examplea2" class="form-control form-control-lg" value="{{ customer[12] }}" required>
                                                     <label class="form-label" for="form3Examplea2">Address</label>
                                                   </div>
                                                 </div>
@@ -160,7 +160,7 @@
                                                   <div class="col-md-5 mb-4 pb-2">
                               
                                                     <div class="form-outline form-white">
-                                                      <input type="text" id="form3Examplea4" name="city" value="{{ customer[6] }}" class="form-control form-control-lg" />
+                                                      <input type="text" id="form3Examplea4" name="city" value="{{ customer[6] }}" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplea4">city</label>
                                                     </div>
                               
@@ -168,7 +168,7 @@
                                                   <div class="col-md-7 mb-4 pb-2">
                               
                                                     <div class="form-outline form-white">
-                                                      <input type="text" id="form3Examplea5" name="state" value="{{ customer[7] }}" class="form-control form-control-lg" />
+                                                      <input type="text" id="form3Examplea5" name="state" value="{{ customer[7] }}" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplea5">state</label>
                                                     </div>
                               
@@ -180,7 +180,7 @@
                               
                                                     
                                                     <div class="form-outline form-white">
-                                                      <input type="text" id="form3Examplea4" name="zipcode" value="{{ customer[8] }}" class="form-control form-control-lg" />
+                                                      <input type="text" id="form3Examplea4" name="zipcode" value="{{ customer[8] }}" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplea4">zipcode</label>
                                                     </div>
                               
@@ -188,7 +188,7 @@
                                                   <div class="col-md-7 mb-4 pb-2">
                               
                                                     <div class="form-outline form-white">
-                                                      <input type="text" id="form3Examplea5" name="country" value="{{ customer[9] }}" class="form-control form-control-lg" />
+                                                      <input type="text" id="form3Examplea5" name="country" value="{{ customer[9] }}" class="form-control form-control-lg" required/>
                                                       <label class="form-label" for="form3Examplea5">country</label>
                                                     </div>
                               
@@ -200,24 +200,24 @@
                                                 
                                                 <div class="mb-4 pb-2">
                                                   <div class="form-outline">
-                                                    <input type="number" id="form3Examplev4" name="msalary" value="{{ salary }}" class="form-control form-control-lg" />
+                                                    <input type="number" id="form3Examplev4" name="msalary" value="{{ salary }}" class="form-control form-control-lg" required/>
                                                     <label class="form-label" for="form3Examplev4">monthly salary</label>
                                                   </div>
                                                 </div>
                                                 
                                                 
                                                 <div class="form-outline">
-                                                  <input type="file" name="file1" class="form-control form-control-lg" id="inputGroupFile01">
+                                                  <input type="file" name="file1" class="form-control form-control-lg" id="inputGroupFile01" required>
                                                   <label for="inputGroupFile01" class="form-label">Choose your identity card</label>
                                                   
                                                 </div>
                                                 <div class="form-outline">
-                                                  <input type="file" name="file2" class="form-control form-control-lg" id="inputGroupFile01">
+                                                  <input type="file" name="file2" class="form-control form-control-lg" id="inputGroupFile01" required>
                                                   <label for="inputGroupFile01" class="form-label">Choose address proof</label>
                                                   
                                                 </div>
                                                 <div class="form-outline">
-                                                  <input type="file" name="file3" class="form-control form-control-lg" id="inputGroupFile01">
+                                                  <input type="file" name="file3" class="form-control form-control-lg" id="inputGroupFile01" required>
                                                   <label for="inputGroupFile01" class="form-label">Income proof</label>
                                                   
                                                 </div>

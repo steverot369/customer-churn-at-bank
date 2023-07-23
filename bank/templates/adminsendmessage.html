@@ -14,7 +14,7 @@
                     <form method="post">
                         <div class="mb-4 pb-3">
                             <div class="dropdown dropdown-l">
-                              <input type="text" name="branch" id="dropdown-input" class="form-control form-control-lg" placeholder="Search...">
+                              <input type="text" name="branch" id="dropdown-input" class="form-control form-control-lg" placeholder="Search..." required>
                               <span class="dropdown-icon">&#9662;</span> <!-- Add a dropdown icon here -->
                           
                               <ul class="dropdown-list" style="display: block;">
@@ -29,10 +29,12 @@
 
                           </div>
                         <label class="form-label" for="form3Examplev4">Message</label>
-                        <input name="messages" class="message-input1" placeholder="Type your message...">
+                        <input name="messages" class="message-input1" placeholder="Type your message..." required>
                         
                         <label class="form-label" for="form3Examplev4">user type</label>
-                        <select class="user-type" name="usertype">
+                        <select class="user-type" name="usertype" required>
+                          <option disabled selected value="">Select any value</option>
+
                             <option value="All">All</option>
                             <option value="employee">employee</option>
                           

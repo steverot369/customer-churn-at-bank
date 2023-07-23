@@ -1367,16 +1367,22 @@ accountDropdown.addEventListener("change", function() {
         progressValue3.textContent = progress3.toFixed(0) + '%';
 
         // Add labels based on the progress percentage
-        if (progress3 >= 0 && progress3 < 30) {
+        if (progress3 >= 0 && progress3 < 10) {
             creditScoreLabel.textContent = 'Bad';
-        } else if (progress3 >= 30 && progress3 < 40) {
-            creditScoreLabel.textContent = 'Fair';
-        } else if (progress3 >= 40 && progress3 < 50) {
-            creditScoreLabel.textContent = 'Good';
-        } else if (progress3 >= 50 && progress3 <= 70) {
-            creditScoreLabel.textContent = 'Excellent';
+        } else if (progress3 >= 10 && progress3 < 20) {
+            creditScoreLabel.textContent = 'not bad';
+        } else if (progress3 >= 20 && progress3 < 30) {
+            creditScoreLabel.textContent = 'fair';
+        } else if (progress3 >= 30 && progress3 <= 55) {
+            creditScoreLabel.textContent = 'not good';
         }
-        else if (progress3 >= 70 && progress3 <= 100) {
+        else if (progress3 >= 55 && progress3 <= 70) {
+            creditScoreLabel.textContent = 'good';
+        }
+        else if (progress3 >= 60 && progress3 <= 80) {
+            creditScoreLabel.textContent = 'excellent';
+        }
+        else if (progress3 >= 80 && progress3 <= 100) {
             creditScoreLabel.textContent = 'marvelous';
         }
     }

@@ -327,7 +327,7 @@ def clerksavingsaccount():
         # query = "SELECT cid FROM customers WHERE fname = %s AND lname = %s"
         # cursor.execute(query, (first_name, last_name))
         # cid = cursor.fetchone()[0]
-        q = "INSERT INTO savingsacc (customer_id, branch_id, acc_no, ifsccode, balance,acc_started_date,pin_no,acc_status) VALUES (%s, %s, %s, %s, %s, %s,'1', 'active')"
+        q = "INSERT INTO savingsacc (customer_id, branch_id, acc_no, ifsccode, balance,acc_started_date,pin_no,acc_type,acc_status) VALUES (%s, %s, %s, %s, %s, %s,'1','savings', 'active')"
         values = (customer_id, bid, accno, ifsccode, balance, acc_started_date)
         cursor.execute(q, values)
                 # Generate random cheque number
@@ -393,10 +393,12 @@ def clerkdepositaccount():
         interestEarned = request.form['interestEarned']
         tenure = request.form['tenure']
         depositType = request.form['depositType']
-        maturityDate = request.form['interestRate']
+        # maturityDate = request.form['interestRate']
         maturityDate = request.form['maturityDate']
         toaccno = request.form['addaccno']
         interestRate = request.form['interestRate']
+        one = int(request.form['1'])
+        two = int(request.form['2'])
         fivers = int(request.form['5'])
         tenrs = int(request.form['10'])
         twentyrs = int(request.form['20'])
@@ -413,12 +415,40 @@ def clerkdepositaccount():
         # query = "SELECT cid FROM customers WHERE fname = %s AND lname = %s"
         # cursor.execute(query, (first_name, last_name))
         # cid = cursor.fetchone()[0]
+
         date = datetime.now().date()
         formatted_date = date.strftime("%d-%m-%y")
+        current_date = datetime.now().date()
+        # Format the date based on the deposit type
+        if depositType == 'monthly':
+            # Add 1 month to the current date
+            maturity_date = current_date + timedelta(days=30)
+        elif depositType == 'yearly':
+            # Add 1 year to the current date
+            maturity_date = current_date + timedelta(days=365)
+        elif depositType == 'quarterly':
+            # Add 3 months (1 quarter) to the current date
+            maturity_date = current_date + timedelta(days=90)
+        elif depositType == 'maturity':
+            # Use the current date as the maturity date
+            maturity_date = datetime.strptime(request.form['maturityDate'], "%d-%m-%y").date()
+        else:
+            # Default to using the current date if the deposit type is not recognized
+            maturity_date = current_date
+
+        # Convert the maturity date to a formatted string (e.g., "dd-mm-yy")
+        formatted_maturity_date = maturity_date.strftime("%d-%m-%y")
         fixeddeposit = "INSERT INTO depositacc (customer_id, acc_no, ifsccode, deposit_amt, tenure, deposit_date, deposit_type, maturity_date, interest_rate, interest_amt, interest_earn,acc_to, last_transaction_date,acc_type, acc_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,'0',%s,%s, 'deposit', 'active')"
-        fixeddeposit_values = (cid, newaccno, ifsccode, depositamt, tenure, formatted_date, depositType, maturityDate, interestRate,interestEarned,toaccno,formatted_date)
+        fixeddeposit_values = (cid, newaccno, ifsccode, depositamt, tenure, formatted_date, depositType, maturityDate, interestRate,interestEarned,toaccno,formatted_maturity_date)
         cursor.execute(fixeddeposit, fixeddeposit_values)
-       
+        if one > 0:
+            transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '1',%s)"
+            transaction_values = (bid,one)
+            cursor.execute(transaction, transaction_values)
+        if two > 0:
+            transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '2',%s)"
+            transaction_values = (bid,two)
+            cursor.execute(transaction, transaction_values) 
         if fivers > 0:
             transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '5',%s)"
             transaction_values = (bid,fivers)
@@ -574,6 +604,9 @@ def clerkloancash():
         name = request.form['name']
         loanAmount = float(request.form['remaining'])
         interestRate = float(request.form['interestRate'])
+        one = int(request.form['1'])
+        two = int(request.form['2'])
+
         fivers = int(request.form['5'])
         tenrs = int(request.form['10'])
         twentyrs = int(request.form['20'])
@@ -637,9 +670,13 @@ def clerkloancash():
             transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance,date_time) VALUES (%s, %s,%s, %s, 'loan payment',%s,%s,%s)"
             transaction_values = (cid,loan_id,bid,trans_no,loanEmi,outstandingBalance,formatted_date)
             cursor.execute(transaction,transaction_values)
-            if fivers > 0:
-                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '5',%s)"
-                transaction_values = (bid,fivers)
+            if one > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '1',%s)"
+                transaction_values = (bid,one)
+                cursor.execute(transaction, transaction_values)
+            if two > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '2',%s)"
+                transaction_values = (bid,two)
                 cursor.execute(transaction, transaction_values)
             if tenrs > 0:
                 transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '10',%s)"
@@ -790,6 +827,10 @@ def clerkdepositcash():
         withdrawal_amt=request.form['amounts']
         balance=int(request.form['balance'])
         # note
+        one = int(request.form['1'])
+        two = int(request.form['2'])
+        
+
         fivers = int(request.form['5'])
         tenrs = int(request.form['10'])
         twentyrs = int(request.form['20'])
@@ -822,7 +863,15 @@ def clerkdepositcash():
             transaction_values = (cid,savings_id,bid,trans_no,deposit,balance_deposit,date)
             cursor.execute(transaction, transaction_values)
             
-            cursor.execute(transaction, transaction_values)     
+            cursor.execute(transaction, transaction_values)
+            if one > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '1',%s)"
+                transaction_values = (bid,one)
+                cursor.execute(transaction, transaction_values)
+            if two > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '2',%s)"
+                transaction_values = (bid,two)
+                cursor.execute(transaction, transaction_values)     
             if fivers > 0:
                 transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '5',%s)"
                 transaction_values = (bid,fivers)
@@ -917,6 +966,9 @@ def clerkcheckdeposit():
         accno = request.form['accno1']
 
         # note
+        one = int(request.form['1'])
+        two = int(request.form['2'])
+
         fivers = int(request.form['5'])
         tenrs = int(request.form['10'])
         twentyrs = int(request.form['20'])
@@ -944,6 +996,14 @@ def clerkcheckdeposit():
         transaction_values = (cid,savings_id,bid,trans_no,deposit,date)
         cursor.execute(transaction, transaction_values)
         # Insert into the table if count is not 0
+        if fivers > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '1',%s)"
+                transaction_values = (bid,one)
+                cursor.execute(transaction, transaction_values)
+        if fivers > 0:
+                transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '2',%s)"
+                transaction_values = (bid,two)
+                cursor.execute(transaction, transaction_values) 
         if fivers > 0:
             transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '5',%s)"
             transaction_values = (bid,fivers)

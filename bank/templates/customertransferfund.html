@@ -18,7 +18,7 @@
                   <div class="form-outline mb-4">
                     <label class="form-label" for="form1">Select Account</label>
                     <div class="dropdown dropdown-custom-4">
-                      <input type="text" name="accno" id="new-dropdown-input-4" style="background: #f2e5e5;" class="form-control form-control-lg" placeholder="Search by accno or customer name....">
+                      <input type="text" name="accno" id="new-dropdown-input-4" style="background: #f2e5e5;" class="form-control form-control-lg" placeholder="Search by accno or customer name...." required>
                       <span class="dropdown-custom-icon-4">&#9662;</span>
                       <ul class="dropdown-custom-list-4" style="display: block;">
                         {% for row in acc_no %}
@@ -33,20 +33,20 @@
                    <i><h3 style="padding: 6px;" id="balance" style="display: none;"></h3></i> 
                    <i><h3 style="padding: 6px;" id="ifsccode" style="display: none;"></h3></i> 
                    <div class="form-outline">
-                    <input type="number" id="amt" name="balance" style="display: none;" class="form-control form-control-lg" placeholder="Name*" hidden/>
+                    <input type="number" id="amt" name="balance" style="display: none;" class="form-control form-control-lg" placeholder="full Name*" hidden/>
                     
                   </div>
 
                   
                     <div class="form-outline mb-4 pb-2">
-                      <input type="text"  id="form1"  class="form-control form-control-lg" placeholder="Name*"/>
+                      <input type="text"  id="form1"  class="form-control form-control-lg" placeholder="Full Name*"  required/>
                     </div>
                     <div class="form-outline mb-4 pb-2">
-                      <input type="number" name="acc" id="form2" class="form-control form-control-lg" placeholder="Account number*"/>
+                      <input type="number" name="acc" id="form2" class="form-control form-control-lg" placeholder="Account number*"  required/>
                     </div>
                     
                     <div class="form-outline mb-4">
-                      <input type="number" name="acc1" id="form3" class="form-control form-control-lg" placeholder="Re-Enter Acc Number*"/>
+                      <input type="number" name="acc1" id="form3" class="form-control form-control-lg" placeholder="Re-Enter Acc Number*"  required/>
                       <!-- <label class="form-label" for="form2">Re-Enter Acc Number</label><br> -->
                       <span class="error-message" style="display: none;">Pin numbers do not match</span>
                       <span class="error-message1" style="display: none;">numbers match</span>
@@ -61,7 +61,7 @@
 <br>
 <div class="form-group">
   <div class="form-check">
-    <input class="form-check-input" type="checkbox" id="gridCheck">
+    <input class="form-check-input" type="checkbox" id="gridCheck"  required>
     <label class="form-check-label" for="gridCheck">
       Send <span class='rupee-symbol'>&#8377;</span>1 as test amount<br>
       <p class="down">(Optional, if not sure about A/c no.)</p>
@@ -70,12 +70,12 @@
 </div>
 
 <div class="form-outline mb-4 pb-2">
-  <input type="number" name="amount" id="form4" class="form-control form-control-lg" placeholder="Amount*" />
+  <input type="number" name="amount" id="form4" class="form-control form-control-lg" placeholder="Amount*"  required/>
 </div>
      
 
 <div class="form-outline mb-4 pb-2">
-  <input type="number" name="mpipin" id="form5" class="form-control form-control-lg" placeholder="Enter pin*" />
+  <input type="number" name="mpipin" id="form5" class="form-control form-control-lg" placeholder="Enter pin*"  required/>
 </div>
                  
                   
@@ -182,10 +182,113 @@
  
 }
 </script> -->
+
+<script>
+      
+  function validateWithdrawal() {
+    var withdrawAmount = parseInt(document.getElementById("form4").value);
+    var currentBalance = parseInt(document.getElementById("balance").value);
+
+    if (withdrawAmount > (currentBalance - 1000)) {
+  alert("The withdrawal amount is greater and there must be a min balance of 1000");
+  document.getElementById("form4").value = ""; // Clear the withdrawal amount input field
+}
+  }
+
+  document.getElementById("form4").addEventListener("input", validateWithdrawal);
+
+    </script>
+<script>
+  const firstNameInput = document.getElementById('form1');
+  const lastNameInput = document.getElementById('form2');
+  const cityNameInput = document.getElementById('form3');
   
+ 
+  
+  
+
+
+  firstNameInput.addEventListener('input', function() {
+const firstNameValue = firstNameInput.value;
+const containsNumber = /\d/.test(firstNameValue);
+const containsSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(firstNameValue);
+
+if (containsNumber || containsSymbol) {
+  showAlert('Invalid characters in the first name field. Please enter a valid first name.');
+  firstNameInput.value = '';
+}
+});
+  lastNameInput.addEventListener('input', function() {
+    var phoneno = /^\d{12}$/;
+const lastNameValue = lastNameInput.value;
+// const containsNumber = /\d/.test(lastNameValue);
+// const containsSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(lastNameValue);
+
+if (lastNameInput.value.match(phoneno) || lastNameValue<0) {
+  showAlert('Invalid acc no must be 12 digits Please enter a valid last name.');
+  lastNameInput.value = '';
+}
+});
+
+  cityNameInput.addEventListener('input', function() {
+    var phoneno1 = /^\d{12}$/;
+const cityNameValue = cityNameInput.value;
+// const containsNumber = /\d/.test(cityNameValue);
+// const containsSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(cityNameValue);
+
+if (cityNameInput.value.match(phoneno1) || cityNameValue<0) {
+  showAlert('Invalid acc no must be 12 digits Please enter a valid last name.');
+
+  cityNameInput.value = '';
+}
+});
+
+
+  phoneInput.addEventListener('input', function() {
+  var phoneno = /^\d{11}$/;
+
+
+const phoneValue =  parseFloat(phoneInput.value);
+const containsSymbol1 = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(phoneValue);
+
+if (phoneInput.value.match(phoneno) || phoneValue < 0 || containsSymbol1) {
+  showAlert('Phone number must be exactly 10 digits long and should not contain special symbols.');
+  phoneInput.value = '';
+}
+});
+
+
+
+  function showAlert(message) {
+const alertElement = document.createElement('div');
+alertElement.classList.add('alert-message');
+alertElement.textContent = message;
+
+// Insert the alert message before the form
+const formElement = document.querySelector('form');
+formElement.parentNode.insertBefore(alertElement, formElement);
+
+// Remove the alert message after a delay (5 seconds in this example)
+setTimeout(function() {
+  alertElement.remove();
+}, 3500);
+}
+</script>
 <script>
   function showLoadingAnimation(event) {
     event.preventDefault(); // Prevent the default form submission
+
+    // Get the form values
+    var from = document.getElementById('new-dropdown-input-4').value;
+    var to = document.getElementById('form2').value;
+    var accountBalance = document.getElementById('balance').value;
+    var enteredAmount = document.getElementById('form4').value;
+
+    // Check if any of the form fields are empty
+    if (from === '' || to === '' || accountBalance === '' || enteredAmount === '') {
+      alert('Please fill in all the form fields.');
+      return; // Prevent form submission if any field is empty
+    }
 
     // Create the loading container and spinner
     var loadingContainer = document.createElement('div');
@@ -236,7 +339,44 @@
 
   }
 
+  // function submitForm() {
+  //   // Submit the form programmatically
+  //   document.getElementById('myForm').submit();
+  // }
   function submitForm() {
+    // Get the form values
+    var from = document.getElementById('new-dropdown-input-4').value;
+    var to = document.getElementById('form2').value;
+    var accountBalance = document.getElementById('balance').value;
+    var enteredAmount = document.getElementById('form4').value;
+
+    // Check if any of the form fields are empty
+    if (from === '' || to === '' || accountBalance === '' || enteredAmount === '') {
+      alert('Please fill in all the form fields.');
+      return; // Prevent form submission if any field is empty
+    }
+
+    // Convert accountBalance and enteredAmount to numbers
+    accountBalance = parseInt(accountBalance);
+    enteredAmount = parseInt(enteredAmount);
+
+    // Calculate the remaining balance
+    var remainingBalance = accountBalance - enteredAmount;
+
+    // Get the current date
+    var currentDate = new Date().toISOString().slice(0, 10);
+
+    // Update the popup content with the form values
+    document.getElementById('fromValue').textContent = "from: " + from;
+    document.getElementById('toValue').textContent = "to: " + to;
+    document.getElementById('balanceValue').textContent = "Balance: ₹" + accountBalance;
+    document.getElementById('remainingBalanceValue').textContent = "Remaining Balance: ₹" + remainingBalance;
+    document.getElementById('dateValue').textContent = "Date: " + currentDate;
+
+    // Show the popup container
+    document.getElementById('popupContainer').style.display = "block";
+    document.getElementById('fadeOverlay').style.display = "block";
+
     // Submit the form programmatically
     document.getElementById('myForm').submit();
   }
