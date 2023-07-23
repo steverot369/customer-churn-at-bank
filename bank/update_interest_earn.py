@@ -54,8 +54,7 @@ def update_interest_earn():
         trans_no = str(random.randint(1000000000000000, 9999999999999999))
 
         if deposit_type == 'monthly':
-            # days_diff = (last_transaction_date - current_date).days
-            # days_diff = (current_date - last_transaction_date).days
+           
             days_diff = last_transaction_date
 
 
@@ -115,10 +114,16 @@ def update_interest_earn():
             # years_diff = last_transaction_date.year - current_date.year
             years_diff = last_transaction_date
             if current_date == years_diff:
-                # Calculate the interest earned based on the interest amount
-                # interest_earned = interest_amt * years_diff
+                cursor.execute("SELECT acc_to FROM depositacc where acc_status='active'")
+                deposit_accounts1 = cursor.fetchone()
+                acc_to=deposit_accounts1[0]
+                cursor.fetchall()
+
+                
+
                 
                 interest_earned = interest_amt * 12
+               
 
                 updated_balance=int(balance)+int(interest_earned)
                 # Update the interest_earn field in the table
@@ -133,15 +138,21 @@ def update_interest_earn():
 
                 cursor.execute("select deposit_id from depositacc where acc_no=%s",(acc_no,))
                 deposit_id=cursor.fetchone()[0]
+                update_query1 = "UPDATE savingsacc SET balance = balance + %s  WHERE acc_no = %s"
+                cursor.execute(update_query1, (interest_earned,acc_to,))
                 transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance, date_time) VALUES (%s, %s,%s, %s, 'fixed deposit',%s,%s,%s)"
                 transaction_values = (cid,deposit_id,bid,trans_no,interest_earned,updated_balance,current_date)
                 cursor.execute(transaction, transaction_values)
-                update_query1 = "UPDATE savingsacc SET balance = balance + %s  WHERE acc_no = %s"
-                cursor.execute(update_query1, (interest_earned,acc_payable,))
+                
                 print("1)Interest earnings updated ",interest_amt,"successfully for account:", acc_no)
                 updates_made = True
 
             if last_transaction_date >= maturity_date:
+                cursor.execute("SELECT acc_to FROM depositacc where acc_status='active'")
+                deposit_accounts1 = cursor.fetchone()
+                acc_to=deposit_accounts1[0]
+                cursor.fetchall()
+                interest_earned = interest_amt
                 
         # Update the interest_earn field with interest_earn + deposit_amt
                 cursor.execute("select customer_id from depositacc where acc_no=%s",(acc_no,))
@@ -155,9 +166,16 @@ def update_interest_earn():
                 update_query = "UPDATE depositacc SET interest_earn = interest_earn + deposit_amt,acc_status='closed' WHERE acc_no = %s"
                 cursor.execute(update_query, (acc_no,))
                 update_query2 = "UPDATE savingsacc SET balance = balance + %s  WHERE acc_no = %s"
-                cursor.execute(update_query2, (deposit_amt,acc_payable,))
-                cursor.execute("select balance from savingsacc where acc_no=%s",(acc_payable,))
-                updated_balance1=cursor.fetchone()[0]
+                cursor.execute(update_query2, (deposit_amt,acc_to,))
+                cursor.execute("select balance from savingsacc where acc_no=%s", (acc_to,))
+                updated_balance1_row = cursor.fetchone()
+                print("balance new=====",updated_balance1_row)
+
+                if updated_balance1_row is not None:
+                    updated_balance1 = updated_balance1_row[0]
+                    # Rest of your code that uses updated_balance1
+                else:
+                    updated_balance1=0
                 cursor.fetchall()
                 transaction1 = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance, date_time) VALUES (%s, %s,%s, %s, 'fixed deposit',%s,%s,%s)"
                 transaction_values1 = (cid,deposit_id,bid,trans_no,interest_earned,updated_balance1,current_date)
@@ -169,6 +187,11 @@ def update_interest_earn():
         elif deposit_type == 'quarterly':
             print('===================yearly================')
             # years_diff = last_transaction_date.year - current_date.year
+            cursor.execute("SELECT acc_to FROM depositacc where acc_status='active'")
+            deposit_accounts1 = cursor.fetchone()
+            acc_to=deposit_accounts1[0]
+            cursor.fetchall()
+
             years_diff = last_transaction_date
             if current_date == years_diff:
                 # Calculate the interest earned based on the interest amount
@@ -192,11 +215,16 @@ def update_interest_earn():
                 transaction_values = (cid,deposit_id,bid,trans_no,interest_earned,updated_balance,current_date)
                 cursor.execute(transaction, transaction_values)
                 update_query1 = "UPDATE savingsacc SET balance = balance + %s  WHERE acc_no = %s"
-                cursor.execute(update_query1, (interest_earned,acc_payable,))
+                cursor.execute(update_query1, (interest_earned,acc_to,))
                 print("1)Interest earnings updated ",interest_amt,"successfully for account:", acc_no)
                 updates_made = True
 
             if last_transaction_date >= maturity_date:
+                cursor.execute("SELECT acc_to FROM depositacc where acc_status='active'")
+                deposit_accounts1 = cursor.fetchone()
+                acc_to=deposit_accounts1[0]
+                cursor.fetchall()
+
                 
                 interest_earned = interest_amt
         # Update the interest_earn field with interest_earn + deposit_amt
@@ -211,8 +239,8 @@ def update_interest_earn():
                 update_query = "UPDATE depositacc SET interest_earn = interest_earn + deposit_amt,acc_status='closed' WHERE acc_no = %s"
                 cursor.execute(update_query, (acc_no,))
                 update_query2 = "UPDATE savingsacc SET balance = balance + %s  WHERE acc_no = %s"
-                cursor.execute(update_query2, (deposit_amt,acc_payable,))
-                cursor.execute("select balance from savingsacc where acc_no=%s",(acc_payable,))
+                cursor.execute(update_query2, (deposit_amt,acc_to,))
+                cursor.execute("select balance from savingsacc where acc_no=%s",(acc_to,))
                 updated_balance1=cursor.fetchone()[0]
                 cursor.fetchall()
                 transaction1 = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance, date_time) VALUES (%s, %s,%s, %s, 'fixed deposit',%s,%s,%s)"
@@ -223,6 +251,11 @@ def update_interest_earn():
 
         elif deposit_type == 'maturity':
             print('===================Maturity payment================')
+            cursor.execute("SELECT acc_to FROM depositacc where acc_status='active'")
+            deposit_accounts1 = cursor.fetchone()
+            acc_to=deposit_accounts1[0]
+            cursor.fetchall()
+
             
             if last_transaction_date >= maturity_date:
                 # Calculate the total interest amount
@@ -236,7 +269,7 @@ def update_interest_earn():
                 cid=deposit_details[0]
                 
                 deposit_id=deposit_details[1]
-                acc_payable1=deposit_details[2]
+                
                 deposit_amt1=int(deposit_details[3])
                 print("deposit amouny===========",deposit_amt1)
 
@@ -249,7 +282,7 @@ def update_interest_earn():
                 update_query = "UPDATE depositacc SET interest_earn = interest_earn + deposit_amt + %s,acc_status='closed' WHERE acc_no = %s"
                 cursor.execute(update_query, (interest_earned,acc_no,))
                 update_query2 = "UPDATE savingsacc SET balance = balance + %s  WHERE acc_no = %s"
-                cursor.execute(update_query2, (deposit_amt1,acc_payable1,))
+                cursor.execute(update_query2, (deposit_amt1,acc_to,))
                 # cursor.fetchall()
                 # cursor.execute("select balance from savingsacc where acc_no=%s",(acc_payable1,))
                 # updated_balance1=cursor.fetchone()
