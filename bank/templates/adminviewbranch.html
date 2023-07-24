@@ -5,7 +5,7 @@
         <input type="date">
           </div>
 
-        <div class="container1" style="width: 600px; margin-left: 300px; height: 530px;">
+        <div class="container1" style="width: 700px; margin-left: 300px; height: 530px;">
         <section>
             <h1>Branch Details</h1>
             <div class="search-filter">
@@ -25,11 +25,12 @@
             <table id="employeeTable" class="table">
                 <thead class="thead-light">
                     <tr>
+                      <th>Branch id</th>
                        
-                        <th>Age</th>
-                        <th>Marital Status</th>
+                        <th>Branch name</th>
+                        <th>branch location</th>
                         
-                        <th>Gender</th>
+                        <th>Phone no</th>
                       
                         <th colspan="2">Manage</th>
                     </tr>
@@ -39,6 +40,7 @@
                     {% for branch in branch %}
                     <tr>
                         
+                      <td>{{ branch[0] }}</td>
                        
                         
                         <td>{{ branch[1] }}</td>
@@ -49,18 +51,55 @@
                         
                         <td>
                           <td>
-                            <a href="" class="btn btn-info">View Details</a>
+                            <a href="#" class="btn btn-info complaint-link">view or update</a>
+                          </td>
+                          <td>
+                            <a href="?action=reject&delete_id={{branch[0]}}" class="btn btn-primary view-details-btn" onclick="return confirm('Do you want to reject ?')">update
+                            </a>
                           </td>
                           
                           
   
                       </tr>
+                      
                     
                     {% endfor %}
                     
                 </tbody>
             </table>
           </form>
+          <div id="container-99" class="additional-buttons">
+            <span class="close-btn">&times;</span>
+            <div class="animated-person"></div>
+            <h1>update branch details</h1>
+            <form method="post">
+              <!-- <input type="text" name="customer_id" id="cid" class="form-control form-control-lg" required> -->
+              <div class="form-outline mb-4">
+                <input type="text" name="bid" id="bid" class="form-control form-control-lg"/>
+                <label class="form-label" for="form3Example1cg">Branch Name</label>
+              </div>
+              <div class="form-outline mb-4">
+                <input type="text" name="bname" id="cid" class="form-control form-control-lg" />
+                <label class="form-label" for="form3Example1cg">Branch Name</label>
+              </div>
+              <div class="form-outline mb-4">
+                <input type="text" name="blocation" id="bname" class="form-control form-control-lg" />
+                <label class="form-label" for="form3Example1cg">Branch Location</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" name="bphone" id="location" class="form-control form-control-lg" />
+                <label class="form-label" for="form3Example3cg">phone</label>
+              </div>
+
+              
+              <div class="d-flex justify-content-center">
+                <!-- <button type="button"
+                  class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body">Add Branch</button> -->
+                  <input type="submit"  name="add" value="update" class="btn btn-primary btn-lg gradient-custom-4 text-body">
+                </div>
+            </form>
+          </div>
             <div class="pagination">
                 <button onclick="previousPage()">Previous</button>
                 <button onclick="nextPage()">Next</button>
@@ -72,9 +111,33 @@
     </div>
     
             </main>  
+            
     <!-- ====================end of aside==========================   -->
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('.complaint-link').click(function() {
+          var bid = $(this).closest('tr').find('td:eq(0)').text();
+
+          var customerID = $(this).closest('tr').find('td:eq(1)').text();
+          var bname = $(this).closest('tr').find('td:eq(2)').text();
+          var location = $(this).closest('tr').find('td:eq(3)').text();
+
+          $('#bid').val(bid);
+
+          $('#cid').val(customerID);
+          $('#bname').val(bname);
+          $('#location').val(location);
+
+          $('#container-99').addClass('show');
+        });
+    
+        $('.close-btn').click(function() {
+          $('#container-99').removeClass('show');
+        });
+      });
+    </script>
     <script>
     
  // Get all the submenu icons

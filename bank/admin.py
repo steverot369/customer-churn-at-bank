@@ -76,7 +76,7 @@ def adminhome():
     feedback_messages = cursor.fetchall()
  
     cursor = db.cursor()
-    cursor.execute("SELECT l.acc_type,l.acc_no,l.date_issued,c.fname,c.lname FROM loanacc l,customers c where l.customer_id=c.cid UNION SELECT s.acc_type,s.acc_no,s.acc_started_date,c.fname,c.lname FROM savingsacc s,customers c where s.customer_id=c.cid UNION SELECT d.acc_type,d.acc_no,d.deposit_date,c.fname,c.lname FROM depositacc d,customers c where d.customer_id=c.cid")
+    cursor.execute("SELECT l.acc_type,l.acc_no,l.date_issued,c.fname,c.lname FROM loanacc l,customers c where l.customer_id=c.cid UNION SELECT s.acc_type,s.acc_no,s.acc_started_date,c.fname,c.lname FROM savingsacc s,customers c where s.customer_id=c.cid UNION SELECT d.acc_type,d.acc_no,d.deposit_date,c.fname,c.lname FROM depositacc d,customers c where d.customer_id=c.cid and acc_status='active'")
     row_count=cursor.fetchall()
     account_count = cursor.rowcount
     cursor.execute("SELECT c.fname,c.lname,c.photo,tt.amount,tt.date_time,tt.t_type,tt.t_no FROM customers c,transaction tt where c.cid=tt.customer_id and tt.t_type='online' LIMIT 4")
@@ -301,7 +301,7 @@ def adminaddemployee():
             server.quit()
         
         
-        q = "INSERT INTO login VALUES(null,'%s', '%s', '%s','no')" % (email, phone, employee_type)
+        q = "INSERT INTO login VALUES(null,'%s', '%s', '%s','no','active')" % (email, phone, employee_type)
         id=insert(q)
         q = "INSERT INTO employee VALUES(null,'%s','%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s', '%s', '%s', '%s','%s ','%s','active')" % (id, branch_id,fname, lname, dob,img,status,gender,branch,employee_type,address,zipcode,place,district, phone, email)
         insert(q)
@@ -338,6 +338,30 @@ def adminviewbranch():
    
     cursor.execute("SELECT * FROM branch")
     branch = cursor.fetchall()
+    if 'add' in request.form:
+        branch_id = request.form['bid']
+
+        bname = request.form['bname']
+        location = request.form['blocation']
+        phoneno = request.form['bphone']
+        cursor.execute("update branch set branch_name='%s',branch_location='%s',phoneno='%s' where branch_id='%s'"%(bname,location,phoneno,branch_id))
+        flash('branch details updated successfully !')
+        return redirect(url_for('admin.adminviewbranch'))
+    if "action" in request.args:
+        action=request.args['action']
+       
+        id=request.args['delete_id']
+    else:
+        action="none"
+
+        
+    if action=="reject":
+       
+        
+        cursor.execute("update branch set status='reject' where loginid='%s'"%(id))
+        
+        flash('Rejected successfully !')
+        return redirect(url_for('admin.adminviewbranch'))
 
     return render_template('adminviewbranch.html', branch=branch)
 
@@ -355,7 +379,7 @@ def adminmanagehome():
 def adminmanagemployee():
 
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM employee order by employe_id desc LIMIT 10")
+    cursor.execute("SELECT * FROM employee where status='active' order by employe_id desc LIMIT 10")
     employees = cursor.fetchall()
 
     cursor.execute("select uname from login where login_type='admin';")
@@ -363,6 +387,21 @@ def adminmanagemployee():
     cursor = db.cursor()
     cursor.execute("SELECT branch_name FROM branch")
     branch_names = [row[0] for row in cursor.fetchall()]
+    if "action" in request.args:
+        action=request.args['action']
+       
+        id=request.args['delete_id']
+    else:
+        action="none"
+
+        
+    if action=="reject":
+       
+        cursor.execute("update employee set status='reject' where loginid='%s'"%(id))
+        cursor.execute("update login set status='reject' where loginid='%s'"%(id))
+        
+        flash('Rejected successfully !')
+        return redirect(url_for('admin.adminmanagemployee'))
     return render_template('adminmanagemployee.html',employees=employees,name=name,branch_names=branch_names)
 
 
@@ -430,7 +469,19 @@ def adminviewtransaction():
 def adminviewacc():
     cursor = db.cursor()
     
-    cursor.execute("SELECT l.acc_type,l.acc_no,l.date_issued,c.fname,c.lname,c.photo,c.email,c.phone,l.acc_status,l.ifsccode FROM loanacc l,customers c where l.customer_id=c.cid UNION SELECT s.acc_type,s.acc_no,s.acc_started_date,c.fname,c.lname,c.photo,c.email,c.phone,s.acc_status,s.ifsccode FROM savingsacc s,customers c where s.customer_id=c.cid UNION SELECT d.acc_type,d.acc_no,d.deposit_date,c.fname,c.lname,c.photo,c.email,c.phone,d.acc_status,d.ifsccode FROM depositacc d,customers c where d.customer_id=c.cid and acc_status='active'")
+    cursor.execute("""
+    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname,c.photo,c.email,c.phone,l.acc_status,l.ifsccode
+    FROM loanacc l, customers c
+    WHERE l.customer_id = c.cid
+    UNION
+    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname,c.photo,c.email,c.phone,s.acc_status,s.ifsccode
+    FROM savingsacc s, customers c
+    WHERE s.customer_id = c.cid
+    UNION
+    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname,c.photo,c.email,c.phone,d.acc_status,d.ifsccode
+    FROM depositacc d, customers c
+    WHERE d.customer_id = c.cid AND acc_status='active'
+    """)
     employees = cursor.fetchall()
     print(employees)
     return render_template('adminviewacc.html',employees=employees)

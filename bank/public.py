@@ -12,7 +12,7 @@ def login():
 		username=request.form['username']
 		passw=request.form['password']
 
-		q="select * from login where uname='%s' and password='%s'"%(username,passw)
+		q="select * from login where uname='%s' and password='%s' and status='active'"%(username,passw)
 		res=select(q)
 		print(res)
 		if res:
@@ -45,6 +45,7 @@ def login():
 				flash('Welcome')
 				
 				return redirect(url_for("customer.customerhome"))
+		
 		else:
 			flash('Invalid username or password !!!')
 	return render_template('login.html')

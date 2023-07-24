@@ -347,10 +347,27 @@ padding-bottom: 13px;
                     <p style="border-bottom:1px solid rgb(178, 170, 170); padding-bottom:10px"></p><br>
                     {% endfor %}
                     
-                    </div>
-                   
-                    <a href="view-all-messages">View All</a>
+                    
+                    {% for message in bank_messages1 %}
+                    {% if message[2]=='credit' %}
+
+                  <!-- <h3>From Bank</h3> -->
+                  <img src="/static/images/logo3.png" style="height: 30%; width:30%; border-radius:20px;">
+                    <p>{{ message[0] }}</p>
+                    <p><b>{{ message[1] }}</b></p>
+                    <a href="managerviewcreditcard" style="color: rgb(2, 98, 98);">view</a>
+                    <p style="border-bottom:1px solid rgb(178, 170, 170); padding-bottom:10px"></p><br>
+
                     {% endif %}
+                    {% endfor %}
+                    
+                    </div>
+                    <a href="view-all-messages">View All</a>
+
+
+                    {% endif %}
+
+
                 </div>
                 <div class="theme-btn">
                     <span class="material-icons-sharp active">light_mode</span>

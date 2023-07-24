@@ -228,7 +228,10 @@ def managerhome():
     cursor.execute("SELECT messages,date FROM bank_messages WHERE message_type='bank' AND DATE(date) = '%s' AND (user_type='employee' OR user_type='manager') AND branch_id='%s' ORDER BY date DESC LIMIT 3"% (current_date,branch_id))
     bank_messages = cursor.fetchall()
 
-    cursor.execute("SELECT COUNT(*) FROM bank_messages WHERE message_type='bank' AND DATE(date) = '%s' AND (user_type='employee' OR user_type='manager') AND branch_id='%s'" % (current_date,branch_id))
+    cursor.execute("SELECT messages,date,message_type FROM bank_messages where message_type='credit' AND (user_type='employee' OR user_type='manager') AND DATE(date) = '%s' ORDER BY date DESC LIMIT 3"%(current_date))
+    bank_messages1 = cursor.fetchall()
+
+    cursor.execute("SELECT COUNT(*) FROM bank_messages WHERE (message_type='bank' OR message_type='credit') AND DATE(date) = '%s' AND (user_type='employee' OR user_type='manager') AND branch_id='%s'" % (current_date,branch_id))
     messages_count = cursor.fetchone()[0]
 
 
@@ -242,7 +245,8 @@ def managerhome():
      current_year_count=current_year_count, previous_year_count=previous_year_count, customer_percentage_change=customer_percentage_change, 
      current_month_balance=current_month_balance, previous_month_balance=previous_month_balance, account_percentage_change=account_percentage_change,
      current_month_balance1=current_month_balance1, previous_month_balance1=previous_month_balance1, loan_account_percentage_change=loan_account_percentage_change,
-     customer_count=customer_count,employee_count=employee_count,bank_messages=bank_messages,messages_count=messages_count,account_count=account_count)
+     customer_count=customer_count,employee_count=employee_count,bank_messages=bank_messages,
+     messages_count=messages_count,account_count=account_count,bank_messages1=bank_messages1)
     
       
 @manager.route('/publichome')
@@ -299,7 +303,7 @@ def managermanagecustomers():
 # Calculate the date two years ago from the current date
     two_years_ago = current_date - datetime.timedelta(days=365*2)
     two_years_ago_str = two_years_ago.strftime('%Y-%m-%d')
-    cursor.execute("SELECT * FROM customers WHERE branch_id=(SELECT branch_id FROM employee WHERE employe_id='%s') AND date <= '%s'" % (session['mid'], two_years_ago_str))
+    cursor.execute("SELECT * FROM customers WHERE branch_id=(SELECT branch_id FROM employee WHERE employe_id='%s') AND date <= '%s' and active='1'" % (session['mid'], two_years_ago_str))
     employees = cursor.fetchall()
     date=datetime.datetime.now()
     if 'add' in request.form:
@@ -323,6 +327,24 @@ def managermanagecustomers():
             flash("successfully send notification")
         else:
             print('send after 1 hoursuccess')
+
+    if "action" in request.args:
+        action=request.args['action']
+       
+        id=request.args['delete_id']
+    else:
+        action="none"
+
+        
+    if action=="reject":
+       
+        
+        cursor.execute("update customers set active='0' where loginid='%s'"%(id))
+        cursor.execute("update login set status='reject' where loginid='%s'"%(id))
+
+        
+        flash('Rejected successfully !')
+        return redirect(url_for('manager.managermanagecustomers'))
         
     
 
@@ -1004,8 +1026,23 @@ def managerviewemployee():
     name12 = cursor.fetchall()
     
     cursor.execute("""
-    select * from employee where employee='clerk' and branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')
+    select * from employee where employee='clerk' and  status='active' and branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')
     """, (session['mid'],))
     employees = cursor.fetchall()
     print(employees)
+    if "action" in request.args:
+        action=request.args['action']
+       
+        id=request.args['delete_id']
+    else:
+        action="none"
+
+        
+    if action=="reject":
+       
+        cursor.execute("update employee set status='reject' where loginid='%s'"%(id))
+        cursor.execute("update login set status='reject' where loginid='%s'"%(id))
+        
+        flash('Rejected successfully !')
+        return redirect(url_for('manager.managerviewemployee'))
     return render_template('managerviewemployee.html',employees=employees,name12=name12)

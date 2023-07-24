@@ -80,8 +80,8 @@
                             <a href="#" class="btn btn-info view-details-btn" data-toggle="modal" data-target="#employeeDetailsModal" data-employee-details="{{ employee }}">View Details</a>
                             <a href="{{ url_for('manager.managercustomerchurn', customer_id=employee[0]) }}" class="btn btn-danger">Customer Churn</a>
                             <a href="#" class="btn btn-info complaint-link">Send Notification <i class="fa fa-bell" style="font-size:12px"></i></a>
-                            <a href="#" class="btn btn-info">Delete</a>
-
+                            <a href="?action=reject&delete_id={{employee[1]}}" class="btn btn-primary view-details-btn" onclick="return confirm('Do you want to reject ?')">Remove
+                            </a>
                           </div>
                         </td>
                           

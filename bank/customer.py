@@ -197,13 +197,13 @@ def customerhome():
     cursor.execute("SELECT messages,date FROM bank_messages where message_type='bank' AND DATE(date) = '%s' AND (customer_id='%s' OR customer_id='0') AND user_type='customer'  ORDER BY date DESC LIMIT 3"%(current_date,session['cust_id']))
     bank_messages = cursor.fetchall()
 
-    cursor.execute("SELECT messages,date FROM bank_messages where customer_id='0' AND DATE(date) = '%s' AND user_type='customer' ORDER BY date DESC LIMIT 3"%(current_date))
+    cursor.execute("SELECT messages,date,message_type FROM bank_messages where message_type='credit' AND DATE(date) = '%s' AND (customer_id='%s' OR customer_id='0') AND user_type='customer'  ORDER BY date DESC LIMIT 3"%(current_date,session['cust_id']))
     bank_messages1 = cursor.fetchall()
 
     cursor.execute("SELECT messages,date FROM bank_messages where customer_id='%s' AND DATE(date) = '%s' AND user_type='customer' and message_type='loan' ORDER BY date DESC LIMIT 3"%(session['cust_id'],current_date))
     bank_messages2 = cursor.fetchall()
 
-    cursor.execute("SELECT COUNT(*) FROM bank_messages WHERE message_type='bank' AND DATE(date) = '%s' AND (customer_id='%s' OR customer_id='0') AND user_type='customer'" % (current_date, session['cust_id']))
+    cursor.execute("SELECT COUNT(*) FROM bank_messages WHERE (message_type='bank') AND DATE(date) = '%s' AND (customer_id='%s' OR customer_id='0') AND user_type='customer'" % (current_date, session['cust_id']))
     messages_count = cursor.fetchone()[0]
 
 
@@ -292,6 +292,15 @@ def customertransferfund():
 
     cursor.execute("SELECT acc_no,balance,ifsccode from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
     acc_no = cursor.fetchall()
+    # cursor.execute("SELECT pin_no from savingsacc where customer_id='%s'"%(session['cust_id']))
+    # pin_no = cursor.fetchone()[0]
+   
+    if 'add1' in request.form:
+        acc_no=request.form['accno']
+        confirmpin = request.form['confirmpin']
+        cursor.execute("UPDATE savingsacc SET pin_no = %s WHERE acc_no = %s",(confirmpin, acc_no,))
+        flash("successful Set Pin...")
+        return redirect(url_for('customer.customertransferfund'))
     if 'add' in request.form:
         accno=request.form['accno']
         # from_acc = request.form['acc']
@@ -339,6 +348,7 @@ def customertransferfund():
         print(mpipin[0])
         calculate_balance=balance-amount
         print("caldddddd======",calculate_balance)
+
         if mpipin[0] == '1':
             flash("set mpi pin...")
             return redirect(url_for('customer.customersetpin'))
@@ -370,7 +380,7 @@ def customersetpin():
     cursor = db.cursor()
     cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
     name1 = cursor.fetchall()
-    cursor.execute("SELECT acc_no from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
+    cursor.execute("SELECT acc_no from savingsacc where pin_no='1' and customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
     acc_no = cursor.fetchall()
     if 'add' in request.form:
         acc_no=request.form['accno']

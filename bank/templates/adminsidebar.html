@@ -901,6 +901,42 @@ h1 {
   text-decoration: underline; /* Add underline to the suggested usernames */
   margin-bottom: 5px; /* Add some spacing between suggested usernames */
 }
+
+/* complaint container */
+#container-99 {
+ 
+ display: none;
+ position: fixed;
+ bottom: 100px;
+ right: 150px;
+ width: 500px;
+ height: 500px;
+ max-width: 90%;
+ background-color: #d9d3d3;
+ padding: 20px;
+ border: 2px solid rgb(55, 53, 53);
+        
+ box-shadow: 0 2px 6px rgba(3, 0, 0, 0.15);
+ border-radius: 5px;
+ z-index: 9999;
+ animation: slide-up 0.3s ease-out;
+} 
+
+#container-99.show {
+ display: block;
+ animation: slide-down 0.3s ease-out;
+}
+
+.close-btn {
+ position: absolute;
+ top: 10px;
+ right: 10px;
+ font-size: 24px;
+ color: #888;
+ cursor: pointer;
+}
+
+
   </style>
 <body>
     <nav>

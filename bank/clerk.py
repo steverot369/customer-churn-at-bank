@@ -310,7 +310,7 @@ def clerkadduser():
         cursor.execute("select branch_id from branch  where branch_name='%s'"%(branch))
         branch_id=cursor.fetchone()[0]
         
-        q = "INSERT INTO login VALUES(null,'%s', '%s', 'customer','no')" % (email, phone)
+        q = "INSERT INTO login VALUES(null,'%s', '%s', 'customer','no','active')" % (email, phone)
         id=insert(q)
         q = "INSERT INTO customers VALUES(null,'%s','%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s', '%s', '%s', '%s','%s','%s','%s','%s','%s','%s','%s','%s','1')" % (id, branch_id,fname, lname, dob,img,status,gender,phone,email,branch,address,city,state,zipcode,country,education,msalary,idproof,idnumber,img1,join_date)
         insert(q)
