@@ -56,7 +56,7 @@ def customerhome():
     cursor.execute("select acc_no from savingsacc where customer_id='%s'"%(session['cust_id']))
     account_details = [row[0] for row in cursor.fetchall()]
     cursor.fetchall()
-    cursor.execute("select fname,lname,email from customers where loginid='%s'"%(session['logid']))
+    cursor.execute("select fname,lname,email,photo from customers where loginid='%s'"%(session['logid']))
     name = cursor.fetchall()
     cursor.execute("select cid,branch_id from customers where cid='%s'"%(session['cust_id']))
     customer=cursor.fetchone()
@@ -262,27 +262,33 @@ def customerhome():
 def customerviewtransaction():
     # data={}
     cursor = db.cursor()
+    cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
+    name1 = cursor.fetchall()
 
     cursor.execute("SELECT t.t_no,t.t_type,t.amount,t.balance,t.date_time,s.acc_no from transaction t,savingsacc s where t.acc_id=s.savings_id and t.customer_id='%s' order by t.transaction_id DESC"%(session['cust_id']))
     transaction = cursor.fetchall()
     cursor.execute("select acc_no from savingsacc where customer_id='%s'"%(session['cust_id']))
     account_details = [row[0] for row in cursor.fetchall()]
-    return render_template('customerviewtransaction.html',transaction=transaction,account_details=account_details)
+    return render_template('customerviewtransaction.html',transaction=transaction,account_details=account_details,name1=name1)
 
 
 @customer.route('/customerviewaccount')
 def customerviewaccount():
     # data={}
     cursor = db.cursor()
+    cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
+    name1 = cursor.fetchall()
     cursor.execute("SELECT acc_no,balance,acc_started_date from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
     accounts = cursor.fetchall()
-    return render_template('customerviewaccount.html',accounts=accounts)
+    return render_template('customerviewaccount.html',accounts=accounts,name1=name1)
 
 
 @customer.route('/customertransferfund',methods=['post', 'get'])
 def customertransferfund():
     # data={}
     cursor = db.cursor()
+    cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
+    name1 = cursor.fetchall()
 
     cursor.execute("SELECT acc_no,balance,ifsccode from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
     acc_no = cursor.fetchall()
@@ -298,7 +304,7 @@ def customertransferfund():
         print("pin == ",pin)
         print("amount= ",amount)
         print("our account",acc_no)
-        cursor.execute("select c.cid,c.fname,c.lname,c.photo from savingsacc s,customers c  where s.customer_id=c.cid and acc_no='%s'"%(to_acc))
+        cursor.execute("select c.cid,c.fname,c.lname,photo from savingsacc s,customers c  where s.customer_id=c.cid and acc_no='%s'"%(to_acc))
         customer_details=cursor.fetchone()
         receiver_id=customer_details[0]
         fname=customer_details[1]
@@ -355,13 +361,15 @@ def customertransferfund():
             flash("wrong pin")
             return redirect(url_for('customer.customertransferfund'))
         
-    return render_template('customertransferfund.html',acc_no=acc_no)
+    return render_template('customertransferfund.html',acc_no=acc_no,name1=name1)
 
 
 @customer.route('/customersetpin',methods=['post', 'get'])
 def customersetpin():
     # data={}
     cursor = db.cursor()
+    cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
+    name1 = cursor.fetchall()
     cursor.execute("SELECT acc_no from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
     acc_no = cursor.fetchall()
     if 'add' in request.form:
@@ -370,7 +378,7 @@ def customersetpin():
         cursor.execute("UPDATE savingsacc SET pin_no = %s WHERE acc_no = %s",(confirmpin, acc_no,))
         flash("successful Set Pin...")
         return redirect(url_for('customer.customersetpin'))
-    return render_template('customersetpin.html',acc_no=acc_no)
+    return render_template('customersetpin.html',acc_no=acc_no,name1=name1)
 
 
 
@@ -380,13 +388,15 @@ def customersetpin():
 def customerviewloanpayments():
     # data={}
     cursor=db.cursor()
+    cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
+    name1 = cursor.fetchall()
     date = datetime.now().date()
     formatted_date = date.strftime("%d-%m-%y")
     print("date=======",formatted_date)
     cursor.execute("select acc_no,ifsccode,loan_type,maturity_date,interest_rate,interst_amt,issued_amount,remaing_amount,date_interest from loanacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
     loan=cursor.fetchall()
     
-    return render_template('customerviewloanpayments.html',loan=loan,formatted_date=formatted_date)
+    return render_template('customerviewloanpayments.html',loan=loan,formatted_date=formatted_date,name1=name1)
 
 
 
@@ -395,6 +405,8 @@ def customerviewloanpayments():
 def customerrequestcreditcard():
     # data={}
     cursor=db.cursor()
+    cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
+    name1 = cursor.fetchall()
     cursor.execute("select fname,lname,dob,gender,phone,email,city,state,zipcode,country,msalary,idnumber,address from customers where cid='%s'"%(session['cust_id']))
     customer=cursor.fetchall()
 
@@ -448,7 +460,7 @@ def customerrequestcreditcard():
     
         return redirect(url_for('customer.customerrequestcreditcard'))
     
-    return render_template('customerrequestcreditcard.html',customer=customer,card_name=card_name,salary=salary)
+    return render_template('customerrequestcreditcard.html',customer=customer,card_name=card_name,salary=salary,name1=name1)
 
 @customer.route('/differentcreditcard',methods=['post','get'])
 def differentcreditcard():
@@ -493,6 +505,8 @@ def customersendcomplaint():
 @customer.route('/customerprofile', methods=['POST', 'GET'])
 def customerprofile():
     cursor = db.cursor()
+    cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
+    name1 = cursor.fetchall()
     cursor.execute("SELECT * FROM customers WHERE cid = %s" % (session['cust_id']))
     details = cursor.fetchall()
     cursor.execute("SELECT password FROM login WHERE loginid = %s" % (session['logid']))
@@ -522,7 +536,7 @@ def customerprofile():
                 flash("No password selected")
             return redirect(url_for('customer.customerprofile'))
 
-    return render_template('customerprofile.html',details=details,password=password)
+    return render_template('customerprofile.html',details=details,password=password,name1=name1)
 
 
 
@@ -531,6 +545,8 @@ def customerprofile():
 def customerpaysloan():
         # data={}
     cursor = db.cursor()
+    cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
+    name1 = cursor.fetchall()
     cursor.execute("SELECT acc_no,balance,ifsccode from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
     acc_no = cursor.fetchall()
     cursor.execute("SELECT acc_no,loan_type,interst_amt,interest_rate,remaing_amount FROM loanacc where customer_id = '%s'"%(session['cust_id']))
@@ -646,13 +662,15 @@ def customerpaysloan():
             return redirect(url_for('customer.customerpaysloan'))
             
         
-    return render_template('customerpaysloan.html', acc_no=acc_no, accountDetails=accountDetails, year=year, month=month,loan_account=loan_account)
+    return render_template('customerpaysloan.html', acc_no=acc_no, accountDetails=accountDetails, year=year, month=month,loan_account=loan_account,name1=name1)
 
 
 
 @customer.route('/accountstatement', methods=['GET', 'POST'])
 def accountstatement():
     cursor = db.cursor()
+    cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
+    name1 = cursor.fetchall()
     cursor.execute("SELECT t_no, t_type, amount, balance, date_time FROM transaction WHERE customer_id = '%s'"%(session['cust_id']))
     transactions = cursor.fetchall()
     cursor.execute("select acc_no from savingsacc where customer_id='%s'"%(session['cust_id']))
@@ -806,13 +824,15 @@ def accountstatement():
         
 
 
-    return render_template('accountstatement.html', transactions=transactions,account_details=account_details)
+    return render_template('accountstatement.html', transactions=transactions,account_details=account_details,name1=name1)
 
 
 
 @customer.route('/setusername',methods=['POST','GET'])
 def setusername():
     cursor=db.cursor()
+    cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
+    name1 = cursor.fetchall()
     cursor.execute("select uname from login")
     uname=[row[0] for row in cursor.fetchall()]
     cursor.execute("select count,login_type from login where loginid='%s'"%(session['logid']))
@@ -830,14 +850,22 @@ def setusername():
         flash("successfuly change username and password")
         return redirect(url_for('public.login'))
 
-    return render_template('setusername.html',uname=uname,count=count,logintype=logintype)
+    return render_template('setusername.html',uname=uname,count=count,logintype=logintype,name1=name1)
 
 
 @customer.route('/customeviewfixedpayments')
 def customeviewfixedpayments():
     # data={}
     cursor=db.cursor()
+    cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
+    name1 = cursor.fetchall()
     cursor.execute("select * from transaction where customer_id='%s' and t_type='fixed deposit'"%(session['cust_id']))
     interest=cursor.fetchall()
 
-    return render_template('customeviewfixedpayments.html',interest=interest)
+    return render_template('customeviewfixedpayments.html',interest=interest,name1=name1)
+
+@customer.route('/publichome')
+def publichome():
+    session.clear()
+    flash("Successfully logout...")
+    return redirect(url_for('public.publichome'))

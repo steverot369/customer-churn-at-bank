@@ -1751,7 +1751,25 @@ input[type="password"] {
     max-width: 400px; /* Limit the maximum width of the alert */
   }
 
+  .form-outline input[type="checkbox"] {
+   
+    cursor: pointer;
+  }
 
+  .form-outline label[for="togglePassword1"] {
+  
+    cursor: pointer;
+    color: #333; /* Customize the color of the label */
+    font-size: 14px; /* Customize the font size of the label */
+  }
+
+  /* Style the tick mark for the checkbox */
+  .form-outline input[type="checkbox"]:checked + label:before {
+    content: "\2713"; /* Unicode for the tick symbol */
+    
+    font-size: 14px;
+    color: #007bff; /* Customize the color of the tick mark */
+  }
   </style>
 <body>
     <nav>
@@ -1768,11 +1786,14 @@ input[type="password"] {
 
                 </div>
                 <div class="profile">
-                    <div class="profile-photo">
-                        <img src="/static/images/profile-2.jpg" style="width: 100%;">
-                    </div>
-                
-                <h5>Steve Rodrigues</h5>
+                  <div class="profile-photo">
+
+                     {% for row in name1 %}
+                <img src="{{url_for('static', filename=row[2])}}">
+              </div>
+              
+              <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
+              {% endfor %}
                 <span class="material-icons-sharp">expand_more</span>
             </div>
             <button id="menu-btn">

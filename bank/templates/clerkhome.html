@@ -253,6 +253,60 @@ rel="stylesheet">
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
 }
+.messages-container {
+    display: none;
+    position: fixed;
+    top: 50px;
+    right: 100px;
+    width: 300px;
+    max-width: 90%;
+    background-color: #ffffff;
+    padding: 20px;
+    border: 2px solid #ccc;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    z-index: 9999;
+    animation: slide-in 0.3s ease-in;
+/* overflow: scroll; */
+}
+
+.messages {
+    margin-bottom: 10px;
+    
+    /* border-bottom: 1px solid #ccc; */
+    padding: 10px;
+    
+ 
+}
+
+.messages h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.messages p {
+    margin: 0;
+    padding: 5px 0;
+    font-size: 13px;
+}
+.message-count1 {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+padding-bottom: 13px;
+  border-bottom:1px solid rgb(209, 196, 196);
+}
+.message-count {
+    position: absolute;
+    top: -10px;
+    right: 285px;
+    background-color: red;
+    color: #fff;
+    padding: 3px 7px;
+    border-radius: 50%;
+    font-size: 10px;
+}
 </style>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -272,6 +326,30 @@ rel="stylesheet">
                 <input type="search" placeholder="search">
             </div>
             <div class="profile-area">
+                <span class="message-count" id="messageCount">{{ messages_count }}</span>
+              <span class="material-icons-sharp active" onclick="toggleMessageContainer()" onmouseover="showMessageContainer(); setCountToZero();" onmouseout="hideMessageContainer()">notifications</span>
+                <div id="messages-container" class="messages-container" onmouseover="showMessageContainer()" onmouseout="hideMessageContainer()">
+                    {% if messages_count == 0 %}
+                    <h3>no new notification</h3>
+                    {% else %}
+                    <span class="message-count1" style="color: rgb(3, 87, 87);">you have {{ messages_count }} new notification</span>
+                    <div class="messages">
+                    {% for message in bank_messages %}
+                        
+
+                  <!-- <h3>From Bank</h3> -->
+                  <img src="/static/images/logo3.png" style="height: 30%; width:30%; border-radius:20px;">
+                    <p>{{ message[0] }}</p>
+                    <p><b>{{ message[1] }}</b></p>
+                    
+                    <p style="border-bottom:1px solid rgb(178, 170, 170); padding-bottom:10px"></p><br>
+                    {% endfor %}
+                    
+                    </div>
+                   
+                    <a href="view-all-messages">View All</a>
+                    {% endif %}
+                </div>
                 <div class="theme-btn">
                     <span class="material-icons-sharp active">light_mode</span>
                     <span class="material-icons-sharp">dark_mode</span>
@@ -280,12 +358,15 @@ rel="stylesheet">
           
           
                <div class="profile">
+              
+
                 <div class="profile-photo" onclick="toggleProfilePhoto()">
-                  <!-- <img src="/static/images/profile-1.jpg"> -->
-                  {% for row in name %}
-                  <img src="{{url_for('static', filename=row[3])}}">
+                    
+                    {% for row in name %}
+                    <img src="{{url_for('static', filename=row[3])}}">
+
                 </div>
-                
+               
                 <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
                 {% endfor %}
                 <span class="material-icons-sharp expand-icon" onclick="toggleProfileContainer()">expand_more</span>
@@ -294,11 +375,9 @@ rel="stylesheet">
               <div class="profile-container">
                 <div class="profile-content">
                   <div class="profile-details">
-                    {% for row in name %}
                     <div class="profile-photo1">
-                      <!-- <img src="/static/images/profile-1.jpg"> -->
-                      <img src="{{url_for('static', filename=row[3])}}">
-
+                        {% for row in name %}
+                        <img src="{{url_for('static', filename=row[3])}}">
                     </div>
                 <!--  <b><h5>Steve Rodrigues</h5></b> -->
                 
@@ -397,7 +476,7 @@ rel="stylesheet">
 
                         <div class="insights">
                             <div class="sales">
-                                <span class="material-icons-sharp">group</span>
+                                <a href="clerkmanagecustomers"><span class="material-icons-sharp">group</span></a>
                                 <div class="middle">
                                     <div class="left">
                                         <h3>Total Customers</h3>
@@ -437,14 +516,16 @@ rel="stylesheet">
                         </div>
                           <!------------ END OF expense -------------->
                           <div class="income">
-                              <span class="material-icons-sharp">inventory_2</span>
+                            <a href="clerkviewacc"><span class="material-icons-sharp">inventory_2</span></a>
                               <div class="middle">
                                   <div class="left">
-                                      <h3>Total Bank Product</h3>
+                                      <h3>Total Accounts</h3>
+                                     
+
                                 
                                         
                                      
-                                      <h1>12</h1>
+                                      <h1>{{ account_count }}</h1>
                                   </div>
                                   <div class="progress">
                                       <svg>
@@ -641,6 +722,30 @@ rel="stylesheet">
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/js/customer.js"></script>
     <script>
+        var messageContainer = document.getElementById("messages-container");
+        var messageCount = document.getElementById("messageCount");
+    
+        function toggleMessageContainer() {
+            if (messageContainer.style.display === "none") {
+                showMessageContainer();
+            } else {
+                hideMessageContainer();
+            }
+        }
+    
+        function showMessageContainer() {
+            messageContainer.style.display = "block";
+        }
+    
+        function hideMessageContainer() {
+            messageContainer.style.display = "none";
+        }
+    
+        function setCountToZero() {
+            messageCount.textContent = "0";
+        }
+    </script>
+    <script>
         function toggleDetails(icon) {
             var row = icon.closest('tr');
             var detailsRow = row.nextElementSibling;
@@ -690,8 +795,8 @@ rel="stylesheet">
         
         </script>
           <script>
-            var employeeCount = 12;
-            var totalEmployees = 15;  // Set the maximum value for the progress bar
+            var employeeCount = {{ account_count }};
+            var totalEmployees = 1000;  // Set the maximum value for the progress bar
         
             // Calculate the employee percentage
             var employeePercentage = (employeeCount / totalEmployees) * 100;

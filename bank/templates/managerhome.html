@@ -519,7 +519,7 @@ padding-bottom: 13px;
                         </div>
                           <!------------ END OF expense -------------->
                           <div class="income">
-                            <a href="managerviewaccounts"><span class="material-icons-sharp">inventory_2</span></a>
+                            <a href="managerviewacc"><span class="material-icons-sharp">inventory_2</span></a>
                               <div class="middle">
                                   <div class="left">
                                       <h3>Total Accounts</h3>
@@ -859,8 +859,8 @@ padding-bottom: 13px;
         
         </script>
           <script>
-            var employeeCount = 12;
-            var totalEmployees = 15;  // Set the maximum value for the progress bar
+            var employeeCount = {{ account_count }};
+            var totalEmployees = 1000;  // Set the maximum value for the progress bar
         
             // Calculate the employee percentage
             var employeePercentage = (employeeCount / totalEmployees) * 100;

@@ -197,7 +197,21 @@ def managerhome():
     employee_count=cursor.fetchone()[0]
 
 
-    cursor.execute("SELECT l.acc_type,l.acc_no,l.date_issued,c.fname,c.lname FROM loanacc l,customers c where l.customer_id=c.cid UNION SELECT s.acc_type,s.acc_no,s.acc_started_date,c.fname,c.lname FROM savingsacc s,customers c where s.customer_id=c.cid UNION SELECT d.acc_type,d.acc_no,d.deposit_date,c.fname,c.lname FROM depositacc d,customers c where d.customer_id=c.cid")
+    cursor.execute("""
+    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname
+    FROM loanacc l, customers c
+    WHERE l.customer_id = c.cid
+    UNION
+    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname
+    FROM savingsacc s, customers c
+    WHERE s.customer_id = c.cid
+    UNION
+    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname
+    FROM depositacc d, customers c
+    WHERE d.customer_id = c.cid AND acc_status='active'
+    AND d.branch_id = (SELECT branch_id FROM employee WHERE employe_id = %s)
+    """, (session['mid'],))
+
     row_count=cursor.fetchall()
     account_count = cursor.rowcount
 
@@ -245,8 +259,13 @@ def setusername():
     name12 = cursor.fetchall()
     cursor.execute("select uname from login")
     uname=[row[0] for row in cursor.fetchall()]
-    cursor.execute("select count from login where loginid='%s'"%(session['logid']))
-    count=cursor.fetchone()[0]
+    cursor.execute("select count,login_type from login where loginid='%s'"%(session['logid']))
+    logindetails=cursor.fetchone()
+    count=logindetails[0]
+    logintype=logindetails[1]
+
+  
+    cursor.fetchall()
 
     if 'add' in request.form:
         username=request.form['username']
@@ -256,7 +275,7 @@ def setusername():
         flash("successfuly change username and password")
         return redirect(url_for('public.login'))
 
-    return render_template('setusername.html',uname=uname,count=count,name12=name12)
+    return render_template('setusername.html',uname=uname,count=count,name12=name12,logintype=logintype)
 
 @manager.route('/managermanagehome')
 def managermanagehome():
@@ -951,3 +970,42 @@ def userprofile():
             return redirect(url_for('manager.userprofile'))
 
     return render_template('userprofile.html',details=details,password=password,logged_in_user_id=logged_in_user_id,name12=name12)
+
+@manager.route('/managerviewacc')
+def managerviewacc():
+    cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
+    
+    cursor.execute("""
+    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname,c.photo,c.email,c.phone,l.acc_status,l.ifsccode
+    FROM loanacc l, customers c
+    WHERE l.customer_id = c.cid
+    UNION
+    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname,c.photo,c.email,c.phone,s.acc_status,s.ifsccode
+    FROM savingsacc s, customers c
+    WHERE s.customer_id = c.cid
+    UNION
+    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname,c.photo,c.email,c.phone,d.acc_status,d.ifsccode
+    FROM depositacc d, customers c
+    WHERE d.customer_id = c.cid AND acc_status='active'
+    AND d.branch_id = (SELECT branch_id FROM employee WHERE employe_id = %s)
+    """, (session['mid'],))
+    employees = cursor.fetchall()
+    print(employees)
+    return render_template('managerviewacc.html',employees=employees,name12=name12)
+
+
+
+@manager.route('/managerviewemployee')
+def managerviewemployee():
+    cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
+    
+    cursor.execute("""
+    select * from employee where employee='clerk' and branch_id = (SELECT branch_id FROM employee WHERE employe_id = '%s')
+    """, (session['mid'],))
+    employees = cursor.fetchall()
+    print(employees)
+    return render_template('managerviewemployee.html',employees=employees,name12=name12)

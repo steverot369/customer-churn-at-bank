@@ -582,12 +582,13 @@ padding-bottom: 13px;
                 </div>
           
           
-               <div class="profile">
-                <div class="profile-photo" onclick="toggleProfilePhoto()">
-                  
-                  <img src="/static/images/profile-1.jpg">
+                <div class="profile">
+                    <div class="profile-photo">
+
+                       {% for row in name %}
+                  <img src="{{url_for('static', filename=row[3])}}">
                 </div>
-                {% for row in name %}
+                
                 <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
                 {% endfor %}
                 <span class="material-icons-sharp expand-icon" onclick="toggleProfileContainer()">expand_more</span>
@@ -597,11 +598,12 @@ padding-bottom: 13px;
                 <div class="profile-content">
                   <div class="profile-details">
                     <div class="profile-photo1">
-                      <img src="/static/images/profile-1.jpg">
+                        {% for row in name %}
+                        <img src="{{url_for('static', filename=row[3])}}">
                     </div>
                 <!--  <b><h5>Steve Rodrigues</h5></b> -->
                 
-                {% for row in name %}
+                
                 <b><h5>{{ row[0] }} {{ row[1]}}</h5></b>
                 
                 <p><h5>{{row[2]}}</h5></p>
@@ -621,7 +623,7 @@ padding-bottom: 13px;
                     <ul>
                       <li><i class="material-icons">person</i><a href="customerprofile">profile</a></li>
                       <li><i class="material-icons">settings</i><a href="#">Settings</a></li>
-                      <li><i class="material-icons">exit_to_app</i><a href="/">Logout</a></li>
+                      <li><i class="material-icons">exit_to_app</i><a href="publichome">Logout</a></li>
                     </ul>
                   </div>
                 </div>

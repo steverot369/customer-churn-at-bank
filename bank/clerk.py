@@ -173,6 +173,31 @@ def clerkhome():
     cursor.execute("select count(*) from employee where branch_id='%s'"%(branch_id))
     employee_count=cursor.fetchone()[0]
     query = "SELECT COUNT(*) FROM complaints where reply='0'"
+
+    cursor.execute("""
+    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname
+    FROM loanacc l, customers c
+    WHERE l.customer_id = c.cid
+    UNION
+    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname
+    FROM savingsacc s, customers c
+    WHERE s.customer_id = c.cid
+    UNION
+    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname
+    FROM depositacc d, customers c
+    WHERE d.customer_id = c.cid AND acc_status='active'
+    AND d.branch_id = (SELECT branch_id FROM employee WHERE employe_id = %s)
+    """, (session['clid'],))
+
+    row_count=cursor.fetchall()
+    account_count = cursor.rowcount
+    current_datetime=datetime.now()
+    current_date = current_datetime.date()
+    cursor.execute("SELECT messages,date FROM bank_messages WHERE message_type='bank' AND DATE(date) = '%s' AND (user_type='employee' OR user_type='clerk') AND branch_id='%s' ORDER BY date DESC LIMIT 3"% (current_date,branch_id))
+    bank_messages = cursor.fetchall()
+
+    cursor.execute("SELECT COUNT(*) FROM bank_messages WHERE message_type='bank' AND DATE(date) = '%s' AND (user_type='employee' OR user_type='clerk') AND branch_id='%s'" % (current_date,branch_id))
+    messages_count = cursor.fetchone()[0]
    
     cursor.execute(query)
     count = cursor.fetchone()[0]
@@ -187,7 +212,7 @@ def clerkhome():
      current_year_count=current_year_count, previous_year_count=previous_year_count, customer_percentage_change=customer_percentage_change, 
      current_month_balance=current_month_balance, previous_month_balance=previous_month_balance, account_percentage_change=account_percentage_change,
      current_month_balance1=current_month_balance1, previous_month_balance1=previous_month_balance1, loan_account_percentage_change=loan_account_percentage_change,
-     customer_count=customer_count,employee_count=employee_count)
+     customer_count=customer_count,employee_count=employee_count,account_count=account_count,bank_messages=bank_messages,messages_count=messages_count)
     
 
 @clerk.route('/clerkmanagehome')
@@ -1124,3 +1149,27 @@ def clerkviewtransaction():
     cursor.execute("SELECT t.t_no,t.t_type,t.amount,t.date_time,c.fname,c.lname,s.acc_no from transaction t,customers c,savingsacc s where t.customer_id=c.cid AND t.customer_id=s.customer_id AND t.branch_id=(select branch_id from employee where employe_id='%s')"%(session['clid']))
     employees = cursor.fetchall()
     return render_template('clerkviewtransaction.html',name1=name1,employees=employees)
+
+@clerk.route('/clerkviewacc')
+def clerkviewacc():
+    cursor = db.cursor()
+    cursor.execute("select employe_fname,employee_lname,email,image from employee where loginid='%s'"%(session['logid']))
+    name12 = cursor.fetchall()
+    
+    cursor.execute("""
+    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname,c.photo,c.email,c.phone,l.acc_status,l.ifsccode
+    FROM loanacc l, customers c
+    WHERE l.customer_id = c.cid
+    UNION
+    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname,c.photo,c.email,c.phone,s.acc_status,s.ifsccode
+    FROM savingsacc s, customers c
+    WHERE s.customer_id = c.cid
+    UNION
+    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname,c.photo,c.email,c.phone,d.acc_status,d.ifsccode
+    FROM depositacc d, customers c
+    WHERE d.customer_id = c.cid AND acc_status='active'
+    AND d.branch_id = (SELECT branch_id FROM employee WHERE employe_id = %s)
+    """, (session['clid'],))
+    employees = cursor.fetchall()
+    print(employees)
+    return render_template('clerkviewacc.html',employees=employees,name12=name12)
