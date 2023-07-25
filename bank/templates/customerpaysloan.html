@@ -83,7 +83,7 @@
 					<div class="grupo">
 						<label for="inputNumero">Loan Account number</label>
 						<div class="dropdown dropdown-custom-8">
-							<input type="text" name="loan_acc" id="new-dropdown-input-8" style="background: #f2e5e5;" class="form-control form-control-lg" placeholder="Search by accno or customer name...." required>
+							<input type="text" name="loan_acc" id="new-dropdown-input-8" style="background: #f2e5e5;" class="form-control form-control-lg" placeholder="Search by accno or customer name....">
 							<span class="dropdown-custom-icon-8">&#9662;</span>
 							<ul class="dropdown-custom-list-8" style="display: block;">
 								{% for loan in loan_account %}
@@ -94,8 +94,8 @@
 					</div>
 					
 					<div class="grupo">
-						<!-- <label for="inputNumero">Emi amount</label> -->
-						<input type="hidden" name="emi_amount" id="emi_amount_input" maxlength="19" readonly>
+						<label for="inputNumero">Emi amount</label>
+						<input type="text" name="emi_amount" id="emi_amount_input" maxlength="19" readonly>
 					</div>
 					
 					<div class="grupo">

@@ -290,7 +290,7 @@ def customertransferfund():
     cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
     name1 = cursor.fetchall()
 
-    cursor.execute("SELECT acc_no,balance,ifsccode from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
+    cursor.execute("SELECT acc_no,balance,ifsccode,pin_no from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
     acc_no = cursor.fetchall()
     # cursor.execute("SELECT pin_no from savingsacc where customer_id='%s'"%(session['cust_id']))
     # pin_no = cursor.fetchone()[0]

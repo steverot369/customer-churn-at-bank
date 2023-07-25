@@ -82,7 +82,7 @@
                       <span class="dropdown-custom-icon-4">&#9662;</span>
                       <ul class="dropdown-custom-list-4" style="display: block;">
                         {% for row in acc_no %}
-                        <li onclick="selectAccount('{{ row[0] }}', '{{ row[1] }}','{{ row[2] }}')">&#8377; {{ row[1] }} <div class="space"></div> <b>{{ row[0] }} Savings A/c</b></li>
+                        <li onclick="selectAccount('{{ row[0] }}', '{{ row[1] }}','{{ row[2] }}','{{ row[3] }}')">&#8377; {{ row[1] }} <div class="space"></div> <b>{{ row[0] }} Savings A/c</b></li>
                         {% endfor %}
                       </ul>
                     </div>
@@ -92,6 +92,9 @@
                         
                    <i><h3 style="padding: 6px;" id="balance" style="display: none;"></h3></i> 
                    <i><h3 style="padding: 6px;" id="ifsccode" style="display: none;"></h3></i> 
+                    <i><h3 style="padding: 6px;" id="pin_no" style="display: none;"></h3></i>            
+                   <p id="pin_message"></p>      
+
                    <div class="form-outline">
                     <input type="number" id="amt" name="balance" style="display: none;" class="form-control form-control-lg" placeholder="full Name*" hidden/>
                     
@@ -137,8 +140,7 @@
 <div class="form-outline mb-4 pb-2">
   <input type="number" name="mpipin" id="form5" class="form-control form-control-lg" placeholder="Enter pin*"  required/>
 </div>
-     <h1>{{ pin_no }}</h1>            
-                  
+
 
 <div class="d-flex justify-content-center">
   <button class="btn btn-primary btn-lg gradient-custom-4 text-body" onclick="showLoadingAnimation(event)">Submit</button>
@@ -244,7 +246,37 @@
  
 }
 </script> -->
+<!-- <script>
+  const mpipinInput = document.getElementById('form5');
+  const pinFormInput = document.getElementById('pin_no1');
+  const message = document.getElementById('message');
 
+  mpipinInput.addEventListener('input', () => {
+    const mpipinValue = mpipinInput.value.trim();
+    const pinFormValue = pinFormInput.value.trim();
+
+    if (mpipinValue === pinFormValue) {
+      message.textContent = 'Number matches.';
+    } else if (pinFormValue === '1') {
+      message.innerHTML = 'Set MPI pin and show a <a href="#setpinpin">setpinpin</a> link.';
+    } else {
+      message.textContent = '';
+    }
+  });
+
+  pinFormInput.addEventListener('input', () => {
+    const mpipinValue = mpipinInput.value.trim();
+    const pinFormValue = pinFormInput.value.trim();
+
+    if (mpipinValue === pinFormValue) {
+      message.textContent = 'Number matches.';
+    } else if (pinFormValue === '1') {
+      message.innerHTML = 'Set MPI pin and show a <a href="#setpinpin">setpinpin</a> link.';
+    } else {
+      message.textContent = '';
+    }
+  });
+</script> -->
 <script>
   $(document).ready(function() {
     // Function to compare the values in form 1 and form 2
@@ -585,18 +617,51 @@ setTimeout(function() {
       // Update the selected account's balance
       document.getElementById("balance").innerHTML = "Available Balance : <span class='rupee-symbol'>&#8377;</span> " + balance;
       document.getElementById("ifsccode").innerHTML = "Ifsccode :  " + ifsccode;
+    
+
       
       document.getElementById("balance").value=balance;
       document.getElementById("amt").value=accno;
+ 
+    
+
+
 
      
 
 
       document.getElementById("balance").style.display = "block";
       document.getElementById("ifsccode").style.display = "block";
+      document.getElementById("pin_no").style.display = "block";
+
 
     }
   </script>
+  <!-- <script>
+    function selectAccount(accno, balance, ifsccode, pin_no) {
+      // Update the selected account's balance
+      document.getElementById("balance").innerHTML = "Available Balance : <span class='rupee-symbol'>&#8377;</span> " + balance;
+      document.getElementById("ifsccode").innerHTML = "Ifsccode :  " + ifsccode;
+      document.getElementById("pin_no").innerHTML = pin_no;
+  
+      document.getElementById("balance").value = balance;
+      document.getElementById("amt").value = accno;
+      // document.getElementById("pin_no1").value = pin_no;
+  
+      document.getElementById("balance").style.display = "block";
+      document.getElementById("ifsccode").style.display = "block";
+      document.getElementById("pin_no").style.display = "block";
+  
+      if (pin_no === "1") {
+        // Show the message in the <p> tag with the anchor link
+        document.getElementById("pin_message").innerHTML = "You have not set the MPI pin. Set it <a href='customersetpin'>here</a>.";
+      } else {
+        // If the pin_no value is not 1, hide the message
+        document.getElementById("pin_message").style.display = "none";
+      }
+    }
+  </script> -->
+  
  <script>
   $(document).ready(function() {
     // Function to compare the values in form 1 and form 2
