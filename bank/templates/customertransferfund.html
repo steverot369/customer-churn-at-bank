@@ -104,12 +104,18 @@
                     <div class="form-outline mb-4 pb-2">
                       <input type="text"  id="form1"  class="form-control form-control-lg" placeholder="Full Name*"  required/>
                     </div>
+                    
                     <div class="form-outline mb-4 pb-2">
                       <input type="number" name="acc" id="form2" class="form-control form-control-lg" placeholder="Account number*"  required/>
                     </div>
-                    
+                    <div id="account_number" style="display: none;">
+                      {% for acc in account_number %}
+                    <p>{{ acc }}</p>
+                    {% endfor %}
+                    </div>
+                    <p id="message-2" style="color: red; font-size:14px;"></p>
                     <div class="form-outline mb-4">
-                      <input type="number" name="acc1" id="form3" class="form-control form-control-lg" placeholder="Re-Enter Acc Number*"  required/>
+                      <input type="number" name="acc1" id="form3" class="form-control form-control-lg" placeholder="Re-Enter Acc Number*"  required disabled/>
                       <!-- <label class="form-label" for="form2">Re-Enter Acc Number</label><br> -->
                       <span class="error-message" style="display: none;">Pin numbers do not match</span>
                       <span class="error-message1" style="display: none;">numbers match</span>
@@ -124,7 +130,7 @@
 <br>
 <div class="form-group">
   <div class="form-check">
-    <input class="form-check-input" type="checkbox" id="gridCheck"  required>
+    <input class="form-check-input" type="checkbox" id="gridCheck">
     <label class="form-check-label" for="gridCheck">
       Send <span class='rupee-symbol'>&#8377;</span>1 as test amount<br>
       <p class="down">(Optional, if not sure about A/c no.)</p>
@@ -138,12 +144,15 @@
      
 
 <div class="form-outline mb-4 pb-2">
-  <input type="number" name="mpipin" id="form5" class="form-control form-control-lg" placeholder="Enter pin*"  required/>
+  <input type="number" name="mpipin" id="form5" class="form-control form-control-lg" placeholder="Enter pin*" required disabled/>
 </div>
+<p id="pin_number" style="display: none;">{{ pin_no }}</p>
+<p id="message-1"></p>
+
 
 
 <div class="d-flex justify-content-center">
-  <button class="btn btn-primary btn-lg gradient-custom-4 text-body" onclick="showLoadingAnimation(event)">Submit</button>
+  <button  class="btn btn-secondary" onclick="showLoadingAnimation(event)" id="submitBtn" disabled>Submit</button>
 </div>
 <div id="fadeOverlay" class="fade-overlay" style="display: none;">
 
@@ -278,24 +287,59 @@
   });
 </script> -->
 <script>
-  $(document).ready(function() {
-    // Function to compare the values in form 1 and form 2
-    function comparePins() {
-      var pin1 = $('#form11').val();
-      var pin2 = $('#form12').val();
+  document.getElementById("form2").addEventListener("input", function() {
+    // Get the entered account number from the input field
+    var enteredAccount = document.getElementById("form2").value;
 
-      if (pin1 !== pin2) {
-        $('.error-message').show();
-      } else {
-        $('.error-message').hide();
-        $('.error-message1').show();
+    // Get all the account numbers displayed in the account_number div
+    var accountNumbers = document.querySelectorAll("#account_number p");
 
-      }
+    // Convert the NodeList to an array for easier handling
+    var accountNumbersArray = Array.from(accountNumbers);
+    var enable = document.getElementById("form3")
+    
+
+    // Check if the entered account number matches any of the account numbers
+    var accountExists = accountNumbersArray.some(function(element) {
+      return element.textContent === enteredAccount;
+    });
+
+    // Display the message accordingly
+    if (accountExists) {
+      document.getElementById("message-2").textContent = "";
+      enable.disabled = false;
+    } else {
+      document.getElementById("message-2").textContent = "The account you entered is not on this branch you can only send money to another person who is in the same bank.";
+      enable.disabled = true;
 
     }
+  });
+  if (from === '') {
+      alert('Please fill in all the form fields.');
+      
+    }
+</script>  
 
-    // Call the comparePins function whenever typing in form 2
-    $('#form12').on('input', comparePins);
+
+<script>
+  document.getElementById("form5").addEventListener("input", function() {
+    // Get the entered value in the input field
+    var enteredPin = document.getElementById("form5").value;
+
+    // Get the value from the pin_no paragraph
+    var actualPin = document.getElementById("pin_number").textContent;
+
+    // Compare the values
+    if (enteredPin === actualPin) {
+      document.getElementById("message-1").textContent = "Number match";
+      submitBtn.disabled = false;
+    } else {
+      document.getElementById("message-1").innerHTML = "Did you forget your password? Click ";
+      var anchorTag = document.createElement("a");
+      anchorTag.href = "updatempipin"; // Replace "#" with the link to reset/forgot password
+      anchorTag.innerHTML = "here";
+      document.getElementById("message-1").appendChild(anchorTag);
+    }
   });
 </script>            
               
@@ -454,19 +498,7 @@ if (cityNameInput.value.match(phoneno1) || cityNameValue<0) {
 });
 
 
-  phoneInput.addEventListener('input', function() {
-  var phoneno = /^\d{11}$/;
-
-
-const phoneValue =  parseFloat(phoneInput.value);
-const containsSymbol1 = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(phoneValue);
-
-if (phoneInput.value.match(phoneno) || phoneValue < 0 || containsSymbol1) {
-  showAlert('Phone number must be exactly 10 digits long and should not contain special symbols.');
-  phoneInput.value = '';
-}
-});
-
+ 
 
 
   function showAlert(message) {
@@ -493,12 +525,15 @@ setTimeout(function() {
     var to = document.getElementById('form2').value;
     var accountBalance = document.getElementById('balance').value;
     var enteredAmount = document.getElementById('form4').value;
+    var form3 = document.getElementById('form3').value;
+
 
     // Check if any of the form fields are empty
-    if (from === '' || to === '' || accountBalance === '' || enteredAmount === '') {
+    if (from === '' || to === '' || accountBalance === '' || enteredAmount === ''|| form3 === '') {
       alert('Please fill in all the form fields.');
       return; // Prevent form submission if any field is empty
     }
+    
 
     // Create the loading container and spinner
     var loadingContainer = document.createElement('div');
@@ -612,55 +647,46 @@ setTimeout(function() {
       $('#gridCheck').on('change', fillAmountField);
     });
   </script>
-  <script>
-    function selectAccount(accno, balance,ifsccode) {
-      // Update the selected account's balance
-      document.getElementById("balance").innerHTML = "Available Balance : <span class='rupee-symbol'>&#8377;</span> " + balance;
-      document.getElementById("ifsccode").innerHTML = "Ifsccode :  " + ifsccode;
-    
-
-      
-      document.getElementById("balance").value=balance;
-      document.getElementById("amt").value=accno;
- 
-    
-
-
-
-     
-
-
-      document.getElementById("balance").style.display = "block";
-      document.getElementById("ifsccode").style.display = "block";
-      document.getElementById("pin_no").style.display = "block";
-
-
-    }
-  </script>
-  <!-- <script>
-    function selectAccount(accno, balance, ifsccode, pin_no) {
-      // Update the selected account's balance
-      document.getElementById("balance").innerHTML = "Available Balance : <span class='rupee-symbol'>&#8377;</span> " + balance;
-      document.getElementById("ifsccode").innerHTML = "Ifsccode :  " + ifsccode;
-      document.getElementById("pin_no").innerHTML = pin_no;
   
+  <script>
+    function selectAccount(accno, balance, ifsccode, pin_no) {
+
+      const submitBtn = document.getElementById('submitBtn');
+      const Btn = document.getElementById('form5');
+
+      // Update the selected account's balance
+      document.getElementById("balance").innerHTML = "Available Balance : <span class='rupee-symbol'>&#8377;</span> " + balance;
+      document.getElementById("ifsccode").innerHTML = "Ifsccode :  " + ifsccode;
+      // document.getElementById("pin_no").innerHTML = pin_no;
+      
       document.getElementById("balance").value = balance;
       document.getElementById("amt").value = accno;
-      // document.getElementById("pin_no1").value = pin_no;
-  
+     
+
       document.getElementById("balance").style.display = "block";
       document.getElementById("ifsccode").style.display = "block";
-      document.getElementById("pin_no").style.display = "block";
-  
-      if (pin_no === "1") {
-        // Show the message in the <p> tag with the anchor link
-        document.getElementById("pin_message").innerHTML = "You have not set the MPI pin. Set it <a href='customersetpin'>here</a>.";
+      
+
+      // Check if pin_no is 1
+      if (pin_no === '1') {
+        // Display the message with an anchor tag
+        document.getElementById("pin_message").innerHTML = "<b><h3>You have not set the MPI pin. Set it by clicking</h3></b>";
+        var anchorTag = document.createElement("a");
+        anchorTag.href = "customersetpin"; // Replace "#" with the link to set the MPI pin
+        anchorTag.innerHTML = "here";
+        document.getElementById("pin_message").appendChild(anchorTag);
+        submitBtn.disabled = true;
+        Btn.disabled = true;
       } else {
-        // If the pin_no value is not 1, hide the message
-        document.getElementById("pin_message").style.display = "none";
+        // If pin_no is not 1, remove the message and anchor tag
+        document.getElementById("pin_message").innerHTML = "";
+        
+        // submitBtn.disabled = false;
+        Btn.disabled = false;
       }
     }
-  </script> -->
+</script>
+  
   
  <script>
   $(document).ready(function() {

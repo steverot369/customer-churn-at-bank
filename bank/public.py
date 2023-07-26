@@ -1,6 +1,12 @@
 from flask import *
 from database import *
 public=Blueprint('public',__name__)
+db = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="bank"
+)
 
 @public.route('/',methods=['post','get'])
 def publichome():
@@ -49,4 +55,33 @@ def login():
 		else:
 			flash('Invalid username or password !!!')
 	return render_template('login.html')
+
+
+
+@public.route('/forgotpassword',methods=['post','get'])
+def forgotpassword():
+	cursor=db.cursor()
+	if 'add' in request.form:
+		# phoneno=request.form['phoneno']
+		username=request.form['phoneno']
+
+		password=request.form['password']
+		cursor.execute("select uname from login where uname='%s' and  status='active'"%(username))
+		uname=cursor.fetchone()
+		
+		
+
+		if uname is not None:
+			cursor.execute("update login set password='%s' where uname='%s'"%(password,username))
+			flash("updated successfully")
+			return redirect(url_for("public.login"))
+		else:
+			flash("username does not exist or wrong username")
+			return redirect(url_for("public.forgotpassword"))
+
+
+		
+
+
+	return render_template('forgotpassword.html')
 

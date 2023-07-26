@@ -292,8 +292,13 @@ def customertransferfund():
 
     cursor.execute("SELECT acc_no,balance,ifsccode,pin_no from savingsacc where customer_id=(select cid from customers where cid='%s')"%(session['cust_id']))
     acc_no = cursor.fetchall()
-    # cursor.execute("SELECT pin_no from savingsacc where customer_id='%s'"%(session['cust_id']))
-    # pin_no = cursor.fetchone()[0]
+    cursor.execute("SELECT pin_no from savingsacc where customer_id='%s'"%(session['cust_id']))
+    pin_no = cursor.fetchone()[0]
+    cursor.fetchall()
+
+    cursor.execute("SELECT acc_no from savingsacc where customer_id!='%s'"%(session['cust_id']))
+    account_number = [row[0] for row in cursor.fetchall()]
+    cursor.fetchall()
    
     if 'add1' in request.form:
         acc_no=request.form['accno']
@@ -371,7 +376,7 @@ def customertransferfund():
             flash("wrong pin")
             return redirect(url_for('customer.customertransferfund'))
         
-    return render_template('customertransferfund.html',acc_no=acc_no,name1=name1)
+    return render_template('customertransferfund.html',acc_no=acc_no,name1=name1,pin_no=pin_no,account_number=account_number)
 
 
 @customer.route('/customersetpin',methods=['post', 'get'])
