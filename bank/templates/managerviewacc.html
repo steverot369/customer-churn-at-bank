@@ -57,19 +57,13 @@
 
                         <td>{{ employee[8] }}</td>
 
-
-                        
-                      
-                        
-
-                        
-                       
-
-                        
-                        
                         <td>
                           <td>
                             <a href="#" class="btn btn-info view-details-btn" data-toggle="modal" data-target="#employeeDetailsModal" data-employee-details="{{ employee }}">View Details</a>
+                          </td>
+                          <td>
+                            <a href="?action=reject&delete_id={{employee[10]}}&acc_type={{employee[0]}}" class="btn btn-danger view-details-btn" onclick="return confirm('Do you want to reject ?')">deactivate
+
                           </td>
                           
                           
@@ -220,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     </script>
    
-   <script>
+   <!-- <script>
         var submenuIcons = document.querySelectorAll('.submenu-icon');
       // Loop through each submenu icon
       submenuIcons.forEach(function(icon) {
@@ -232,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
              submenu.classList.toggle('show');
          });
       });
-      </script>
+      </script> -->
     <script>
  
     function showDetails(event) {

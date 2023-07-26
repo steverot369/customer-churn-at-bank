@@ -80,6 +80,10 @@ def update_interest_earn():
                 cursor.execute(transaction, transaction_values)
                 update_query1 = "UPDATE savingsacc SET balance = balance + %s  WHERE acc_no = %s"
                 cursor.execute(update_query1, (interest_earned,acc_payable,))
+                messages=f"you have recieved your interest amount Rs {interest_earned} for account number : {acc_no}"
+                bank_messages="INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,message_type,date)  VALUES ( %s, %s, %s,'customer','bank',%s)"
+                bank_messages_values = (cid, bid,messages,current_date)
+                cursor.execute(bank_messages, bank_messages_values)
                 print("1)Interest earnings updated ",interest_amt,"successfully for account:", acc_no)
                 updates_made = True
            
@@ -105,6 +109,10 @@ def update_interest_earn():
                 transaction1 = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance, date_time) VALUES (%s, %s,%s, %s, 'fixed deposit',%s,%s,%s)"
                 transaction_values1 = (cid,deposit_id,bid,trans_no,interest_earned,updated_balance1,current_date)
                 cursor.execute(transaction1, transaction_values1)
+                messages=f"you have recieved your interest amount Rs {interest_earned} for account number : {acc_no}"
+                bank_messages="INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,message_type,date)  VALUES ( %s, %s, %s,'customer','bank',%s)"
+                bank_messages_values = (cid, bid,messages,current_date)
+                cursor.execute(bank_messages, bank_messages_values)
                 
                 print("2.Interest earnings updated with deposit amount for account:", acc_no)
 
@@ -143,6 +151,10 @@ def update_interest_earn():
                 transaction = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance, date_time) VALUES (%s, %s,%s, %s, 'fixed deposit',%s,%s,%s)"
                 transaction_values = (cid,deposit_id,bid,trans_no,interest_earned,updated_balance,current_date)
                 cursor.execute(transaction, transaction_values)
+                messages=f"you have recieved your interest amount Rs {interest_earned} for account number : {acc_no}"
+                bank_messages="INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,message_type,date)  VALUES ( %s, %s, %s,'customer','bank',%s)"
+                bank_messages_values = (cid, bid,messages,current_date)
+                cursor.execute(bank_messages, bank_messages_values)
                 
                 print("1)Interest earnings updated ",interest_amt,"successfully for account:", acc_no)
                 updates_made = True
@@ -180,6 +192,10 @@ def update_interest_earn():
                 transaction1 = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance, date_time) VALUES (%s, %s,%s, %s, 'fixed deposit',%s,%s,%s)"
                 transaction_values1 = (cid,deposit_id,bid,trans_no,interest_earned,updated_balance1,current_date)
                 cursor.execute(transaction1, transaction_values1)
+                messages=f"you have recieved your interest amount Rs {interest_earned} for account number : {acc_no}"
+                bank_messages="INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,message_type,date)  VALUES ( %s, %s, %s,'customer','bank',%s)"
+                bank_messages_values = (cid, bid,messages,current_date)
+                cursor.execute(bank_messages, bank_messages_values)
                 
                 print("2.Interest earnings updated with deposit amount for account:", acc_no)
             
@@ -216,6 +232,10 @@ def update_interest_earn():
                 cursor.execute(transaction, transaction_values)
                 update_query1 = "UPDATE savingsacc SET balance = balance + %s  WHERE acc_no = %s"
                 cursor.execute(update_query1, (interest_earned,acc_to,))
+                messages=f"you have recieved your interest amount Rs {interest_earned} for account number : {acc_no}"
+                bank_messages="INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,message_type,date)  VALUES ( %s, %s, %s,'customer','bank',%s)"
+                bank_messages_values = (cid, bid,messages,current_date)
+                cursor.execute(bank_messages, bank_messages_values)
                 print("1)Interest earnings updated ",interest_amt,"successfully for account:", acc_no)
                 updates_made = True
 
@@ -292,6 +312,10 @@ def update_interest_earn():
                 transaction1 = "INSERT INTO transaction (customer_id,acc_id,branch_id,t_no,t_type,amount,balance, date_time) VALUES (%s, %s,%s, %s, 'fixed deposit',%s,%s,%s)"
                 transaction_values1 = (cid,deposit_id,bid,trans_no,interest_earned,deposit_amt1,current_date)
                 cursor.execute(transaction1, transaction_values1)
+                messages=f"you have recieved your interest amount Rs {interest_earned} for account number : {acc_no}"
+                bank_messages="INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,message_type,date)  VALUES ( %s, %s, %s,'customer','bank',%s)"
+                bank_messages_values = (cid, bid,messages,current_date)
+                cursor.execute(bank_messages, bank_messages_values)
                 print("2.Interest earnings updated with deposit amount for account:", acc_no)
 
 

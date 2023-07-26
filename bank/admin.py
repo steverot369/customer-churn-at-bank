@@ -79,7 +79,7 @@ def adminhome():
     cursor.execute("SELECT l.acc_type,l.acc_no,l.date_issued,c.fname,c.lname FROM loanacc l,customers c where l.customer_id=c.cid UNION SELECT s.acc_type,s.acc_no,s.acc_started_date,c.fname,c.lname FROM savingsacc s,customers c where s.customer_id=c.cid UNION SELECT d.acc_type,d.acc_no,d.deposit_date,c.fname,c.lname FROM depositacc d,customers c where d.customer_id=c.cid and acc_status='active'")
     row_count=cursor.fetchall()
     account_count = cursor.rowcount
-    cursor.execute("SELECT c.fname,c.lname,c.photo,tt.amount,tt.date_time,tt.t_type,tt.t_no FROM customers c,transaction tt where c.cid=tt.customer_id and tt.t_type='online' LIMIT 4")
+    cursor.execute("SELECT c.fname,c.lname,c.photo,tt.amount,tt.date_time,tt.t_type,tt.t_no FROM customers c,transaction tt where c.cid=tt.customer_id and tt.t_type='online' order by transaction_id desc LIMIT 4")
     online_transaction=cursor.fetchall()
     cursor.execute("SELECT c.fname,c.lname,tt.t_no,tt.t_type,tt.amount,tt.date_time FROM customers c,transaction tt where c.cid=tt.customer_id")
     transaction=cursor.fetchall()
@@ -153,9 +153,9 @@ def adminhome():
     loan_account_percentage_change = ((current_month_balance1 - previous_month_balance1) / previous_month_balance1) * 100 if previous_month_balance1 != 0 else 0
     loan_account_percentage_change = round(loan_account_percentage_change, 2)
 
-    cursor.execute("select count(*) from customers")
+    cursor.execute("select count(*) from customers where active='1'")
     customer_count=cursor.fetchone()[0]
-    cursor.execute("select count(*) from employee")
+    cursor.execute("select count(*) from employee where status='active'")
     employee_count=cursor.fetchone()[0]
     query = "SELECT COUNT(*) FROM complaints where reply='0'"
    
@@ -183,6 +183,8 @@ def adminviewcomplaints():
     query = "SELECT c.messages, c.date_time, cu.fname, cu.lname, cu.photo, c.reply, c.complaint_id FROM complaints c INNER JOIN customers cu ON c.customer_id = cu.cid WHERE c.reply = '0'"
     cursor.execute(query)
     messages = cursor.fetchall()
+    cursor.execute("select count(*) from complaints where reply='0'")
+    count=cursor.fetchone()[0]
     date=datetime.now()
 
     if "add" in request.form:
@@ -203,7 +205,7 @@ def adminviewcomplaints():
         return redirect(url_for('admin.adminviewcomplaints'))
     
     
-    return render_template('adminviewcomplaints.html', messages=messages)
+    return render_template('adminviewcomplaints.html', messages=messages,count=count)
 
 
 @admin.route('/adminsendmessage',methods=['post','get'])
@@ -218,7 +220,7 @@ def adminsendmessage():
         date=datetime.now()
         cursor.execute("select branch_id from branch where branch_name='%s'"%(branchname))
         branch_id=cursor.fetchone()[0]
-        bank_messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,user_type,date) VALUES ('0', %s, %s,%s,%s)"
+        bank_messages = "INSERT INTO bank_messages (customer_id,branch_id,messages,user_type,message_type,date) VALUES ('0', %s, %s,%s,'bank',%s)"
         bank_messages_values = (branch_id,messages,usertype,date)
         cursor.execute(bank_messages, bank_messages_values)
         flash("success message send")
@@ -470,19 +472,39 @@ def adminviewacc():
     cursor = db.cursor()
     
     cursor.execute("""
-    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname,c.photo,c.email,c.phone,l.acc_status,l.ifsccode
+    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname, c.photo, c.email, c.phone, l.acc_status, l.ifsccode, loan_id
     FROM loanacc l, customers c
-    WHERE l.customer_id = c.cid
+    WHERE l.customer_id = c.cid AND l.acc_status = 'active'
     UNION
-    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname,c.photo,c.email,c.phone,s.acc_status,s.ifsccode
+    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname, c.photo, c.email, c.phone, s.acc_status, s.ifsccode, s.savings_id
     FROM savingsacc s, customers c
-    WHERE s.customer_id = c.cid
+    WHERE s.customer_id = c.cid AND s.acc_status = 'active'
     UNION
-    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname,c.photo,c.email,c.phone,d.acc_status,d.ifsccode
+    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname, c.photo, c.email, c.phone, d.acc_status, d.ifsccode, d.deposit_id
     FROM depositacc d, customers c
-    WHERE d.customer_id = c.cid AND acc_status='active'
+    WHERE d.customer_id = c.cid AND d.acc_status = 'active' 
     """)
+
     employees = cursor.fetchall()
     print(employees)
     return render_template('adminviewacc.html',employees=employees)
+
+
+
+@admin.route('/analytics', methods=['POST', 'GET'])
+def analytics():
+    
+    cursor = db.cursor()
+    query = "SELECT c.messages, c.date_time, cu.fname, cu.lname, cu.photo, c.reply, c.complaint_id FROM complaints c INNER JOIN customers cu ON c.customer_id = cu.cid WHERE c.reply = '0'"
+    cursor.execute(query)
+    messages = cursor.fetchall()
+    cursor.execute("select count(*) from complaints where reply='0'")
+    count=cursor.fetchone()[0]
+    date=datetime.now()
+
+    
+      
+    
+    
+    return render_template('analytics.html')
     

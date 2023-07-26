@@ -1,9 +1,11 @@
 {% include 'adminsidebar.html' %}
 
   
-    
+{% if count == 0 %}
+<h1>no new complaint</h1>
+{% else %}    
            
-                
+              
                 
 
 <section id="container-34" class="middle">
@@ -11,7 +13,7 @@
     
         <h2 style="margin-bottom: 30px; font-size:25px;">view complaints</h2> 
              
-                       <!-- Header contents -->
+                    
         </div><br><br>
         
                 <ul class="message-list">
@@ -49,7 +51,7 @@
                 </ul>
            
 </section>
-                
+{% endif %}              
 </main>  
     <!-- ====================end of aside==========================   -->
     <script>

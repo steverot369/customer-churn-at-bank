@@ -198,19 +198,20 @@ def managerhome():
 
 
     cursor.execute("""
-    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname
+    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname, c.photo, c.email, c.phone, l.acc_status, l.ifsccode, loan_id
     FROM loanacc l, customers c
-    WHERE l.customer_id = c.cid
+    WHERE l.customer_id = c.cid AND l.acc_status = 'active'
     UNION
-    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname
+    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname, c.photo, c.email, c.phone, s.acc_status, s.ifsccode, s.savings_id
     FROM savingsacc s, customers c
-    WHERE s.customer_id = c.cid
+    WHERE s.customer_id = c.cid AND s.acc_status = 'active'
     UNION
-    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname
+    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname, c.photo, c.email, c.phone, d.acc_status, d.ifsccode, d.deposit_id
     FROM depositacc d, customers c
-    WHERE d.customer_id = c.cid AND acc_status='active'
-    AND d.branch_id = (SELECT branch_id FROM employee WHERE employe_id = %s)
-    """, (session['mid'],))
+    WHERE d.customer_id = c.cid AND d.acc_status = 'active'
+    """)
+
+
 
     row_count=cursor.fetchall()
     account_count = cursor.rowcount
@@ -319,7 +320,7 @@ def managermanagecustomers():
         branch_id=details[0]
         
         if last_submission_time is None or last_submission_time < min_allowed_time:
-            bank_messages="INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,messsage_type,date)  VALUES ( %s, %s, %s,'customer','bank',%s)"
+            bank_messages="INSERT INTO bank_messages(customer_id,branch_id,messages,user_type,message_type,date)  VALUES ( %s, %s, %s,'customer','bank',%s)"
             bank_messages_values = (customer_id, branch_id,messages,date)
             cursor.execute(bank_messages, bank_messages_values)
             # cursor.execute("SELECT * FROM customers where branch_id=(select branch_id from employee where employe_id='%s')"%(session['mid']))
@@ -1000,21 +1001,42 @@ def managerviewacc():
     name12 = cursor.fetchall()
     
     cursor.execute("""
-    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname,c.photo,c.email,c.phone,l.acc_status,l.ifsccode
+    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname, c.photo, c.email, c.phone, l.acc_status, l.ifsccode, loan_id
     FROM loanacc l, customers c
-    WHERE l.customer_id = c.cid
+    WHERE l.customer_id = c.cid AND l.acc_status = 'active'
     UNION
-    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname,c.photo,c.email,c.phone,s.acc_status,s.ifsccode
+    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname, c.photo, c.email, c.phone, s.acc_status, s.ifsccode, s.savings_id
     FROM savingsacc s, customers c
-    WHERE s.customer_id = c.cid
+    WHERE s.customer_id = c.cid AND s.acc_status = 'active'
     UNION
-    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname,c.photo,c.email,c.phone,d.acc_status,d.ifsccode
+    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname, c.photo, c.email, c.phone, d.acc_status, d.ifsccode, d.deposit_id
     FROM depositacc d, customers c
-    WHERE d.customer_id = c.cid AND acc_status='active'
+    WHERE d.customer_id = c.cid AND d.acc_status = 'active'
     AND d.branch_id = (SELECT branch_id FROM employee WHERE employe_id = %s)
     """, (session['mid'],))
+
     employees = cursor.fetchall()
     print(employees)
+    if "action" in request.args:
+        action=request.args['action']
+       
+        id=request.args['delete_id']
+        acc_type=request.args['acc_type']
+
+    else:
+        action="none"        
+    if action=="reject" and acc_type=="loanaccount":    
+        cursor.execute("update loanacc set acc_status='reject' where loan_id='%s'"%(id))    
+        flash('deactivate successfully !')
+        return redirect(url_for('manager.managerviewacc'))
+    if action=="reject" and acc_type=="deposit":  
+        cursor.execute("update depositacc set acc_status='reject' where deposit_id='%s'"%(id))    
+        flash('deactivate successfully !')
+        return redirect(url_for('manager.managerviewacc'))
+    if action=="reject" and acc_type=="savings":        
+        cursor.execute("update savingsacc set acc_status='reject' where savings_id='%s'"%(id))
+        flash('deactivate successfully !')
+        return redirect(url_for('manager.managerviewacc'))
     return render_template('managerviewacc.html',employees=employees,name12=name12)
 
 

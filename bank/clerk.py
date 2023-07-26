@@ -463,8 +463,8 @@ def clerkdepositaccount():
 
         # Convert the maturity date to a formatted string (e.g., "dd-mm-yy")
         formatted_maturity_date = maturity_date.strftime("%d-%m-%y")
-        fixeddeposit = "INSERT INTO depositacc (customer_id, acc_no, ifsccode, deposit_amt, tenure, deposit_date, deposit_type, maturity_date, interest_rate, interest_amt, interest_earn,acc_to, last_transaction_date,acc_type, acc_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,'0',%s,%s, 'deposit', 'active')"
-        fixeddeposit_values = (cid, newaccno, ifsccode, depositamt, tenure, formatted_date, depositType, maturityDate, interestRate,interestEarned,toaccno,formatted_maturity_date)
+        fixeddeposit = "INSERT INTO depositacc (customer_id,branch_id, acc_no, ifsccode, deposit_amt, tenure, deposit_date, deposit_type, maturity_date, interest_rate, interest_amt, interest_earn,acc_to, last_transaction_date,acc_type, acc_status) VALUES (%s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s,'0',%s,%s, 'deposit', 'active')"
+        fixeddeposit_values = (cid, bid,newaccno, ifsccode, depositamt, tenure, formatted_date, depositType, maturityDate, interestRate,interestEarned,toaccno,formatted_maturity_date)
         cursor.execute(fixeddeposit, fixeddeposit_values)
         if one > 0:
             transaction = "INSERT INTO notescount (branch_id,note_type,count) VALUES (%s, '1',%s)"
@@ -803,7 +803,21 @@ def clerkviewaccdetails():
     cursor = db.cursor()
     cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
     name1 = cursor.fetchall()
-    cursor.execute("SELECT l.acc_type,l.acc_no,l.date_issued,c.fname,c.lname,c.photo,c.email,c.phone,l.acc_status,l.ifsccode FROM loanacc l,customers c where l.customer_id=c.cid UNION SELECT s.acc_type,s.acc_no,s.acc_started_date,c.fname,c.lname,c.photo,c.email,c.phone,s.acc_status,s.ifsccode FROM savingsacc s,customers c where s.customer_id=c.cid UNION SELECT d.acc_type,d.acc_no,d.deposit_date,c.fname,c.lname,c.photo,c.email,c.phone,d.acc_status,d.ifsccode FROM depositacc d,customers c where d.customer_id=c.cid and acc_status='active'")
+    cursor.execute("""
+    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname, c.photo, c.email, c.phone, l.acc_status, l.ifsccode, loan_id
+    FROM loanacc l, customers c
+    WHERE l.customer_id = c.cid AND l.acc_status = 'active'
+    UNION
+    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname, c.photo, c.email, c.phone, s.acc_status, s.ifsccode, s.savings_id
+    FROM savingsacc s, customers c
+    WHERE s.customer_id = c.cid AND s.acc_status = 'active'
+    UNION
+    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname, c.photo, c.email, c.phone, d.acc_status, d.ifsccode, d.deposit_id
+    FROM depositacc d, customers c
+    WHERE d.customer_id = c.cid AND d.acc_status = 'active'
+    AND d.branch_id = (SELECT branch_id FROM employee WHERE employe_id = %s)
+    """, (session['clid'],))
+
     employees = cursor.fetchall()
     print(employees)
     return render_template('clerkviewaccdetails.html',name1=name1,employees=employees)

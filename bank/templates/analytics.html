@@ -7,47 +7,11 @@
     </div>
 
 <br><br><br><br><br><br>
-                 <div class="container67">
-                    <section>
-                        <h1>Send Notification</h1>
+                 
+                        <h1>Analytics</h1>
 
-                    <form method="post">
-                        <div class="mb-4 pb-3">
-                            <div class="dropdown dropdown-l">
-                              <input type="text" name="branch" id="dropdown-input" class="form-control form-control-lg" placeholder="Search..." required>
-                              <span class="dropdown-icon">&#9662;</span> <!-- Add a dropdown icon here -->
-                          
-                              <ul class="dropdown-list" style="display: block;">
-                                <li>All</li>
-
-                                {% for row in branch_names %}
-                                <li>{{ row }}</li>
-                                {% endfor %}
-                              </ul>
-                            </div>
-                            <label class="form-label" for="form3Examplev4">branch names</label>
-
-                          </div>
-                        <label class="form-label" for="form3Examplev4">Message</label>
-                        <input name="messages" class="message-input1" style="font-size: 16px;" placeholder="Type your message..." required>
-                        
-                        <label class="form-label" for="form3Examplev4">user type</label>
-                        <select class="user-type" name="usertype" required>
-                          <option disabled selected value="">Select any value</option>
-
-                            
-                            <option value="employee">employee</option>
-                          
-                            <option value="customer">Customer</option>
-                        </select>
-                       
-
-                        <button name="add" class="send-button">
-                            <span class="send-icon">&#x27A4;</span>Send</button>
-                        <span class="success-message"></span>
-                    </form>
-                    </section>
-                </div>
+                    
+                   
             </section>
             </main>  
             <script>

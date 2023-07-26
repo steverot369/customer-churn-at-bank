@@ -196,7 +196,7 @@ rel="stylesheet">
                         <span class="material-icons-sharp">payment</span>
                         <h4>Transaction</h4>
                     </a>
-                    <a href="#">
+                    <a href="analytics">
                         <span class="material-icons-sharp">pie_chart</span>
                         <h4>Analytics</h4>
                     </a>
@@ -418,7 +418,7 @@ rel="stylesheet">
                                   <td style="color: rgb(9, 9, 225);">{{ transaction[3] }}</td>
                               {% elif transaction[3] == 'cheque withdrawl' %}
                                   <td style="color: rgb(45, 175, 115);">{{ transaction[3] }}</td>
-                              {% elif transaction[3] == 'loan_payment' %}
+                              {% elif transaction[3] == 'loan payment' %}
                                   <td style="color: purple;">{{ transaction[3] }}</td>
                               {% else %}
                                   <td style="color: red;">{{ transaction[3] }}</td>
@@ -449,9 +449,9 @@ rel="stylesheet">
                                                     <p>{{ transaction[3] }}
                                                        its a withdrawl transaction where  customer has withdrawn &#8377; {{ transaction[4] }} on {{ transaction[5] }} by using his cheque
                                                     </p>
-                                                {% elif transaction[3] == 'loan_payment' %}
+                                                {% elif transaction[3] == 'loan payment' %}
                                                     <p>
-                                                        customer pays he loan Emi &#8377; {{ transaction[4] }} on {{ transaction[5] }}</p>
+                                                       Its a loan payment where customer pays his loan Emi &#8377; {{ transaction[4] }} on {{ transaction[5] }}</p>
                                                 {% else %}
                                                     <p style="color: red;">{{ transaction[3] }}</p>
                                                 {% endif %}
