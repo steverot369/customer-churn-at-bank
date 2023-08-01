@@ -6,6 +6,7 @@ from clerk import clerk
 from customer import customer
 # from scheduler import scheduler
 from update_interest_earn import update_interest_earn
+from api import api
 
 
 
@@ -21,7 +22,7 @@ app.secret_key="secretkey"
 #     update_interest_earn()
 #     return "Interest calculation started"
 app.register_blueprint(public)
-
+app.register_blueprint(api,url_prefix='/api')
 app.register_blueprint(admin,url_prefix='/admin')
 app.register_blueprint(manager,url_prefix='/manager')
 app.register_blueprint(clerk,url_prefix='/clerk')
