@@ -507,11 +507,11 @@ padding-bottom: 13px;
                             
                           <!------------ END OF SALES -------------->
                           <div class="expenses">
-                            <span class="material-icons-sharp">support_agent</span>
+                            <a href="clerkviewaccounttoday"><span class="material-icons-sharp">support_agent</span></a>
                             <div class="middle">
                                 <div class="left">
-                                    <h3>Total Employee</h3>
-                                    <h1>{{ employee_count }}</h1>
+                                    <h3>Total account redistered today</h3>
+                                    <h1>{{ account_today }}</h1>
                                 </div>
                                 <div class="progress">
                                     <svg>
@@ -571,6 +571,7 @@ padding-bottom: 13px;
                             </div>
                           </div> -->
                         <!----------- end of payment----- -->
+                        <br><br>
                         <button style="color:rebeccapurple; background: none;" onclick="moveChart()">Move Chart</button>
 
                         <canvas id="chart"  style="display: block;"></canvas>
@@ -824,8 +825,8 @@ padding-bottom: 13px;
             valueElement.textContent = employeePercentage.toFixed(1) + '%';
         </script>
         <script>
-            var employeeCount = {{ employee_count }};
-            var totalEmployees = 500;  // Set the maximum value for the progress bar
+            var employeeCount = {{ account_today }};
+            var totalEmployees = 20;  // Set the maximum value for the progress bar
         
             // Calculate the employee percentage
             var employeePercentage = (employeeCount / totalEmployees) * 100;

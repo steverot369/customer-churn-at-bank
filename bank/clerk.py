@@ -191,8 +191,13 @@ def clerkhome():
 
     row_count=cursor.fetchall()
     account_count = cursor.rowcount
+
+
+
+
     current_datetime=datetime.now()
     current_date = current_datetime.date()
+    last_transaction_date = current_date.strftime("%Y-%m-%d")
     cursor.execute("SELECT messages,date FROM bank_messages WHERE message_type='bank' AND DATE(date) = '%s' AND (user_type='employee' OR user_type='clerk') AND branch_id='%s' ORDER BY date DESC LIMIT 3"% (current_date,branch_id))
     bank_messages = cursor.fetchall()
 
@@ -204,6 +209,27 @@ def clerkhome():
     print("max date=",query)
     if 'count_removed' in session:
         session.pop('count_removed')  # Remove the 'count_removed' flag from session
+
+
+    # to print the count of accounts joined today
+    cursor.execute("""
+    SELECT l.acc_type
+    FROM loanacc l, customers c
+    WHERE l.customer_id = c.cid AND acc_status='active' AND DATE(l.date_issued)=%s
+    UNION
+    SELECT s.acc_type
+    FROM savingsacc s, customers c 
+    WHERE s.customer_id = c.cid AND acc_status='active' AND DATE(s.acc_started_date)=%s
+    UNION
+    SELECT d.acc_type
+    FROM depositacc d, customers c
+    WHERE d.customer_id = c.cid AND acc_status='active' AND DATE(d.deposit_date)=%s
+    AND d.branch_id = (SELECT branch_id FROM employee WHERE employe_id = %s)
+    """, (last_transaction_date, last_transaction_date, last_transaction_date, session['clid']))
+
+
+    row_counts=cursor.fetchall()
+    account_today = cursor.rowcount
     
     return render_template('clerkhome.html', 
     labels=labels, values=values,total_amount=total_amount,name=name,feedback_messages=feedback_messages,count=count,online_transaction=online_transaction,notes=notes,
@@ -212,7 +238,7 @@ def clerkhome():
      current_year_count=current_year_count, previous_year_count=previous_year_count, customer_percentage_change=customer_percentage_change, 
      current_month_balance=current_month_balance, previous_month_balance=previous_month_balance, account_percentage_change=account_percentage_change,
      current_month_balance1=current_month_balance1, previous_month_balance1=previous_month_balance1, loan_account_percentage_change=loan_account_percentage_change,
-     customer_count=customer_count,employee_count=employee_count,account_count=account_count,bank_messages=bank_messages,messages_count=messages_count)
+     customer_count=customer_count,employee_count=employee_count,account_count=account_count,bank_messages=bank_messages,messages_count=messages_count,account_today=account_today)
     
 
 @clerk.route('/clerkmanagehome')
@@ -1171,19 +1197,52 @@ def clerkviewacc():
     name12 = cursor.fetchall()
     
     cursor.execute("""
-    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname,c.photo,c.email,c.phone,l.acc_status,l.ifsccode
+    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname, c.photo, c.email, c.phone, l.acc_status, l.ifsccode, loan_id
     FROM loanacc l, customers c
-    WHERE l.customer_id = c.cid
+    WHERE l.customer_id = c.cid AND l.acc_status = 'active'
     UNION
-    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname,c.photo,c.email,c.phone,s.acc_status,s.ifsccode
+    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname, c.photo, c.email, c.phone, s.acc_status, s.ifsccode, s.savings_id
     FROM savingsacc s, customers c
-    WHERE s.customer_id = c.cid
+    WHERE s.customer_id = c.cid AND s.acc_status = 'active'
     UNION
-    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname,c.photo,c.email,c.phone,d.acc_status,d.ifsccode
+    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname, c.photo, c.email, c.phone, d.acc_status, d.ifsccode, d.deposit_id
     FROM depositacc d, customers c
-    WHERE d.customer_id = c.cid AND acc_status='active'
+    WHERE d.customer_id = c.cid AND d.acc_status = 'active'
     AND d.branch_id = (SELECT branch_id FROM employee WHERE employe_id = %s)
     """, (session['clid'],))
     employees = cursor.fetchall()
     print(employees)
     return render_template('clerkviewacc.html',employees=employees,name12=name12)
+
+
+
+@clerk.route('/clerkviewaccounttoday',methods=['POST','GET'])
+def clerkviewaccounttoday():
+    cursor=db.cursor()
+    cursor.execute("select employe_fname,employee_lname,image from employee where loginid='%s'"%(session['logid']))
+    name1 = cursor.fetchall()
+    current_datetime=datetime.now()
+    current_date = current_datetime.date()
+    last_transaction_date = current_date.strftime("%Y-%m-%d")
+    cursor.execute("""
+    SELECT l.acc_type, l.acc_no, l.date_issued, c.fname, c.lname,c.photo,c.email,c.phone,l.acc_status,l.ifsccode
+    FROM loanacc l, customers c
+    WHERE l.customer_id = c.cid AND l.acc_status = 'active' AND DATE(l.date_issued)=%s
+    UNION
+    SELECT s.acc_type, s.acc_no, s.acc_started_date, c.fname, c.lname,c.photo,c.email,c.phone,s.acc_status,s.ifsccode
+    FROM savingsacc s, customers c
+    WHERE s.customer_id = c.cid AND s.acc_status = 'active' AND DATE(s.acc_started_date)=%s
+    UNION
+    SELECT d.acc_type, d.acc_no, d.deposit_date, c.fname, c.lname,c.photo,c.email,c.phone,d.acc_status,d.ifsccode
+    FROM depositacc d, customers c 
+    WHERE d.customer_id = c.cid AND d.acc_status='active' AND DATE(d.deposit_date)=%s
+    AND d.branch_id = (SELECT branch_id FROM employee WHERE employe_id = %s)
+    """, (last_transaction_date,last_transaction_date,last_transaction_date,session['clid'],))
+    employees = cursor.fetchall()
+    
+    account_today = cursor.rowcount
+    
+   
+
+    
+    return render_template('clerkviewaccounttoday.html',name1=name1,employees=employees,account_today=account_today)

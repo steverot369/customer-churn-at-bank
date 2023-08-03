@@ -143,31 +143,37 @@
                               
                                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                            <h1 style="margin-right:335px;">Change your password</h1>
-                                        <form method="post">
+                                           <form method="post" id="myForm">
                                            
                                             <div class="form-outline">
                                                 <label class="form-label" for="form3Examplev4">Password</label>
                                                 <input type="password" id="form3Examplev4" name="oldpassword" class="form-control form-control-lg" required/>
                                                 <span style="font-size: 15px;" id="password-match"></span>
                                               </div>
-                                              <div style="font-size: 15px;" id="forgot-password-link"></div>
+                                              <!-- <div style="font-size: 15px;" id="forgot-password-link"></div> -->
 
-                                          <div class="mb-4 pb-2">
-                                            <label class="form-label" for="form3Examplev4">New Password</label>
-                                            <div class="form-outline">
-                                              <input type="password" id="form3Examplev4" name="newpassword" class="form-control form-control-lg" required/>
-                                              
-                                            </div>
-                                          </div>
+                                                <div class="mb-4 pb-2">
+                                                    <label class="form-label" for="form3Examplev4">New Password</label>
+                                                    <div class="form-outline">
+                                                    <input type="password" id="form1" name="newpassword" class="form-control form-control-lg" required disabled/>
+                                                    <input type="checkbox" id="togglePassword1" onclick="togglePasswordVisibility('form1')" />
+                                                    <label class="form-check-label" for="togglePassword1">
+                                                        Show Password
+                                                    </label>
+                                                    </div>
+                                                    <div id="passwordMessage" class="password-message" style="font-size: 15px; font-weight:600;"></div>
+                                                </div>
+                                          
                                           <div class="mb-4 pb-2">
                                             <label class="form-label" for="form3Examplev4">Confirm Password</label>
                                             <div class="form-outline">
-                                              <input type="password" id="form3Examplev4" name="confirmpassword" class="form-control form-control-lg" required/>
-                                              
+                                              <input type="password" id="form2" name="confirmpassword" class="form-control form-control-lg" disabled/>
+                                              <p id="passwordMatchMessage"></p>
                                             </div>
+                                            
                                           </div>
                                          
-                                            <input type="submit" class="btn btn-primary btn-lg" name="add1" value="Edit Password"/>
+                                            <input type="submit" class="btn btn-primary btn-lg" name="add1" value="Edit Password" id="submitBtn" disabled/>
                                         
                                         </form>
                                     
@@ -188,27 +194,173 @@
     <!-- ====================end of aside==========================   -->
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
     <script>
+        // Your existing password criteria validation code...
+      
+        function checkPasswordMatch() {
+          const password1 = document.getElementById('form1').value;
+          const password2 = document.getElementById('form2').value;
+          const passwordMatchMessage = document.getElementById('passwordMatchMessage');
+          const submitBtn = document.getElementById('submitBtn');
+      
+          if (password1 === password2) {
+            passwordMatchMessage.textContent = 'Passwords match!';
+            passwordMatchMessage.style.color = 'green';
+            
+            submitBtn.disabled = false; // Enable the submit button
+          } else {
+            passwordMatchMessage.textContent = 'Passwords do not match.';
+            passwordMatchMessage.style.color = 'red';
+            submitBtn.disabled = true; // Disable the submit button
+          }
+        }
+      
+        // Add event listeners for the 'input' event on form1 and form2
+        // const form1Input = document.getElementById('form1');
+        // form1Input.addEventListener('input', checkPasswordMatch);
+      
+        const form2Input = document.getElementById('form2');
+        form2Input.addEventListener('input', checkPasswordMatch);
+      </script>
+    
+    <script>
+      
+        const passwordInput1 = document.querySelector('#form1');
+      
+        const passwordInput2 = document.querySelector('#form2');
+       
+       
+        const passwordMessage = document.getElementById('passwordMessage');
+        const submitBtn1 = document.getElementById('submitBtn');
+      
+        const passwordCriteria = {
+          minLength: 8,
+          hasNumber: /\d/,
+          hasUppercase: /[A-Z]/,
+          hasLowercase: /[a-z]/,
+          hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
+        };
+      
+        passwordInput1.addEventListener('input', () => {
+          const password = passwordInput1.value;
+          let valid = true;
+          let message = '';
+      
+          if (password.length < passwordCriteria.minLength) {
+            message += `Password must be at least ${passwordCriteria.minLength} characters long. `;
+            valid = false;
+          } else {
+            valid = true; // Update valid to true if the length criteria is met
+          }
+      
+          if (!passwordCriteria.hasNumber.test(password)) {
+            message += 'Password must contain at least one number. ';
+            valid = false;
+          }
+      
+          if (!passwordCriteria.hasUppercase.test(password)) {
+            message += 'Password must contain at least one uppercase letter. ';
+            valid = false;
+          }
+      
+          if (!passwordCriteria.hasLowercase.test(password)) {
+            message += 'Password must contain at least one lowercase letter. ';
+            valid = false;
+          }
+      
+          if (!passwordCriteria.hasSpecialChar.test(password)) {
+            message += 'Password must contain at least one special character. ';
+            valid = false;
+          }
+      
+          if (valid) {
+            message = 'Password is valid';
+            passwordMessage.style.color = 'green';
+            passwordInput2.removeAttribute("disabled");
+            
+
+          } else {
+            
+            passwordMessage.style.color = 'red';
+            
+          }
+          
+      
+          passwordMessage.textContent = message;
+        });
+       // Add event listener to the form submission
+  submitBtn1.addEventListener('click', (event) => {
+    const password = passwordInput1.value;
+    const valid = (
+      password.length >= passwordCriteria.minLength &&
+      passwordCriteria.hasNumber.test(password) &&
+      passwordCriteria.hasUppercase.test(password) &&
+      passwordCriteria.hasLowercase.test(password) &&
+      passwordCriteria.hasSpecialChar.test(password)
+    );
+
+    if (!valid) {
+      event.preventDefault(); // Prevent form submission
+      alert('Password criteria not met. Please check the password requirements.');
+    }
+  });
+      </script>
+     
+     
+     <script>
         const passwordInput = document.getElementById('form3Examplev4');
+        const newPasswordInput = document.getElementById('form1');
+        const confirmPasswordInput = document.getElementById('form2');
         const passwordMatchSpan = document.getElementById('password-match');
         const forgotPasswordLink = document.getElementById('forgot-password-link');
+        const submitBtn = document.getElementById('submitBtn');
+
+        function togglePasswordVisibility(inputId) {
+    const passwordInput = document.getElementById(inputId);
+    const showPasswordCheckbox = document.getElementById('togglePassword1');
+
+    if (showPasswordCheckbox.checked) {
+      passwordInput.type = 'text';
+    } else {
+      passwordInput.type = 'password';
+    }
+  }
       
         passwordInput.addEventListener('input', function () {
+          // ... Your existing password matching validation ...
           const enteredPassword = passwordInput.value;
           const originalPassword = "{{ password }}"; // Replace with the actual value of the password
       
           if (enteredPassword === originalPassword) {
             passwordMatchSpan.textContent = "Passwords match!";
             passwordMatchSpan.style.color = "green";
-            forgotPasswordLink.innerHTML = "";
+            newPasswordInput.removeAttribute("disabled");
+            // confirmPasswordInput.removeAttribute("disabled");
           } else {
             passwordMatchSpan.textContent = "Passwords do not match.";
             passwordMatchSpan.style.color = "red";
-            // forgotPasswordLink.innerHTML = '<a href="/forgot-password">Forgot Password?</a>';
+            newPasswordInput.setAttribute("disabled", "true");
+            confirmPasswordInput.setAttribute("disabled", "true");
+          }
+        });
+        
+      
+        submitBtn.addEventListener('click', function (event) {
+          const newPassword = newPasswordInput.value.trim();
+          const confirmPassword = confirmPasswordInput.value.trim();
+      
+          if (newPassword === '') {
+            event.preventDefault(); // Prevent form submission
+            alert('The fields are empty. Please fill in new password');
+          }
+          else if (confirmPassword === ''){
+            event.preventDefault(); // Prevent form submission
+            alert('The fields are empty. confirm password fields.');
           }
         });
       </script>
-
-    
+ 
+     
 </body>
 </html>

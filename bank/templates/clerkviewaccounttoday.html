@@ -1,0 +1,378 @@
+
+{% include 'clerksidebar.html' %}
+{% if account_today == 0 %}
+<div id="popupContainer" class="popup12">
+    <div class="popup-content12">
+         <h1>no user has started an account today</h1>
+    </div>
+</div>
+{% else %}
+<section class="middle">
+    <div class="header">
+        <h1>Dashboard</h1>
+        <input type="date">
+    </div>
+                 <div class="container1">
+        <section>
+            <h1>customer account details</h1>
+            <div class="search-filter">
+                <input type="search" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search by name">
+               
+                
+                <label for="rowCount">Select number of rows:</label>
+                <select id="rowCount" onchange="changeRowCount()">
+                  <option disabled selected value="">Select no of rows</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+                
+            </div>
+          <form method="post">  
+            <table id="employeeTable" class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Account holder name</th>
+                        
+                        <th>Account number</th>
+                        <th>IfscCode</th>
+                        <th>phone</th>
+                        <th>email</th>
+                        <th>Account started date</th>
+                        <th>Account type</th>
+                        <th>Status</th>
+
+
+                       
+                         
+
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Employee details data -->
+                    {% for employee in employees %}
+                    <tr>
+                        <td>{{ employee[3] }} {{ employee[4] }}</td>
+                        <td>{{ employee[1] }}</td>
+                        <td><img src="{{url_for('static', filename=employee[5])}}" style="width: 80px;height: 80px;border-radius: 80%;"></td>
+                        <td>{{ employee[9] }}</td>
+                        <td>{{ employee[6] }}</td>
+                        <td>{{ employee[2] }}</td>
+                        <td>{{ employee[0] }}</td>
+
+                        <td>{{ employee[8] }}</td>
+
+
+                        
+                      
+                        
+
+                        
+                       
+
+                        
+                        
+                        <td>
+                          <td>
+                            <a href="#" class="btn btn-info view-details-btn" data-toggle="modal" data-target="#employeeDetailsModal" data-employee-details="{{ employee }}">View Details</a>
+                          </td>
+                          
+                          
+  
+                      </tr>
+                    
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+          </form>
+            <div class="pagination">
+                <button onclick="previousPage()">Previous</button>
+                <button onclick="nextPage()">Next</button>
+            </div>
+            <div id="noUserFoundMessage" style="display: none;">
+              <p>No user found</p>
+            </div>
+        </section>
+    </div>
+</section>
+     </main>  
+     <div class="modal fade" id="employeeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="employeeDetailsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="employeeDetailsModalLabel">Customer Account Details</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table>
+              <tr>
+                <td>Name</td>
+                <td id="modalAccountHolderName"></td>
+                
+              </tr>
+              <tr>
+                <td>Account No</td>
+                <td id="modalAccountNumber"></td>
+              </tr>
+              <!-- <tr>
+                <td>status</td>
+                <td id="modalIFSCCode"></td>
+              </tr> -->
+              <tr>
+                <td>Ifsc code</td>
+                <td id="modalLoanType"></td>
+              </tr>
+              <tr>
+                <td>email</td>
+                <td id="modalLoanAmount"></td>
+              </tr>
+              <tr>
+                <td>Date of join</td>
+                <td style="color: rgb(230, 55, 55);" id="modalInterestAmount"></td>
+              </tr>
+              <tr>
+                <td>acc type</td>
+                <td id="modalInterestRate"></td>
+              </tr>
+              <tr>
+                <td>status</td>
+                <td id="modalRemainingBalance"></td>
+              </tr>
+              <!-- <tr>
+                <td>acc type</td>
+                <td id="modalRemainingBalance"></td>
+              </tr> -->
+            </table>
+          </div>
+        </div>
+      </div>
+    </div> 
+    <!-- ====================end of aside==========================   -->
+    {% endif %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    // JavaScript to show the popup when the page loads
+document.addEventListener("DOMContentLoaded", function() {
+    var popupContainer = document.getElementById("popupContainer");
+    popupContainer.style.display = "block";
+});
+
+  </script>
+  
+  <script>
+    const rowsPerPage = 5; // Number of rows to display per page
+let currentPage = 1;
+
+function showRows() {
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const rows = employeeTable.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        if (i >= startIndex && i < endIndex) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
+    }
+}
+
+function previousPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        showRows();
+    }
+}
+
+function nextPage() {
+    const rows = employeeTable.getElementsByTagName('tr');
+    const totalRows = rows.length - 1;
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+    if (currentPage < totalPages) {
+        currentPage++;
+        showRows();
+    }
+}
+
+// Add this code after the existing JavaScript code within the <script> tags
+document.addEventListener('DOMContentLoaded', () => {
+    showRows();
+});
+   </script>
+   <script>
+      $(document).ready(function() {
+        $('.view-details-btn').click(function() {
+          var employeeRow = $(this).closest('tr');
+          var accountNumber = employeeRow.find('td:eq(1)').text();
+          var accountHolderName = employeeRow.find('td:eq(0)').text();
+          var ifscCode = employeeRow.find('td:eq(2)').text();
+          var loanType = employeeRow.find('td:eq(3)').text();
+          var loanAmount = employeeRow.find('td:eq(4)').text();
+          var interestAmount = employeeRow.find('td:eq(5)').text();
+          var interestRate = employeeRow.find('td:eq(6)').text();
+          var remainingBalance = employeeRow.find('td:eq(7)').text();
+          var emiduedate = employeeRow.find('td:eq(8)').text();
+          var status = employeeRow.find('td:eq(9)').text();
+    
+          $('#modalAccountNumber').text(accountNumber);
+          $('#modalAccountHolderName').text(accountHolderName);
+          $('#modalIFSCCode').text(ifscCode);
+          $('#modalLoanType').text(loanType);
+          $('#modalLoanAmount').text(loanAmount);
+          $('#modalInterestAmount').text(interestAmount);
+          $('#modalInterestRate').text(interestRate);
+          $('#modalRemainingBalance').text(remainingBalance);
+          $('#modalEmiduedate').text(emiduedate);
+          $('#modalStatus').text(status);
+    
+          $('#employeeDetailsModal').modal('show');
+        });
+      });
+    </script>
+   
+   <script>
+        var submenuIcons = document.querySelectorAll('.submenu-icon');
+      // Loop through each submenu icon
+      submenuIcons.forEach(function(icon) {
+         // Add a click event listener to each submenu icon
+         icon.addEventListener('click', function() {
+             // Get the corresponding submenu for this icon
+             var submenu = icon.parentElement.nextElementSibling; 
+             // Toggle the visibility of the submenu
+             submenu.classList.toggle('show');
+         });
+      });
+      </script>
+    <script>
+ 
+    function showDetails(event) {
+    event.preventDefault();
+    var row = event.target.closest("tr");
+    var detailsRow = row.nextElementSibling;
+    if (detailsRow.style.display === "none") {
+      detailsRow.style.display = "table-row";
+    } else {
+      detailsRow.style.display = "none";
+    }
+  }
+
+//ffffff
+
+
+
+
+
+//efefff
+
+
+//gender
+var employeeTable = document.getElementById("employeeTable");
+    var genderSelect = document.getElementById("genderOption");
+
+    genderSelect.addEventListener("change", function() {
+        var selectedGender = genderSelect.value.toLowerCase();
+        var rows = employeeTable.getElementsByTagName("tr");
+
+        for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the table header row
+            var row = rows[i];
+            var genderCell = row.getElementsByTagName("td")[5];
+            var gender = genderCell.textContent.toLowerCase();
+
+            if (selectedGender === "" || gender === selectedGender) {
+                row.style.display = ""; // Show the row
+            } else {
+                row.style.display = "none"; // Hide the row
+            }
+        }
+    });
+
+
+// Add event listener to the "Employee Type" header
+ // Function to sort the table based on gender
+
+//end
+        // Function to filter the table based on user type
+        document.getElementById('userTypeFilter').addEventListener('change', function() {
+  var searchKeyword = document.getElementById('searchInput').value.toLowerCase();
+  var userType = this.value;
+  var rows = document.querySelectorAll('#employeeTable tbody tr');
+  
+  rows.forEach(function(row) {
+    var employeeName = row.children[1].textContent.toLowerCase() + ' ' + row.children[2].textContent.toLowerCase();
+    var userRole = row.getAttribute('data-usertype');
+    if ((searchKeyword === '' || employeeName.includes(searchKeyword)) && (userType === 'all' || userRole === userType)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+});
+
+        // Function to search the table based on name
+        function searchTable() {
+  var input = document.getElementById("searchInput");
+  var filter = input.value.toUpperCase();
+  var table = document.getElementById("employeeTable");
+  var rows = table.getElementsByTagName("tr");
+  var noUserFoundMessage = document.getElementById("noUserFoundMessage");
+
+  var foundMatch = false;
+
+  for (var i = 1; i < rows.length; i++) {
+    var nameColumn = rows[i].getElementsByTagName("td")[0];
+    if (nameColumn.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      rows[i].style.display = "";
+      foundMatch = true;
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+
+  if (!foundMatch) {
+    noUserFoundMessage.style.display = "block";
+  } else {
+    noUserFoundMessage.style.display = "none";
+  }
+}
+
+
+
+
+
+
+
+        // ------------------------
+        function changeRowCount() {
+    const rowCountSelect = document.getElementById('rowCount');
+    const selectedRowCount = rowCountSelect.value;
+    const rows = employeeTable.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        if (i <= selectedRowCount) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
+    }
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const rowCountSelect = document.getElementById('rowCount');
+    const selectedRowCount = rowCountSelect.value;
+    const rows = employeeTable.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        if (i > selectedRowCount) {
+            rows[i].style.display = 'none';
+        }
+    }
+});
+
+
+    </script>
+</body>
+</html>

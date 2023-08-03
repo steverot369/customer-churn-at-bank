@@ -1,0 +1,374 @@
+
+{% include 'customersidebar.html' %}
+
+<section class="middle">
+    <div class="header">
+        
+        <input type="date">
+    </div>
+                  <br>
+                  
+                  <div class="sales-analytics">
+                        
+                    <h1>Recent Online Transactions</h1>
+                   
+                    <br><br>
+                    <div id="transactions-wrapper">
+                    {% for transaction in details %}
+                    {% if logged_in_user_id == transaction[0] %}
+                    <div class="item online">
+                        <div class="icon">   
+                            <img src="{{url_for('static', filename=transaction[5])}}" style="height: 60px; width:60px; border-radius: 50%;">   
+                        </div>
+                        <!-- sender-------- -->
+                        <div class="right">
+                            <div class="info">
+                                <h4 style="font-size:15px;">{{transaction[4]}}</h4>
+                                <small class="text-muted transaction-date" style="font-size: 13px;">{{ transaction[3] }}</small>
+                            </div>
+                            <h5 class="danger" style="font-size:15px;">-{{ transaction[2] }}</h5>
+                            <h4>debited</h4>
+                        </div>
+                        <a href="#" onclick="toggleContainer(event)">View Details</a>
+                        <div class="container-details" style="display: none; background-color: #ffffff; border-radius: 5px; box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1); padding: 15px; margin-top: 10px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e5e5; padding-bottom: 10px;">
+                                <div>
+                                    
+                                    <h3 style="font-size: 19px; margin: 0; font-weight: 700;">Transaction Details</h3><br>
+                                    <p style="font-size: 12px; color: #666; margin: 0;">Transaction ID: <b>{{ transaction[8] }}</b></p>
+                                    <p style="font-size: 12px; color: #666; margin: 0;">To : {{ transaction[4] }}</p>
+                                    <p style="font-size: 12px; color: #666; margin: 0;">Amount: {{ transaction[2] }}</p>
+
+                                </div>
+                                <div>
+                                    <p style="font-size: 12px; color: #666; margin: 0;" class="transaction-date">{{ transaction[3] }}</p>
+                                </div>
+                            </div>
+                            <br>
+                            <p style="font-size:15px;">You send &#8377;{{ transaction[2]}} to {{ transaction[4] }}</p>
+                        </div>
+                        <p style="border-bottom:1px solid rgb(178, 170, 170); padding-bottom:10px"></p><br>
+</div>
+                        {% else %}
+                        <div class="item online">
+                        <div class="icon">   
+                            
+                            <img src="{{url_for('static', filename=transaction[7])}}" style="height: 60px; width:60px; border-radius: 50%;">
+                        </div>
+                        <div class="right">
+                            <div class="info">
+                                <h4 style="font-size:15px;">{{transaction[6]}}</h4>
+                                <small class="text-muted transaction-date" style="font-size: 13px;">{{ transaction[3] }}</small>
+                            </div>
+                            
+                            <h5 class="success" style="font-size:15px;">+{{ transaction[2] }}</h5>
+                            <h4>credited</h4>
+                        </div>
+                        <a href="#" onclick="toggleContainer(event)">View Details</a>
+                        <div class="container-details" style="display: none; background-color: #f9f9f9; border-radius: 5px; box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1); padding: 15px; margin-top: 10px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e5e5; padding-bottom: 10px;">
+                                <div>
+                                    
+                                    <h3 style="font-size: 19px; margin: 0; font-weight: 700;">Transaction Details</h3><br>
+                                    <p style="font-size: 12px; color: #666; margin: 0;">Transaction ID: <b>{{ transaction[8] }}</b></p>
+                                    <p style="font-size: 12px; color: #666; margin: 0;">from : {{ transaction[6] }}</p>
+                                    <p style="font-size: 12px; color: #666; margin: 0;">Amount: {{ transaction[2] }}</p>
+
+                                </div>
+                                <div>
+                                    <p style="font-size: 12px; color: #666; margin: 0;" class="transaction-date">{{ transaction[3] }}</p>
+                                </div>
+                            </div>
+                            <br>
+                            <p style="font-size: 15px; margin: 0;">You have received &#8377;{{ transaction[2]}} from {{ transaction[6] }}</p>
+                        </div>
+                        
+                        <p style="border-bottom:1px solid rgb(178, 170, 170); padding-bottom:10px"></p><br>
+                    </div>
+                    
+                    
+                        {% endif %}
+                   
+                        {% endfor %} 
+                        
+                </div>
+                   
+                        
+                </div>
+                <div class="pagination">
+                    <button onclick="previousPage()">Previous</button>
+                    <button onclick="nextPage()">Next</button>
+                </div>
+</section>
+     </main>  
+    <!-- ====================end of aside==========================   -->
+    <!-- Modal -->
+
+
+
+
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+ 
+ <script>
+    function formatDate(dateString) {
+    const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const dateObj = new Date(dateString);
+    const month = months[dateObj.getMonth()];
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+    let hours = dateObj.getHours();
+    let minutes = dateObj.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    minutes = minutes.toString().padStart(2, '0');
+
+    return `${month} ${day}, ${year} at ${hours}:${minutes} ${ampm}`;
+}
+
+const transactionDates = document.getElementsByClassName('transaction-date');
+for (let i = 0; i < transactionDates.length; i++) {
+    const dateText = transactionDates[i].textContent;
+    const formattedDate = formatDate(dateText);
+    transactionDates[i].textContent = formattedDate;
+}
+
+ </script>
+ 
+ <script>
+   function toggleContainer(event) {
+    event.preventDefault();
+    const transactionDiv = event.target.parentElement;
+    const containerDetails = transactionDiv.getElementsByClassName('container-details')[0];
+    if (containerDetails.style.display === 'none') {
+        containerDetails.style.display = 'block';
+    } else {
+        containerDetails.style.display = 'none';
+    }
+}
+
+
+ </script>
+ <script>
+    let currentPage = 1;
+const transactionsPerPage = 3;
+const transactionsWrapper = document.getElementById('transactions-wrapper');
+const transactions = transactionsWrapper.getElementsByClassName('item online');
+
+function showTransactions(page) {
+    const startIndex = (page - 1) * transactionsPerPage;
+    const endIndex = startIndex + transactionsPerPage;
+
+    for (let i = 0; i < transactions.length; i++) {
+        transactions[i].style.display = i >= startIndex && i < endIndex ? 'block' : 'none';
+    }
+}
+
+function nextPage() {
+    currentPage++;
+    if (currentPage > Math.ceil(transactions.length / transactionsPerPage)) {
+        currentPage = Math.ceil(transactions.length / transactionsPerPage);
+    }
+    showTransactions(currentPage);
+}
+
+function previousPage() {
+    currentPage--;
+    if (currentPage < 1) {
+        currentPage = 1;
+    }
+    showTransactions(currentPage);
+}
+
+// Show the initial page (page 1)
+showTransactions(currentPage);
+
+   </script>
+    <script>
+      // Get the account dropdown element
+      var accountDropdown = document.getElementById("account");
+    
+      // Get the transaction table element
+      var transactionTable = document.getElementById("employeeTable");
+    
+      // Get the no results message element
+      var noResultsMessage = document.getElementById("noResultsMessage");
+    
+      // Attach an event listener to the account dropdown
+      accountDropdown.addEventListener("change", function() {
+        // Get the selected account number
+        var selectedAccount = accountDropdown.value;
+    
+        // Get all the table rows from the transaction table
+        var rows = transactionTable.getElementsByTagName("tr");
+    
+        // Variable to keep track of whether any results were found
+        var resultsFound = false;
+    
+        // Loop through the rows and hide/show based on the selected account number
+        for (var i = 1; i < rows.length; i++) {
+          var accountNumber = rows[i].getAttribute("data-account");
+    
+          // Check if the row's account number matches the selected account
+          if (selectedAccount === "" || accountNumber === selectedAccount) {
+            rows[i].style.display = "";
+            resultsFound = true;
+          } else {
+            rows[i].style.display = "none";
+          }
+        }
+    
+        // Show/hide the no results message based on whether any results were found
+        if (resultsFound) {
+          noResultsMessage.style.display = "none";
+        } else {
+          noResultsMessage.style.display = "";
+          noResultsMessage.textContent = "No transaction details found for account: " + selectedAccount;
+        }
+      });
+    </script>
+    
+    
+
+    <script>
+      $(document).ready(function() {
+        $('.view-details-btn').click(function() {
+          var employeeRow = $(this).closest('tr');
+          var accountNumber = employeeRow.find('td:eq(1)').text();
+          var accountHolderName = employeeRow.find('td:eq(0)').text();
+          var ifscCode = employeeRow.find('td:eq(2)').text();
+          var loanType = employeeRow.find('td:eq(3)').text();
+          var loanAmount = employeeRow.find('td:eq(4)').text();
+          var interestAmount = employeeRow.find('td:eq(5)').text();
+          var interestRate = employeeRow.find('td:eq(6)').text();
+          var remainingBalance = employeeRow.find('td:eq(7)').text();
+          var emiduedate = employeeRow.find('td:eq(8)').text();
+          var status = employeeRow.find('td:eq(9)').text();
+    
+          $('#modalAccountNumber').text(accountNumber);
+          $('#modalAccountHolderName').text(accountHolderName);
+          $('#modalIFSCCode').text(ifscCode);
+          $('#modalLoanType').text(loanType);
+          $('#modalLoanAmount').text(loanAmount);
+          $('#modalInterestAmount').text(interestAmount);
+          $('#modalInterestRate').text(interestRate);
+          $('#modalRemainingBalance').text(remainingBalance);
+          $('#modalEmiduedate').text(emiduedate);
+          $('#modalStatus').text(status);
+    
+          $('#employeeDetailsModal').modal('show');
+        });
+      });
+    </script>
+
+
+    </script>
+    
+    <script>
+ 
+
+    function showDetails(event) {
+    event.preventDefault();
+    var row = event.target.closest("tr");
+    var detailsRow = row.nextElementSibling;
+    if (detailsRow.style.display === "none") {
+      detailsRow.style.display = "table-row";
+    } else {
+      detailsRow.style.display = "none";
+    }
+  }
+
+
+
+
+//gender
+
+
+
+
+        // Function to filter the table based on user type
+        document.getElementById('userTypeFilter').addEventListener('change', function() {
+  var searchKeyword = document.getElementById('searchInput').value.toLowerCase();
+  var userType = this.value;
+  var rows = document.querySelectorAll('#employeeTable tbody tr');
+  
+  rows.forEach(function(row) {
+    var employeeName = row.children[1].textContent.toLowerCase() + ' ' + row.children[2].textContent.toLowerCase();
+    var userRole = row.getAttribute('data-usertype');
+    if ((searchKeyword === '' || employeeName.includes(searchKeyword)) && (userType === 'all' || userRole === userType)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+});
+
+        // Function to search the table based on name
+        function searchTable() {
+  var input = document.getElementById("searchInput");
+  var filter = input.value.toUpperCase();
+  var table = document.getElementById("employeeTable");
+  var rows = table.getElementsByTagName("tr");
+  var noUserFoundMessage = document.getElementById("noUserFoundMessage");
+
+  var foundMatch = false;
+
+  for (var i = 1; i < rows.length; i++) {
+    var nameColumn = rows[i].getElementsByTagName("td")[5];
+    if (nameColumn.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      rows[i].style.display = "";
+      foundMatch = true;
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+
+  if (!foundMatch) {
+    noUserFoundMessage.style.display = "block";
+  } else {
+    noUserFoundMessage.style.display = "none";
+  }
+}
+
+
+
+
+
+
+
+        // ------------------------
+        function changeRowCount() {
+    const rowCountSelect = document.getElementById('rowCount');
+    const selectedRowCount = rowCountSelect.value;
+    const rows = employeeTable.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        if (i <= selectedRowCount) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
+    }
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const rowCountSelect = document.getElementById('rowCount');
+    const selectedRowCount = rowCountSelect.value;
+    const rows = employeeTable.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        if (i > selectedRowCount) {
+            rows[i].style.display = 'none';
+        }
+    }
+});
+
+
+
+
+    </script>
+</body>
+</html>

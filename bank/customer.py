@@ -884,3 +884,29 @@ def publichome():
     session.clear()
     flash("Successfully logout...")
     return redirect(url_for('public.publichome'))
+
+
+
+@customer.route('/customerviewonlinetrans')
+def customerviewonlinetrans():
+    # data={}
+    cursor=db.cursor()
+
+    cursor.execute("select fname,lname,photo from customers where cid='%s'"%(session['cust_id']))
+    name1 = cursor.fetchall()
+    
+    logged_in_user_id=int(session['cust_id'])
+    print("login_id=====",logged_in_user_id)
+
+    
+    cursor.execute("SELECT customer_id, reciever_id,amount,date,name,photo,from_name,from_photo,t_no FROM o_transaction where customer_id=%s or reciever_id=%s ORDER BY date DESC LIMIT 5"%(logged_in_user_id,logged_in_user_id))
+    details = cursor.fetchall()
+    formatDate = datetime.now()
+
+# Extract the date portion from the current date and time
+    # current_date = current_datetime.date()
+    # cursor.execute("SELECT customer_id, reciever_id, amount, date, name, photo, from_name, from_photo FROM o_transaction WHERE (customer_id = %s OR reciever_id = %s) ORDER BY date DESC LIMIT 3", (logged_in_user_id, logged_in_user_id))
+
+    # details1 = cursor.fetchall()
+
+    return render_template('customerviewonlinetrans.html',details=details,logged_in_user_id=logged_in_user_id,name1=name1,formatDate=formatDate)

@@ -917,7 +917,7 @@ padding-bottom: 13px;
                                 <div class="message">
                                     <p><b>{{transaction[4]}}</b></p>
                                     <p>You have send &#8377;{{ transaction[2]}} to {{ transaction[4] }}</p>
-                                    <small class="text-muted">{{ transaction[3] }}</small>
+                                    <small class="text-muted" style="font-size: 12px;">{{ transaction[3] }}</small>
                                 </div>
                             </div>
                         
@@ -932,7 +932,7 @@ padding-bottom: 13px;
                                 <div class="message">
                                     <p><b>{{transaction[6]}}</b></p>
                                     <p>You have receive &#8377;{{ transaction[2]}} from {{ transaction[6] }}</p>
-                                    <small class="text-muted">{{ transaction[3] }}</small>
+                                    <small class="text-muted" style="font-size: 12px;">{{ transaction[3] }}</small>
                                 </div>
                             </div>
                         
@@ -946,7 +946,7 @@ padding-bottom: 13px;
                                 </div>
                                 <div class="message">
                                     <p><b>from bank</b><br> {{ message[0] }}</p>
-                                    <small class="text-muted">{{ message[1] }}</small>
+                                    <small class="text-muted" style="font-size: 12px;">{{ message[1] }}</small>
                                 </div>
                             </div>
                             {% endfor %}
@@ -958,7 +958,7 @@ padding-bottom: 13px;
                     <div class="sales-analytics">
                         
                         <h2>Recent Online Transactions</h2>
-                        <a href="#" style="color: rgb(0, 42, 110); margin-left:300px;">More &#8594;
+                        <a href="customerviewonlinetrans" style="color: rgb(0, 42, 110); margin-left:300px;">More &#8594;
                         </a>
                         <br><br>
                         
@@ -972,7 +972,7 @@ padding-bottom: 13px;
                             <div class="right">
                                 <div class="info">
                                     <h4>{{transaction[4]}}</h4>
-                                    <small class="text-muted">{{ transaction[3] }}</small>
+                                    <small class="text-muted" style="font-size: 11px;">{{ transaction[3] }}</small>
                                 </div>
                                 <h5 class="danger">-{{ transaction[2] }}</h5>
                                 <h4>debited</h4>
@@ -987,7 +987,7 @@ padding-bottom: 13px;
                             <div class="right">
                                 <div class="info">
                                     <h4>{{transaction[6]}}</h4>
-                                    <small class="text-muted">{{ transaction[3] }}</small>
+                                    <small class="text-muted" style="font-size: 11px;">{{ transaction[3] }}</small>
                                 </div>
                                 
                                 <h5 class="success">+{{ transaction[2] }}</h5>
