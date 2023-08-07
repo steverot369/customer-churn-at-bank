@@ -193,7 +193,7 @@ def managerhome():
 
     cursor.execute("select count(*) from customers where branch_id='%s'"%(branch_id))
     customer_count=cursor.fetchone()[0]
-    cursor.execute("select count(*) from employee where branch_id='%s' and employee='clerk'"%(branch_id))
+    cursor.execute("select count(*) from employee where branch_id='%s' and employee='clerk' and status='active'"%(branch_id))
     employee_count=cursor.fetchone()[0]
 
 

@@ -71,7 +71,7 @@ def adminhome():
 
 
     # ===============feedbacks
-    cursor.execute("SELECT f.messages, f.date_time, c.photo,c.fname,c.lname FROM feedbacks f INNER JOIN customers c ON f.customer_id = c.cid ORDER BY f.date_time LIMIT 3")
+    cursor.execute("SELECT f.messages, f.date_time, c.photo,c.fname,c.lname FROM feedbacks f INNER JOIN customers c ON f.customer_id = c.cid ORDER BY f.date_time desc LIMIT 3")
 
     feedback_messages = cursor.fetchall()
  
