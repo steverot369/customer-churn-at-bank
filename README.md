@@ -28,3 +28,4 @@ paramount.
 
 ADMIN Dashboard :![image](https://github.com/steverot369/customer-churn-at-bank/assets/136913603/a2d74904-622c-4cd1-8dc3-6a359c06438a)
 
+Churn Prediction(whether the customer leave the bank or not) :![image](https://github.com/steverot369/customer-churn-at-bank/assets/136913603/70f5013a-b20e-48ae-aa85-04839df751af)
