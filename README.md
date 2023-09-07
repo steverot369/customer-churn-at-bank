@@ -25,3 +25,6 @@ adapting the system to evolving customer behaviors, and ensuring that the retent
 aligned with the dynamic landscape of the banking industry. In essence, the project aspires to foster an 
 environment of perpetual innovation, where the pursuit of customer satisfaction and loyalty remains 
 paramount.
+
+ADMIN Dashboard :![image](https://github.com/steverot369/customer-churn-at-bank/assets/136913603/a2d74904-622c-4cd1-8dc3-6a359c06438a)
+
