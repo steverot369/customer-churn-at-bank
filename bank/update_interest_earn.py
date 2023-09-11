@@ -62,7 +62,7 @@ def update_interest_earn():
             if current_date == days_diff:
                 # Calculate the interest earned based on the interest amount
                 interest_earned = interest_amt
-                updated_balance=balance+interest_earned
+                updated_balance=int(balance)+int(interest_earned)
                 # Update the interest_earn field in the table
                 maturity_date = current_date + datetime.timedelta(days=30)
                 formatted_maturity_date = maturity_date.strftime("%d-%m-%y")
